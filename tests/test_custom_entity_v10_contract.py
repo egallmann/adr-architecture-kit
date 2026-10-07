@@ -13,6 +13,7 @@ from jsonschema import Draft202012Validator
 from adr_kit.semantic_contract import canonicalize_semantic_json
 
 ROOT = Path(__file__).resolve().parents[1]
+pytestmark = pytest.mark.fast
 CONTRACT = ROOT / "contracts/custom-entity/v1.0/contract.json"
 SCHEMA = ROOT / "contracts/custom-entity/v1.0/schema.json"
 FIXTURE = ROOT / "tests/fixtures/custom-entity-v1.0/valid-observation-registry.json"

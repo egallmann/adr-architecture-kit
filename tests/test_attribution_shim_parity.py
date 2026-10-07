@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import pytest
-
 from adr_kit.attribution_shim_generator import generate_python_shim, generate_typescript_shim
 from adr_kit.decorators import embodies, enforces, implements
 from adr_kit.semantic_attribution.vocabulary import canonical_claims_attribute
+
+pytestmark = pytest.mark.crosshost
 
 SAMPLE_UUID = "019fee89-e615-7577-8d37-dd0df031bec9"
 

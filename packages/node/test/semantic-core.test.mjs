@@ -19,6 +19,68 @@ const architectureVectorPath = resolve("../../contracts/semantic-core/v1.0/vecto
 const capabilityContractPath = resolve("../../contracts/compatibility/host-capabilities.json");
 const semanticContractVectorPath = resolve("../../contracts/semantic-core/v1.0/vectors/semantic-contract.json");
 
+test("Node binding compiles once and isolates concurrent requests in fresh instances", async () => {
+  const originalModule = WebAssembly.Module;
+  const originalInstance = WebAssembly.Instance;
+  let moduleCompilations = 0;
+  const instances = [];
+
+  Object.defineProperty(WebAssembly, "Module", {
+    configurable: true,
+    writable: true,
+    value: function CountingModule(bytes) {
+      moduleCompilations += 1;
+      return new originalModule(bytes);
+    },
+  });
+  Object.defineProperty(WebAssembly, "Instance", {
+    configurable: true,
+    writable: true,
+    value: function FreshInstance(module, imports) {
+      const instance = new originalInstance(module, imports);
+      instances.push(instance);
+      return instance;
+    },
+  });
+
+  try {
+    const requests = [
+      {
+        core_contract_version: "9.0",
+        operation: "validate_contract",
+        profile: "greenfield",
+        entity_registry: { entities: [] },
+      },
+      {
+        core_contract_version: "1.0",
+        operation: "validate_project_metadata",
+        project_metadata: null,
+      },
+    ];
+    const interleaved = Array.from({ length: 12 }, (_, index) => requests[index % requests.length]);
+    const results = await Promise.all(interleaved.map(executeSemanticCoreRequest));
+
+    assert.equal(moduleCompilations, 1);
+    assert.equal(instances.length, interleaved.length);
+    assert.equal(new Set(instances).size, interleaved.length);
+    assert.notDeepEqual(results[0], results[1]);
+    for (let index = 0; index < results.length; index += 1) {
+      assert.deepEqual(results[index], results[index % requests.length]);
+    }
+  } finally {
+    Object.defineProperty(WebAssembly, "Module", {
+      configurable: true,
+      writable: true,
+      value: originalModule,
+    });
+    Object.defineProperty(WebAssembly, "Instance", {
+      configurable: true,
+      writable: true,
+      value: originalInstance,
+    });
+  }
+});
+
 test("Node capability manifest consumes the governed host capability contract", async () => {
   const contract = JSON.parse(await readFile(capabilityContractPath, "utf8"));
   const manifest = capabilities();

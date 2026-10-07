@@ -102,3 +102,11 @@ warn_unused_configs = true
 testpaths = ["tests"]
 python_files = "test_*.py"
 python_functions = "test_*"
+addopts = "--strict-markers"
+markers = [
+    "fast: isolated behavior and contract checks intended for the developer/TDD loop",
+    "integration: component, real-repository, and end-to-end source behavior",
+    "governance: whole-repository governance and generated-artifact qualification",
+    "crosshost: peer-host or cross-language parity qualification",
+    "benchmark: deterministic performance/benchmark contract checks",
+]

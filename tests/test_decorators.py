@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pytest
-
 from adr_kit.decorators import (
     enforces_invariant,
     enforces_invariants,
@@ -12,6 +11,8 @@ from adr_kit.decorators import (
     implements_uuids,
     embodies,
 )
+
+pytestmark = pytest.mark.fast
 
 SAMPLE_UUID = "019fee89-e615-7577-8d37-dd0df031bec9"
 INVARIANT_UUID = "019fee89-e615-7129-ac3e-8120e0d7c106"

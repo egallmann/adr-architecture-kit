@@ -7,6 +7,9 @@ from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
+import pytest
+
+pytestmark = pytest.mark.fast
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT_PATH = ROOT / "contracts" / "semantic-core" / "v1.3" / "contract.json"

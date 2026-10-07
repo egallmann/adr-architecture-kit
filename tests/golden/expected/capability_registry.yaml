@@ -1110,7 +1110,8 @@ entities:
   entity_type: capability
   name: Test-Driven Development Support
   summary: Test infrastructure supports TDD workflow - write failing test, implement
-    feature, test passes. Fast test execution enables rapid iteration.
+    feature, test passes. The isolated developer/TDD fast suite enables rapid iteration;
+    comprehensive assurance remains mandatory in separate integra
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7958-822b-bbd40f3a5ebc
   created_at: '2026-08-11T01:57:22.581Z'
   entity_fingerprint: sha256:9b6ed6369fb240274ab4db27f7616237fa560a60449a6952e8084361e9665158

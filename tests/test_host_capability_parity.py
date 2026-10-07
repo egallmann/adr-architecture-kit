@@ -3,7 +3,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from adr_kit.api import capabilities
+
+pytestmark = pytest.mark.crosshost
 
 
 def test_declared_peer_host_capabilities_match_compatibility_contract() -> None:

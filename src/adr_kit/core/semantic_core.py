@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 from functools import lru_cache
 from importlib import resources
+from threading import Lock
 from typing import Any
 
 from jsonschema import Draft202012Validator
@@ -50,10 +51,30 @@ def _artifact_bytes() -> bytes:
     return resources.files("adr_kit.core").joinpath("semantic-core.wasm").read_bytes()
 
 
+_runtime_lock = Lock()
+
+
+@lru_cache(maxsize=1)
+def _compile_semantic_core() -> tuple[wasmtime.Engine, wasmtime.Module]:
+    """Compile the immutable core module once for this host process."""
+
+    engine = wasmtime.Engine()
+    return engine, wasmtime.Module(engine, _artifact_bytes())
+
+
+def _compiled_semantic_core() -> tuple[wasmtime.Engine, wasmtime.Module]:
+    # functools.lru_cache protects its data structure but may run the wrapped
+    # function more than once when concurrent first callers miss together.
+    # Serialize only initialization; request execution remains independent.
+    with _runtime_lock:
+        return _compile_semantic_core()
+
+
 def execute_semantic_core_request(request: dict[str, Any]) -> dict[str, Any]:
     payload = json.dumps(request, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
-    store = wasmtime.Store()
-    instance = wasmtime.Instance(store, wasmtime.Module(store.engine, _artifact_bytes()), [])
+    engine, module = _compiled_semantic_core()
+    store = wasmtime.Store(engine)
+    instance = wasmtime.Instance(store, module, [])
     exports: Any = instance.exports(store)
     memory = exports["memory"]
     alloc = exports["alloc"]
@@ -75,7 +96,7 @@ def execute_semantic_core_request(request: dict[str, Any]) -> dict[str, Any]:
     return decoded
 
 
-@lru_cache(maxsize=3)
+@lru_cache(maxsize=len(SEMANTIC_CORE_PROTOCOL_VERSIONS))
 def _protocol_validator(version: str = "1.0") -> Draft202012Validator:
     """Load the validator selected by the declared semantic-core version.
 

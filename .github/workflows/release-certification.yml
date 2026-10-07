@@ -12,75 +12,32 @@ jobs:
   integration:
     name: Main integration assurance
     uses: ./.github/workflows/integration-assurance.yml
-
-  semantic-core-qualification:
-    name: Source-built semantic core / WASM qualification
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: wasm32-unknown-unknown
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: npm
-          cache-dependency-path: packages/node/package-lock.json
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.14"
-          cache: pip
-      - name: Record toolchain
-        run: |
-          rustc --version
-          node --version
-          python --version
-      - run: python -m pip install --upgrade pip
-      - run: npm ci
-        working-directory: packages/node
-      - name: Guard semantic-core source and tracked artifacts
-        run: python scripts/check_semantic_core_artifact_change.py
-      - name: Smoke-test tracked semantic core before rebuild
-        run: node scripts/check_tracked_semantic_core.mjs
-      - name: Test the semantic-core implementation
-        run: cargo test --manifest-path core/Cargo.toml
-      - name: Build shared semantic core from Rust source
-        run: node scripts/build_semantic_core.mjs
-      - name: Verify source artifact and host copies
-        run: python scripts/verify_semantic_core_artifact.py
-      - run: python -m pip install .[dev]
-      - name: Exercise Python semantic-core conformance
-        run: python -m pytest -q tests/test_semantic_core_protocol.py tests/test_semantic_core_conformance.py tests/test_attribution_shim_parity.py
-      - name: Exercise Node semantic-core conformance
-        run: npm test
-        working-directory: packages/node
+    with:
+      full_os_portability: true
 
   release-artifacts:
     name: Build and validate the retained release bundle once
-    needs: [integration, semantic-core-qualification]
+    needs: integration
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: wasm32-unknown-unknown
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: npm
           cache-dependency-path: packages/node/package-lock.json
-      - name: Guard semantic-core source and tracked artifacts
-        run: python scripts/check_semantic_core_artifact_change.py
-      - name: Smoke-test tracked semantic core before rebuild
-        run: node scripts/check_tracked_semantic_core.mjs
-      - name: Build shared semantic core for both packages
-        run: node scripts/build_semantic_core.mjs
-      - name: Verify source-built semantic core before packaging
-        run: python scripts/verify_semantic_core_artifact.py
+      - uses: actions/download-artifact@v4
+        with:
+          name: semantic-core-${{ github.sha }}
+          path: semantic-core-artifact
+      - name: Install the exact qualified artifact for this commit
+        run: >-
+          python scripts/semantic_core_artifact_bundle.py consume
+          --bundle-dir semantic-core-artifact
+          --source-commit "${{ github.sha }}"
+      - run: python scripts/verify_semantic_core_artifact.py
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"

@@ -4,11 +4,16 @@ from __future__ import annotations
 
 import json
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from jsonschema import Draft7Validator, Draft202012Validator, RefResolver
-
+import pytest
+import wasmtime
 from adr_kit.core import execute_semantic_core_request, validate_semantic_core_protocol
+from adr_kit.core import semantic_core
+
+pytestmark = pytest.mark.fast
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "contracts" / "semantic-core" / "v1.0" / "contract.json"
@@ -18,6 +23,75 @@ CONTRACT_V13 = ROOT / "contracts" / "semantic-core" / "v1.3" / "contract.json"
 VECTORS = ROOT / "contracts" / "semantic-core" / "v1.0" / "vectors"
 VECTORS_V11 = ROOT / "contracts" / "semantic-core" / "v1.1" / "vectors"
 NORMALIZED_V23 = ROOT / "schema" / "normalized-model" / "v2.3"
+
+
+def test_python_binding_reuses_compiled_module_with_isolated_request_state(monkeypatch) -> None:
+    module_calls: list[wasmtime.Module] = []
+    instances: list[wasmtime.Instance] = []
+    stores: list[wasmtime.Store] = []
+    original_module = wasmtime.Module
+    original_instance = wasmtime.Instance
+
+    def compile_module(engine: wasmtime.Engine, wasm: bytes) -> wasmtime.Module:
+        module = original_module(engine, wasm)
+        module_calls.append(module)
+        return module
+
+    def instantiate(
+        store: wasmtime.Store,
+        module: wasmtime.Module,
+        imports: list[wasmtime.Extern],
+    ) -> wasmtime.Instance:
+        stores.append(store)
+        instance = original_instance(store, module, imports)
+        instances.append(instance)
+        return instance
+
+    semantic_core._compile_semantic_core.cache_clear()
+    monkeypatch.setattr(wasmtime, "Module", compile_module)
+    monkeypatch.setattr(wasmtime, "Instance", instantiate)
+    requests = [
+        {
+            "core_contract_version": "9.0",
+            "operation": "validate_contract",
+            "profile": "greenfield",
+            "entity_registry": {"entities": []},
+        },
+        {
+            "core_contract_version": "1.0",
+            "operation": "validate_project_metadata",
+            "project_metadata": None,
+        },
+    ]
+    interleaved = [requests[index % len(requests)] for index in range(12)]
+
+    try:
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            results = list(executor.map(execute_semantic_core_request, interleaved))
+
+        assert len(module_calls) == 1
+        assert len(instances) == len(interleaved)
+        assert len({id(instance) for instance in instances}) == len(interleaved)
+        assert len({id(store) for store in stores}) == len(interleaved)
+        assert results[0] != results[1]
+        for index, result in enumerate(results):
+            assert result == results[index % len(requests)]
+    finally:
+        semantic_core._compile_semantic_core.cache_clear()
+
+
+def test_protocol_validators_reuse_every_supported_schema() -> None:
+    semantic_core._protocol_validator.cache_clear()
+    try:
+        validators = {
+            version: semantic_core._protocol_validator(version)
+            for version in semantic_core.SEMANTIC_CORE_PROTOCOL_VERSIONS
+        }
+        assert len({id(validator) for validator in validators.values()}) == len(validators)
+        for version, validator in validators.items():
+            assert semantic_core._protocol_validator(version) is validator
+    finally:
+        semantic_core._protocol_validator.cache_clear()
 
 
 def test_protocol_schema_is_valid_and_discriminates_operations() -> None:
@@ -45,6 +119,7 @@ def test_protocol_schema_is_valid_and_discriminates_operations() -> None:
                     raise AssertionError(
                         f"raw-core vector must be rejected by the validated protocol: {case['name']}"
                     )
+
                 continue
             assert not list(validator.iter_errors(request)), (vector_path, case["name"])
             result = execute_semantic_core_request(request)

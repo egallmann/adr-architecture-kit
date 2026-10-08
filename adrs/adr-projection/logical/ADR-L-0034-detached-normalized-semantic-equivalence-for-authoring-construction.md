@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: bd20e36c4d1c7db1be33a8f7a3311720b31928e24d150d8a51001fdd10f42a5f
-rendered_hash: ee1f9122d34363c9054528e6e0a378b9a20f6f926644c1e3700aa5bfecb861c8
+source_hash: 12b9e793788ca6568f019ca2d54282981706f1daa35e8cb86e98e1827a17c445
+rendered_hash: ee6b93823dd853bcfeb0274ae04f7784753957a68a7dbd45138ac2bee1b82477
 -->
 
 # ADR-L-0034: Detached Normalized Semantic Equivalence for Authoring Construction
@@ -529,7 +529,7 @@ in the local ignored Design Journal at
 That journal is exploratory evidence, not durable authority; this ADR's
 decisions and invariants are the promoted design surface.
 
-After this ADR is accepted, the next authority sequence is fixed: publish
+With this ADR accepted, the next authority sequence is fixed: publish
 immutable Architecture Interpretation 1.2 with exact field-disposition and
 detached interpretation authority; publish immutable Authoring Construction
 1.1 consuming AI 1.2; retain Normalized Model 2.4 unchanged under the
@@ -565,8 +565,6 @@ qualification; canonical/custom relationships; topology compatibility and
 composition-derived records; unresolved results; ordered values; root
 ordering; UUID/endpoint changes; unclassified source fields; detached-context
 determinism; and exact Python/Node observation of the Rust result.
-
-ADR-L-0034 remains proposed pending explicit human architecture review.
 
 
 ---

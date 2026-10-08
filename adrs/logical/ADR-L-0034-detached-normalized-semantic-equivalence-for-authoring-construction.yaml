@@ -422,7 +422,7 @@ notes: |
   That journal is exploratory evidence, not durable authority; this ADR's
   decisions and invariants are the promoted design surface.
 
-  After this ADR is accepted, the next authority sequence is fixed: publish
+  With this ADR accepted, the next authority sequence is fixed: publish
   immutable Architecture Interpretation 1.2 with exact field-disposition and
   detached interpretation authority; publish immutable Authoring Construction
   1.1 consuming AI 1.2; retain Normalized Model 2.4 unchanged under the
@@ -458,5 +458,3 @@ notes: |
   composition-derived records; unresolved results; ordered values; root
   ordering; UUID/endpoint changes; unclassified source fields; detached-context
   determinism; and exact Python/Node observation of the Rust result.
-
-  ADR-L-0034 remains proposed pending explicit human architecture review.

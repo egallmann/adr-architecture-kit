@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: ce8cd0f1cf9baf32ef23c3c1b3878d8a5845df95e56fcab3b9af37bfb8273c1d
-rendered_hash: 1ac94483a7b4a0c0dbddae8176c66c420fb2d3d39dc079c6afc37e3587b18ce7
+source_hash: bd20e36c4d1c7db1be33a8f7a3311720b31928e24d150d8a51001fdd10f42a5f
+rendered_hash: ee1f9122d34363c9054528e6e0a378b9a20f6f926644c1e3700aa5bfecb861c8
 -->
 
 # ADR-L-0034: Detached Normalized Semantic Equivalence for Authoring Construction
@@ -14,7 +14,7 @@ rendered_hash: 1ac94483a7b4a0c0dbddae8176c66c420fb2d3d39dc079c6afc37e3587b18ce7
 ## Identity / Status
 
 **Type:** logical<br>
-**Status:** proposed<br>
+**Status:** accepted<br>
 **Alias:** ADR-L-0034<br>
 **Authoring contract:** authoring v1.5<br>
 **Created:** 2026-10-04<br>
@@ -27,7 +27,7 @@ rendered_hash: 1ac94483a7b4a0c0dbddae8176c66c420fb2d3d39dc079c6afc37e3587b18ce7
 | | |
 | --- | --- |
 | Logical authority | ADR-L-0034 |
-| Status | proposed |
+| Status | accepted |
 | Decisions | 6 |
 | Invariants | 8 |
 

@@ -575,3 +575,12 @@ def test_local_pre_push_checks_include_v15_attribution_invariants() -> None:
         "tests/test_attribution_cli.py",
     ):
         assert path in script
+
+
+def test_pr_feedback_runner_includes_exact_current_output_byte_golden() -> None:
+    from scripts.run_pr_feedback import SEMANTIC_TESTS
+
+    assert (
+        "tests/golden/test_current_outputs.py::test_current_outputs_match_expected_bytes"
+        in SEMANTIC_TESTS
+    )

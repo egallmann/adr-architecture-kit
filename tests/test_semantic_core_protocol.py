@@ -20,6 +20,7 @@ CONTRACT = ROOT / "contracts" / "semantic-core" / "v1.0" / "contract.json"
 CONTRACT_V11 = ROOT / "contracts" / "semantic-core" / "v1.1" / "contract.json"
 CONTRACT_V12 = ROOT / "contracts" / "semantic-core" / "v1.2" / "contract.json"
 CONTRACT_V13 = ROOT / "contracts" / "semantic-core" / "v1.3" / "contract.json"
+CONTRACT_V14 = ROOT / "contracts" / "semantic-core" / "v1.4" / "contract.json"
 VECTORS = ROOT / "contracts" / "semantic-core" / "v1.0" / "vectors"
 VECTORS_V11 = ROOT / "contracts" / "semantic-core" / "v1.1" / "vectors"
 NORMALIZED_V23 = ROOT / "schema" / "normalized-model" / "v2.3"
@@ -208,6 +209,7 @@ def test_protocol_contract_mirrors_are_byte_identical_for_all_versions() -> None
         CONTRACT_V11: ROOT / "src" / "adr_kit" / "core" / "semantic-core-contract-v1.1.json",
         CONTRACT_V12: ROOT / "src" / "adr_kit" / "core" / "semantic-core-contract-v1.2.json",
         CONTRACT_V13: ROOT / "src" / "adr_kit" / "core" / "semantic-core-contract-v1.3.json",
+        CONTRACT_V14: ROOT / "src" / "adr_kit" / "core" / "semantic-core-contract-v1.4.json",
     }
     for canonical, mirror in mirrors.items():
         assert mirror.is_file(), mirror

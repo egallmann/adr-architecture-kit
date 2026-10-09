@@ -7,6 +7,7 @@ import Ajv7Module from "ajv";
 import { semanticCoreContract } from "../dist/generated/semantic-core-contract.js";
 import { semanticCoreContractV11 } from "../dist/generated/semantic-core-contract-v1.1.js";
 import { semanticCoreContractV12 } from "../dist/generated/semantic-core-contract-v1.2.js";
+import { semanticCoreContractV14 } from "../dist/generated/semantic-core-contract-v1.4.js";
 import {
   semanticCoreCapabilities,
   supportsSemanticCoreOperation,
@@ -104,12 +105,38 @@ test("Node validates the additive v1.2 authoring transport surface", async () =>
   assert.equal(transportVectors.cases.length, 12);
 });
 
+test("Node v1.4 exposes authority qualification without ACC 1.1 construction", async () => {
+  const v14 = new Ajv({ allErrors: true, strict: false }).compile(semanticCoreContractV14);
+  const request = {
+    core_contract_version: "1.4",
+    operation: "qualify_authoring_construction_1_1",
+    request: {
+      operation: "qualify_authoring_construction_1_1",
+      definition: {},
+      resources: [],
+      construction_request: {},
+    },
+  };
+  assert.equal(v14(request), true, JSON.stringify(v14.errors));
+  const result = await executeSemanticCoreRequest(request);
+  assert.equal(v14(result), true, JSON.stringify(v14.errors));
+  assert.equal(result.result.outcome, "Unavailable");
+  assert.equal(result.result.capabilities.exact_authority_qualification, false);
+  assert.equal(result.result.capabilities.construct_authoring_set, false);
+  assert.equal(supportsSemanticCoreOperation("1.4", "qualify_authoring_construction_1_1"), true);
+  assert.equal(supportsSemanticCoreOperation("1.4", "construct_authoring_set"), false);
+  assert.deepEqual(semanticCoreCapabilities().operations_by_version["1.4"], [
+    "qualify_authoring_construction_1_1",
+  ]);
+});
+
 test("Node capability negotiation advertises only reachable v1.2 operations", () => {
   assert.deepEqual(semanticCoreCapabilities(), {
-    supported_versions: ["1.0", "1.1", "1.2", "1.3"],
+    supported_versions: ["1.0", "1.1", "1.2", "1.3", "1.4"],
     operations_by_version: {
       "1.2": ["validate_authoring", "construct_authoring_set"],
       "1.3": ["materialize_architecture"],
+      "1.4": ["qualify_authoring_construction_1_1"],
     },
   });
   assert.equal(supportsSemanticCoreOperation("1.2", "validate_authoring"), true);

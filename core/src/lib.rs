@@ -8,6 +8,7 @@ pub(crate) mod architecture_interpretation;
 mod attribution;
 mod authoring_construction;
 mod authoring_construction_orchestration;
+mod authoring_construction_v11;
 pub(crate) mod candidate_source;
 mod linkage;
 mod materialization;
@@ -27,6 +28,7 @@ const VERSION: &str = "1.0";
 const VERSION_1_1: &str = "1.1";
 const VERSION_1_2: &str = "1.2";
 const VERSION_1_3: &str = "1.3";
+const VERSION_1_4: &str = "1.4";
 const SENTINELS: [&str; 3] = [
     "__LEGACY_UNSPECIFIED__",
     "__NOT_YET_MODELED__",
@@ -348,6 +350,90 @@ fn protocol_v13_result(operation: &str, result: Json) -> Json {
         (String::from("operation"), string(operation)),
         (String::from("result"), result),
     ])
+}
+
+fn protocol_v14_result(operation: &str, result: Json) -> Json {
+    object([
+        (String::from("core_contract_version"), string(VERSION_1_4)),
+        (String::from("operation"), string(operation)),
+        (String::from("result"), result),
+    ])
+}
+
+fn invalid_v14(operation: &str, message: impl Into<String>) -> Json {
+    protocol_v14_result(
+        operation,
+        object([
+            (String::from("operation"), string(operation)),
+            (String::from("success"), Json::Bool(false)),
+            (String::from("outcome"), string("Rejected")),
+            (
+                String::from("diagnostics"),
+                Json::Array(vec![diagnostic("core.invalid_request", message, None)]),
+            ),
+            (String::from("authority_diagnostics"), Json::Array(Vec::new())),
+        ]),
+    )
+}
+
+fn execute_authoring_construction_v14(request: &Json) -> Json {
+    const OPERATION: &str = "qualify_authoring_construction_1_1";
+    let Some(root) = request.as_object() else {
+        return invalid_v14(
+            "invalid_request",
+            "semantic-core protocol 1.4 request must be an object",
+        );
+    };
+    if root
+        .keys()
+        .any(|key| {
+            !matches!(
+                key.as_str(),
+                "core_contract_version" | "operation" | "request"
+            )
+        })
+    {
+        return invalid_v14(
+            "invalid_request",
+            "protocol 1.4 envelope contains an undeclared field",
+        );
+    }
+    let Some(operation) = root.get("operation").and_then(Json::as_str) else {
+        return invalid_v14("invalid_request", "protocol 1.4 operation is required");
+    };
+    if operation != OPERATION {
+        return invalid_v14(operation, "operation is not available in semantic-core protocol 1.4");
+    }
+    if root.contains_key("result") {
+        return invalid_v14(
+            operation,
+            "protocol 1.4 execution accepts a request payload, not a result payload",
+        );
+    }
+    let Some(payload) = root.get("request").and_then(Json::as_object) else {
+        return invalid_v14(operation, "protocol 1.4 request payload must be an object");
+    };
+    if payload
+        .keys()
+        .any(|key| {
+            !matches!(
+                key.as_str(),
+                "operation" | "definition" | "resources" | "construction_request"
+            )
+        })
+    {
+        return invalid_v14(
+            operation,
+            "protocol 1.4 request payload contains an undeclared field",
+        );
+    }
+    if payload.get("operation").and_then(Json::as_str) != Some(operation) {
+        return invalid_v14(operation, "outer and nested protocol 1.4 operations must agree");
+    }
+    protocol_v14_result(
+        operation,
+        authoring_construction_v11::execute(&Json::Object(payload.clone())),
+    )
 }
 
 fn invalid_v13(operation: &str, message: impl Into<String>) -> Json {
@@ -1876,6 +1962,7 @@ pub fn execute_json(input: &[u8]) -> Vec<u8> {
                 }
                 Some(VERSION_1_2) => execute_authoring_v12(&value),
                 Some(VERSION_1_3) => execute_materialization_v13(&value),
+                Some(VERSION_1_4) => execute_authoring_construction_v14(&value),
                 Some(_) | None => invalid("unsupported core_contract_version"),
             };
             json(&result).into_bytes()

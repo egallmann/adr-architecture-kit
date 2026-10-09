@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-core/v1.4/contract.json",
+  "title": "ADR-Kit semantic core protocol contract v1.4",
+  "description": "Version-qualified ACC 1.1 authority qualification with fail-closed construction capability reporting.",
+  "oneOf": [{ "$ref": "#/$defs/request_envelope" }, { "$ref": "#/$defs/result_envelope" }, { "$ref": "#/$defs/invalid_envelope" }],
+  "$defs": {
+    "acc_diagnostic": {
+      "type": "object", "additionalProperties": false,
+      "required": ["code", "severity", "status", "request_key", "location", "semantic_type", "rule", "expected", "observed", "remediation"],
+      "properties": {
+        "code": { "type": "string", "pattern": "^authoring_construction\\.[a-z0-9_.-]+$" },
+        "severity": { "enum": ["info", "warning", "error"] },
+        "status": { "enum": ["violation", "blocked", "unresolved", "unavailable"] },
+        "request_key": { "type": ["string", "null"] }, "location": { "type": "string", "minLength": 1 },
+        "semantic_type": { "type": ["object", "null"] }, "rule": { "type": "string", "minLength": 1 },
+        "expected": {}, "observed": {}, "remediation": { "type": "string", "minLength": 1 }
+      }
+    },
+    "core_diagnostic": {
+      "type": "object", "required": ["code", "message"],
+      "properties": { "code": { "type": "string", "minLength": 1 }, "message": { "type": "string" }, "path": { "type": "string" }, "severity": { "enum": ["error", "warning", "info"] } }
+    },
+    "resource": {
+      "type": "object", "required": ["canonicalResourceKey", "content"],
+      "properties": { "canonicalResourceKey": { "type": "string", "minLength": 1 }, "content": {} },
+      "additionalProperties": false
+    },
+    "request": {
+      "type": "object", "additionalProperties": false,
+      "required": ["operation", "definition", "resources", "construction_request"],
+      "properties": {
+        "operation": { "const": "qualify_authoring_construction_1_1" }, "definition": { "type": "object" },
+        "resources": { "type": "array", "items": { "$ref": "#/$defs/resource" } }, "construction_request": { "type": "object" }
+      }
+    },
+    "capabilities": {
+      "type": "object", "additionalProperties": false,
+      "required": ["exact_authority_qualification", "request_schema_validation", "authoring_validation", "identity_establishment", "reference_and_composition_resolution", "candidate_source_basis_sealing", "complete_nm24_interpretation", "expected_ledger_derivation", "observed_ledger_derivation", "whole_ledger_comparison", "complete_acc11_qualification", "construct_authoring_set"],
+      "properties": {
+        "exact_authority_qualification": { "type": "boolean" }, "request_schema_validation": { "type": "boolean" },
+        "authoring_validation": { "const": false }, "identity_establishment": { "const": false },
+        "reference_and_composition_resolution": { "const": false }, "candidate_source_basis_sealing": { "const": false },
+        "complete_nm24_interpretation": { "const": false }, "expected_ledger_derivation": { "const": false },
+        "observed_ledger_derivation": { "const": false }, "whole_ledger_comparison": { "const": false },
+        "complete_acc11_qualification": { "const": false }, "construct_authoring_set": { "const": false }
+      }
+    },
+    "result": {
+      "type": "object", "additionalProperties": false,
+      "required": ["operation", "contract_family", "contract_version", "authority", "capabilities", "success", "outcome", "diagnostics", "authority_diagnostics"],
+      "properties": {
+        "operation": { "const": "qualify_authoring_construction_1_1" }, "contract_family": { "const": "authoring_construction" }, "contract_version": { "const": "1.1" },
+        "authority": {
+          "type": "object", "additionalProperties": false, "required": ["available", "fingerprint"],
+          "properties": { "available": { "type": "boolean" }, "fingerprint": { "type": ["string", "null"] } }
+        },
+        "capabilities": { "$ref": "#/$defs/capabilities" }, "success": { "const": false }, "outcome": { "enum": ["Rejected", "Unavailable"] },
+        "diagnostics": { "type": "array", "items": { "$ref": "#/$defs/acc_diagnostic" } },
+        "authority_diagnostics": { "type": "array", "items": { "$ref": "#/$defs/core_diagnostic" } }
+      }
+    },
+    "request_envelope": {
+      "type": "object", "additionalProperties": false, "required": ["core_contract_version", "operation", "request"],
+      "properties": { "core_contract_version": { "const": "1.4" }, "operation": { "const": "qualify_authoring_construction_1_1" }, "request": { "$ref": "#/$defs/request" } }
+    },
+    "result_envelope": {
+      "type": "object", "additionalProperties": false, "required": ["core_contract_version", "operation", "result"],
+      "properties": { "core_contract_version": { "const": "1.4" }, "operation": { "const": "qualify_authoring_construction_1_1" }, "result": { "$ref": "#/$defs/result" } }
+    },
+    "invalid_envelope": {
+      "type": "object", "additionalProperties": false, "required": ["core_contract_version", "operation", "result"],
+      "not": { "properties": { "operation": { "const": "qualify_authoring_construction_1_1" } } },
+      "properties": {
+        "core_contract_version": { "const": "1.4" }, "operation": { "type": "string", "minLength": 1 },
+        "result": { "type": "object", "required": ["operation", "success", "outcome", "diagnostics", "authority_diagnostics"],
+          "properties": { "operation": { "type": "string" }, "success": { "const": false }, "outcome": { "const": "Rejected" }, "diagnostics": { "type": "array" }, "authority_diagnostics": { "type": "array" } } }
+      }
+    }
+  }
+}

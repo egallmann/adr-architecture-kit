@@ -1,0 +1,32 @@
+{
+  "resource_kind": "authoring-construction-successor-compatibility",
+  "resource_version": "1.1",
+  "semanticDependencies": [
+    "authoring-construction/1.0/contract",
+    "authoring-construction/1.0/rules",
+    "authoring-construction/1.0/conformance"
+  ],
+  "historical_definition": {
+    "family": "authoring-construction",
+    "version": "1.0",
+    "fingerprint": "scf:v1:sha256:b94f67ebff64b6560206715cef87a49b4444b71aa661cce92a6c3d04d8bf2703",
+    "resources_mutated": false
+  },
+  "carry_forward": [
+    {"surface": "operation_identifiers", "value": ["validate_authoring", "construct_authoring_set"], "change": "none"},
+    {"surface": "outcomes", "value": ["Constructed", "Rejected", "Unavailable", "Unresolved"], "change": "none"},
+    {"surface": "identity", "value": "canonical_uuidv7_established_before_deterministic_interpretation", "change": "none"},
+    {"surface": "detachment", "value": "no repository persistence, admission, Git mutation, alias reservation, or Runtime admission", "change": "none"},
+    {"surface": "candidate_source", "value": "exact serialized candidate bytes and minimal non-overlapping source roots", "change": "none; preserves PR153 semantics"},
+    {"surface": "reference_and_composition", "value": "explicit bounded references and validated composition", "change": "none"},
+    {"surface": "failure_posture", "value": "fail closed and retain independently discoverable diagnostics", "change": "none"}
+  ],
+  "successor_changes": [
+    {"surface": "exact_interpretation_authority", "previous": "architecture-interpretation/1.1", "successor": "architecture-interpretation/1.2"},
+    {"surface": "round_trip", "previous": "ACC1.0-local transitional check", "successor": "complete expected/observed semantic-ledger equality"},
+    {"surface": "normalized_result.model", "previous": "open object", "successor": "complete schema-valid Normalized Model 2.4"},
+    {"surface": "qualification_evidence", "previous": "not required by ACC1.0 result shape", "successor": "required complete source-basis, authority, interpretation, model-validation, ledger, and comparison evidence for Constructed"},
+    {"surface": "semantic_field_meaning", "previous": "AI1.1 mapping authority", "successor": "AI1.2 closed field dispositions; ACC does not duplicate mappings"}
+  ],
+  "not_in_scope": ["implementation", "whole_result_execution", "candidate_binding", "promotion", "persistence", "runtime_admission"]
+}

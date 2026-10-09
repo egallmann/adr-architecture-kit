@@ -454,4 +454,15 @@ def test_ai12_mirror_and_historical_authorities_remain_separate() -> None:
         ]
         == "scf:v1:sha256:b94f67ebff64b6560206715cef87a49b4444b71aa661cce92a6c3d04d8bf2703"
     )
-    assert not (ROOT / "contracts" / "authoring-construction" / "v1.1").exists()
+    acc11 = get_semantic_contract("authoring-construction", "1.1")
+    assert (
+        acc11.semantic_contract_fingerprint
+        == _read(ROOT / "contracts" / "authoring-construction" / "v1.1" / "contract.json")[
+            "semanticContractFingerprint"
+        ]
+    )
+    assert not any(
+        member["semanticContractFamily"] == "authoring-construction"
+        and member["semanticContractVersion"] == "1.1"
+        for member in current_set["members"]
+    )

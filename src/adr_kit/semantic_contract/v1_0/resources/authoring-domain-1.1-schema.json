@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.ste.systems/contracts/authoring-domain/v1.1/schema.json",
+  "title": "ADR Kit Authoring Domain Contract 1.1 shape",
+  "description": "Structural validation only; ADC 1.1 is descriptive and non-executable.",
+  "type": "object",
+  "required": [
+    "contract_id",
+    "contract_version",
+    "contract_family",
+    "versioning",
+    "defined_capabilities",
+    "discovery_operations",
+    "type_kinds",
+    "read_only_boundary",
+    "policy_vocabulary",
+    "discovery_projections",
+    "types",
+    "diagnostics",
+    "reconciliation_notes",
+    "excluded_from_version",
+    "successor_notes"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "./schema.json"
+    },
+    "contract_id": {
+      "const": "adr-kit.authoring-domain"
+    },
+    "contract_version": {
+      "const": "1.1"
+    },
+    "contract_family": {
+      "const": "authoring_domain"
+    },
+    "versioning": {
+      "type": "object"
+    },
+    "defined_capabilities": {
+      "type": "array"
+    },
+    "discovery_operations": {
+      "type": "array"
+    },
+    "type_kinds": {
+      "type": "array"
+    },
+    "read_only_boundary": {
+      "type": "object"
+    },
+    "policy_vocabulary": {
+      "type": "object"
+    },
+    "discovery_projections": {
+      "type": "object"
+    },
+    "types": {
+      "type": "array",
+      "minItems": 27,
+      "items": {
+        "$ref": "#/$defs/type"
+      }
+    },
+    "diagnostics": {
+      "type": "object"
+    },
+    "reconciliation_notes": {
+      "type": "array"
+    },
+    "excluded_from_version": {
+      "type": "array"
+    },
+    "successor_notes": {
+      "type": "array"
+    }
+  },
+  "$defs": {
+    "policy": {
+      "type": "object",
+      "required": [
+        "status"
+      ]
+    },
+    "op": {
+      "type": "object",
+      "required": [
+        "status",
+        "permission"
+      ]
+    },
+    "ops": {
+      "type": "object",
+      "required": [
+        "create",
+        "update",
+        "reference",
+        "retire"
+      ],
+      "properties": {
+        "create": {
+          "$ref": "#/$defs/op"
+        },
+        "update": {
+          "$ref": "#/$defs/op"
+        },
+        "reference": {
+          "$ref": "#/$defs/op"
+        },
+        "retire": {
+          "$ref": "#/$defs/op"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ord": {
+      "type": "object",
+      "required": [
+        "status",
+        "mode",
+        "material",
+        "rule"
+      ]
+    },
+    "type": {
+      "type": "object",
+      "required": [
+        "contract_version",
+        "key",
+        "display_name",
+        "description",
+        "authoring_mode",
+        "semantic_type_ownership",
+        "discriminator",
+        "construction_support",
+        "input_contract",
+        "identity_policy",
+        "composition_policy",
+        "reference_policy",
+        "field_ownership_policy",
+        "relationship_policy",
+        "operation_posture",
+        "ordering_policy"
+      ],
+      "properties": {
+        "contract_version": {
+          "const": "1.1"
+        },
+        "key": {
+          "type": "object",
+          "required": [
+            "kind",
+            "name"
+          ]
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "authoring_mode": {
+          "type": "string"
+        },
+        "semantic_type_ownership": {
+          "type": "string"
+        },
+        "discriminator": {
+          "type": "object"
+        },
+        "construction_support": {
+          "$ref": "#/$defs/policy"
+        },
+        "input_contract": {
+          "$ref": "#/$defs/policy"
+        },
+        "identity_policy": {
+          "$ref": "#/$defs/policy"
+        },
+        "composition_policy": {
+          "$ref": "#/$defs/policy"
+        },
+        "reference_policy": {
+          "$ref": "#/$defs/policy"
+        },
+        "field_ownership_policy": {
+          "$ref": "#/$defs/policy"
+        },
+        "relationship_policy": {
+          "$ref": "#/$defs/policy"
+        },
+        "operation_posture": {
+          "$ref": "#/$defs/ops"
+        },
+        "ordering_policy": {
+          "$ref": "#/$defs/ord"
+        },
+        "values": {
+          "type": "array"
+        },
+        "forward_vocabulary": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

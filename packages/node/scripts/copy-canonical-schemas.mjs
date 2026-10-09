@@ -106,4 +106,12 @@ for (const name of (await readdir(semanticContractRoot)).filter((name) => name.e
   await writeFile(resolve(generatedRoot, "semantic-contract", name), bytes);
   semanticContractAssets[`schemas/${name}`] = JSON.parse(bytes.toString("utf8"));
 }
-await writeFile(resolve(generatedRoot, "semantic-contract-assets.ts"), `export const semanticContractAssets = ${JSON.stringify(semanticContractAssets, null, 2)} as const;\n`);
+const semanticContractAssetsModule = `export const semanticContractAssets: Record<string, unknown> = ${JSON.stringify(
+  semanticContractAssets,
+  null,
+  2,
+)};\n`;
+await writeFile(
+  resolve(generatedRoot, "semantic-contract-assets.ts"),
+  semanticContractAssetsModule,
+);

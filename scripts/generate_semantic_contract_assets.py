@@ -39,10 +39,78 @@ SUCCESSOR_RESOURCE_SOURCES = {
         )
     },
     **{
+        f"architecture-interpretation-1.2-{name}": ROOT
+        / "contracts"
+        / "architecture-interpretation"
+        / "v1.2"
+        / "resources"
+        / f"{name}.json"
+        for name in (
+            "source-decoding-1.7",
+            "source-mapping-1.7-to-2.4",
+            "field-dispositions-1.7-to-2.4",
+            "field-dispositions.schema",
+            "detached-context",
+            "rules",
+            "legacy-compatibility",
+            "conformance.schema",
+            "conformance",
+        )
+    },
+    **{
+        f"authoring-1.7-schema-{name}": ROOT
+        / "schema"
+        / "authoring"
+        / "v1.7"
+        / f"{name}.json"
+        for name in (
+            "adr-common.schema",
+            "adr-logical.schema",
+            "adr-physical-base.schema",
+            "adr-physical-component.schema",
+            "adr-physical-system.schema",
+            "types.schema",
+        )
+    },
+    **{
+        f"authoring-{version}-schema-{name}": ROOT
+        / "schema"
+        / "authoring"
+        / f"v{version}"
+        / f"{name}.json"
+        for version in ("1.5", "1.6")
+        for name in (
+            "adr-common.schema",
+            "adr-logical.schema",
+            "adr-physical-base.schema",
+            "adr-physical-component.schema",
+            "adr-physical-system.schema",
+            "types.schema",
+        )
+    },
+    "custom-entity-1.0-contract": ROOT / "contracts" / "custom-entity" / "v1.0" / "contract.json",
+    "custom-entity-1.0-schema": ROOT / "contracts" / "custom-entity" / "v1.0" / "schema.json",
+    "custom-entity-1.0-conformance": ROOT / "contracts" / "custom-entity" / "v1.0" / "vectors" / "contract-fingerprint.json",
+    **{
         f"normalized-model-2.4-schema-{name}": ROOT
         / "schema"
         / "normalized-model"
         / "v2.4"
+        / f"{name}.json"
+        for name in (
+            "normalized-architecture-model.schema",
+            "normalized-entity-registry.schema",
+            "normalized-entity.schema",
+            "relationship-record.schema",
+            "relationship-registry.schema",
+            "unresolved-registry.schema",
+        )
+    },
+    **{
+        f"normalized-model-2.3-schema-{name}": ROOT
+        / "schema"
+        / "normalized-model"
+        / "v2.3"
         / f"{name}.json"
         for name in (
             "normalized-architecture-model.schema",
@@ -587,9 +655,99 @@ def main() -> None:
     for candidate_root in (CANONICAL / "candidate", BUNDLED / "candidate"):
         for stale_asset in candidate_root.rglob("*.json"):
             stale_asset.unlink()
+    ai12_resource_specs = [
+        ("source-decoding-1.7", "source-decoding-1.7", "source-contract-mapping"),
+        ("source-mapping-1.7-to-2.4", "source-mapping-1.7-to-2.4", "source-contract-mapping"),
+        ("field-dispositions-1.7-to-2.4", "field-dispositions-1.7-to-2.4", "source-contract-mapping"),
+        ("field-dispositions.schema", "field-dispositions.schema", "source-contract-schema"),
+        ("detached-context", "detached-context", "interpretation-rule"),
+        ("rules", "rules", "interpretation-rule"),
+        ("legacy-compatibility", "legacy-compatibility", "source-contract-mapping"),
+        ("conformance.schema", "conformance.schema", "source-contract-schema"),
+        ("conformance", "conformance", "interpretation-conformance"),
+    ]
+    ai12_external_resources = [
+        ("architecture-interpretation/1.0/source-decoding-1.5", "architecture-interpretation-source-decoding-1.5", "source-contract-mapping"),
+        ("architecture-interpretation/1.0/source-decoding-1.6", "architecture-interpretation-source-decoding-1.6", "source-contract-mapping"),
+        ("architecture-interpretation/1.0/source-mapping-1.5-to-2.3", "architecture-interpretation-source-mapping-1.5-to-2.3", "source-contract-mapping"),
+        ("architecture-interpretation/1.0/source-mapping-1.6-to-2.3", "architecture-interpretation-source-mapping-1.6-to-2.3", "source-contract-mapping"),
+        *[
+            (f"authoring/{version}/schema/{name}", f"authoring-{version}-schema-{name}", "source-contract-schema")
+            for version in ("1.5", "1.6")
+            for name in (
+                "adr-common.schema",
+                "adr-logical.schema",
+                "adr-physical-base.schema",
+                "adr-physical-component.schema",
+                "adr-physical-system.schema",
+                "types.schema",
+            )
+        ],
+        *[
+            (f"authoring/1.7/schema/{name}", f"authoring-1.7-schema-{name}", "source-contract-schema")
+            for name in (
+                "adr-common.schema",
+                "adr-logical.schema",
+                "adr-physical-base.schema",
+                "adr-physical-component.schema",
+                "adr-physical-system.schema",
+                "types.schema",
+            )
+        ],
+        ("custom-entity/1.0/contract", "custom-entity-1.0-contract", "normative-definition"),
+        ("custom-entity/1.0/schema", "custom-entity-1.0-schema", "source-contract-schema"),
+        ("custom-entity/1.0/conformance", "custom-entity-1.0-conformance", "normative-conformance"),
+        *[
+            (f"normalized-model/2.4/schema/{name}", f"normalized-model-2.4-schema-{name}", "normalized-model-schema")
+            for name in (
+                "normalized-architecture-model.schema",
+                "normalized-entity-registry.schema",
+                "normalized-entity.schema",
+                "relationship-record.schema",
+                "relationship-registry.schema",
+                "unresolved-registry.schema",
+            )
+        ],
+        *[
+            (f"normalized-model/2.3/schema/{name}", f"normalized-model-2.3-schema-{name}", "normalized-model-schema")
+            for name in (
+                "normalized-architecture-model.schema",
+                "normalized-entity-registry.schema",
+                "normalized-entity.schema",
+                "relationship-record.schema",
+                "relationship-registry.schema",
+                "unresolved-registry.schema",
+            )
+        ],
+    ]
+    ai12_manifest = [
+        resource(
+            f"architecture-interpretation/1.2/{resource_name}",
+            f"architecture-interpretation-1.2-{source_name}.json",
+            role,
+        )
+        for resource_name, source_name, role in ai12_resource_specs
+    ]
+    ai12_manifest.extend(
+        resource(resource_key, f"{source_name}.json", role)
+        for resource_key, source_name, role in ai12_external_resources
+    )
+    ai12_conformance_key = "architecture-interpretation/1.2/conformance"
+    ai12_definition = definition(
+        "architecture-interpretation",
+        ai12_manifest,
+        [ai12_conformance_key],
+        version="1.2",
+    )
+    write_json(
+        ROOT / "contracts" / "architecture-interpretation" / "v1.2" / "contract.json",
+        ai12_definition,
+    )
+
     successor_generated = {
         "profiles/architecture-materialization-1.1.json": successor_profile,
         "definitions/architecture-interpretation-1.1.json": successor_architecture,
+        "definitions/architecture-interpretation-1.2.json": ai12_definition,
         "definitions/normalized-model-2.4.json": successor_normalized,
         "definitions/normative-semantics-1.0.json": definitions[
             "normative-semantics.json"

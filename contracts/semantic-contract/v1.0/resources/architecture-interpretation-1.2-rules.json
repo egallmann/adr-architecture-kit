@@ -1,0 +1,262 @@
+{
+  "resource": "architecture-interpretation/1.2/rules",
+  "semanticDependencies": [
+    "architecture-interpretation/1.2/source-decoding-1.7",
+    "architecture-interpretation/1.2/source-mapping-1.7-to-2.4",
+    "architecture-interpretation/1.2/field-dispositions-1.7-to-2.4",
+    "architecture-interpretation/1.2/detached-context",
+    "normalized-model/2.4/schema/normalized-architecture-model.schema",
+    "normalized-model/2.4/schema/normalized-entity-registry.schema",
+    "normalized-model/2.4/schema/normalized-entity.schema",
+    "normalized-model/2.4/schema/relationship-record.schema",
+    "normalized-model/2.4/schema/relationship-registry.schema",
+    "normalized-model/2.4/schema/unresolved-registry.schema",
+    "custom-entity/1.0/contract",
+    "custom-entity/1.0/schema",
+    "custom-entity/1.0/conformance"
+  ],
+  "public_boundary": {
+    "advertised": false,
+    "execution": "not_implemented",
+    "selected_by_current_semantic_contract_set": false
+  },
+  "field_disposition_vocabulary": {
+    "exactly_one_per_supported_field": true,
+    "classes": [
+      "direct_semantic_value",
+      "canonical_field_placement",
+      "compatibility_projection",
+      "declared_absence",
+      "deterministic_ceremony"
+    ],
+    "unknown_or_duplicate": "fail_closed"
+  },
+  "semantic_extensions": {
+    "carrier": {
+      "contract_family": "normalized-model",
+      "contract_version": "2.4",
+      "metadata_container": "/metadata/semantic_extensions",
+      "metadata_schema_open": true
+    },
+    "meaning_authority": {
+      "contract_family": "architecture-interpretation",
+      "contract_version": "1.2",
+      "not_intrinsic_to_generic_nm_consumer": true
+    },
+    "entry": {
+      "key": "semantic_field_key",
+      "key_format": "<semantic-type>#<schema-relative-RFC6901-JSON-Pointer>",
+      "owner_identity": "canonical_semantic_unit_identity_or_governed_owner_local_identity",
+      "value_encoding": "complete_typed_json",
+      "coercion": false
+    },
+    "equality": {
+      "key_participates": true,
+      "complete_typed_value_participates": true,
+      "runtime_source_pointer_participates": false
+    },
+    "duplication": {
+      "first_class_normalized_value": false,
+      "child_semantic_unit_payload_on_parent": false
+    },
+    "source_pointer": {
+      "role": "provenance_diagnostics_replay",
+      "semantic_identity": false
+    }
+  },
+  "disposition_definitions": {
+    "direct_semantic_value": {
+      "destination_ref_required": true,
+      "destination_kinds": [
+        "semantic_extension",
+        "normalized_entity",
+        "normalized_custom_extension",
+        "canonical_relationship",
+        "normalized_normative_proposition",
+        "child_membership"
+      ],
+      "value_semantics": [
+        "exact_typed_value",
+        "exact_identity_value",
+        "complete_typed_json",
+        "child_identity_membership"
+      ],
+      "equality_components": [
+        "semantic_unit_identity",
+        "destination_ref",
+        "semantic_field_key",
+        "complete_typed_value"
+      ],
+      "source_instance_pointer": "provenance_only",
+      "fallback": "forbidden"
+    },
+    "canonical_field_placement": {
+      "destination_ref_required": true,
+      "destination_kinds": [
+        "normalized_entity",
+        "normalized_custom_extension",
+        "canonical_relationship",
+        "normalized_normative_proposition"
+      ],
+      "value_semantics": [
+        "exact_typed_value",
+        "exact_identity_value"
+      ],
+      "equality_components": [
+        "semantic_unit_identity",
+        "destination_ref",
+        "lossless_typed_value"
+      ],
+      "fallback": "forbidden"
+    },
+    "compatibility_projection": {
+      "destination_ref": "compatibility_tuple",
+      "matching_identity_catalog_ref": "compatibility",
+      "equality_components": [
+        "relationship_type",
+        "owner_uuidv7_if_material",
+        "resolved_from_uuidv7",
+        "resolved_to_uuidv7",
+        "authored_semantic_properties",
+        "occurrence_multiplicity"
+      ],
+      "excluded_components": [
+        "generated_relationship_id",
+        "generated_assertion_id",
+        "source_pointer",
+        "source_array_index"
+      ]
+    },
+    "declared_absence": {
+      "record_ref_required": "field_dispositions.declared_absences[]",
+      "required_record_fields": [
+        "semantic_field_key",
+        "normalized_location",
+        "governing_rule"
+      ],
+      "implicit_absence": "forbidden"
+    },
+    "deterministic_ceremony": {
+      "derivation_rule_ref_required": true,
+      "rule_catalog_ref": "field_dispositions.derivation_rules",
+      "semantic_choice": "forbidden"
+    }
+  },
+  "aggregation": {
+    "source": "minimal non-overlapping candidate_source_basis roots only",
+    "exactly_once": "Each semantic unit is aggregated once by canonical UUIDv7 or governed owner-local identity; an embedded child remains its own unit and is not recounted from candidate_artifacts.",
+    "standalone_fragments": "Remain native roots and are interpreted without synthetic ADR wrapping.",
+    "mixed_roots": "Union all document-root and standalone-root units by canonical identity; duplicate identities fail closed.",
+    "relationships": "Canonical relationships match by UUIDv7; compatibility relationships match by their AI-declared semantic tuple with multiplicity; composition-derived relationships are emitted only by the declared topology rule.",
+    "unresolved": "Preserve as explicit unresolved semantic state; never turn unavailable or unresolved interpretation into success."
+  },
+  "ordering_and_multiplicity": {
+    "default": "Arrays have no semantic order solely because they are JSON arrays. Unless a field entry or exact source authority declares order, canonicalize as an unordered multiset and preserve duplicate multiplicity.",
+    "identity_keyed_sets": "Collections of canonical identity-bearing child units match by identity; duplicate identity rejects.",
+    "source_declared_sequence": "ADR-root child-fragment sequences preserve order where Authoring Domain 1.1 declares source_declared_sequence.",
+    "owner_declared_sequence": "Topology component values preserve the owner-declared sequence.",
+    "ordered_values": [
+      "entity/data_flow#/path is an ordered owner-local topology-key path."
+    ],
+    "compatibility": "Compatibility projections are unordered multisets; duplicate semantic tuples remain multiplicity-significant."
+  },
+  "identity": {
+    "canonical": "UUIDv7 for ADR/entity/canonical relationship units",
+    "topology": "owner UUID + topology_key",
+    "compatibility": "owner UUID when required + relationship type + resolved endpoint UUIDs + authored semantic properties + occurrence multiplicity",
+    "forbidden_derivations": [
+      "source pointer",
+      "array index",
+      "filename",
+      "traversal position",
+      "composition position",
+      "generated compatibility identifier"
+    ]
+  },
+  "provenance": {
+    "semantic_equality": [
+      "canonical semantic identity",
+      "authored source values under the field inventory",
+      "custom qualification that defines custom meaning",
+      "resolved UUID reference/endpoint meaning",
+      "owner-local topology key and semantic occurrence distinction"
+    ],
+    "candidate_integrity_not_equality": [
+      "exact source bytes and content digest",
+      "source schema selector and resource qualification",
+      "candidate source_ref",
+      "runtime source pointer",
+      "source-basis descriptor/digest",
+      "source_contract qualification",
+      "identity-establishment evidence"
+    ],
+    "representation_ceremony": [
+      "detached provider/context envelope",
+      "opaque artifact locator",
+      "repository path (excluded entirely)",
+      "generated URI",
+      "entity/model fingerprints",
+      "validation summary",
+      "metadata.source_semantics replay copy"
+    ],
+    "source_semantics_rule": "metadata.source_semantics is replay/provenance evidence, never proof of semantic preservation; it cannot satisfy a missing semantic extension or normalized destination.",
+    "source_semantics": {
+      "role": "source_replay_and_provenance",
+      "participates_in_semantic_equality": false,
+      "qualifies_source_integrity": true,
+      "substitutes_for_semantic_destination": false
+    }
+  },
+  "normative_proposition_lifecycle_free": {
+    "semantic_type": "entity/normative_proposition",
+    "source_field_key": "entity/normative_proposition#/lifecycle_stage",
+    "source_schema_presence": "forbidden",
+    "normalized_location": "normalized-model@2.4 normative_proposition#/lifecycle_stage",
+    "rule": "Declaration-only normative propositions have no lifecycle. This is the only declared absence in this resource."
+  },
+  "custom_semantics": {
+    "entities": "Require exact CEC 1.0 qualification; preserve UUIDv7 identity, semantic_type, consumer_namespace, contract_version, contract_fingerprint, and all qualified properties.",
+    "relationships": "Require exact relationship qualification and resolved UUID endpoints; preserve authored properties and multiplicity.",
+    "qualification_identity": false,
+    "unknown_custom_fields": "fail_closed"
+  },
+  "system_composition": {
+    "source_schema_selector": "adr-physical-system.schema.json#/properties/component_topology/properties/components/items/properties/component_ref",
+    "owner_identity": {
+      "source": "physical_system_document.id",
+      "normalized_semantic_type": "system",
+      "identity": "canonical_uuidv7"
+    },
+    "target_identity": {
+      "source": "resolved_component_ref",
+      "normalized_semantic_type": "component",
+      "identity": "canonical_uuidv7"
+    },
+    "normalized_relationship": {
+      "relationship_type": "composed_of",
+      "from": "owner_system_uuidv7",
+      "to": "resolved_component_uuidv7",
+      "identity_class": "noncanonical_compatibility",
+      "mode": "composition_derived",
+      "directly_authorable": false
+    },
+    "membership_semantics": {
+      "multiplicity": "preserve_occurrences",
+      "ordering": "owner_declared_sequence"
+    },
+    "forbidden_endpoints": [
+      "topology_key",
+      "from_key",
+      "to_key",
+      "local_handle"
+    ],
+    "unresolved": {
+      "missing_or_unresolved_component_ref": "preserve_explicit_unresolved",
+      "fabricate_endpoint": false
+    },
+    "semantic_dependencies": [
+      "architecture-interpretation/1.2/source-mapping-1.7-to-2.4",
+      "normalized-model/2.4/schema/relationship-record.schema"
+    ]
+  }
+}

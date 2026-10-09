@@ -443,7 +443,11 @@ def list_semantic_contracts() -> tuple[SemanticContractVersion, ...]:
 
 
 def get_semantic_contract(family: str, version: str) -> SemanticContractVersion:
-    """Load one bundled immutable definition using an exact caller version."""
+    """Load one bundled immutable definition using an exact caller version.
+
+    Successor definitions are addressable by exact family/version without
+    adding them to the currently selected semantic-contract set.
+    """
 
     for contract in list_semantic_contracts():
         if (
@@ -451,6 +455,15 @@ def get_semantic_contract(family: str, version: str) -> SemanticContractVersion:
             and contract.semantic_contract_version == version
         ):
             return contract
+    successor = (
+        resources.files("adr_kit.semantic_contract.v1_0")
+        .joinpath("definitions")
+        .joinpath(f"{family}-{version}.json")
+    )
+    if successor.is_file():
+        value = json.loads(successor.read_text(encoding="utf-8"))
+        if isinstance(value, Mapping):
+            return SemanticContractVersion.from_wire(value)
     raise LookupError(f"Unsupported semantic contract: {family}:{version}")
 
 
@@ -464,7 +477,7 @@ def load_semantic_resource(key: str) -> Any:
         if resource.is_file():
             return json.loads(resource.read_text(encoding="utf-8"))
         raise LookupError(f"Bundled semantic resource is missing: {key}")
-    if len(parts) < 3 or parts[1] not in {"1.0", "1.1", "1.5", "1.6", "2.3", "2.4"}:
+    if len(parts) < 3 or parts[1] not in {"1.0", "1.1", "1.2", "1.5", "1.6", "2.3", "2.4"}:
         raise LookupError(f"Unsupported semantic resource: {key}")
     package = resources.files("adr_kit.semantic_contract.v1_0.resources")
     candidates = [f"{key.replace('/', '-')}.json"]

@@ -406,9 +406,7 @@ def test_rust_acc11_does_not_call_unexecuted_reference_resolution_unresolved() -
             "composition_keys": [],
         }
     ]
-    result = execute_validated_semantic_core_request(
-        _acc11_protocol_request(request)
-    )["result"]
+    result = execute_validated_semantic_core_request(_acc11_protocol_request(request))["result"]
     assert result["authority"]["available"] is True
     assert result["outcome"] == "Unavailable"
     assert result["outcome"] != "Unresolved"
@@ -443,7 +441,8 @@ def test_rust_acc11_boundary_reports_missing_or_tampered_authority_unavailable()
     assert tampered_result["authority"]["available"] is False
     assert tampered_result["outcome"] == "Unavailable"
     assert any(
-        item["code"] in {
+        item["code"]
+        in {
             "semantic_contract.resource_digest_mismatch",
             "semantic_contract.fingerprint_mismatch",
         }

@@ -44,9 +44,11 @@ def semantic_core_capabilities() -> dict[str, object]:
 def supports_semantic_core_operation(version: str, operation: str) -> bool:
     """Return whether an additive operation is reachable for an exact version."""
 
-    return (version == "1.2" and operation in SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS) or (
-        version == "1.3" and operation in SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS
-    ) or (version == "1.4" and operation in SEMANTIC_CORE_PROTOCOL_V14_OPERATIONS)
+    return (
+        (version == "1.2" and operation in SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS)
+        or (version == "1.3" and operation in SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS)
+        or (version == "1.4" and operation in SEMANTIC_CORE_PROTOCOL_V14_OPERATIONS)
+    )
 
 
 def _artifact_bytes() -> bytes:

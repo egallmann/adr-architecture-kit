@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.ste.systems/contracts/architecture-interpretation/v1.2/resources/field-dispositions.schema.json",
+  "title": "Closed Architecture Interpretation 1.2 Authoring 1.7 field disposition inventory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "resource",
+    "source_contract",
+    "output_contract",
+    "schema_closure",
+    "field_key_format",
+    "selector_rules",
+    "disposition_classes",
+    "coverage_rule",
+    "semantic_types",
+    "declared_absences",
+    "unknown_or_duplicate_fields",
+    "field_inventory_schema",
+    "semanticDependencies"
+  ],
+  "properties": {
+    "resource": {
+      "const": "architecture-interpretation/1.2/field-dispositions-1.7-to-2.4"
+    },
+    "source_contract": {
+      "const": "authoring@1.7"
+    },
+    "output_contract": {
+      "const": "normalized-model@2.4"
+    },
+    "schema_closure": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "field_key_format": {
+      "const": "<semantic-type>#<schema-relative-RFC6901-JSON-Pointer>"
+    },
+    "selector_rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "relative_to",
+        "array_item_selector",
+        "runtime_source_pointer",
+        "filename_traversal_embedded_position"
+      ],
+      "properties": {
+        "relative_to": {
+          "const": "semantic type schema instance shape"
+        },
+        "array_item_selector": {
+          "const": "* denotes schema items and never a runtime array index"
+        },
+        "runtime_source_pointer": {
+          "const": "provenance only"
+        },
+        "filename_traversal_embedded_position": {
+          "const": "not identity"
+        }
+      }
+    },
+    "disposition_classes": {
+      "const": [
+        "direct_semantic_value",
+        "canonical_field_placement",
+        "compatibility_projection",
+        "declared_absence",
+        "deterministic_ceremony"
+      ]
+    },
+    "coverage_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "semantic_types": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "semantic_type",
+          "source_schema",
+          "identity_policy",
+          "field_dispositions"
+        ],
+        "properties": {
+          "semantic_type": {
+            "type": "string",
+            "pattern": "^(adr|entity|relationship|value)/[a-z][a-z0-9_/-]*$"
+          },
+          "source_schema": {
+            "type": "string",
+            "minLength": 1
+          },
+          "identity_policy": {
+            "enum": [
+              "canonical_uuidv7",
+              "owner_local_topology_key",
+              "owner_scoped_semantic_value"
+            ]
+          },
+          "field_dispositions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "semantic_field_key",
+                "schema_selector",
+                "disposition",
+                "normalized_destination",
+                "value_scope",
+                "ordering",
+                "matching_identity",
+                "source_instance_pointer"
+              ],
+              "properties": {
+                "semantic_field_key": {
+                  "type": "string",
+                  "pattern": "^[^#]+#(?:/.*)?$"
+                },
+                "schema_selector": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "disposition": {
+                  "enum": [
+                    "direct_semantic_value",
+                    "canonical_field_placement",
+                    "compatibility_projection",
+                    "declared_absence",
+                    "deterministic_ceremony"
+                  ]
+                },
+                "normalized_destination": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value_scope": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "ordering": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "matching_identity": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "source_instance_pointer": {
+                  "const": "provenance_only"
+                },
+                "rationale": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "declared_absences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "semantic_field_key",
+          "source_schema_presence",
+          "normalized_location",
+          "governing_rule",
+          "meaning"
+        ],
+        "properties": {
+          "semantic_field_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_schema_presence": {
+            "type": "string",
+            "minLength": 1
+          },
+          "normalized_location": {
+            "type": "string",
+            "minLength": 1
+          },
+          "governing_rule": {
+            "type": "string",
+            "minLength": 1
+          },
+          "meaning": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "unknown_or_duplicate_fields": {
+      "const": "fail_closed"
+    },
+    "field_inventory_schema": {
+      "const": "architecture-interpretation/1.2/field-dispositions.schema"
+    },
+    "semanticDependencies": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

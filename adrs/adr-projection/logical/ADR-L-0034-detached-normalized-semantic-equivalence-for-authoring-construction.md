@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: ce8cd0f1cf9baf32ef23c3c1b3878d8a5845df95e56fcab3b9af37bfb8273c1d
-rendered_hash: 1ac94483a7b4a0c0dbddae8176c66c420fb2d3d39dc079c6afc37e3587b18ce7
+source_hash: 12b9e793788ca6568f019ca2d54282981706f1daa35e8cb86e98e1827a17c445
+rendered_hash: ee6b93823dd853bcfeb0274ae04f7784753957a68a7dbd45138ac2bee1b82477
 -->
 
 # ADR-L-0034: Detached Normalized Semantic Equivalence for Authoring Construction
@@ -14,7 +14,7 @@ rendered_hash: 1ac94483a7b4a0c0dbddae8176c66c420fb2d3d39dc079c6afc37e3587b18ce7
 ## Identity / Status
 
 **Type:** logical<br>
-**Status:** proposed<br>
+**Status:** accepted<br>
 **Alias:** ADR-L-0034<br>
 **Authoring contract:** authoring v1.5<br>
 **Created:** 2026-10-04<br>
@@ -27,7 +27,7 @@ rendered_hash: 1ac94483a7b4a0c0dbddae8176c66c420fb2d3d39dc079c6afc37e3587b18ce7
 | | |
 | --- | --- |
 | Logical authority | ADR-L-0034 |
-| Status | proposed |
+| Status | accepted |
 | Decisions | 6 |
 | Invariants | 8 |
 
@@ -529,7 +529,7 @@ in the local ignored Design Journal at
 That journal is exploratory evidence, not durable authority; this ADR's
 decisions and invariants are the promoted design surface.
 
-After this ADR is accepted, the next authority sequence is fixed: publish
+With this ADR accepted, the next authority sequence is fixed: publish
 immutable Architecture Interpretation 1.2 with exact field-disposition and
 detached interpretation authority; publish immutable Authoring Construction
 1.1 consuming AI 1.2; retain Normalized Model 2.4 unchanged under the
@@ -565,8 +565,6 @@ qualification; canonical/custom relationships; topology compatibility and
 composition-derived records; unresolved results; ordered values; root
 ordering; UUID/endpoint changes; unclassified source fields; detached-context
 determinism; and exact Python/Node observation of the Rust result.
-
-ADR-L-0034 remains proposed pending explicit human architecture review.
 
 
 ---

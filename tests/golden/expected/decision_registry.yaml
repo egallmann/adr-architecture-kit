@@ -17066,7 +17066,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d34018be0d8e
   created_at: '2026-10-04T20:09:09.050Z'
   entity_fingerprint: sha256:fc572c2fb12a6e35542f02cd68e8e2e2d10785982fd5212ae988abd32beb278f
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34018be0d8e
@@ -17132,7 +17132,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d3416d58355d
   created_at: '2026-10-04T20:09:09.050Z'
   entity_fingerprint: sha256:b414d249b9882512aee06d38deae17cf4cd934d659bd446e18664b5950840f5a
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d3416d58355d
@@ -17197,7 +17197,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d34250a1b891
   created_at: '2026-10-04T20:09:09.050Z'
   entity_fingerprint: sha256:cbeb276c7cb72663a59a452318874664e614762e4f5c3cb0f104ffb570cd7efa
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34250a1b891
@@ -17262,7 +17262,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d343c9a83e46
   created_at: '2026-10-04T20:09:09.050Z'
   entity_fingerprint: sha256:c1db4fc007c66f25c4b8921688108110be649e397edbeaca9793f0f7b599226d
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d343c9a83e46
@@ -17328,7 +17328,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d34463d939dc
   created_at: '2026-10-04T20:09:09.050Z'
   entity_fingerprint: sha256:cbc9cb57983d7a07be596bd8e0400d15e9328f0aab24e3f34d8d774842bfd69c
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34463d939dc
@@ -17394,7 +17394,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d34592ae0d52
   created_at: '2026-10-04T20:09:09.050Z'
   entity_fingerprint: sha256:60f30cb8db673b80a2a78332e3e91dd4c168d23dcfabe24ba6063ff12f4d54d3
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34592ae0d52

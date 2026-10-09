@@ -32,60 +32,114 @@
     "unknown_or_duplicate": "fail_closed"
   },
   "semantic_extensions": {
-    "carrier": "Normalized Model 2.4 metadata.semantic_extensions under its existing open metadata schema",
-    "meaning_authority": "exact selected Architecture Interpretation 1.2 only",
-    "key": "stable semantic_field_key scoped by semantic-unit identity",
-    "value": "complete typed JSON value without coercion",
-    "equality": "key and complete typed value participate",
-    "source_pointer": "not a key; provenance/diagnostics only",
-    "duplicates": "do not duplicate values already placed in a first-class normalized field",
-    "child_units": "child semantic fields remain on child units; parent carries membership/identity only"
+    "carrier": {
+      "contract_family": "normalized-model",
+      "contract_version": "2.4",
+      "metadata_container": "/metadata/semantic_extensions",
+      "metadata_schema_open": true
+    },
+    "meaning_authority": {
+      "contract_family": "architecture-interpretation",
+      "contract_version": "1.2",
+      "not_intrinsic_to_generic_nm_consumer": true
+    },
+    "entry": {
+      "key": "semantic_field_key",
+      "key_format": "<semantic-type>#<schema-relative-RFC6901-JSON-Pointer>",
+      "owner_identity": "canonical_semantic_unit_identity_or_governed_owner_local_identity",
+      "value_encoding": "complete_typed_json",
+      "coercion": false
+    },
+    "equality": {
+      "key_participates": true,
+      "complete_typed_value_participates": true,
+      "runtime_source_pointer_participates": false
+    },
+    "duplication": {
+      "first_class_normalized_value": false,
+      "child_semantic_unit_payload_on_parent": false
+    },
+    "source_pointer": {
+      "role": "provenance_diagnostics_replay",
+      "semantic_identity": false
+    }
   },
   "disposition_definitions": {
     "direct_semantic_value": {
-      "rule": "Preserve the exact typed source value at its exact normalized semantic destination; when no first-class destination exists use metadata.semantic_extensions[stable key].",
-      "forbidden": [
-        "coercion",
-        "truncation",
-        "source-pointer keying",
-        "duplicate first-class copy"
-      ]
+      "destination_ref_required": true,
+      "destination_kinds": [
+        "semantic_extension",
+        "normalized_entity",
+        "normalized_custom_extension",
+        "canonical_relationship",
+        "normalized_normative_proposition",
+        "child_membership"
+      ],
+      "value_semantics": [
+        "exact_typed_value",
+        "exact_identity_value",
+        "complete_typed_json",
+        "child_identity_membership"
+      ],
+      "equality_components": [
+        "semantic_unit_identity",
+        "destination_ref",
+        "semantic_field_key",
+        "complete_typed_value"
+      ],
+      "source_instance_pointer": "provenance_only",
+      "fallback": "forbidden"
     },
     "canonical_field_placement": {
-      "rule": "Map the exact source field to the named normalized semantic destination without loss or change of value meaning.",
-      "forbidden": [
-        "fallback",
-        "lossy normalization",
-        "implicit destination"
-      ]
+      "destination_ref_required": true,
+      "destination_kinds": [
+        "normalized_entity",
+        "normalized_custom_extension",
+        "canonical_relationship",
+        "normalized_normative_proposition"
+      ],
+      "value_semantics": [
+        "exact_typed_value",
+        "exact_identity_value"
+      ],
+      "equality_components": [
+        "semantic_unit_identity",
+        "destination_ref",
+        "lossless_typed_value"
+      ],
+      "fallback": "forbidden"
     },
     "compatibility_projection": {
-      "rule": "Project only an explicitly enumerated source relation into a normalized compatibility record. Equality uses relationship meaning/type, owner scope when material, resolved endpoint UUIDs, authored semantic properties, and multiplicity.",
-      "excluded_identity": [
-        "generated relationship_id",
-        "generated assertion_id",
-        "source pointer",
-        "source array index"
+      "destination_ref": "compatibility_tuple",
+      "matching_identity_catalog_ref": "compatibility",
+      "equality_components": [
+        "relationship_type",
+        "owner_uuidv7_if_material",
+        "resolved_from_uuidv7",
+        "resolved_to_uuidv7",
+        "authored_semantic_properties",
+        "occurrence_multiplicity"
+      ],
+      "excluded_components": [
+        "generated_relationship_id",
+        "generated_assertion_id",
+        "source_pointer",
+        "source_array_index"
       ]
     },
     "declared_absence": {
-      "rule": "Only an explicit absence record names the source semantic unit/field selector, absent normalized concept/location, and governing rule.",
-      "forbidden": [
-        "implementation limitation",
-        "unmentioned field",
-        "incomplete mapping"
-      ]
+      "record_ref_required": "field_dispositions.declared_absences[]",
+      "required_record_fields": [
+        "semantic_field_key",
+        "normalized_location",
+        "governing_rule"
+      ],
+      "implicit_absence": "forbidden"
     },
     "deterministic_ceremony": {
-      "rule": "A representation-only value with no independent authored choice, uniquely derived from exact contract identity, established identity, fixed detached constants, and sealed basis.",
-      "forbidden": [
-        "authored status",
-        "alias",
-        "date",
-        "UUID",
-        "qualification",
-        "relationship meaning"
-      ]
+      "derivation_rule_ref_required": true,
+      "rule_catalog_ref": "field_dispositions.derivation_rules",
+      "semantic_choice": "forbidden"
     }
   },
   "aggregation": {
@@ -145,7 +199,13 @@
       "validation summary",
       "metadata.source_semantics replay copy"
     ],
-    "source_semantics_rule": "metadata.source_semantics is replay/provenance evidence, never proof of semantic preservation; it cannot satisfy a missing semantic extension or normalized destination."
+    "source_semantics_rule": "metadata.source_semantics is replay/provenance evidence, never proof of semantic preservation; it cannot satisfy a missing semantic extension or normalized destination.",
+    "source_semantics": {
+      "role": "source_replay_and_provenance",
+      "participates_in_semantic_equality": false,
+      "qualifies_source_integrity": true,
+      "substitutes_for_semantic_destination": false
+    }
   },
   "normative_proposition_lifecycle_free": {
     "semantic_type": "entity/normative_proposition",
@@ -159,5 +219,44 @@
     "relationships": "Require exact relationship qualification and resolved UUID endpoints; preserve authored properties and multiplicity.",
     "qualification_identity": false,
     "unknown_custom_fields": "fail_closed"
+  },
+  "system_composition": {
+    "source_schema_selector": "adr-physical-system.schema.json#/properties/component_topology/properties/components/items/properties/component_ref",
+    "owner_identity": {
+      "source": "physical_system_document.id",
+      "normalized_semantic_type": "system",
+      "identity": "canonical_uuidv7"
+    },
+    "target_identity": {
+      "source": "resolved_component_ref",
+      "normalized_semantic_type": "component",
+      "identity": "canonical_uuidv7"
+    },
+    "normalized_relationship": {
+      "relationship_type": "composed_of",
+      "from": "owner_system_uuidv7",
+      "to": "resolved_component_uuidv7",
+      "identity_class": "noncanonical_compatibility",
+      "mode": "composition_derived",
+      "directly_authorable": false
+    },
+    "membership_semantics": {
+      "multiplicity": "preserve_occurrences",
+      "ordering": "owner_declared_sequence"
+    },
+    "forbidden_endpoints": [
+      "topology_key",
+      "from_key",
+      "to_key",
+      "local_handle"
+    ],
+    "unresolved": {
+      "missing_or_unresolved_component_ref": "preserve_explicit_unresolved",
+      "fabricate_endpoint": false
+    },
+    "semantic_dependencies": [
+      "architecture-interpretation/1.2/source-mapping-1.7-to-2.4",
+      "normalized-model/2.4/schema/relationship-record.schema"
+    ]
   }
 }

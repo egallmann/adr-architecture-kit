@@ -185,7 +185,7 @@
     },
     {
       "canonicalResourceKey": "architecture-interpretation/1.2/conformance",
-      "contentDigest": "sha256:84b302dd16c61d14c42f55a1e8866ce4b3f892f69d1bc796bb4c10c94f32ed63",
+      "contentDigest": "sha256:84bd5fc6f3e7bebdddd268850feabb1c27b699eea7375d2a5974b8912c9c3c89",
       "role": "interpretation-conformance",
       "dependencies": [
         {
@@ -198,7 +198,7 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.2/field-dispositions-1.7-to-2.4",
-          "contentDigest": "sha256:9ce3157b6f1e28b8fd5830f3376841e8f5a40d48c5ea0badec3578fcd50d4e81"
+          "contentDigest": "sha256:c5ee87f789976be4e4b0ece949867ddacd833bc4ae1efbc1de6b2547a703d440"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.2/legacy-compatibility",
@@ -206,7 +206,7 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.2/rules",
-          "contentDigest": "sha256:b21904527efa2aec8e228b238559433e299e77ebcfbefe7cf27f304291714a8a"
+          "contentDigest": "sha256:0eed60fd253e8f2838168de3f8f2dbbba8cd9bf7c81cebc0378e2c57b12b710e"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.2/source-decoding-1.7",
@@ -291,7 +291,7 @@
       "dependencies": [
         {
           "canonicalResourceKey": "architecture-interpretation/1.2/field-dispositions-1.7-to-2.4",
-          "contentDigest": "sha256:9ce3157b6f1e28b8fd5830f3376841e8f5a40d48c5ea0badec3578fcd50d4e81"
+          "contentDigest": "sha256:c5ee87f789976be4e4b0ece949867ddacd833bc4ae1efbc1de6b2547a703d440"
         },
         {
           "canonicalResourceKey": "normalized-model/2.4/schema/normalized-architecture-model.schema",
@@ -321,12 +321,12 @@
     },
     {
       "canonicalResourceKey": "architecture-interpretation/1.2/field-dispositions-1.7-to-2.4",
-      "contentDigest": "sha256:9ce3157b6f1e28b8fd5830f3376841e8f5a40d48c5ea0badec3578fcd50d4e81",
+      "contentDigest": "sha256:c5ee87f789976be4e4b0ece949867ddacd833bc4ae1efbc1de6b2547a703d440",
       "role": "source-contract-mapping",
       "dependencies": [
         {
           "canonicalResourceKey": "architecture-interpretation/1.2/field-dispositions.schema",
-          "contentDigest": "sha256:25ac6bbf8e22c9bdc3f021eeb848e64bf2033649d51c0c8528f88a897e30c394"
+          "contentDigest": "sha256:4dd122a8f2d8fc3e7d617dc3a118df62c30fcc1d7dee7ccf68b093660dcbb916"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.2/source-decoding-1.7",
@@ -400,7 +400,7 @@
     },
     {
       "canonicalResourceKey": "architecture-interpretation/1.2/field-dispositions.schema",
-      "contentDigest": "sha256:25ac6bbf8e22c9bdc3f021eeb848e64bf2033649d51c0c8528f88a897e30c394",
+      "contentDigest": "sha256:4dd122a8f2d8fc3e7d617dc3a118df62c30fcc1d7dee7ccf68b093660dcbb916",
       "role": "source-contract-schema",
       "dependencies": []
     },
@@ -429,7 +429,7 @@
     },
     {
       "canonicalResourceKey": "architecture-interpretation/1.2/rules",
-      "contentDigest": "sha256:b21904527efa2aec8e228b238559433e299e77ebcfbefe7cf27f304291714a8a",
+      "contentDigest": "sha256:0eed60fd253e8f2838168de3f8f2dbbba8cd9bf7c81cebc0378e2c57b12b710e",
       "role": "interpretation-rule",
       "dependencies": [
         {
@@ -438,7 +438,7 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.2/field-dispositions-1.7-to-2.4",
-          "contentDigest": "sha256:9ce3157b6f1e28b8fd5830f3376841e8f5a40d48c5ea0badec3578fcd50d4e81"
+          "contentDigest": "sha256:c5ee87f789976be4e4b0ece949867ddacd833bc4ae1efbc1de6b2547a703d440"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.2/source-decoding-1.7",
@@ -940,5 +940,5 @@
   "frozenNormativeConformanceResources": [
     "architecture-interpretation/1.2/conformance"
   ],
-  "semanticContractFingerprint": "scf:v1:sha256:626475ba9ecfdcc610f6cbc86a542fa0b0b71b670b4fdd4f090b95376e0dc231"
+  "semanticContractFingerprint": "scf:v1:sha256:2a9300b1d7bdc9a80421cb94294fbd2f345531b5147644d02ae4bcc5c436d75a"
 }

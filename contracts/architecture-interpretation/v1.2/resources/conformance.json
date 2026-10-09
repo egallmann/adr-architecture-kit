@@ -75,7 +75,7 @@
     },
     {
       "id": "AI12-007",
-      "assertion": "title to name, status to lifecycle_stage, evidence kind to evidence_kind, and related_entities to related_entity_ids are exact lossless canonical placements.",
+      "assertion": "Authoring title/status and evidence_expectation kind/description/related_entities map to their exact Normalized Model 2.4 first-class fields; values with first-class destinations are not duplicated in semantic_extensions.",
       "expected": "matches"
     },
     {
@@ -131,6 +131,21 @@
     {
       "id": "AI12-018",
       "assertion": "AI 1.1 remains independently valid under its original SCF and frozen conformance resource; AI 1.2 does not rewrite historical authority.",
+      "expected": "preserves"
+    },
+    {
+      "id": "AI12-019",
+      "assertion": "SYS-to-COMP composed_of is derived only from physical-system component_topology.components membership: the owning System UUID is from_entity_id, each resolved component_ref UUID is to_entity_id, topology/local handles are never endpoints, the compatibility occurrence remains multiplicity-significant, unresolved references remain explicit without fabricated endpoints, and composed_of remains forward-forbidden.",
+      "expected": "matches"
+    },
+    {
+      "id": "AI12-020",
+      "assertion": "Every field disposition names a destination catalog entry, closed value semantics, ordering vocabulary, matching-identity catalog entry, and multiplicity policy; unknown catalog references fail closed and rationale prose does not define execution.",
+      "expected": "conforms"
+    },
+    {
+      "id": "AI12-021",
+      "assertion": "System-boundary, data-flow, evidence-expectation, custom entity, and custom relationship source values with Normalized Model 2.4 first-class destinations map there exactly once; data-flow path also carries owner_local_ordered_topology_path semantics.",
       "expected": "preserves"
     }
   ]

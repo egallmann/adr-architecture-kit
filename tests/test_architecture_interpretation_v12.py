@@ -159,6 +159,11 @@ def test_ai12_field_inventory_is_closed_unique_and_resolves_every_authoring_sche
             # Runtime pointers never participate in the key.
             assert field["source_instance_pointer"] == "provenance_only"
             assert "/*/" not in field["semantic_field_key"] or "/items/" in field["schema_selector"]
+            assert field["destination_ref"] in inventory["destination_catalog"]
+            assert field["matching_identity_ref"] in inventory["matching_identity_catalog"]
+            assert field["ordering"] in inventory["ordering_vocabulary"]
+            if field["disposition"] == "deterministic_ceremony":
+                assert field["derivation_rule_ref"] in inventory["derivation_rules"]
 
         if semantic_type.startswith("adr/"):
             expected_properties = _properties(source_schema, filename)
@@ -211,12 +216,16 @@ def test_ai12_semantic_extensions_detached_context_ordering_and_provenance_are_e
         if item["semantic_field_key"] == "entity/gap#/context"
     )
     assert context["disposition"] == "direct_semantic_value"
-    assert "metadata.semantic_extensions" in context["normalized_destination"]
-    assert context["source_instance_pointer"] == "provenance_only"
-    assert rules["semantic_extensions"]["value"] == "complete typed JSON value without coercion"
-    assert rules["provenance"]["source_semantics_rule"].startswith(
-        "metadata.source_semantics is replay/provenance evidence"
+    assert (
+        inventory["destination_catalog"][context["destination_ref"]]["kind"] == "semantic_extension"
     )
+    assert context["source_instance_pointer"] == "provenance_only"
+    assert rules["semantic_extensions"]["entry"]["value_encoding"] == "complete_typed_json"
+    assert rules["semantic_extensions"]["entry"]["coercion"] is False
+    assert rules["semantic_extensions"]["equality"]["key_participates"] is True
+    assert rules["semantic_extensions"]["source_pointer"]["semantic_identity"] is False
+    assert rules["provenance"]["source_semantics"]["participates_in_semantic_equality"] is False
+    assert rules["provenance"]["source_semantics"]["substitutes_for_semantic_destination"] is False
     assert rules["ordering_and_multiplicity"]["default"].startswith(
         "Arrays have no semantic order solely because they are JSON arrays"
     )
@@ -239,6 +248,164 @@ def test_ai12_semantic_extensions_detached_context_ordering_and_provenance_are_e
     assert all(
         case["expected"] in {"conforms", "rejects", "preserves", "excludes", "matches"}
         for case in _read(AI12 / "resources" / "conformance.json")["cases"]
+    )
+
+
+def test_ai12_first_class_destinations_resolve_against_normalized_model_24() -> None:
+    inventory = _read(AI12 / "resources" / "field-dispositions-1.7-to-2.4.json")
+    entity_schema = _read(
+        ROOT / "schema" / "normalized-model" / "v2.4" / "normalized-entity.schema.json"
+    )
+    relationship_schema = _read(
+        ROOT / "schema" / "normalized-model" / "v2.4" / "relationship-record.schema.json"
+    )
+    regular = entity_schema["oneOf"][0]["properties"]
+    extension = entity_schema["definitions"]["custom_extension"]["properties"]
+    canonical_relationship = relationship_schema["oneOf"][0]["properties"]
+    compatibility_relationship = relationship_schema["oneOf"][1]["properties"]
+    catalog = inventory["destination_catalog"]
+    for destination in catalog.values():
+        kind = destination["kind"]
+        path = destination.get("path")
+        if kind == "normalized_entity":
+            assert path is not None and path.removeprefix("/") in regular
+        elif kind == "normalized_custom_extension":
+            assert path is not None and path.removeprefix("/extension/") in extension
+        elif kind == "canonical_relationship":
+            assert path is not None and path.removeprefix("/") in canonical_relationship
+        elif kind == "compatibility_projection":
+            assert destination["tuple"] == "compatibility_relationship_semantics"
+            assert compatibility_relationship["relationship_type"]["enum"]
+        elif kind in {"semantic_extension", "child_membership"}:
+            assert destination.get("path_template", "").startswith("/metadata/semantic_extensions/")
+        elif kind == "normalized_normative_proposition":
+            assert (
+                path is not None
+                and path.removeprefix("/") in entity_schema["oneOf"][1]["properties"]
+            )
+    for type_entry in inventory["semantic_types"]:
+        if not type_entry["semantic_type"].startswith("entity/"):
+            continue
+        for field in type_entry["field_dispositions"]:
+            leaf = field["semantic_field_key"].split("#", 1)[1].rsplit("/", 1)[-1]
+            if field["disposition"] == "direct_semantic_value" and leaf in regular:
+                assert catalog[field["destination_ref"]]["kind"] != "semantic_extension"
+            companion = field.get("companion_destination_ref")
+            if companion is not None:
+                assert companion in catalog
+
+
+def test_ai12_first_class_source_preservation_rules_never_fall_back_to_extensions() -> None:
+    inventory = _read(AI12 / "resources" / "field-dispositions-1.7-to-2.4.json")
+    mappings = _read(AI12 / "resources" / "source-mapping-1.7-to-2.4.json")["mappings"]
+    expected = {
+        "entity/system_boundary": {
+            "name": "entity_name",
+            "description": "entity_description",
+            "external_dependencies": "entity_external_dependencies",
+            "exposed_interfaces": "entity_exposed_interfaces",
+        },
+        "entity/data_flow": {
+            "name": "entity_name",
+            "description": "entity_description",
+            "path": "entity_path",
+            "data_type": "entity_data_type",
+            "volume": "entity_volume",
+            "latency_requirements": "entity_latency_requirements",
+        },
+        "entity/evidence_expectation": {
+            "kind": "entity_evidence_kind",
+            "description": "entity_description",
+            "related_entities": "entity_related_entity_ids",
+        },
+        "entity/extension": {
+            "entity_type": "entity_entity_type",
+            "qualification": "extension_qualification",
+            "properties": "extension_properties",
+            "rationale": "extension_rationale",
+            "existence_state": "extension_existence_state",
+        },
+        "relationship/extension": {
+            "relationship_type": "relationship_relationship_type",
+            "qualification": "relationship_custom_qualification",
+            "from_entity_id": "relationship_from_entity_id",
+            "to_entity_id": "relationship_to_entity_id",
+            "properties": "relationship_properties",
+            "rationale": "relationship_rationale",
+        },
+    }
+    fields = {
+        item["semantic_type"]: {
+            field["semantic_field_key"].split("#", 1)[1].rsplit("/", 1)[-1]: field
+            for field in item["field_dispositions"]
+        }
+        for item in inventory["semantic_types"]
+    }
+    for semantic_type, expected_fields in expected.items():
+        assert semantic_type in mappings
+        for field_name, destination_ref in expected_fields.items():
+            disposition = fields[semantic_type][field_name]
+            assert disposition["disposition"] == "canonical_field_placement"
+            assert disposition["destination_ref"] == destination_ref
+            assert inventory["destination_catalog"][destination_ref]["kind"] != "semantic_extension"
+    # Every legacy first-class preservation declaration is covered, including
+    # the mapping table's explicit source->destination spellings.
+    for semantic_type in (
+        "entity/system_boundary",
+        "entity/data_flow",
+        "entity/evidence_expectation",
+    ):
+        mapping = mappings[semantic_type]
+        for declaration in mapping["preserve"]:
+            source_name, separator, output_name = declaration.partition("->")
+            output_name = output_name if separator else source_name
+            field = fields[semantic_type][source_name]
+            assert field["disposition"] == "canonical_field_placement"
+            assert (
+                inventory["destination_catalog"][field["destination_ref"]]["path"]
+                == f"/{output_name}"
+            )
+    data_flow_path = fields["entity/data_flow"]["path"]
+    assert data_flow_path["ordering"] == "ordered_sequence"
+    assert data_flow_path["companion_destination_ref"] == "entity_path_semantics"
+    assert mappings["entity/data_flow"]["path_semantics"] == "owner_local_ordered_topology_path"
+    assert mappings["entity/evidence_expectation"]["preserve"] == [
+        "kind->evidence_kind",
+        "description",
+        "related_entities->related_entity_ids",
+    ]
+
+
+def test_ai12_composed_of_is_machine_declared_composition_derived_and_not_authorable() -> None:
+    rules = _read(AI12 / "resources" / "rules.json")
+    decoding = _read(AI12 / "resources" / "source-decoding-1.7.json")
+    composition = rules["system_composition"]
+    assert composition["source_schema_selector"] == (
+        "adr-physical-system.schema.json#/properties/component_topology/properties/components/items/properties/component_ref"
+    )
+    assert composition["owner_identity"] == {
+        "source": "physical_system_document.id",
+        "normalized_semantic_type": "system",
+        "identity": "canonical_uuidv7",
+    }
+    assert composition["target_identity"]["source"] == "resolved_component_ref"
+    assert composition["normalized_relationship"] == {
+        "relationship_type": "composed_of",
+        "from": "owner_system_uuidv7",
+        "to": "resolved_component_uuidv7",
+        "identity_class": "noncanonical_compatibility",
+        "mode": "composition_derived",
+        "directly_authorable": False,
+    }
+    assert composition["membership_semantics"] == {
+        "multiplicity": "preserve_occurrences",
+        "ordering": "owner_declared_sequence",
+    }
+    assert composition["unresolved"]["fabricate_endpoint"] is False
+    assert "composed_of" in decoding["forward_forbidden"]
+    assert (
+        "composed_of"
+        not in _read(AI12 / "resources" / "source-mapping-1.7-to-2.4.json")["mappings"]
     )
 
 

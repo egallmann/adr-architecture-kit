@@ -93,7 +93,20 @@ export async function executeSemanticCoreRequest(request: Record<string, unknown
   // instance (and therefore fresh guest memory and mutable globals).
   const instance = new WebAssembly.Instance(await loadCoreModule());
   const exports = instance.exports as unknown as CoreExports;
-  const payload = Buffer.from(JSON.stringify(request), "utf8");
+  let effectiveRequest = request;
+  const nested = request.request;
+  if (
+    request.core_contract_version === "1.5" &&
+    request.operation === "prepare_authoring_construction_basis_1_1" &&
+    nested !== null && typeof nested === "object" && !Array.isArray(nested) &&
+    !("identity_clock_ms" in nested)
+  ) {
+    effectiveRequest = {
+      ...request,
+      request: { ...(nested as Record<string, unknown>), identity_clock_ms: Date.now() },
+    };
+  }
+  const payload = Buffer.from(JSON.stringify(effectiveRequest), "utf8");
   const input = exports.alloc(payload.length);
   new Uint8Array(exports.memory.buffer).set(payload, input);
   const output = exports.execute(input, payload.length);

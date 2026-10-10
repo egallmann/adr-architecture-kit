@@ -39,16 +39,48 @@ impl IdentityMinter for UuidV7Minter {
             .map_err(|error| format!("system clock is before UNIX epoch: {error}"))?
             .as_millis() as u64;
         let counter = UUID_COUNTER.fetch_add(1, Ordering::Relaxed) & 0x0fff;
-        let time_high = millis & 0x0000_ffff_ffff_ffff;
-        Ok(format!(
-            "{:08x}-{:04x}-7{:03x}-8{:03x}-{:012x}",
-            time_high >> 16,
-            time_high & 0xffff,
-            counter,
-            counter,
-            (millis << 12 | counter as u64) & 0x0000_ffff_ffff_ffff,
-        ))
+        Ok(format_uuidv7(millis, counter))
     }
+}
+
+/// UUIDv7 minter for protocol boundaries where the host supplies only the
+/// environmental clock reading. Identity formatting and sequence assignment
+/// remain in Rust; the clock is not derived from candidate data.
+pub(crate) struct TimestampedUuidV7Minter {
+    timestamp_ms: Option<u64>,
+    counter: u16,
+}
+
+impl TimestampedUuidV7Minter {
+    pub(crate) fn new(timestamp_ms: Option<u64>) -> Self {
+        Self {
+            timestamp_ms,
+            counter: 0,
+        }
+    }
+}
+
+impl IdentityMinter for TimestampedUuidV7Minter {
+    fn mint_uuidv7(&mut self) -> Result<String, String> {
+        let millis = self.timestamp_ms.ok_or_else(|| {
+            "host identity clock is unavailable for UUIDv7 minting".to_owned()
+        })?;
+        let counter = self.counter & 0x0fff;
+        self.counter = self.counter.wrapping_add(1);
+        Ok(format_uuidv7(millis, counter))
+    }
+}
+
+fn format_uuidv7(millis: u64, counter: u16) -> String {
+    let time_high = millis & 0x0000_ffff_ffff_ffff;
+    format!(
+        "{:08x}-{:04x}-7{:03x}-8{:03x}-{:012x}",
+        time_high >> 16,
+        time_high & 0xffff,
+        counter,
+        counter,
+        (millis << 12 | counter as u64) & 0x0000_ffff_ffff_ffff,
+    )
 }
 
 /// Construct an ACC request using the default detached identity authority.
@@ -527,12 +559,12 @@ pub(crate) fn construct_authoring_set_with_minter(
 }
 
 #[derive(Clone)]
-struct Identity {
-    id: String,
-    disposition: &'static str,
+pub(crate) struct Identity {
+    pub(crate) id: String,
+    pub(crate) disposition: &'static str,
 }
 
-fn establish_identity(
+pub(crate) fn establish_identity(
     key: &str,
     operation: &str,
     supplied: Option<&str>,
@@ -557,7 +589,7 @@ fn establish_identity(
     })
 }
 
-fn build_fragment_source(
+pub(crate) fn build_fragment_source(
     fragment: &BTreeMap<String, Json>,
     fields: &BTreeMap<String, Json>,
     identity: &Identity,
@@ -770,7 +802,10 @@ fn enrich_topology(value: &mut Json) {
     }
 }
 
-fn selector_for(semantic_type: &str, source: &Json) -> candidate_source::CandidateSourceSelector {
+pub(crate) fn selector_for(
+    semantic_type: &str,
+    source: &Json,
+) -> candidate_source::CandidateSourceSelector {
     if semantic_type.starts_with("adr/") {
         return candidate_source::CandidateSourceSelector {
             canonical_resource_key: match semantic_type {
@@ -804,7 +839,7 @@ fn selector_for(semantic_type: &str, source: &Json) -> candidate_source::Candida
     }
 }
 
-fn candidate_fragment(
+pub(crate) fn candidate_fragment(
     fragment: &BTreeMap<String, Json>,
     fields: &BTreeMap<String, Json>,
     identity: &Identity,
@@ -974,7 +1009,7 @@ fn map_entry(
     ])
 }
 
-fn artifact_to_json(artifact: &candidate_source::CandidateSourceArtifact) -> Json {
+pub(crate) fn artifact_to_json(artifact: &candidate_source::CandidateSourceArtifact) -> Json {
     object([
         ("request_key".into(), string(artifact.request_key.clone())),
         ("source_ref".into(), string(artifact.source_ref.clone())),

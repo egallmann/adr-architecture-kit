@@ -10,6 +10,8 @@ artifact; Rust build dependencies are compiled into the artifact itself.
 from __future__ import annotations
 
 import json
+import secrets
+import time
 from functools import lru_cache
 from importlib import resources
 from threading import Lock
@@ -19,13 +21,14 @@ from jsonschema import Draft202012Validator
 import wasmtime
 import yaml
 
-SEMANTIC_CORE_PROTOCOL_VERSIONS = ("1.0", "1.1", "1.2", "1.3", "1.4")
+SEMANTIC_CORE_PROTOCOL_VERSIONS = ("1.0", "1.1", "1.2", "1.3", "1.4", "1.5")
 SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS = (
     "validate_authoring",
     "construct_authoring_set",
 )
 SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS = ("materialize_architecture",)
 SEMANTIC_CORE_PROTOCOL_V14_OPERATIONS = ("qualify_authoring_construction_1_1",)
+SEMANTIC_CORE_PROTOCOL_V15_OPERATIONS = ("prepare_authoring_construction_basis_1_1",)
 
 
 def semantic_core_capabilities() -> dict[str, object]:
@@ -37,6 +40,7 @@ def semantic_core_capabilities() -> dict[str, object]:
             "1.2": SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS,
             "1.3": SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS,
             "1.4": SEMANTIC_CORE_PROTOCOL_V14_OPERATIONS,
+            "1.5": SEMANTIC_CORE_PROTOCOL_V15_OPERATIONS,
         },
     }
 
@@ -48,6 +52,7 @@ def supports_semantic_core_operation(version: str, operation: str) -> bool:
         (version == "1.2" and operation in SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS)
         or (version == "1.3" and operation in SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS)
         or (version == "1.4" and operation in SEMANTIC_CORE_PROTOCOL_V14_OPERATIONS)
+        or (version == "1.5" and operation in SEMANTIC_CORE_PROTOCOL_V15_OPERATIONS)
     )
 
 
@@ -75,6 +80,21 @@ def _compiled_semantic_core() -> tuple[wasmtime.Engine, wasmtime.Module]:
 
 
 def execute_semantic_core_request(request: dict[str, Any]) -> dict[str, Any]:
+    # Rust owns UUIDv7 construction. The host supplies environmental time and
+    # fresh cryptographic entropy; neither is derived from candidate content.
+    request = dict(request)
+    nested = request.get("request")
+    if (
+        request.get("core_contract_version") == "1.5"
+        and request.get("operation") == "prepare_authoring_construction_basis_1_1"
+        and isinstance(nested, dict)
+    ):
+        request["request"] = dict(nested)
+        request["request"].setdefault("identity_clock_ms", time.time_ns() // 1_000_000)
+        try:
+            request["request"]["identity_entropy_seed"] = secrets.token_hex(32)
+        except OSError:
+            request["request"].pop("identity_entropy_seed", None)
     payload = json.dumps(request, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     engine, module = _compiled_semantic_core()
     store = wasmtime.Store(engine)
@@ -115,6 +135,7 @@ def _protocol_validator(version: str = "1.0") -> Draft202012Validator:
         "1.2": "semantic-core-contract-v1.2.json",
         "1.3": "semantic-core-contract-v1.3.json",
         "1.4": "semantic-core-contract-v1.4.json",
+        "1.5": "semantic-core-contract-v1.5.json",
     }.get(version, "semantic-core-contract.json")
     contract = json.loads(
         resources.files("adr_kit.core").joinpath(filename).read_text(encoding="utf-8")
@@ -126,7 +147,11 @@ def validate_semantic_core_protocol(value: dict[str, Any]) -> None:
     """Assert that a host request/result obeys the versioned transport schema."""
 
     declared_version = value.get("core_contract_version")
-    version = declared_version if declared_version in {"1.0", "1.1", "1.2", "1.3", "1.4"} else "1.0"
+    version = (
+        declared_version
+        if declared_version in {"1.0", "1.1", "1.2", "1.3", "1.4", "1.5"}
+        else "1.0"
+    )
     errors = sorted(
         _protocol_validator(version).iter_errors(value), key=lambda error: list(error.path)
     )

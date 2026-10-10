@@ -9,6 +9,7 @@ mod attribution;
 mod authoring_construction;
 mod authoring_construction_orchestration;
 mod authoring_construction_v11;
+mod authoring_construction_basis_v11;
 pub(crate) mod candidate_source;
 mod linkage;
 mod materialization;
@@ -29,6 +30,7 @@ const VERSION_1_1: &str = "1.1";
 const VERSION_1_2: &str = "1.2";
 const VERSION_1_3: &str = "1.3";
 const VERSION_1_4: &str = "1.4";
+const VERSION_1_5: &str = "1.5";
 const SENTINELS: [&str; 3] = [
     "__LEGACY_UNSPECIFIED__",
     "__NOT_YET_MODELED__",
@@ -373,6 +375,115 @@ fn invalid_v14(operation: &str, message: impl Into<String>) -> Json {
             ),
             (String::from("authority_diagnostics"), Json::Array(Vec::new())),
         ]),
+    )
+}
+
+fn protocol_v15_result(operation: &str, result: Json) -> Json {
+    object([
+        (String::from("core_contract_version"), string(VERSION_1_5)),
+        (String::from("operation"), string(operation)),
+        (String::from("result"), result),
+    ])
+}
+
+fn invalid_v15(_operation: &str, message: impl Into<String>) -> Json {
+    protocol_v15_result(
+        "invalid_request",
+        authoring_construction_basis_v11::invalid_request(&message.into()),
+    )
+}
+
+fn execute_authoring_construction_basis_v15(request: &Json) -> Json {
+    const OPERATION: &str = "prepare_authoring_construction_basis_1_1";
+    let Some(root) = request.as_object() else {
+        return invalid_v15(
+            "invalid_request",
+            "semantic-core protocol 1.5 request must be an object",
+        );
+    };
+    if root.keys().any(|key| {
+        !matches!(
+            key.as_str(),
+            "core_contract_version" | "operation" | "request"
+        )
+    }) {
+        return invalid_v15(
+            "invalid_request",
+            "protocol 1.5 envelope contains an undeclared field",
+        );
+    }
+    let Some(operation) = root.get("operation").and_then(Json::as_str) else {
+        return invalid_v15("invalid_request", "protocol 1.5 operation is required");
+    };
+    if operation != OPERATION {
+        return invalid_v15(
+            operation,
+            "operation is not available in semantic-core protocol 1.5",
+        );
+    }
+    if root.contains_key("result") {
+        return invalid_v15(
+            operation,
+            "protocol 1.5 execution accepts a request payload, not a result payload",
+        );
+    }
+    let Some(payload) = root.get("request").and_then(Json::as_object) else {
+        return invalid_v15(operation, "protocol 1.5 request payload must be an object");
+    };
+    if payload.keys().any(|key| {
+        !matches!(
+            key.as_str(),
+            "operation"
+                | "definition"
+                | "resources"
+                | "construction_request"
+                | "identity_clock_ms"
+                | "identity_entropy_seed"
+        )
+    }) {
+        return invalid_v15(
+            operation,
+            "protocol 1.5 request payload contains an undeclared field",
+        );
+    }
+    if payload.get("operation").and_then(Json::as_str) != Some(operation) {
+        return invalid_v15(operation, "outer and nested protocol 1.5 operations must agree");
+    }
+    if payload
+        .get("identity_clock_ms")
+        .is_some_and(|value| value.as_u64().map_or(true, |millis| millis > ((1_u64 << 48) - 1)))
+    {
+        return invalid_v15(
+            operation,
+            "identity_clock_ms must be an integer within the UUIDv7 timestamp range",
+        );
+    }
+    let identity_entropy_seed = match payload.get("identity_entropy_seed") {
+        Some(Json::String(value)) => {
+            let Some(seed) = authoring_construction_orchestration::parse_entropy_seed(value) else {
+                return invalid_v15(
+                    operation,
+                    "identity_entropy_seed must be 32 bytes encoded as 64 lowercase hexadecimal characters",
+                );
+            };
+            Some(seed)
+        }
+        Some(_) => {
+            return invalid_v15(
+                operation,
+                "identity_entropy_seed must be a 32-byte lowercase hexadecimal string",
+            )
+        }
+        None => None,
+    };
+    let identity_clock_ms = payload.get("identity_clock_ms").and_then(Json::as_u64);
+    let mut minter = authoring_construction_orchestration::EntropyUuidV7Minter::new(
+        identity_clock_ms,
+        identity_entropy_seed,
+    );
+    protocol_v15_result(
+        operation,
+        authoring_construction_basis_v11::execute(&Json::Object(payload.clone()), &mut minter),
     )
 }
 
@@ -1963,6 +2074,7 @@ pub fn execute_json(input: &[u8]) -> Vec<u8> {
                 Some(VERSION_1_2) => execute_authoring_v12(&value),
                 Some(VERSION_1_3) => execute_materialization_v13(&value),
                 Some(VERSION_1_4) => execute_authoring_construction_v14(&value),
+                Some(VERSION_1_5) => execute_authoring_construction_basis_v15(&value),
                 Some(_) | None => invalid("unsupported core_contract_version"),
             };
             json(&result).into_bytes()

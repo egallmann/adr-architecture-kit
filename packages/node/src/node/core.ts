@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { randomBytes } from "node:crypto";
 import { resolve } from "node:path";
 import { ContractValidationError, RepositoryError } from "../errors.js";
 import { openRepository } from "./repository.js";
@@ -93,7 +94,32 @@ export async function executeSemanticCoreRequest(request: Record<string, unknown
   // instance (and therefore fresh guest memory and mutable globals).
   const instance = new WebAssembly.Instance(await loadCoreModule());
   const exports = instance.exports as unknown as CoreExports;
-  const payload = Buffer.from(JSON.stringify(request), "utf8");
+  let effectiveRequest = request;
+  const nested = request.request;
+  if (
+    request.core_contract_version === "1.5" &&
+    request.operation === "prepare_authoring_construction_basis_1_1" &&
+    nested !== null && typeof nested === "object" && !Array.isArray(nested)
+  ) {
+    const nestedRequest = nested as Record<string, unknown>;
+    let entropySeed: string | undefined;
+    try {
+      entropySeed = randomBytes(32).toString("hex");
+    } catch {
+      // Rust turns the absent seed into an Unavailable minting diagnostic.
+    }
+    const executionRequest: Record<string, unknown> = {
+      ...nestedRequest,
+      identity_clock_ms: "identity_clock_ms" in nestedRequest ? nestedRequest.identity_clock_ms : Date.now(),
+    };
+    if (entropySeed === undefined) delete executionRequest.identity_entropy_seed;
+    else executionRequest.identity_entropy_seed = entropySeed;
+    effectiveRequest = {
+      ...request,
+      request: executionRequest,
+    };
+  }
+  const payload = Buffer.from(JSON.stringify(effectiveRequest), "utf8");
   const input = exports.alloc(payload.length);
   new Uint8Array(exports.memory.buffer).set(payload, input);
   const output = exports.execute(input, payload.length);

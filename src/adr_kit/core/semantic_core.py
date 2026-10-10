@@ -144,7 +144,11 @@ def validate_semantic_core_protocol(value: dict[str, Any]) -> None:
     """Assert that a host request/result obeys the versioned transport schema."""
 
     declared_version = value.get("core_contract_version")
-    version = declared_version if declared_version in {"1.0", "1.1", "1.2", "1.3", "1.4", "1.5"} else "1.0"
+    version = (
+        declared_version
+        if declared_version in {"1.0", "1.1", "1.2", "1.3", "1.4", "1.5"}
+        else "1.0"
+    )
     errors = sorted(
         _protocol_validator(version).iter_errors(value), key=lambda error: list(error.path)
     )

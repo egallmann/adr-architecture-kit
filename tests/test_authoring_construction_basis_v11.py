@@ -112,7 +112,9 @@ def _basis() -> dict[str, Any]:
     }
 
 
-def _fragment(key: str, identity: str, references: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+def _fragment(
+    key: str, identity: str, references: list[dict[str, Any]] | None = None
+) -> dict[str, Any]:
     return {
         "request_key": key,
         "semantic_kind": "entity",
@@ -207,9 +209,9 @@ def test_missing_acc_resource_prevents_protocol_15_authority_qualification() -> 
 
 def test_wrong_exact_ai12_fingerprint_prevents_candidate_basis_sealing() -> None:
     construction = _construction_request([_fragment("alpha", IDENTITY_A)])
-    construction["basis"]["architecture_interpretation"][
-        "semantic_contract_fingerprint"
-    ] = "scf:v1:sha256:" + "0" * 64
+    construction["basis"]["architecture_interpretation"]["semantic_contract_fingerprint"] = (
+        "scf:v1:sha256:" + "0" * 64
+    )
     result = _execute(_protocol_request(construction))
     assert result["authority"]["available"] is True
     assert result["basis_status"] == "Unavailable"
@@ -240,9 +242,7 @@ def test_request_local_reference_evidence_is_complete_and_identity_keyed() -> No
             "target": "target",
             "canonical_uuid": IDENTITY_B,
             "semantic_type": "entity/decision",
-            "qualification": _resource_qualification(
-                "authoring", "1.7", "authoring/1.7/schema/"
-            ),
+            "qualification": _resource_qualification("authoring", "1.7", "authoring/1.7/schema/"),
             "disposition": "resolved",
         }
     ]
@@ -294,9 +294,7 @@ def test_unqualified_existing_reference_prevents_basis_sealing() -> None:
             "canonical_uuid": IDENTITY_B,
             "semantic_kind": "entity",
             "semantic_type": "entity/decision",
-            "qualification": _resource_qualification(
-                "authoring", "1.6", "authoring/1.6/schema/"
-            ),
+            "qualification": _resource_qualification("authoring", "1.6", "authoring/1.6/schema/"),
             "existence_state": "active",
         }
     ]
@@ -305,7 +303,13 @@ def test_unqualified_existing_reference_prevents_basis_sealing() -> None:
             _fragment(
                 "source",
                 IDENTITY_A,
-                [{"reference_key": "existing_ref", "reference_kind": "existing", "target": "existing-decision"}],
+                [
+                    {
+                        "reference_key": "existing_ref",
+                        "reference_kind": "existing",
+                        "target": "existing-decision",
+                    }
+                ],
             )
         ]
     )
@@ -331,30 +335,36 @@ def test_missing_create_identity_is_minted_as_uuidv7() -> None:
 def test_duplicate_canonical_identity_is_rejected() -> None:
     result = _execute(
         _protocol_request(
-            _construction_request(
-                [_fragment("first", IDENTITY_A), _fragment("second", IDENTITY_A)]
-            )
+            _construction_request([_fragment("first", IDENTITY_A), _fragment("second", IDENTITY_A)])
         )
     )
     assert result["basis_status"] == "Rejected"
     assert result["candidate_source_basis"] is None
-    assert any(item["code"] == "authoring_construction.identity.duplicate" for item in result["diagnostics"])
+    assert any(
+        item["code"] == "authoring_construction.identity.duplicate"
+        for item in result["diagnostics"]
+    )
 
 
 def test_supplied_identity_and_sealed_basis_are_stable_under_fragment_reordering() -> None:
     first = _construction_request([_fragment("alpha", IDENTITY_A), _fragment("beta", IDENTITY_B)])
-    reordered = _construction_request([_fragment("beta", IDENTITY_B), _fragment("alpha", IDENTITY_A)])
+    reordered = _construction_request(
+        [_fragment("beta", IDENTITY_B), _fragment("alpha", IDENTITY_A)]
+    )
     first_result = _execute(_protocol_request(first))
     reordered_result = _execute(_protocol_request(reordered))
     assert first_result["basis_status"] == reordered_result["basis_status"] == "Sealed"
-    assert first_result["candidate_source_basis"]["basis_digest"] == reordered_result[
-        "candidate_source_basis"
-    ]["basis_digest"]
+    assert (
+        first_result["candidate_source_basis"]["basis_digest"]
+        == reordered_result["candidate_source_basis"]["basis_digest"]
+    )
 
 
 def test_missing_reference_is_unresolved_and_never_omitted_as_sealed() -> None:
     reference = {"reference_key": "missing", "reference_kind": "request", "target": "absent"}
-    result = _execute(_protocol_request(_construction_request([_fragment("source", IDENTITY_A, [reference])])))
+    result = _execute(
+        _protocol_request(_construction_request([_fragment("source", IDENTITY_A, [reference])]))
+    )
     assert result["basis_status"] == "Unresolved"
     assert result["candidate_source_basis"] is None
     assert [item["code"] for item in result["diagnostics"]] == [

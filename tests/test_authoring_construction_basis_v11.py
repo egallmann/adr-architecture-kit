@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import secrets
 from pathlib import Path
 from typing import Any, cast
 
@@ -330,6 +331,40 @@ def test_missing_create_identity_is_minted_as_uuidv7() -> None:
     assert identity[14] == "7"
     assert identity[19] in "89ab"
     assert result["construction_map"][0]["identity_disposition"] == "minted"
+
+
+def test_independent_same_millisecond_requests_mint_distinct_uuidv7_identities() -> None:
+    identities = []
+    for key in ("first-request", "second-request"):
+        fragment = _fragment(key, IDENTITY_A)
+        del fragment["fields"]["id"]
+        construction = _construction_request([fragment])
+        construction["request"]["request_id"] = key
+        protocol_request = _protocol_request(construction)
+        protocol_request["request"]["identity_clock_ms"] = 1_767_000_000_123
+        result = _execute(protocol_request)
+        assert result["basis_status"] == "Sealed"
+        identity = result["candidate_fragments"][0]["identity"]
+        assert identity[14] == "7"
+        assert identity[19] in "89ab"
+        identities.append(identity)
+    assert identities[0] != identities[1]
+
+
+def test_missing_host_entropy_returns_unavailable_for_create_identity(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fragment = _fragment("no-entropy", IDENTITY_A)
+    del fragment["fields"]["id"]
+
+    def unavailable_entropy(_: int) -> str:
+        raise OSError("secure entropy unavailable")
+
+    monkeypatch.setattr(secrets, "token_hex", unavailable_entropy)
+    result = _execute(_protocol_request(_construction_request([fragment])))
+    assert result["basis_status"] == "Unavailable"
+    assert result["candidate_source_basis"] is None
+    assert result["diagnostics"][0]["code"] == "authoring_construction.identity.unavailable"
 
 
 def test_duplicate_canonical_identity_is_rejected() -> None:

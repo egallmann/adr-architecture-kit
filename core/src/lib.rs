@@ -438,6 +438,7 @@ fn execute_authoring_construction_basis_v15(request: &Json) -> Json {
                 | "resources"
                 | "construction_request"
                 | "identity_clock_ms"
+                | "identity_entropy_seed"
         )
     }) {
         return invalid_v15(
@@ -450,13 +451,36 @@ fn execute_authoring_construction_basis_v15(request: &Json) -> Json {
     }
     if payload
         .get("identity_clock_ms")
-        .is_some_and(|value| value.as_u64().is_none())
+        .is_some_and(|value| value.as_u64().map_or(true, |millis| millis > ((1_u64 << 48) - 1)))
     {
-        return invalid_v15(operation, "identity_clock_ms must be a non-negative integer");
+        return invalid_v15(
+            operation,
+            "identity_clock_ms must be an integer within the UUIDv7 timestamp range",
+        );
     }
+    let identity_entropy_seed = match payload.get("identity_entropy_seed") {
+        Some(Json::String(value)) => {
+            let Some(seed) = authoring_construction_orchestration::parse_entropy_seed(value) else {
+                return invalid_v15(
+                    operation,
+                    "identity_entropy_seed must be 32 bytes encoded as 64 lowercase hexadecimal characters",
+                );
+            };
+            Some(seed)
+        }
+        Some(_) => {
+            return invalid_v15(
+                operation,
+                "identity_entropy_seed must be a 32-byte lowercase hexadecimal string",
+            )
+        }
+        None => None,
+    };
     let identity_clock_ms = payload.get("identity_clock_ms").and_then(Json::as_u64);
-    let mut minter =
-        authoring_construction_orchestration::TimestampedUuidV7Minter::new(identity_clock_ms);
+    let mut minter = authoring_construction_orchestration::EntropyUuidV7Minter::new(
+        identity_clock_ms,
+        identity_entropy_seed,
+    );
     protocol_v15_result(
         operation,
         authoring_construction_basis_v11::execute(&Json::Object(payload.clone()), &mut minter),

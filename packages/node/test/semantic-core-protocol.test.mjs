@@ -15,6 +15,7 @@ import {
   validateSemanticCoreProtocol,
 } from "../dist/node/protocol.js";
 import { executeSemanticCoreRequest } from "../dist/node/core.js";
+import { loadSemanticResource } from "../dist/node/semantic-contract.js";
 
 const Ajv = AjvModule.default ?? AjvModule;
 const Ajv7 = Ajv7Module.default ?? Ajv7Module;
@@ -22,6 +23,96 @@ const validator = new Ajv({ allErrors: true, strict: false }).compile(semanticCo
 const vectorDirectory = resolve("../../contracts/semantic-core/v1.0/vectors");
 const vectorDirectoryV11 = resolve("../../contracts/semantic-core/v1.1/vectors");
 const normalizedSchemaDirectoryV23 = resolve("../../schema/normalized-model/v2.3");
+
+test("Node v1.5 host supplies fresh CSPRNG entropy for same-millisecond independent mints", async () => {
+  const accDefinition = JSON.parse(await readFile(resolve("../../contracts/authoring-construction/v1.1/contract.json"), "utf8"));
+  const aiDefinition = JSON.parse(await readFile(resolve("../../contracts/architecture-interpretation/v1.2/contract.json"), "utf8"));
+  const resources = accDefinition.resourceManifest.map((item) => ({
+    canonicalResourceKey: item.canonicalResourceKey,
+    content: loadSemanticResource(item.canonicalResourceKey),
+  }));
+  const qualify = (family, version, prefix) => ({
+    family,
+    version,
+    resources: accDefinition.resourceManifest
+      .filter((item) => item.canonicalResourceKey.startsWith(prefix))
+      .map((item) => ({ canonical_resource_key: item.canonicalResourceKey, content_digest: item.contentDigest })),
+  });
+  const aiClosure = {
+    family: "architecture-interpretation",
+    version: "1.2",
+    resources: aiDefinition.resourceManifest.map((item) => ({
+      canonical_resource_key: item.canonicalResourceKey,
+      content_digest: item.contentDigest,
+    })),
+  };
+  const basis = {
+    acc: { family: "authoring-construction", version: "1.1", semantic_contract_fingerprint: "scf:v1:sha256:dcb38e2247396759ed3cbf0ee308ba4c02c087bf47599e72a342cc5efe6a79c5" },
+    adc: qualify("authoring-domain", "1.1", "authoring-domain/1.1/"),
+    authoring: qualify("authoring", "1.7", "authoring/1.7/schema/"),
+    normalized_model: qualify("normalized-model", "2.4", "normalized-model/2.4/schema/"),
+    architecture_interpretation: {
+      family: "architecture-interpretation",
+      version: "1.2",
+      semantic_contract_fingerprint: "scf:v1:sha256:2a9300b1d7bdc9a80421cb94294fbd2f345531b5147644d02ae4bcc5c436d75a",
+      authority_closure: aiClosure,
+    },
+    custom_entity: null,
+    reference_basis: { sealed: true, entries: [] },
+    existing_source_basis: { sealed: true, entries: [] },
+    identity_establishment: {
+      phase: "before_deterministic_interpretation",
+      supplied_uuidv7: "preserve",
+      absent_on_create: "mint_uuidv7_allowed_for_identity_bearing_types",
+      absent_on_update: "reject",
+      composition: "does_not_create_or_replace_identity",
+      derivations_forbidden: ["alias", "prose", "path", "source_location", "content_hash", "source_order", "array_order", "composition_position"],
+    },
+    provenance: {},
+  };
+  const makeRequest = (requestId) => ({
+    core_contract_version: "1.5",
+    operation: "prepare_authoring_construction_basis_1_1",
+    request: {
+      operation: "prepare_authoring_construction_basis_1_1",
+      definition: accDefinition,
+      resources,
+      identity_clock_ms: 1_767_000_000_123,
+      construction_request: {
+        contract_family: "authoring_construction",
+        contract_version: "1.1",
+        operation: "construct_authoring_set",
+        request: {
+          request_id: requestId,
+          fragments: [{
+            request_key: requestId,
+            semantic_kind: "entity",
+            semantic_type: "entity/decision",
+            operation: "create",
+            input_mode: "prepared",
+            fields: { alias_id: "DEC-0001", alias_name: `decision-${requestId}`, summary: `Summary ${requestId}`, rationale: "Explicit." },
+            contract_qualification: qualify("authoring", "1.7", "authoring/1.7/schema/"),
+            references: [],
+            composition_keys: [],
+          }],
+          compositions: [],
+          relationships: [],
+        },
+        basis,
+      },
+    },
+  });
+  const first = await executeSemanticCoreRequest(makeRequest("node-first"));
+  const second = await executeSemanticCoreRequest(makeRequest("node-second"));
+  const firstId = first.result.candidate_fragments[0].identity;
+  const secondId = second.result.candidate_fragments[0].identity;
+  assert.equal(first.result.basis_status, "Sealed");
+  assert.equal(second.result.basis_status, "Sealed");
+  assert.notEqual(firstId, secondId);
+  for (const id of [firstId, secondId]) {
+    assert.match(id, /^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+  }
+});
 
 test("Node protocol validator accepts every valid shared vector request and result", async () => {
   let checked = 0;

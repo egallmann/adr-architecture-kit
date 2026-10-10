@@ -10,6 +10,7 @@ artifact; Rust build dependencies are compiled into the artifact itself.
 from __future__ import annotations
 
 import json
+import secrets
 import time
 from functools import lru_cache
 from importlib import resources
@@ -79,19 +80,21 @@ def _compiled_semantic_core() -> tuple[wasmtime.Engine, wasmtime.Module]:
 
 
 def execute_semantic_core_request(request: dict[str, Any]) -> dict[str, Any]:
-    # The guest owns UUIDv7 construction; protocol 1.5 receives only the
-    # environmental clock value needed by that algorithm. Never derive it
-    # from candidate content or source ordering.
+    # Rust owns UUIDv7 construction. The host supplies environmental time and
+    # fresh cryptographic entropy; neither is derived from candidate content.
     request = dict(request)
     nested = request.get("request")
     if (
         request.get("core_contract_version") == "1.5"
         and request.get("operation") == "prepare_authoring_construction_basis_1_1"
         and isinstance(nested, dict)
-        and "identity_clock_ms" not in nested
     ):
         request["request"] = dict(nested)
-        request["request"]["identity_clock_ms"] = time.time_ns() // 1_000_000
+        request["request"].setdefault("identity_clock_ms", time.time_ns() // 1_000_000)
+        try:
+            request["request"]["identity_entropy_seed"] = secrets.token_hex(32)
+        except OSError:
+            request["request"].pop("identity_entropy_seed", None)
     payload = json.dumps(request, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     engine, module = _compiled_semantic_core()
     store = wasmtime.Store(engine)

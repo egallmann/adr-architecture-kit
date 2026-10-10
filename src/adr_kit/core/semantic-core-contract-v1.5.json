@@ -28,7 +28,7 @@
     "request": {
       "type": "object", "additionalProperties": false,
       "required": ["operation", "definition", "resources", "construction_request"],
-      "properties": { "operation": { "const": "prepare_authoring_construction_basis_1_1" }, "definition": { "type": "object" }, "resources": { "type": "array", "items": { "$ref": "#/$defs/resource" } }, "construction_request": { "type": "object" }, "identity_clock_ms": { "type": "integer", "minimum": 0, "description": "Optional host clock input used only when Rust is authorized to mint a UUIDv7 identity." } }
+      "properties": { "operation": { "const": "prepare_authoring_construction_basis_1_1" }, "definition": { "type": "object" }, "resources": { "type": "array", "items": { "$ref": "#/$defs/resource" } }, "construction_request": { "type": "object" }, "identity_clock_ms": { "type": "integer", "minimum": 0, "maximum": 281474976710655, "description": "Optional host clock input used only when Rust is authorized to mint a UUIDv7 identity." }, "identity_entropy_seed": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Host-provided 256-bit cryptographically secure entropy for Rust UUIDv7 random fields. Hosts overwrite this field for each execution." } }
     },
     "capabilities": {
       "type": "object", "additionalProperties": false,

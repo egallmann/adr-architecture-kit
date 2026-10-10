@@ -23,7 +23,12 @@ function execute(request) {
 }
 
 const contractRoot = resolve(root, "contracts/semantic-contract/v1.0");
-const definitionNames = ["architecture-interpretation.json", "normative-semantics.json", "normalized-model.json"];
+const definitionNames = [
+  "architecture-interpretation.json",
+  "normative-semantics.json",
+  "normalized-model.json",
+  "authoring-construction-1.1.json",
+];
 const definitions = await Promise.all(definitionNames.map(async (name) =>
   JSON.parse(await readFile(resolve(contractRoot, "definitions", name), "utf8"))));
 

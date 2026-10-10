@@ -19,12 +19,13 @@ from jsonschema import Draft202012Validator
 import wasmtime
 import yaml
 
-SEMANTIC_CORE_PROTOCOL_VERSIONS = ("1.0", "1.1", "1.2", "1.3")
+SEMANTIC_CORE_PROTOCOL_VERSIONS = ("1.0", "1.1", "1.2", "1.3", "1.4")
 SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS = (
     "validate_authoring",
     "construct_authoring_set",
 )
 SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS = ("materialize_architecture",)
+SEMANTIC_CORE_PROTOCOL_V14_OPERATIONS = ("qualify_authoring_construction_1_1",)
 
 
 def semantic_core_capabilities() -> dict[str, object]:
@@ -35,6 +36,7 @@ def semantic_core_capabilities() -> dict[str, object]:
         "operations_by_version": {
             "1.2": SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS,
             "1.3": SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS,
+            "1.4": SEMANTIC_CORE_PROTOCOL_V14_OPERATIONS,
         },
     }
 
@@ -42,8 +44,10 @@ def semantic_core_capabilities() -> dict[str, object]:
 def supports_semantic_core_operation(version: str, operation: str) -> bool:
     """Return whether an additive operation is reachable for an exact version."""
 
-    return (version == "1.2" and operation in SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS) or (
-        version == "1.3" and operation in SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS
+    return (
+        (version == "1.2" and operation in SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS)
+        or (version == "1.3" and operation in SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS)
+        or (version == "1.4" and operation in SEMANTIC_CORE_PROTOCOL_V14_OPERATIONS)
     )
 
 
@@ -110,6 +114,7 @@ def _protocol_validator(version: str = "1.0") -> Draft202012Validator:
         "1.1": "semantic-core-contract-v1.1.json",
         "1.2": "semantic-core-contract-v1.2.json",
         "1.3": "semantic-core-contract-v1.3.json",
+        "1.4": "semantic-core-contract-v1.4.json",
     }.get(version, "semantic-core-contract.json")
     contract = json.loads(
         resources.files("adr_kit.core").joinpath(filename).read_text(encoding="utf-8")
@@ -121,7 +126,7 @@ def validate_semantic_core_protocol(value: dict[str, Any]) -> None:
     """Assert that a host request/result obeys the versioned transport schema."""
 
     declared_version = value.get("core_contract_version")
-    version = declared_version if declared_version in {"1.0", "1.1", "1.2", "1.3"} else "1.0"
+    version = declared_version if declared_version in {"1.0", "1.1", "1.2", "1.3", "1.4"} else "1.0"
     errors = sorted(
         _protocol_validator(version).iter_errors(value), key=lambda error: list(error.path)
     )

@@ -22,6 +22,9 @@ const semanticCoreContractV12 = JSON.parse(
 const semanticCoreContractV13 = JSON.parse(
   await readFile(resolve(repoRoot, "contracts/semantic-core/v1.3/contract.json"), "utf8"),
 );
+const semanticCoreContractV14 = JSON.parse(
+  await readFile(resolve(repoRoot, "contracts/semantic-core/v1.4/contract.json"), "utf8"),
+);
 const authoringDomainContractPath = resolve(
   repoRoot,
   "contracts/authoring-domain/v1.0/contract.json",
@@ -87,6 +90,7 @@ await writeFile(resolve(generatedRoot, "semantic-core-contract.ts"), `export con
 await writeFile(resolve(generatedRoot, "semantic-core-contract-v1.1.ts"), `export const semanticCoreContractV11 = ${JSON.stringify(semanticCoreContractV11, null, 2)} as const;\n`);
 await writeFile(resolve(generatedRoot, "semantic-core-contract-v1.2.ts"), `export const semanticCoreContractV12 = ${JSON.stringify(semanticCoreContractV12, null, 2)} as const;\n`);
 await writeFile(resolve(generatedRoot, "semantic-core-contract-v1.3.ts"), `export const semanticCoreContractV13 = ${JSON.stringify(semanticCoreContractV13, null, 2)} as const;\n`);
+await writeFile(resolve(generatedRoot, "semantic-core-contract-v1.4.ts"), `export const semanticCoreContractV14 = ${JSON.stringify(semanticCoreContractV14, null, 2)} as const;\n`);
 await writeFile(resolve(repoRoot, "src/adr_kit/compatibility/authoring-domain-v1.0.json"), authoringDomainContractBytes);
 
 const semanticContractAssets = {};

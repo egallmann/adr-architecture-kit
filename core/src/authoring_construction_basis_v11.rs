@@ -359,6 +359,53 @@ fn prepare(
         }
     }
 
+    for (index, fragment) in fragments.iter().enumerate() {
+        let Some(value) = fragment.as_object() else {
+            continue;
+        };
+        let semantic_kind = value
+            .get("semantic_kind")
+            .and_then(Json::as_str)
+            .unwrap_or_default();
+        let semantic_type = value
+            .get("semantic_type")
+            .and_then(Json::as_str)
+            .unwrap_or_default();
+        if !semantic_kind_matches_type(semantic_kind, semantic_type) {
+            status = max_status(status, BasisStatus::Rejected);
+            diagnostics.push(acc_diagnostic(
+                "authoring_construction.fragment.kind_type_mismatch",
+                "violation",
+                &format!("/construction_request/request/fragments/{index}"),
+                "semantic_kind consistent with the exact semantic_type family",
+                format!("{semantic_kind}:{semantic_type}"),
+                "Select the semantic kind that matches the declared semantic type.",
+            ));
+        }
+        if value.get("input_mode").and_then(Json::as_str) == Some("compact") {
+            status = max_status(status, BasisStatus::Unavailable);
+            diagnostics.push(acc_diagnostic(
+                "authoring_construction.fragment.compact_unavailable",
+                "unavailable",
+                &format!("/construction_request/request/fragments/{index}/input_mode"),
+                "prepared Authoring 1.7 source fields",
+                "compact input requires a source transformation not defined by the executable authority",
+                "Supply already prepared Authoring 1.7 fields or wait for governed compact-input construction support.",
+            ));
+        }
+        if matches!(semantic_kind, "relationship" | "value") {
+            status = max_status(status, BasisStatus::Unavailable);
+            diagnostics.push(acc_diagnostic(
+                "authoring_construction.fragment.kind_unavailable",
+                "unavailable",
+                &format!("/construction_request/request/fragments/{index}/semantic_kind"),
+                "an independently supported Authoring 1.7 document or entity source",
+                semantic_kind,
+                "Use a supported prepared ADR or entity fragment; native relationship and value source construction is not implemented.",
+            ));
+        }
+    }
+
     let mut identities = BTreeMap::<String, orchestration::Identity>::new();
     let mut identity_index = BTreeMap::<String, String>::new();
     let authoring_qualification = basis.get("authoring").cloned().unwrap_or(Json::Null);
@@ -496,7 +543,6 @@ fn prepare(
     }
 
     let mut artifacts = Vec::new();
-    let empty_compositions = Vec::new();
     for (index, fragment) in fragments.iter().enumerate() {
         let Some(value) = fragment.as_object() else {
             continue;
@@ -516,20 +562,27 @@ fn prepare(
             .and_then(Json::as_object)
             .cloned()
             .unwrap_or_default();
-        let mut embedded_children = Vec::new();
-        let source = orchestration::build_fragment_source(
-            value,
-            &fields,
-            identity,
-            semantic_type,
-            key,
-            &identities,
-            &fragments,
-            &empty_compositions,
-            &mut embedded_children,
-        );
-        let selector = orchestration::selector_for(semantic_type, &source);
-        let artifact_kind = if value.get("semantic_kind").and_then(Json::as_str) == Some("adr") {
+        let semantic_kind = value
+            .get("semantic_kind")
+            .and_then(Json::as_str)
+            .unwrap_or_default();
+        let source = build_prepared_fragment_source(&fields, identity);
+        let selector = match selector_for_prepared_kind(semantic_kind, semantic_type) {
+            Ok(selector) => selector,
+            Err(error) => {
+                status = max_status(status, BasisStatus::Unavailable);
+                diagnostics.push(acc_diagnostic(
+                    "authoring_construction.candidate_source.unavailable",
+                    "unavailable",
+                    &format!("/construction_request/request/fragments/{index}/semantic_type"),
+                    "an exact Authoring 1.7 source selector for the declared kind and type",
+                    error,
+                    "Use an implemented Authoring 1.7 ADR or entity type.",
+                ));
+                continue;
+            }
+        };
+        let artifact_kind = if semantic_kind == "adr" {
             "authoring_document"
         } else {
             "authoring_fragment"
@@ -669,6 +722,63 @@ fn prepare(
         ("selected_root_source_refs".into(), roots_json),
     ]);
     BasisStatus::Sealed
+}
+
+fn semantic_kind_matches_type(semantic_kind: &str, semantic_type: &str) -> bool {
+    match semantic_kind {
+        "adr" => semantic_type.starts_with("adr/"),
+        "entity" => semantic_type.starts_with("entity/") || semantic_type.contains(':'),
+        "relationship" => semantic_type.starts_with("relationship/") || semantic_type.contains(':'),
+        "value" => semantic_type.starts_with("value/"),
+        _ => false,
+    }
+}
+
+fn build_prepared_fragment_source(
+    fields: &BTreeMap<String, Json>,
+    identity: &orchestration::Identity,
+) -> Json {
+    let mut source = fields.clone();
+    // ACC authorizes UUIDv7 establishment. Every other Authoring 1.7 field is
+    // prepared request data and remains untouched for exact schema validation.
+    source.insert("id".into(), string(identity.id.clone()));
+    Json::Object(source)
+}
+
+fn selector_for_prepared_kind(
+    semantic_kind: &str,
+    semantic_type: &str,
+) -> Result<candidate_source::CandidateSourceSelector, String> {
+    let (canonical_resource_key, json_pointer) = match (semantic_kind, semantic_type) {
+        ("adr", "adr/logical") => ("authoring/1.7/schema/adr-logical.schema", String::new()),
+        ("adr", "adr/physical-system") => (
+            "authoring/1.7/schema/adr-physical-system.schema",
+            String::new(),
+        ),
+        ("adr", "adr/physical-component") => (
+            "authoring/1.7/schema/adr-physical-component.schema",
+            String::new(),
+        ),
+        ("entity", value) if value.starts_with("entity/") => {
+            let name = value
+                .strip_prefix("entity/")
+                .filter(|name| !name.is_empty())
+                .ok_or_else(|| format!("unsupported entity semantic type {value}"))?;
+            (
+                "authoring/1.7/schema/adr-common.schema",
+                format!("/definitions/{name}"),
+            )
+        }
+        _ => {
+            return Err(format!(
+                "unsupported prepared source kind/type {semantic_kind}:{semantic_type}"
+            ));
+        }
+    };
+    Ok(candidate_source::CandidateSourceSelector {
+        canonical_resource_key: canonical_resource_key.into(),
+        json_pointer,
+    })
 }
 
 fn resolve_references(

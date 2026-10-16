@@ -333,6 +333,96 @@ def test_missing_create_identity_is_minted_as_uuidv7() -> None:
     assert result["construction_map"][0]["identity_disposition"] == "minted"
 
 
+def test_prepared_physical_system_preserves_aliases_references_and_system_identity() -> None:
+    fields = {
+        "id": IDENTITY_A,
+        "schema_version": "1.7",
+        "adr_type": "physical-system",
+        "alias_id": "ADR-PS-0042",
+        "alias_name": "preserved-physical-system",
+        "title": "A prepared physical system",
+        "status": "proposed",
+        "created_date": "2026-10-15",
+        "authors": ["author@example.test"],
+        "implements_logical": [IDENTITY_B],
+        "context": "The supplied logical identity is semantic input.",
+        "technology_stack": [
+            {
+                "category": "language",
+                "name": "Rust",
+                "version": "1.0",
+                "rationale": "Prepared source value.",
+            }
+        ],
+        "system": {
+            "id": "018f0000-0000-7000-8000-000000000003",
+            "alias_id": "SYS-0042",
+            "alias_name": "preserved-system-identity",
+        },
+    }
+    fragment = {
+        "request_key": "physical-system",
+        "semantic_kind": "adr",
+        "semantic_type": "adr/physical-system",
+        "operation": "create",
+        "input_mode": "prepared",
+        "fields": fields,
+        "contract_qualification": _resource_qualification(
+            "authoring", "1.7", "authoring/1.7/schema/"
+        ),
+        "references": [],
+        "composition_keys": [],
+    }
+    result = _execute(_protocol_request(_construction_request([fragment])))
+    assert result["basis_status"] == "Sealed"
+    assert result["candidate_fragments"][0]["fields"] == fields
+    assert result["candidate_source_basis"]["sealed"] is True
+
+
+def test_missing_required_aliases_are_rejected_without_fabrication() -> None:
+    fragment = _fragment("missing-alias", IDENTITY_A)
+    del fragment["fields"]["alias_id"]
+    del fragment["fields"]["alias_name"]
+    result = _execute(_protocol_request(_construction_request([fragment])))
+    assert result["basis_status"] == "Rejected"
+    assert result["candidate_source_basis"] is None
+    assert result["candidate_artifacts"] == []
+    assert any(
+        item["code"] == "authoring_construction.authoring.invalid" for item in result["diagnostics"]
+    )
+
+
+def test_supplied_conformance_alias_is_not_rewritten_to_a_generated_alias() -> None:
+    fragment = _fragment("conformance-alias", IDENTITY_A)
+    fragment["fields"]["alias_id"] = "DEC-CONFORMANCE"
+    result = _execute(_protocol_request(_construction_request([fragment])))
+    assert result["basis_status"] == "Rejected"
+    assert result["candidate_source_basis"] is None
+    assert result["candidate_artifacts"] == []
+
+
+def test_semantic_kind_type_mismatch_cannot_seal() -> None:
+    fragment = _fragment("kind-mismatch", IDENTITY_A)
+    fragment["semantic_kind"] = "adr"
+    result = _execute(_protocol_request(_construction_request([fragment])))
+    assert result["basis_status"] == "Rejected"
+    assert result["candidate_source_basis"] is None
+    assert result["diagnostics"][0]["code"] == (
+        "authoring_construction.fragment.kind_type_mismatch"
+    )
+
+
+def test_compact_input_is_unavailable_until_its_governed_transformation_exists() -> None:
+    fragment = _fragment("compact", IDENTITY_A)
+    fragment["input_mode"] = "compact"
+    result = _execute(_protocol_request(_construction_request([fragment])))
+    assert result["basis_status"] == "Unavailable"
+    assert result["candidate_source_basis"] is None
+    assert result["diagnostics"][0]["code"] == (
+        "authoring_construction.fragment.compact_unavailable"
+    )
+
+
 def test_independent_same_millisecond_requests_mint_distinct_uuidv7_identities() -> None:
     identities = []
     for key in ("first-request", "second-request"):

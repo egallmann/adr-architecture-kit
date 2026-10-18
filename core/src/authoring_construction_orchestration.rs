@@ -39,16 +39,108 @@ impl IdentityMinter for UuidV7Minter {
             .map_err(|error| format!("system clock is before UNIX epoch: {error}"))?
             .as_millis() as u64;
         let counter = UUID_COUNTER.fetch_add(1, Ordering::Relaxed) & 0x0fff;
-        let time_high = millis & 0x0000_ffff_ffff_ffff;
-        Ok(format!(
-            "{:08x}-{:04x}-7{:03x}-8{:03x}-{:012x}",
-            time_high >> 16,
-            time_high & 0xffff,
-            counter,
-            counter,
-            (millis << 12 | counter as u64) & 0x0000_ffff_ffff_ffff,
-        ))
+        Ok(format_uuidv7(millis, counter))
     }
+}
+
+/// UUIDv7 minter for protocol boundaries where the host supplies an
+/// environmental clock reading and a fresh CSPRNG seed. Rust expands that
+/// seed into RFC 9562 random fields and controls identity allocation.
+pub(crate) struct EntropyUuidV7Minter {
+    timestamp_ms: Option<u64>,
+    entropy_seed: Option<[u8; 32]>,
+    counter: u64,
+}
+
+impl EntropyUuidV7Minter {
+    pub(crate) fn new(timestamp_ms: Option<u64>, entropy_seed: Option<[u8; 32]>) -> Self {
+        Self {
+            timestamp_ms,
+            entropy_seed,
+            counter: 0,
+        }
+    }
+}
+
+impl IdentityMinter for EntropyUuidV7Minter {
+    fn mint_uuidv7(&mut self) -> Result<String, String> {
+        const MAX_TIMESTAMP_MS: u64 = (1_u64 << 48) - 1;
+        let millis = self
+            .timestamp_ms
+            .ok_or_else(|| "host identity clock is unavailable for UUIDv7 minting".to_owned())?;
+        if millis > MAX_TIMESTAMP_MS {
+            return Err("host identity clock is outside the UUIDv7 timestamp range".to_owned());
+        }
+        let seed = self
+            .entropy_seed
+            .ok_or_else(|| "host secure entropy is unavailable for UUIDv7 minting".to_owned())?;
+        let counter = self.counter;
+        self.counter = self
+            .counter
+            .checked_add(1)
+            .ok_or_else(|| "UUIDv7 entropy stream is exhausted".to_owned())?;
+
+        let mut hasher = Sha256::new();
+        hasher.update(b"adr-kit:acc11:uuidv7:random-fields:v1\0");
+        hasher.update(seed);
+        hasher.update(counter.to_be_bytes());
+        let entropy = hasher.finalize();
+        let random_a = extract_entropy_bits(&entropy, 0, 12) as u16;
+        let random_b = extract_entropy_bits(&entropy, 12, 62);
+        Ok(format_uuidv7_random(millis, random_a, random_b))
+    }
+}
+
+pub(crate) fn parse_entropy_seed(value: &str) -> Option<[u8; 32]> {
+    if value.len() != 64 || value.bytes().any(|byte| !byte.is_ascii_hexdigit() || byte.is_ascii_uppercase()) {
+        return None;
+    }
+    let mut seed = [0_u8; 32];
+    for (index, pair) in value.as_bytes().chunks_exact(2).enumerate() {
+        let high = hex_nibble(pair[0])?;
+        let low = hex_nibble(pair[1])?;
+        seed[index] = (high << 4) | low;
+    }
+    Some(seed)
+}
+
+fn hex_nibble(value: u8) -> Option<u8> {
+    match value {
+        b'0'..=b'9' => Some(value - b'0'),
+        b'a'..=b'f' => Some(value - b'a' + 10),
+        _ => None,
+    }
+}
+
+fn extract_entropy_bits(bytes: &[u8], offset: usize, count: usize) -> u64 {
+    (offset..offset + count).fold(0_u64, |value, bit| {
+        (value << 1) | u64::from((bytes[bit / 8] >> (7 - bit % 8)) & 1)
+    })
+}
+
+fn format_uuidv7_random(millis: u64, random_a: u16, random_b: u64) -> String {
+    let time_high = millis & 0x0000_ffff_ffff_ffff;
+    let variant_and_random = 0x8000_u16 | ((random_b >> 48) as u16 & 0x3fff);
+    format!(
+        "{:08x}-{:04x}-7{:03x}-{:04x}-{:012x}",
+        time_high >> 16,
+        time_high & 0xffff,
+        random_a & 0x0fff,
+        variant_and_random,
+        random_b & 0x0000_ffff_ffff_ffff,
+    )
+}
+
+fn format_uuidv7(millis: u64, counter: u16) -> String {
+    let time_high = millis & 0x0000_ffff_ffff_ffff;
+    format!(
+        "{:08x}-{:04x}-7{:03x}-8{:03x}-{:012x}",
+        time_high >> 16,
+        time_high & 0xffff,
+        counter,
+        counter,
+        (millis << 12 | counter as u64) & 0x0000_ffff_ffff_ffff,
+    )
 }
 
 /// Construct an ACC request using the default detached identity authority.
@@ -527,12 +619,12 @@ pub(crate) fn construct_authoring_set_with_minter(
 }
 
 #[derive(Clone)]
-struct Identity {
-    id: String,
-    disposition: &'static str,
+pub(crate) struct Identity {
+    pub(crate) id: String,
+    pub(crate) disposition: &'static str,
 }
 
-fn establish_identity(
+pub(crate) fn establish_identity(
     key: &str,
     operation: &str,
     supplied: Option<&str>,
@@ -557,7 +649,7 @@ fn establish_identity(
     })
 }
 
-fn build_fragment_source(
+pub(crate) fn build_fragment_source(
     fragment: &BTreeMap<String, Json>,
     fields: &BTreeMap<String, Json>,
     identity: &Identity,
@@ -770,7 +862,10 @@ fn enrich_topology(value: &mut Json) {
     }
 }
 
-fn selector_for(semantic_type: &str, source: &Json) -> candidate_source::CandidateSourceSelector {
+pub(crate) fn selector_for(
+    semantic_type: &str,
+    source: &Json,
+) -> candidate_source::CandidateSourceSelector {
     if semantic_type.starts_with("adr/") {
         return candidate_source::CandidateSourceSelector {
             canonical_resource_key: match semantic_type {
@@ -804,7 +899,7 @@ fn selector_for(semantic_type: &str, source: &Json) -> candidate_source::Candida
     }
 }
 
-fn candidate_fragment(
+pub(crate) fn candidate_fragment(
     fragment: &BTreeMap<String, Json>,
     fields: &BTreeMap<String, Json>,
     identity: &Identity,
@@ -974,7 +1069,7 @@ fn map_entry(
     ])
 }
 
-fn artifact_to_json(artifact: &candidate_source::CandidateSourceArtifact) -> Json {
+pub(crate) fn artifact_to_json(artifact: &candidate_source::CandidateSourceArtifact) -> Json {
     object([
         ("request_key".into(), string(artifact.request_key.clone())),
         ("source_ref".into(), string(artifact.source_ref.clone())),
@@ -1441,6 +1536,45 @@ fn base64_decode(input: &str) -> Result<Vec<u8>, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn entropy_minter_uses_randomized_fields_across_requests_at_the_same_time() {
+        let mut first = EntropyUuidV7Minter::new(Some(1_767_000_000_123), Some([0x11; 32]));
+        let mut second = EntropyUuidV7Minter::new(Some(1_767_000_000_123), Some([0x22; 32]));
+        let first_id = first.mint_uuidv7().unwrap();
+        let second_id = second.mint_uuidv7().unwrap();
+        assert_ne!(first_id, second_id);
+        assert_eq!(&first_id[14..15], "7");
+        assert!(matches!(&first_id[19..20], "8" | "9" | "a" | "b"));
+    }
+
+    #[test]
+    fn entropy_minter_supports_large_same_request_bursts_without_counter_wrap() {
+        let mut minter = EntropyUuidV7Minter::new(Some(1_767_000_000_123), Some([0x5a; 32]));
+        let mut identities = std::collections::BTreeSet::new();
+        for _ in 0..5_000 {
+            identities.insert(minter.mint_uuidv7().unwrap());
+        }
+        assert_eq!(identities.len(), 5_000);
+
+        minter.counter = u64::MAX;
+        assert_eq!(minter.mint_uuidv7(), Err("UUIDv7 entropy stream is exhausted".into()));
+        assert_eq!(minter.counter, u64::MAX);
+    }
+
+    #[test]
+    fn entropy_minter_fails_closed_for_missing_or_invalid_environmental_inputs() {
+        assert!(EntropyUuidV7Minter::new(None, Some([1; 32]))
+            .mint_uuidv7().unwrap_err().contains("clock is unavailable"));
+        assert!(EntropyUuidV7Minter::new(Some(1), None)
+            .mint_uuidv7().unwrap_err().contains("entropy is unavailable"));
+        assert!(EntropyUuidV7Minter::new(Some(1_u64 << 48), Some([1; 32]))
+            .mint_uuidv7().unwrap_err().contains("timestamp range"));
+        assert!(parse_entropy_seed(&"0".repeat(63)).is_none());
+        assert!(parse_entropy_seed(&"g".repeat(64)).is_none());
+        assert!(parse_entropy_seed(&"A".repeat(64)).is_none());
+        assert!(parse_entropy_seed(&"a".repeat(64)).is_some());
+    }
 
     struct FixedMinter {
         next: u8,

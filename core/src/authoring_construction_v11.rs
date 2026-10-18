@@ -132,7 +132,7 @@ pub(crate) fn execute(request: &Json) -> Json {
     ])
 }
 
-fn qualify_authority(
+pub(crate) fn qualify_authority(
     definition: &BTreeMap<String, Json>,
     resources: &[Json],
     diagnostics: &mut Vec<Json>,

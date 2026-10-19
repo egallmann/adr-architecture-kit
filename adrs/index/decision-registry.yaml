@@ -17454,8 +17454,8 @@ entities:
   entity_type: decision
   name: Bind one composition intent to one governed containment row or fail closed
   summary: A composition intent is the tuple {parent, child, relation, ordering}.
-    Execution MAY succeed only when that tuple selects exactly one row of the binding
-    matrix below. The row selects exactly one Authoring 1.7 property an
+    Execution under ACC 1.2 MAY succeed only when that tuple selects exactly one row
+    of the ACC 1.2 composition-binding table published under DEC-0279. T
   uri: adr://adr-architecture-kit/entities/01a1514b-805c-75ff-a7ee-e98d9d102cff
   created_at: '2026-10-18T23:14:24.988Z'
   entity_fingerprint: sha256:cf277387e1af998c3fc87404476d1d7e7cf8119578bca07afaf5b1833480505c
@@ -17471,6 +17471,8 @@ entities:
     related_invariants:
     - 01a1514b-805c-75ff-a7ee-e992bdc5673c
     - 01a1514b-805c-75ff-a7ee-e9938eb9705e
+    - 01a151af-ee18-75c7-a457-6a9a83f269f0
+    - 01a151af-ee18-75c7-a457-6a9cebbaacb7
     enforces_invariants: []
     enables_capabilities: []
     governs_components: []
@@ -17486,6 +17488,8 @@ entities:
     enforces:
     - 01a1514b-805c-75ff-a7ee-e992bdc5673c
     - 01a1514b-805c-75ff-a7ee-e9938eb9705e
+    - 01a151af-ee18-75c7-a457-6a9a83f269f0
+    - 01a151af-ee18-75c7-a457-6a9cebbaacb7
     enabled_by: []
     enables: []
     governs: []
@@ -17522,9 +17526,9 @@ entities:
   alias_ref: DEC-0275:resolve-composition-endpoints-only-as-request-keys
   entity_type: decision
   name: Resolve composition endpoints only to same-request fragment request keys
-  summary: For this capability, parent and child MUST each equal exactly one fragment
-    request_key in the same construction request. The match is exact string equality.
-    The successful path uses operation create and input_mode prepar
+  summary: For ACC 1.2 composition execution authorized by this ADR, parent and child
+    MUST each equal exactly one fragment request_key in the same construction request.
+    The match is exact string equality. The successful path uses o
   uri: adr://adr-architecture-kit/entities/01a1514b-805c-75ff-a7ee-e98ef774ad1f
   created_at: '2026-10-18T23:14:24.988Z'
   entity_fingerprint: sha256:ecb84a195e9a2437cd4fe1275c9af1b72c6ea8fa2abc4f87bf437e1cc2f6be2b
@@ -17539,6 +17543,7 @@ entities:
     adr_alias_id: ADR-L-0035
     related_invariants:
     - 01a1514b-805c-75ff-a7ee-e9938eb9705e
+    - 01a151af-ee18-75c7-a457-6a9a83f269f0
     enforces_invariants: []
     enables_capabilities: []
     governs_components: []
@@ -17553,6 +17558,7 @@ entities:
     related_to: []
     enforces:
     - 01a1514b-805c-75ff-a7ee-e9938eb9705e
+    - 01a151af-ee18-75c7-a457-6a9a83f269f0
     enabled_by: []
     enables: []
     governs: []
@@ -17744,6 +17750,7 @@ entities:
     adr_alias_id: ADR-L-0035
     related_invariants:
     - 01a1514b-805d-762f-9733-a65a91055d91
+    - 01a151af-ee18-75c7-a457-6a9a83f269f0
     enforces_invariants: []
     enables_capabilities: []
     governs_components: []
@@ -17758,6 +17765,7 @@ entities:
     related_to: []
     enforces:
     - 01a1514b-805d-762f-9733-a65a91055d91
+    - 01a151af-ee18-75c7-a457-6a9a83f269f0
     enabled_by: []
     enables: []
     governs: []
@@ -17785,6 +17793,79 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e9913dbcd63e
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a151af-ee18-75c7-a457-6a99e97be6be
+  alias_id: DEC-0279
+  alias_name: qualify-composition-binding-in-acc-1-2-closure
+  alias_ref: DEC-0279:qualify-composition-binding-in-acc-1-2-closure
+  entity_type: decision
+  name: Qualify the composition-binding table inside immutable ACC 1.2 resource closure
+  summary: 'Selected architecture: publish a separately fingerprinted successor Authoring
+    Construction Contract 1.2 whose exact SCF resource closure includes a closed,
+    schema-qualified composition-binding table. ACC 1.0 and ACC 1.1 '
+  uri: adr://adr-architecture-kit/entities/01a151af-ee18-75c7-a457-6a99e97be6be
+  created_at: '2026-10-19T01:04:06.680Z'
+  entity_fingerprint: sha256:456e3e65d9e553e132eb0a7c454b1993a5d0fcbd160bfe3776d05caca2b1be3a
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a151af-ee18-75c7-a457-6a99e97be6be
+    artifact_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    adr_alias_id: ADR-L-0035
+    related_invariants:
+    - 01a1514b-805d-762f-9733-a65a91055d91
+    - 01a151af-ee18-75c7-a457-6a9a83f269f0
+    - 01a151af-ee18-75c7-a457-6a9b736c94e2
+    - 01a151af-ee18-75c7-a457-6a9cebbaacb7
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: qualify-composition-binding-in-acc-1-2-closure
+    alias_id: DEC-0279
+  relationships:
+    declared_in:
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    references: []
+    related_to: []
+    enforces:
+    - 01a1514b-805d-762f-9733-a65a91055d91
+    - 01a151af-ee18-75c7-a457-6a9a83f269f0
+    - 01a151af-ee18-75c7-a457-6a9b736c94e2
+    - 01a151af-ee18-75c7-a457-6a9cebbaacb7
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a151af-ee18-75c7-a457-6a99e97be6be
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index

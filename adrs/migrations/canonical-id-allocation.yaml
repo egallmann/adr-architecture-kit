@@ -8,7 +8,7 @@ high_water_marks:
   DEC: 9000
   IFACE: 36
   IMPL: 29
-  INV: 289
+  INV: 292
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -2164,6 +2164,12 @@ allocations:
   source_pointer: /decisions/4/alias_id
   state: active
   adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+- id: DEC-0279
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_pointer: /decisions/5/alias_id
+  state: active
+  adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
 - id: DEC-9000
   entity_type: decision
   adr_id: ADR-L-9000
@@ -4094,5 +4100,23 @@ allocations:
   entity_type: invariant
   file_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
   source_pointer: /invariants/5/alias_id
+  state: active
+  adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+- id: INV-0290
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_pointer: /invariants/6/alias_id
+  state: active
+  adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+- id: INV-0291
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_pointer: /invariants/7/alias_id
+  state: active
+  adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+- id: INV-0292
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_pointer: /invariants/8/alias_id
   state: active
   adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7

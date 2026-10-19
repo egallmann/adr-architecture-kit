@@ -142,3 +142,19 @@ unresolved:
   - 019fee89-e617-78d9-ba3b-b7e3e6db1b12
   - Canonical entity-level updated_at and updated_at>=created_at invariant remain
     deferred with transactional authoring
+- id: UGAP-01a1514b-805c-75ff-a7ee-e98ccfcf73e7-01a15173-a06d-75e2-a0a5-4e91f8200731
+  gap_class: author_declared
+  gap_type: author_declared_real_gap
+  source_entity_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+  severity: important
+  provenance:
+    source_type: derived_registry
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a15173-a06d-75e2-a0a5-4e91f8200731
+    extraction_phase: detect_unresolved
+    classification: explicit
+    generator: adr-architecture-index
+  evidence:
+  - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+  - Which exact content-qualified resource, selected inside the construction authority
+    closure, carries the ADR-L-0035 containment row so an implementation can execute
+    it?

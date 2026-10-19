@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 30cc889e7e3f25424f7dc57447f05ab96853fae9a76838a814a5b36590385540
-rendered_hash: 7140e0ad8ec05d266cd7f9e3cceec13251b69d5114c71b1b84715ae324a3196b
+source_hash: 5051d927abb31a6ed788e2763c4f71170d34556442d855187944c276d6443088
+rendered_hash: 8a2e5d4ca6f983778d78f0eaece7cd92b13944faaa924556e753dc249f37b392
 -->
 
 # ADR-L-0035: Governed Composition-Intent Binding for Authoring Construction
@@ -55,10 +55,11 @@ execution ignores relation and rewrites some child fields. That behavior
 remains historical authority for unchanged C01-C42 only. It is not ACC 1.1
 construction authority, and this decision does not carry that behavior forward.
 
-This ADR defines the minimum binding that later construction can execute
-for one parent and child capability. It does not execute composition,
-amend a published contract, or change semantic-core protocol 1.5. Its
-status remains proposed until a separate acceptance decision.
+This ADR defines the minimum binding for one parent and child capability.
+It does not execute composition, amend a published contract, or change
+semantic-core protocol 1.5. Frozen ACC 1.1 does not contain this row in
+its qualified closure. That missing qualification is a blocking gap.
+Status remains proposed.
 ## Architectural Decisions
 
 | Decision | Choice | Traceability |
@@ -122,12 +123,23 @@ Fragment composition_keys do not identify a composition, a property, or
 a child. They have no governed target. A non-empty composition_keys array
 on any fragment makes the request Unavailable.
 
-Outcome aggregation for one request is closed. Any Rejected composition
-rejects the request. Otherwise any Unresolved composition leaves the
-request Unresolved. Otherwise any Unavailable composition leaves the
-request Unavailable. Otherwise every composition is bound by a matrix row.
-Partial embedding is forbidden. Empty compositions remain the existing
-non-composition path and are outside this binding.
+Outcome aggregation follows immutable ACC 1.1 precedence: Rejected, then
+Unavailable, then Unresolved, then Constructed. Any independently
+established Rejected violation rejects the request. Otherwise any
+Unavailable composition or missing capability leaves the request
+Unavailable. Otherwise any Unresolved composition leaves the request
+Unresolved. Otherwise every composition is bound by a matrix row.
+Constructed remains unauthorized by this proposed ADR. Partial embedding
+is forbidden. Empty compositions remain the existing non-composition path
+and are outside this binding. Every independently discoverable diagnostic
+is retained, including a diagnostic whose status does not win the outcome.
+
+Mixed example: one composition is Unavailable because the resolved types
+have no matrix row, and another is Unresolved because an endpoint matches
+no request_key. No Rejected violation is present. The request outcome is
+Unavailable, and both diagnostics are retained. A further unknown relation
+in that same request is an independent Rejected violation, so the outcome
+becomes Rejected while the Unavailable and Unresolved diagnostics remain.
 
 Closed cases:
 
@@ -153,8 +165,14 @@ Parent or child operation is retire: Rejected,
 authoring_construction.composition.operation_unsupported.
 Parent or child operation is update: Unavailable,
 authoring_construction.composition.update_unavailable.
-Parent or child input_mode is compact: Rejected,
-authoring_construction.composition.compact_input_forbidden.
+Parent or child input_mode is compact: Unavailable,
+authoring_construction.fragment.compact_unavailable.
+ACC 1.1 admits compact as an input mode. Accepted DEC-0188 treats compact
+input as compression that must not invent material intent, and PR #163
+reports Unavailable because the source transformation is not defined by
+executable authority. Compact input is that missing capability. It is not
+a semantic violation, and this ADR does not create a prohibition to make
+it one.
 Parent and child are the same fragment, or the containment edges cycle:
 Rejected, authoring_construction.composition.cycle.
 The same parent and child pair occurs more than once: Rejected,
@@ -199,8 +217,9 @@ Negative:
 
 For this capability, parent and child MUST each equal exactly one
 fragment request_key in the same construction request. The match is exact
-string equality. The fragment operation MUST be create and its input_mode
-MUST be prepared. The parent fragment semantic type MUST be adr/logical.
+string equality. The successful path uses operation create and input_mode
+prepared. Compact input stays schema-valid and is Unavailable under
+DEC-0274. The parent fragment semantic type MUST be adr/logical.
 The child fragment semantic type MUST be entity/decision. Parent and child
 request keys MUST differ.
 
@@ -341,15 +360,36 @@ composition_resolution false. No implementation may report composition
 resolution, seal a composed basis, or return Constructed under protocol
 1.5.
 
-An additive semantic-core protocol successor, protocol 1.6, is required
-before execution. Protocol 1.6 transports this record and may set
-composition_resolution true only when every composition in the request is
-bound and every record is present. It MUST NOT edit protocol 1.5. It is
-not the semantic authority for the binding; an accepted form of this ADR
-is. If a protocol const and this ADR disagree, execution is Unavailable.
-construct_authoring_set and the other currently false ACC 1.1 capability
-flags stay false. No new ACC, ADC, AI, Authoring, Normalized Model, or
-CEC version is required for the binding itself.
+Accepted authority does not let protocol 1.6, or an accepted copy of this
+ADR, execute the row under the frozen ACC 1.1 closure.
+
+ACC 1.1 selects authority by exact content qualification. Its closure is
+the published rule resource plus the semantic dependencies it names:
+Architecture Interpretation 1.2, Authoring Domain Contract 1.1, Authoring
+1.7, Custom Entity Contract 1.0, and Normalized Model 2.4. Ambient
+repository state is not a substitute. A missing or incomplete exact
+authority is Unavailable. ADC 1.1 describes the parent and child pair and
+states that construction execution is not performed by that publication.
+AI 1.2 states the meaning of adr/logical#/decisions after the bytes exist.
+Neither resource names the relation contains, selects /decisions from a
+composition intent, or assigns the compiler as the writer.
+
+This proposed ADR is repository design text. Acceptance would make the
+row repository design authority. Acceptance would not insert the row into
+the ACC 1.1 fingerprint. Semantic-core protocol 1.5 keeps
+composition_resolution false and is unchanged. A later protocol can carry
+a record. A transport is not a member of the ACC 1.1 closure and is not
+the missing qualification. construct_authoring_set and the other currently
+false ACC 1.1 capability flags stay false.
+
+The evidence fields below are the record this design requires once a
+qualified closure member exists. They are not that member. Implementation
+conformance is provable only against the exact resource the selected
+construction closure identifies. Comparison with this ADR's prose is not
+ACC 1.1 qualification. The identity of that resource, and whether it is a
+successor construction contract, a binding resource selected by one, or
+another versioned profile, is the blocking gap GAP-0020. This ADR does
+not choose it.
 
 Each bound intent produces one record. Records sort by parent canonical
 UUID, ordering, then child canonical UUID.
@@ -378,18 +418,17 @@ equality used as a substitute for field equality, and composed_of.
 composed_of remains an AI interpretation of authored system topology, not
 a forward composition relation.
 
-This ADR is proposed. Acceptance is a separate decision. Until both
-acceptance and protocol 1.6 exist, composition-bearing ACC 1.1 requests
-remain Unavailable under the current fail-closed gate, including the
-existing authoring_construction.composition.evidence_unavailable result.
-This ADR authorizes no Rust construction, no Constructed outcome, no
-repository binding, and no persistence.
+This ADR is proposed. Composition-bearing ACC 1.1 requests remain
+Unavailable under the current fail-closed gate, including
+authoring_construction.composition.evidence_unavailable. This ADR
+authorizes no Rust construction, no Constructed outcome, no repository
+binding, and no persistence. GAP-0020 blocks acceptance.
 
-The future conformance matrix, and not a root-count assertion, is the
-execution oracle. It is not authorized for implementation by this
-proposed ADR.
+The conformance matrix below is the oracle for a later implementation
+that a qualified closure member has authorized. It is not authorized now.
+A root-count assertion is not that oracle.
 
-Positive cases, after acceptance and protocol 1.6: one adr/logical create
+Positive cases, after that qualified authorization: one adr/logical create
 parent and one entity/decision create child; relation contains; distinct
 request_key endpoints; empty composition_keys; prepared parent lacks
 decisions; child fields are a complete decision except an id that may be
@@ -400,14 +439,16 @@ entropy seed is byte-identical; permuting the compositions array does not
 change parent bytes when ordering values are unchanged; two children emit
 in ordering-sort order rather than request order.
 
-Negative cases, after that same gate: unknown relation; parent or child
-type outside the matrix; duplicate membership; duplicate ordering; missing
-endpoint; ambiguous request_key; reference or reference-basis endpoint;
-reference or retire operation; compact input; prepared decisions present;
-self-containment; the same child under two parents; a mutated child field;
-a second child id; the child both embedded and selected as a root; a
-non-empty composition_keys array; direct use of composed_of as a relation.
-Update remains Unavailable.
+Negative cases, after that same gate: unknown relation is Rejected; a
+parent or child type outside the matrix is Unavailable; duplicate
+membership, duplicate ordering, an ambiguous request_key, a reference or
+reference-basis endpoint, and a reference or retire operation are
+Rejected; a missing endpoint is Unresolved; compact input is Unavailable;
+prepared decisions, self-containment, the same child under two parents, a
+mutated child field, a second child id, and the child both embedded and
+selected as a root are Rejected. A non-empty composition_keys array is
+Unavailable. Direct use of composed_of as a relation is Rejected. Update
+remains Unavailable.
 
 Regression that remains in force now and after implementation: frozen ACC
 1.0 C01-C42, including C05 and C07 minimal-root digests; ACC 1.1
@@ -417,12 +458,12 @@ no relabeling of C01-C42 as ACC 1.1 runtime coverage.
 **Consequences**
 
 Positive:
-- A later protocol can transport only facts this decision already fixes.
-- Reviewers can accept or reject the binding without an implementation disguised as a contract edit.
+- The evidence record is specified without treating a protocol as the construction closure.
+- Reviewers can see that ACC 1.1 qualification and this design text are different authorities.
 
 Negative:
 - Composition-bearing requests stay Unavailable through this proposal.
-- Execution requires a later accepted ADR plus an additive protocol before any code change.
+- Acceptance is blocked until GAP-0020 names the qualified closure member.
 
 **Traceability**
 - Related invariants: INV-0289
@@ -446,7 +487,7 @@ Negative:
 
 **Statement**
 
-One ACC composition intent MUST select exactly one accepted binding row, one Authoring 1.7 property, and one AI 1.2 semantic_field_key, or the request MUST fail closed as Rejected, Unresolved, or Unavailable under the closed case table. Unknown relations MUST be Rejected. Pairs without a row MUST be Unavailable. The relation contains MUST mean membership in the selected property only.
+One ACC composition intent MUST select exactly one accepted binding row, one Authoring 1.7 property, and one AI 1.2 semantic_field_key, or the request MUST fail closed under ACC 1.1 precedence Rejected, then Unavailable, then Unresolved. Unknown relations MUST be Rejected. Pairs without a row MUST be Unavailable. Compact input MUST remain Unavailable as a missing transformation. The relation contains MUST mean membership in the selected property only. All independently discoverable diagnostics MUST be retained.
 
 **Scope:** construction
 
@@ -546,7 +587,7 @@ This proposed binding MUST NOT amend ACC 1.0, ACC 1.1, ADC 1.1, AI 1.2, Authorin
 
 **Rationale**
 
-The missing authority is a decision. Publishing it as proposed does not make composition available.
+Publishing this design does not qualify it inside the frozen ACC 1.1 closure. GAP-0020 blocks acceptance and execution.
 
 **Upheld by decisions**
 - Require semantic, integrity, and diagnostic evidence before composition execution can be reported (DEC-0278)
@@ -605,33 +646,50 @@ flowchart LR
 
 
 
+## Known Gaps
+
+### GAP-0020: Which exact content-qualified resource, selected inside the construction authority closure, carries the ADR-L-0035 containment row so an implementation can execute it?
+
+**Context:** Frozen ACC 1.1 qualifies authority by exact content and does not include
+this row. ADC 1.1 permits adr/logical to contain entity/decision and does
+not select the relation, the Authoring property, or the writer. AI 1.2
+states the meaning of adr/logical#/decisions and does not authorize
+construction to write it from a composition intent. An accepted logical
+ADR remains repository design authority and is not an ACC 1.1 closure
+member. Semantic-core protocol 1.5 cannot report composition resolution.
+A later protocol can transport evidence and cannot become the missing
+closure member. This gap does not choose a successor contract, a binding
+resource, or a profile. Acceptance is blocked while the question is open.
+**Impact:** high
+**Blocking:** true
+**Affects:** 01a1514b-805c-75ff-a7ee-e9913dbcd63e
+**Decision required from:** architecture review before acceptance
+**Alias name:** composition-execution-closure-is-unqualified
+
 
 ## Notes
 
 Status is proposed. This file is a review surface, not accepted authority.
-Do not promote it to accepted in the change that introduces it.
+Do not promote it to accepted while GAP-0020 is open.
 
 The binding chosen here is compiler-owned insertion of separate prepared
 children. Verification of a pre-embedded child, and any dual-writer
 combination, are rejected alternatives recorded on DEC-0276.
 
-Explicitly outside this capability, and therefore not open semantic
-questions inside it: reference-basis endpoints, update and merge,
-composition_keys as selectors, additional semantic-type rows, protocol 1.6
-publication, Normalized Model interpretation of composed roots, ledger
-derivation, and Constructed qualification. ACC 1.0 C01-C42 stay frozen.
+Explicitly outside this capability: reference-basis endpoints, update and
+merge, composition_keys as selectors, additional semantic-type rows,
+Normalized Model interpretation of composed roots, ledger derivation, and
+Constructed qualification. ACC 1.0 C01-C42 stay frozen. Protocol 1.5 stays
+unchanged. Protocol publication is not a substitute for GAP-0020.
 
-After separate acceptance, the only authorized implementation change is
-bounded as follows. Publish additive semantic-core protocol 1.6 whose
-composition record contains only the fields named in DEC-0278. Leave
-protocol 1.5 unchanged. Then, and only then, teach ACC 1.1 basis preparation
-to bind the one matrix row or fail closed with the named diagnostics, insert
-the child canonical object, and pass the resulting containment proof to the
-existing minimal-root selector. Host adapters pass that result through
-unchanged. Do not call the historical ACC 1.0 fragment renderer. Do not
-return Constructed. Do not bind a repository or persist. Add the positive
-and negative fixtures named in DEC-0278, and keep C01-C42 and current
-non-composition seals unchanged. Stop there.
+No implementation is authorized. After GAP-0020 is answered by a qualified
+closure member, and only then, a follow-on may bind the one matrix row or
+fail closed with the named diagnostics, insert the child canonical object,
+and pass the containment proof to the existing minimal-root selector. Host
+adapters pass that result through unchanged. Do not call the historical
+ACC 1.0 fragment renderer. Do not return Constructed. Do not bind a
+repository or persist. Add the positive and negative fixtures named in
+DEC-0278, and keep C01-C42 and current non-composition seals unchanged.
 
 
 ---

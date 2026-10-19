@@ -17447,3 +17447,344 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: 01a1514b-805c-75ff-a7ee-e98d9d102cff
+  alias_id: DEC-0274
+  alias_name: bind-one-composition-intent-to-one-containment
+  alias_ref: DEC-0274:bind-one-composition-intent-to-one-containment
+  entity_type: decision
+  name: Bind one composition intent to one governed containment row or fail closed
+  summary: A composition intent is the tuple {parent, child, relation, ordering}.
+    Execution MAY succeed only when that tuple selects exactly one row of the binding
+    matrix below. The row selects exactly one Authoring 1.7 property an
+  uri: adr://adr-architecture-kit/entities/01a1514b-805c-75ff-a7ee-e98d9d102cff
+  created_at: '2026-10-18T23:14:24.988Z'
+  entity_fingerprint: sha256:cf277387e1af998c3fc87404476d1d7e7cf8119578bca07afaf5b1833480505c
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e98d9d102cff
+    artifact_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    adr_alias_id: ADR-L-0035
+    related_invariants:
+    - 01a1514b-805c-75ff-a7ee-e992bdc5673c
+    - 01a1514b-805c-75ff-a7ee-e9938eb9705e
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: bind-one-composition-intent-to-one-containment
+    alias_id: DEC-0274
+  relationships:
+    declared_in:
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    references: []
+    related_to: []
+    enforces:
+    - 01a1514b-805c-75ff-a7ee-e992bdc5673c
+    - 01a1514b-805c-75ff-a7ee-e9938eb9705e
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e98d9d102cff
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1514b-805c-75ff-a7ee-e98ef774ad1f
+  alias_id: DEC-0275
+  alias_name: resolve-composition-endpoints-only-as-request-keys
+  alias_ref: DEC-0275:resolve-composition-endpoints-only-as-request-keys
+  entity_type: decision
+  name: Resolve composition endpoints only to same-request fragment request keys
+  summary: For this capability, parent and child MUST each equal exactly one fragment
+    request_key in the same construction request. The match is exact string equality.
+    The successful path uses operation create and input_mode prepar
+  uri: adr://adr-architecture-kit/entities/01a1514b-805c-75ff-a7ee-e98ef774ad1f
+  created_at: '2026-10-18T23:14:24.988Z'
+  entity_fingerprint: sha256:ecb84a195e9a2437cd4fe1275c9af1b72c6ea8fa2abc4f87bf437e1cc2f6be2b
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e98ef774ad1f
+    artifact_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    adr_alias_id: ADR-L-0035
+    related_invariants:
+    - 01a1514b-805c-75ff-a7ee-e9938eb9705e
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: resolve-composition-endpoints-only-as-request-keys
+    alias_id: DEC-0275
+  relationships:
+    declared_in:
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    references: []
+    related_to: []
+    enforces:
+    - 01a1514b-805c-75ff-a7ee-e9938eb9705e
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e98ef774ad1f
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1514b-805c-75ff-a7ee-e98fd08780d2
+  alias_id: DEC-0276
+  alias_name: compiler-owns-the-selected-containment-property
+  alias_ref: DEC-0276:compiler-owns-the-selected-containment-property
+  entity_type: decision
+  name: Let the compiler write the selected parent property from separate prepared
+    children
+  summary: This ADR selects compiler-owned containment and rejects both verification
+    of a pre-written child and any combination of the two writers. The composition
+    intent is the sole authority for membership of the selected propert
+  uri: adr://adr-architecture-kit/entities/01a1514b-805c-75ff-a7ee-e98fd08780d2
+  created_at: '2026-10-18T23:14:24.988Z'
+  entity_fingerprint: sha256:5f9cd2f595b8b2914296cab430173aa01440905cc1e17dd9a7a5459f6fb41160
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e98fd08780d2
+    artifact_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    adr_alias_id: ADR-L-0035
+    related_invariants:
+    - 01a1514b-805d-762f-9733-a657fe39a26f
+    - 01a1514b-805d-762f-9733-a658b38110fb
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: compiler-owns-the-selected-containment-property
+    alias_id: DEC-0276
+  relationships:
+    declared_in:
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    references: []
+    related_to: []
+    enforces:
+    - 01a1514b-805d-762f-9733-a657fe39a26f
+    - 01a1514b-805d-762f-9733-a658b38110fb
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e98fd08780d2
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1514b-805c-75ff-a7ee-e9900b046f24
+  alias_id: DEC-0277
+  alias_name: separate-parent-membership-sequence-from-child-identity
+  alias_ref: DEC-0277:separate-parent-membership-sequence-from-child-identity
+  entity_type: decision
+  name: Treat ordering as parent membership sequence and never as child identity
+  summary: 'ADC entity/decision ordering_policy identity_keyed_set with material false
+    and AI 1.2 ordered_sequence on adr/logical#/decisions do not contradict each other.
+    The ADC statement governs the child unit: canonical UUIDv7 is'
+  uri: adr://adr-architecture-kit/entities/01a1514b-805c-75ff-a7ee-e9900b046f24
+  created_at: '2026-10-18T23:14:24.988Z'
+  entity_fingerprint: sha256:d73aeca5c938cfca33692da419e57f74f392b491564d5138f4da4091afd8ee76
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e9900b046f24
+    artifact_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    adr_alias_id: ADR-L-0035
+    related_invariants:
+    - 01a1514b-805d-762f-9733-a6594aac3aa9
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: separate-parent-membership-sequence-from-child-identity
+    alias_id: DEC-0277
+  relationships:
+    declared_in:
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    references: []
+    related_to: []
+    enforces:
+    - 01a1514b-805d-762f-9733-a6594aac3aa9
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e9900b046f24
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1514b-805c-75ff-a7ee-e9913dbcd63e
+  alias_id: DEC-0278
+  alias_name: require-partitioned-composition-evidence-before-execution
+  alias_ref: DEC-0278:require-partitioned-composition-evidence-before-execution
+  entity_type: decision
+  name: Require semantic, integrity, and diagnostic evidence before composition execution
+    can be reported
+  summary: A bound composition is proved only by a composition record that separates
+    meaning from integrity. The record is not defined by semantic-core protocol 1.5,
+    and this ADR does not add it there. Protocol 1.5 keeps compositio
+  uri: adr://adr-architecture-kit/entities/01a1514b-805c-75ff-a7ee-e9913dbcd63e
+  created_at: '2026-10-18T23:14:24.988Z'
+  entity_fingerprint: sha256:b4e184360861763803c7b2997e02cf1de40e63c3e7627e663c67697785615e2d
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e9913dbcd63e
+    artifact_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    adr_alias_id: ADR-L-0035
+    related_invariants:
+    - 01a1514b-805d-762f-9733-a65a91055d91
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: require-partitioned-composition-evidence-before-execution
+    alias_id: DEC-0278
+  relationships:
+    declared_in:
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    references: []
+    related_to: []
+    enforces:
+    - 01a1514b-805d-762f-9733-a65a91055d91
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e9913dbcd63e
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index

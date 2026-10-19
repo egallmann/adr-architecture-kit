@@ -17524,7 +17524,7 @@ entities:
   name: Resolve composition endpoints only to same-request fragment request keys
   summary: For this capability, parent and child MUST each equal exactly one fragment
     request_key in the same construction request. The match is exact string equality.
-    The fragment operation MUST be create and its input_mode MUST b
+    The successful path uses operation create and input_mode prepar
   uri: adr://adr-architecture-kit/entities/01a1514b-805c-75ff-a7ee-e98ef774ad1f
   created_at: '2026-10-18T23:14:24.988Z'
   entity_fingerprint: sha256:ecb84a195e9a2437cd4fe1275c9af1b72c6ea8fa2abc4f87bf437e1cc2f6be2b

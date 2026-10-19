@@ -16983,7 +16983,7 @@ entities:
   name: INV-0284
   summary: One ACC composition intent MUST select exactly one accepted binding row,
     one Authoring 1.7 property, and one AI 1.2 semantic_field_key, or the request
-    MUST fail closed as Rejected, Unresolved, or Unavailable under the cl
+    MUST fail closed under ACC 1.1 precedence Rejected, then Unavailable,
   uri: adr://adr-architecture-kit/entities/01a1514b-805c-75ff-a7ee-e992bdc5673c
   created_at: '2026-10-18T23:14:24.988Z'
   entity_fingerprint: sha256:78335745431a31e854b52de5a606e04d1906d4a635fb81daf2a1e91efbfeb2a3
@@ -16999,9 +16999,11 @@ entities:
     scope: construction
     statement: One ACC composition intent MUST select exactly one accepted binding
       row, one Authoring 1.7 property, and one AI 1.2 semantic_field_key, or the request
-      MUST fail closed as Rejected, Unresolved, or Unavailable under the closed case
-      table. Unknown relations MUST be Rejected. Pairs without a row MUST be Unavailable.
-      The relation contains MUST mean membership in the selected property only.
+      MUST fail closed under ACC 1.1 precedence Rejected, then Unavailable, then Unresolved.
+      Unknown relations MUST be Rejected. Pairs without a row MUST be Unavailable.
+      Compact input MUST remain Unavailable as a missing transformation. The relation
+      contains MUST mean membership in the selected property only. All independently
+      discoverable diagnostics MUST be retained.
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions:

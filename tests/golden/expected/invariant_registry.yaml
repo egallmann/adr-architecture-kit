@@ -16975,3 +16975,639 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: 01a1514b-805c-75ff-a7ee-e992bdc5673c
+  alias_id: INV-0284
+  alias_name: one-composition-intent-selects-one-containment
+  alias_ref: INV-0284:one-composition-intent-selects-one-containment
+  entity_type: invariant
+  name: INV-0284
+  summary: One ACC 1.2 composition intent MUST select exactly one accepted binding
+    row from the verified ACC 1.2 composition-bindings table, one Authoring 1.7 property,
+    and one AI 1.2 semantic_field_key, or the request MUST fail cl
+  uri: adr://adr-architecture-kit/entities/01a1514b-805c-75ff-a7ee-e992bdc5673c
+  created_at: '2026-10-18T23:14:24.988Z'
+  entity_fingerprint: sha256:78335745431a31e854b52de5a606e04d1906d4a635fb81daf2a1e91efbfeb2a3
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e992bdc5673c
+    artifact_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    adr_alias_id: ADR-L-0035
+    scope: construction
+    statement: One ACC 1.2 composition intent MUST select exactly one accepted binding
+      row from the verified ACC 1.2 composition-bindings table, one Authoring 1.7
+      property, and one AI 1.2 semantic_field_key, or the request MUST fail closed
+      under ACC precedence Rejected, then Unavailable, then Unresolved. Unknown relations
+      MUST be Rejected. Pairs without a row MUST be Unavailable. Compact input MUST
+      remain Unavailable as a missing transformation. The relation contains MUST mean
+      membership in the selected property only. All independently discoverable diagnostics
+      MUST be retained. ACC 1.1 composition MUST remain Unavailable.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1514b-805c-75ff-a7ee-e98d9d102cff
+    - 01a151af-ee18-75c7-a457-6a99e97be6be
+    supersedes: []
+    alias_id: INV-0284
+    alias_name: one-composition-intent-selects-one-containment
+  relationships:
+    declared_in:
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e992bdc5673c
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1514b-805c-75ff-a7ee-e9938eb9705e
+  alias_id: INV-0285
+  alias_name: composition-endpoints-are-request-keys
+  alias_ref: INV-0285:composition-endpoints-are-request-keys
+  entity_type: invariant
+  name: INV-0285
+  summary: Composition parent and child endpoints in this ACC 1.2 capability MUST
+    resolve to exactly one same-request create fragment request_key each, and a reference,
+    alias, canonical UUID, or source location MUST NOT become a de
+  uri: adr://adr-architecture-kit/entities/01a1514b-805c-75ff-a7ee-e9938eb9705e
+  created_at: '2026-10-18T23:14:24.988Z'
+  entity_fingerprint: sha256:ecd1c429b433ceee8926cea7373d4bcc4a8163cdac26b0cb4401b392981b2c7d
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e9938eb9705e
+    artifact_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    adr_alias_id: ADR-L-0035
+    scope: construction
+    statement: Composition parent and child endpoints in this ACC 1.2 capability MUST
+      resolve to exactly one same-request create fragment request_key each, and a
+      reference, alias, canonical UUID, or source location MUST NOT become a definition.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1514b-805c-75ff-a7ee-e98d9d102cff
+    - 01a1514b-805c-75ff-a7ee-e98ef774ad1f
+    - 01a151af-ee18-75c7-a457-6a99e97be6be
+    supersedes: []
+    alias_id: INV-0285
+    alias_name: composition-endpoints-are-request-keys
+  relationships:
+    declared_in:
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e9938eb9705e
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1514b-805d-762f-9733-a657fe39a26f
+  alias_id: INV-0286
+  alias_name: compiler-owns-the-selected-parent-property
+  alias_ref: INV-0286:compiler-owns-the-selected-parent-property
+  entity_type: invariant
+  name: INV-0286
+  summary: For a bound composition, the compiler MUST own the selected parent property,
+    the prepared parent MUST omit that property, and a prepared value MUST NOT be
+    accepted as an alternate or verifying writer.
+  uri: adr://adr-architecture-kit/entities/01a1514b-805d-762f-9733-a657fe39a26f
+  created_at: '2026-10-18T23:14:24.989Z'
+  entity_fingerprint: sha256:bcc7f3701998cc8a70141c0faa10e41acda3a738f577e34f6842ca62a7b1973f
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805d-762f-9733-a657fe39a26f
+    artifact_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    adr_alias_id: ADR-L-0035
+    scope: construction
+    statement: For a bound composition, the compiler MUST own the selected parent
+      property, the prepared parent MUST omit that property, and a prepared value
+      MUST NOT be accepted as an alternate or verifying writer.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1514b-805c-75ff-a7ee-e98fd08780d2
+    supersedes: []
+    alias_id: INV-0286
+    alias_name: compiler-owns-the-selected-parent-property
+  relationships:
+    declared_in:
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805d-762f-9733-a657fe39a26f
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1514b-805d-762f-9733-a658b38110fb
+  alias_id: INV-0287
+  alias_name: embedding-preserves-complete-child-semantics
+  alias_ref: INV-0287:embedding-preserves-complete-child-semantics
+  entity_type: invariant
+  name: INV-0287
+  summary: Embedding MUST preserve the child canonical UUIDv7 and every child semantic
+    field exactly, MUST NOT mint a second identity or rewrite aliases or rationales,
+    and MUST retain the child as a candidate artifact while omittin
+  uri: adr://adr-architecture-kit/entities/01a1514b-805d-762f-9733-a658b38110fb
+  created_at: '2026-10-18T23:14:24.989Z'
+  entity_fingerprint: sha256:88d53125a35ad29fa67193a8291596692aecba741a1cc8295afa316a7a06e761
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805d-762f-9733-a658b38110fb
+    artifact_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    adr_alias_id: ADR-L-0035
+    scope: construction
+    statement: Embedding MUST preserve the child canonical UUIDv7 and every child
+      semantic field exactly, MUST NOT mint a second identity or rewrite aliases or
+      rationales, and MUST retain the child as a candidate artifact while omitting
+      it from source roots only under exact-subtree proof.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1514b-805c-75ff-a7ee-e98fd08780d2
+    supersedes: []
+    alias_id: INV-0287
+    alias_name: embedding-preserves-complete-child-semantics
+  relationships:
+    declared_in:
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805d-762f-9733-a658b38110fb
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1514b-805d-762f-9733-a6594aac3aa9
+  alias_id: INV-0288
+  alias_name: parent-sequence-is-not-child-identity
+  alias_ref: INV-0288:parent-sequence-is-not-child-identity
+  entity_type: invariant
+  name: INV-0288
+  summary: composition_intent.ordering MUST determine only the semantic sequence of
+    child identities in the selected parent field. It MUST NOT identify the child,
+    be stored as a child field, or be replaced by request array position
+  uri: adr://adr-architecture-kit/entities/01a1514b-805d-762f-9733-a6594aac3aa9
+  created_at: '2026-10-18T23:14:24.989Z'
+  entity_fingerprint: sha256:0441e9193aeb7f406c303111ae57dcd44f8ee39cfda1ede97b386e761de6b37a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805d-762f-9733-a6594aac3aa9
+    artifact_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    adr_alias_id: ADR-L-0035
+    scope: semantic-authority
+    statement: composition_intent.ordering MUST determine only the semantic sequence
+      of child identities in the selected parent field. It MUST NOT identify the child,
+      be stored as a child field, or be replaced by request array position.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1514b-805c-75ff-a7ee-e9900b046f24
+    supersedes: []
+    alias_id: INV-0288
+    alias_name: parent-sequence-is-not-child-identity
+  relationships:
+    declared_in:
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805d-762f-9733-a6594aac3aa9
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1514b-805d-762f-9733-a65a91055d91
+  alias_id: INV-0289
+  alias_name: accepted-composition-design-does-not-authorize-execution
+  alias_ref: INV-0289:accepted-composition-design-does-not-authorize-execution
+  entity_type: invariant
+  name: INV-0289
+  summary: 'This accepted design MUST NOT amend ACC 1.0, ACC 1.1, ADC 1.1, AI 1.2,
+    Authoring 1.7, NM 2.4, CEC 1.0, ACC 1.0 conformance markers including C01-C42,
+    or semantic-core protocol 1.5. Composition MUST NOT execute under ACC '
+  uri: adr://adr-architecture-kit/entities/01a1514b-805d-762f-9733-a65a91055d91
+  created_at: '2026-10-18T23:14:24.989Z'
+  entity_fingerprint: sha256:6b71b72a505db67308e4df96855683a2547fe9d68c9edf1c079e572bc6ccb1c5
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805d-762f-9733-a65a91055d91
+    artifact_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    adr_alias_id: ADR-L-0035
+    scope: global
+    statement: This accepted design MUST NOT amend ACC 1.0, ACC 1.1, ADC 1.1, AI 1.2,
+      Authoring 1.7, NM 2.4, CEC 1.0, ACC 1.0 conformance markers including C01-C42,
+      or semantic-core protocol 1.5. Composition MUST NOT execute under ACC 1.1, and
+      ACC 1.1 composition-bearing requests MUST remain Unavailable. This ADR MUST
+      NOT by itself authorize ACC 1.2 publication, composition execution, a Constructed
+      outcome, repository binding, or persistence.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1514b-805c-75ff-a7ee-e9913dbcd63e
+    - 01a151af-ee18-75c7-a457-6a99e97be6be
+    supersedes: []
+    alias_id: INV-0289
+    alias_name: accepted-composition-design-does-not-authorize-execution
+  relationships:
+    declared_in:
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805d-762f-9733-a65a91055d91
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a151af-ee18-75c7-a457-6a9a83f269f0
+  alias_id: INV-0290
+  alias_name: composition-binding-rows-come-only-from-verified-acc-closure
+  alias_ref: INV-0290:composition-binding-rows-come-only-from-verified-acc-closure
+  entity_type: invariant
+  name: INV-0290
+  summary: Execution MUST read composition-binding rows only from the verified ACC
+    resource closure selected by the request. Implementations MUST NOT hard-code parent,
+    child, relation, Authoring property, AI field, endpoint, writer
+  uri: adr://adr-architecture-kit/entities/01a151af-ee18-75c7-a457-6a9a83f269f0
+  created_at: '2026-10-19T01:04:06.680Z'
+  entity_fingerprint: sha256:8d7a9e0e11f5288f4a3b37750b12b8f746bb29dbe369f1cf53276a05158d84c3
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a151af-ee18-75c7-a457-6a9a83f269f0
+    artifact_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    adr_alias_id: ADR-L-0035
+    scope: construction
+    statement: Execution MUST read composition-binding rows only from the verified
+      ACC resource closure selected by the request. Implementations MUST NOT hard-code
+      parent, child, relation, Authoring property, AI field, endpoint, writer, or
+      ordering rows in Rust, hosts, protocol declarations, or ambient repository state.
+      A generic interpreter MAY implement only the published table vocabulary and
+      selection algorithm.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a151af-ee18-75c7-a457-6a99e97be6be
+    - 01a1514b-805c-75ff-a7ee-e98d9d102cff
+    supersedes: []
+    alias_id: INV-0290
+    alias_name: composition-binding-rows-come-only-from-verified-acc-closure
+  relationships:
+    declared_in:
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a151af-ee18-75c7-a457-6a9a83f269f0
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a151af-ee18-75c7-a457-6a9b736c94e2
+  alias_id: INV-0291
+  alias_name: acc-1-2-must-not-rebind-historical-conformance
+  alias_ref: INV-0291:acc-1-2-must-not-rebind-historical-conformance
+  entity_type: invariant
+  name: INV-0291
+  summary: ACC 1.2 frozenNormativeConformanceResources MUST contain only authoring-construction/1.2/conformance
+    and MUST NOT include ACC 1.0 or ACC 1.1 conformance resources. ACC 1.2 MUST NOT
+    create recursive enclosing SCF referenc
+  uri: adr://adr-architecture-kit/entities/01a151af-ee18-75c7-a457-6a9b736c94e2
+  created_at: '2026-10-19T01:04:06.680Z'
+  entity_fingerprint: sha256:12c5ea2c1991696c55d77e5f42b1e8545130107724fb44d814c86475072f1c0e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a151af-ee18-75c7-a457-6a9b736c94e2
+    artifact_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    adr_alias_id: ADR-L-0035
+    scope: semantic-authority
+    statement: ACC 1.2 frozenNormativeConformanceResources MUST contain only authoring-construction/1.2/conformance
+      and MUST NOT include ACC 1.0 or ACC 1.1 conformance resources. ACC 1.2 MUST
+      NOT create recursive enclosing SCF references in the composition-bindings table
+      or rules, and MUST NOT mutate ACC 1.0 or ACC 1.1 SCF identity.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a151af-ee18-75c7-a457-6a99e97be6be
+    supersedes: []
+    alias_id: INV-0291
+    alias_name: acc-1-2-must-not-rebind-historical-conformance
+  relationships:
+    declared_in:
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a151af-ee18-75c7-a457-6a9b736c94e2
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a151af-ee18-75c7-a457-6a9cebbaacb7
+  alias_id: INV-0292
+  alias_name: acc-1-2-partitions-adc-policy-from-authoring-field-authority
+  alias_ref: INV-0292:acc-1-2-partitions-adc-policy-from-authoring-field-authority
+  entity_type: invariant
+  name: INV-0292
+  summary: 'For the authorized ACC 1.2 composition binding, prepared source field
+    validation MUST use the Authoring 1.7 schema named by the table child_field_authority
+    and parent_property, create identity establishment MUST use the '
+  uri: adr://adr-architecture-kit/entities/01a151af-ee18-75c7-a457-6a9cebbaacb7
+  created_at: '2026-10-19T01:04:06.680Z'
+  entity_fingerprint: sha256:2b1187569edf95293322d7cb54897355255a65541c6e96cdf6a20be1058d138a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a151af-ee18-75c7-a457-6a9cebbaacb7
+    artifact_path: adrs/logical/ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    adr_alias_id: ADR-L-0035
+    scope: construction
+    statement: For the authorized ACC 1.2 composition binding, prepared source field
+      validation MUST use the Authoring 1.7 schema named by the table child_field_authority
+      and parent_property, create identity establishment MUST use the ACC create identity
+      rule, composition legality and parent or child identity preservation MUST use
+      only the ADC 1.1 policies named by adc_policies_consulted, and source interpretation
+      MUST use exact AI 1.2. ADC input_contract MUST NOT be treated as the prepared-source
+      field inventory for this binding, and none of ADC 1.1, Authoring 1.7, or AI
+      1.2 MAY be amended to force that reading.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a151af-ee18-75c7-a457-6a99e97be6be
+    - 01a1514b-805c-75ff-a7ee-e98d9d102cff
+    supersedes: []
+    alias_id: INV-0292
+    alias_name: acc-1-2-partitions-adc-policy-from-authoring-field-authority
+  relationships:
+    declared_in:
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a151af-ee18-75c7-a457-6a9cebbaacb7
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

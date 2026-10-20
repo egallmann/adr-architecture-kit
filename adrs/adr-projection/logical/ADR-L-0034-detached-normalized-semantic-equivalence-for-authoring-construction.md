@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 12b9e793788ca6568f019ca2d54282981706f1daa35e8cb86e98e1827a17c445
-rendered_hash: ee6b93823dd853bcfeb0274ae04f7784753957a68a7dbd45138ac2bee1b82477
+rendered_hash: d8ed0f6e05f4e65c2ac17a32d149a52be73e8c5fb6e33f8f3c057e9ff13a97ed
 -->
 
 # ADR-L-0034: Detached Normalized Semantic Equivalence for Authoring Construction
@@ -516,6 +516,7 @@ ADR-L-0033 remains downstream and independently verifies construction qualificat
 - [ADR-L-0031](ADR-L-0031-non-recursive-semantic-contract-conformance-binding.md)
 - [ADR-L-0032](ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.md)
 - [ADR-L-0033](ADR-L-0033-governed-candidate-binding-for-authoring-construction.md)
+- [ADR-L-0035](ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.md)
 
 
 

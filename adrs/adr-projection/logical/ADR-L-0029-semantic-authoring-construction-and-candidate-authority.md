@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 4caae3be09d4219bf6eadda20ffda6f76efa62357393fcad81b0837f599168c0
-rendered_hash: 037cc3c7b5fa8e4e02efaafb640d3bc1def003117e39687b97ee735f883fb8de
+rendered_hash: 91c9f35f56af56e4d797b114d1e545a39a990d6b395bb767b78a209c53b512a1
 -->
 
 # ADR-L-0029: Semantic Authoring Construction and Candidate Authority
@@ -592,6 +592,7 @@ Retained evidence supports reconstruction without moving contract ownership.
 - [ADR-L-0032](ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.md)
 - [ADR-L-0033](ADR-L-0033-governed-candidate-binding-for-authoring-construction.md)
 - [ADR-L-0034](ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.md)
+- [ADR-L-0035](ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.md)
 
 
 ## Architecture Relationships

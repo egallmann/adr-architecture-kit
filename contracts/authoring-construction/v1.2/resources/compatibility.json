@@ -1,0 +1,49 @@
+{
+  "resource_kind": "authoring-construction-successor-compatibility",
+  "resource_version": "1.2",
+  "semanticDependencies": [
+    "authoring-construction/1.1/schema",
+    "authoring-construction/1.1/rules",
+    "authoring-construction/1.1/compatibility",
+    "authoring-construction/1.1/conformance",
+    "authoring-construction/1.1/ledger.schema"
+  ],
+  "historical_definitions": [
+    {
+      "family": "authoring-construction",
+      "version": "1.0",
+      "fingerprint": "scf:v1:sha256:b94f67ebff64b6560206715cef87a49b4444b71aa661cce92a6c3d04d8bf2703",
+      "resources_mutated": false
+    },
+    {
+      "family": "authoring-construction",
+      "version": "1.1",
+      "fingerprint": "scf:v1:sha256:dcb38e2247396759ed3cbf0ee308ba4c02c087bf47599e72a342cc5efe6a79c5",
+      "resources_mutated": false
+    }
+  ],
+  "carry_forward": [
+    "ACC 1.1 rules including exact AI 1.2, UUIDv7 identity, detached source basis, complete NM 2.4, complete ledger equality, outcome precedence and aggregated diagnostics"
+  ],
+  "successor_changes": [
+    "exact ACC 1.2 request selection",
+    "one qualified compiler-owned composition binding",
+    "partitioned composition records and binding qualification"
+  ],
+  "ledger_schema": "authoring-construction/1.1/ledger.schema",
+  "historical_conformance": "C01-C42 and ACC11-01-26 remain unchanged and are not ACC 1.2 runtime coverage",
+  "current_semantic_contract_selection": false,
+  "composition_execution_advertised": false,
+  "not_in_scope": [
+    "runtime composition",
+    "compiler insertion",
+    "NM interpretation",
+    "ledger execution",
+    "whole-result comparison",
+    "Constructed",
+    "binding",
+    "persistence",
+    "promotion",
+    "protocol changes"
+  ]
+}

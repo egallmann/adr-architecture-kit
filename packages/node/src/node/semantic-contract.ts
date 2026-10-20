@@ -229,8 +229,14 @@ export function getSemanticContract(family: string, version: string): SemanticCo
   const contract = listSemanticContracts().find(
     (item) => item.semanticContractFamily === family && item.semanticContractVersion === version,
   );
-  if (!contract) throw new Error(`Unsupported semantic contract: ${family}:${version}`);
-  return contract;
+  if (contract) return contract;
+  // Exact successor discovery mirrors the Python resource loader. Publication
+  // does not add a definition to the selected set or advertise its execution.
+  const successor = assets[`definitions/${family}-${version}.json`] as SemanticContractVersion | undefined;
+  if (successor?.semanticContractFamily === family && successor.semanticContractVersion === version) {
+    return deepFreeze(structuredClone(successor));
+  }
+  throw new Error(`Unsupported semantic contract: ${family}:${version}`);
 }
 
 export function loadSemanticResource(key: string): unknown {

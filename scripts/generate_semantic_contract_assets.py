@@ -99,6 +99,32 @@ SUCCESSOR_RESOURCE_SOURCES = {
     / "authoring-construction"
     / "v1.1"
     / "schema.json",
+    "authoring-construction-1.1-contract": ROOT
+    / "contracts"
+    / "authoring-construction"
+    / "v1.1"
+    / "contract.json",
+    **{
+        f"authoring-construction-1.2-{name}": ROOT
+        / "contracts"
+        / "authoring-construction"
+        / "v1.2"
+        / "resources"
+        / f"{name}.json"
+        for name in (
+            "rules",
+            "compatibility",
+            "conformance",
+            "conformance.schema",
+            "composition-bindings",
+            "composition-bindings.schema",
+        )
+    },
+    "authoring-construction-1.2-schema": ROOT
+    / "contracts"
+    / "authoring-construction"
+    / "v1.2"
+    / "schema.json",
     **{
         f"authoring-1.7-schema-{name}": ROOT / "schema" / "authoring" / "v1.7" / f"{name}.json"
         for name in (
@@ -895,11 +921,54 @@ def main() -> None:
         acc11_definition,
     )
 
+    # ACC 1.2 is an exact, independently fingerprinted publication. Reuse the
+    # complete frozen predecessor closure (including its ledger schema) without
+    # selecting this successor for current materialization or execution.
+    acc12_resource_specs = [
+        ("schema", "source-contract-schema"),
+        ("rules", "interpretation-rule"),
+        ("compatibility", "normative-definition"),
+        ("conformance", "interpretation-conformance"),
+        ("conformance.schema", "source-contract-schema"),
+        ("composition-bindings", "interpretation-rule"),
+        ("composition-bindings.schema", "source-contract-schema"),
+    ]
+    acc12_manifest = [
+        resource(
+            f"authoring-construction/1.2/{name}",
+            f"authoring-construction-1.2-{name}.json",
+            role,
+        )
+        for name, role in acc12_resource_specs
+    ]
+    acc12_manifest.extend(acc11_manifest)
+    acc12_manifest.append(
+        resource(
+            "authoring-construction/1.1/contract",
+            "authoring-construction-1.1-contract.json",
+            "normative-definition",
+        )
+    )
+    acc12_definition = definition(
+        "authoring-construction",
+        acc12_manifest,
+        ["authoring-construction/1.2/conformance"],
+        version="1.2",
+    )
+    write_json(
+        ROOT / "contracts" / "authoring-construction" / "v1.2" / "contract.json",
+        acc12_definition,
+    )
+    # Keep the legacy root-level Python mirror complete too; the WASM build's
+    # existing definition-copy step produces the same byte-identical asset.
+    write_json(BUNDLED / "authoring-construction-1.2.json", acc12_definition)
+
     successor_generated = {
         "profiles/architecture-materialization-1.1.json": successor_profile,
         "definitions/architecture-interpretation-1.1.json": successor_architecture,
         "definitions/architecture-interpretation-1.2.json": ai12_definition,
         "definitions/authoring-construction-1.1.json": acc11_definition,
+        "definitions/authoring-construction-1.2.json": acc12_definition,
         "definitions/normalized-model-2.4.json": successor_normalized,
         "definitions/normative-semantics-1.0.json": definitions["normative-semantics.json"],
         f"sets/{successor_set_id.replace(':', '-')}.json": successor_set,

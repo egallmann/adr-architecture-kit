@@ -16987,7 +16987,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1514b-805c-75ff-a7ee-e992bdc5673c
   created_at: '2026-10-18T23:14:24.988Z'
   entity_fingerprint: sha256:78335745431a31e854b52de5a606e04d1906d4a635fb81daf2a1e91efbfeb2a3
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e992bdc5673c
@@ -17061,7 +17061,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1514b-805c-75ff-a7ee-e9938eb9705e
   created_at: '2026-10-18T23:14:24.988Z'
   entity_fingerprint: sha256:ecd1c429b433ceee8926cea7373d4bcc4a8163cdac26b0cb4401b392981b2c7d
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805c-75ff-a7ee-e9938eb9705e
@@ -17131,7 +17131,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1514b-805d-762f-9733-a657fe39a26f
   created_at: '2026-10-18T23:14:24.989Z'
   entity_fingerprint: sha256:bcc7f3701998cc8a70141c0faa10e41acda3a738f577e34f6842ca62a7b1973f
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805d-762f-9733-a657fe39a26f
@@ -17199,7 +17199,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1514b-805d-762f-9733-a658b38110fb
   created_at: '2026-10-18T23:14:24.989Z'
   entity_fingerprint: sha256:88d53125a35ad29fa67193a8291596692aecba741a1cc8295afa316a7a06e761
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805d-762f-9733-a658b38110fb
@@ -17268,7 +17268,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1514b-805d-762f-9733-a6594aac3aa9
   created_at: '2026-10-18T23:14:24.989Z'
   entity_fingerprint: sha256:0441e9193aeb7f406c303111ae57dcd44f8ee39cfda1ede97b386e761de6b37a
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805d-762f-9733-a6594aac3aa9
@@ -17326,17 +17326,17 @@ entities:
     generator: adr-architecture-index
 - id: 01a1514b-805d-762f-9733-a65a91055d91
   alias_id: INV-0289
-  alias_name: proposed-composition-binding-does-not-execute
-  alias_ref: INV-0289:proposed-composition-binding-does-not-execute
+  alias_name: accepted-composition-design-does-not-authorize-execution
+  alias_ref: INV-0289:accepted-composition-design-does-not-authorize-execution
   entity_type: invariant
   name: INV-0289
-  summary: This proposed binding MUST NOT amend ACC 1.0, ACC 1.1, ADC 1.1, AI 1.2,
+  summary: 'This accepted design MUST NOT amend ACC 1.0, ACC 1.1, ADC 1.1, AI 1.2,
     Authoring 1.7, NM 2.4, CEC 1.0, ACC 1.0 conformance markers including C01-C42,
-    or semantic-core protocol 1.5. Composition MUST NOT execute under ACC
+    or semantic-core protocol 1.5. Composition MUST NOT execute under ACC '
   uri: adr://adr-architecture-kit/entities/01a1514b-805d-762f-9733-a65a91055d91
   created_at: '2026-10-18T23:14:24.989Z'
-  entity_fingerprint: sha256:d769d0e4774961a4b438b611331f340a8962fe064e82905ec43ff92d856c93cd
-  lifecycle_stage: proposed
+  entity_fingerprint: sha256:6b71b72a505db67308e4df96855683a2547fe9d68c9edf1c079e572bc6ccb1c5
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a1514b-805d-762f-9733-a65a91055d91
@@ -17346,8 +17346,8 @@ entities:
     adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
     adr_alias_id: ADR-L-0035
     scope: global
-    statement: This proposed binding MUST NOT amend ACC 1.0, ACC 1.1, ADC 1.1, AI
-      1.2, Authoring 1.7, NM 2.4, CEC 1.0, ACC 1.0 conformance markers including C01-C42,
+    statement: This accepted design MUST NOT amend ACC 1.0, ACC 1.1, ADC 1.1, AI 1.2,
+      Authoring 1.7, NM 2.4, CEC 1.0, ACC 1.0 conformance markers including C01-C42,
       or semantic-core protocol 1.5. Composition MUST NOT execute under ACC 1.1, and
       ACC 1.1 composition-bearing requests MUST remain Unavailable. This ADR MUST
       NOT by itself authorize ACC 1.2 publication, composition execution, a Constructed
@@ -17359,7 +17359,7 @@ entities:
     - 01a151af-ee18-75c7-a457-6a99e97be6be
     supersedes: []
     alias_id: INV-0289
-    alias_name: proposed-composition-binding-does-not-execute
+    alias_name: accepted-composition-design-does-not-authorize-execution
   relationships:
     declared_in:
     - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
@@ -17408,7 +17408,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a151af-ee18-75c7-a457-6a9a83f269f0
   created_at: '2026-10-19T01:04:06.680Z'
   entity_fingerprint: sha256:8d7a9e0e11f5288f4a3b37750b12b8f746bb29dbe369f1cf53276a05158d84c3
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a151af-ee18-75c7-a457-6a9a83f269f0
@@ -17480,7 +17480,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a151af-ee18-75c7-a457-6a9b736c94e2
   created_at: '2026-10-19T01:04:06.680Z'
   entity_fingerprint: sha256:12c5ea2c1991696c55d77e5f42b1e8545130107724fb44d814c86475072f1c0e
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a151af-ee18-75c7-a457-6a9b736c94e2
@@ -17549,7 +17549,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a151af-ee18-75c7-a457-6a9cebbaacb7
   created_at: '2026-10-19T01:04:06.680Z'
   entity_fingerprint: sha256:2b1187569edf95293322d7cb54897355255a65541c6e96cdf6a20be1058d138a
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7#01a151af-ee18-75c7-a457-6a9cebbaacb7

@@ -4,7 +4,7 @@ id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
 alias_id: ADR-L-0035
 alias_name: governed-composition-intent-binding-for-authoring-construction
 title: Governed Composition-Intent Binding for Authoring Construction
-status: proposed
+status: accepted
 created_date: '2026-10-18'
 authors:
 - erik.gallmann
@@ -20,7 +20,6 @@ tags:
 - authoring-construction-1.2
 - authoring-1.7
 - architecture-interpretation-1.2
-- proposed-authority
 related_adrs:
 - 01a083dd-22b5-726d-8e49-01851bde3ba5
 - 01a09938-a15b-75ed-8326-212e21bd3cfe
@@ -63,9 +62,9 @@ context: |
 
   This ADR defines the minimum binding for one parent and child capability.
   It does not publish ACC 1.2, execute composition, amend a published
-  contract, or change semantic-core protocol 1.5. Status remains proposed.
-  Human acceptance, contract publication, and runtime implementation remain
-  separate later steps.
+  contract, or change semantic-core protocol 1.5. Its acceptance records the
+  selected architecture; publication of ACC 1.2 and runtime implementation
+  remain separate steps.
 decisions:
 - id: 01a1514b-805c-75ff-a7ee-e98d9d102cff
   alias_id: DEC-0274
@@ -133,7 +132,7 @@ decisions:
     Otherwise any Unavailable composition or missing capability leaves the
     request Unavailable. Otherwise any Unresolved composition leaves the
     request Unresolved. Otherwise every composition is bound by a matrix
-    row. Constructed remains unauthorized by this proposed ADR. Partial
+    row. Constructed remains unauthorized by this ADR. Partial
     embedding is forbidden. Empty compositions remain the existing
     non-composition path and are outside this binding. Every independently
     discoverable diagnostic is retained, including a diagnostic whose status
@@ -411,9 +410,10 @@ decisions:
     composed_of remains an AI interpretation of authored system topology, not
     a forward composition relation.
 
-    This ADR is proposed. No Rust composition construction, Constructed
-    outcome, repository binding, or persistence is authorized. Publication of
-    ACC 1.2 and any later execution slice remain separately authorized.
+    This accepted ADR records design authority only. No Rust composition
+    construction, Constructed outcome, repository binding, or persistence is
+    authorized. Publication of ACC 1.2 and any later execution slice remain
+    separate actions requiring their own scoped authorization.
 
     The conformance matrix below is the oracle for a later implementation
     that ACC 1.2 has authorized. It is not authorized now. A root-count
@@ -695,8 +695,8 @@ invariants:
   - 01a1514b-805c-75ff-a7ee-e9900b046f24
 - id: 01a1514b-805d-762f-9733-a65a91055d91
   alias_id: INV-0289
-  alias_name: proposed-composition-binding-does-not-execute
-  statement: This proposed binding MUST NOT amend ACC 1.0, ACC 1.1, ADC 1.1, AI 1.2, Authoring 1.7, NM 2.4, CEC 1.0, ACC 1.0 conformance markers including C01-C42, or semantic-core protocol 1.5. Composition MUST NOT execute under ACC 1.1, and ACC 1.1 composition-bearing requests MUST remain Unavailable. This ADR MUST NOT by itself authorize ACC 1.2 publication, composition execution, a Constructed outcome, repository binding, or persistence.
+  alias_name: accepted-composition-design-does-not-authorize-execution
+  statement: This accepted design MUST NOT amend ACC 1.0, ACC 1.1, ADC 1.1, AI 1.2, Authoring 1.7, NM 2.4, CEC 1.0, ACC 1.0 conformance markers including C01-C42, or semantic-core protocol 1.5. Composition MUST NOT execute under ACC 1.1, and ACC 1.1 composition-bearing requests MUST remain Unavailable. This ADR MUST NOT by itself authorize ACC 1.2 publication, composition execution, a Constructed outcome, repository binding, or persistence.
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
@@ -740,45 +740,13 @@ invariants:
   upheld_by_decisions:
   - 01a151af-ee18-75c7-a457-6a99e97be6be
   - 01a1514b-805c-75ff-a7ee-e98d9d102cff
-gaps:
-- id: 01a15173-a06d-75e2-a0a5-4e91f8200731
-  alias_id: GAP-0020
-  alias_name: composition-execution-closure-is-unqualified
-  question: Which exact content-qualified resource, selected inside the construction authority closure, carries the ADR-L-0035 containment row so an implementation can execute it?
-  context: |
-    Design resolution selected by DEC-0279: Authoring Construction Contract 1.2
-    with exact resource key authoring-construction/1.2/composition-bindings
-    inside its immutable SCF resource closure. The initial closed table row is
-    the DEC-0274 adr/logical contains entity/decision binding.
-
-    This gap remains blocking while ADR-L-0035 is proposed because the
-    repository's construction authority is accepted ADRs plus published exact
-    contract resources. A proposed design resolution is not accepted authority
-    and is not executable. Closing the design question is not the same as
-    producing ACC 1.2 bytes or a runtime.
-
-    Separate later steps, none of which this proposed ADR claims to complete:
-    1. Human acceptance of ADR-L-0035.
-    2. Publication of immutable ACC 1.2 definition and resources under the
-       DEC-0279 specification, with publication-time guards.
-    3. Separately authorized runtime qualification and, later, composition
-       construction against that published closure.
-
-    Until acceptance exists, composition-bearing ACC 1.1 requests remain
-    Unavailable, ACC 1.2 is unpublished, and no Constructed composition path
-    is authorized. The selected architecture is recorded here so acceptance
-    review can judge one closed answer rather than an open design gap.
-  impact: high
-  blocking: true
-  affects:
-  - 01a1514b-805c-75ff-a7ee-e9913dbcd63e
-  - 01a151af-ee18-75c7-a457-6a99e97be6be
-  decision_required_from: human acceptance of ADR-L-0035, then ACC 1.2 publication
+gaps: []
 notes: |
-  Status is proposed. This file is a review surface, not accepted authority.
-  Do not promote it to accepted automatically. GAP-0020 remains blocking until
-  accepted authority exists, even though DEC-0279 names the selected ACC 1.2
-  closure member.
+  ADR-L-0035 is accepted design authority. GAP-0020 is resolved by DEC-0279,
+  which selects the exact resource key
+  authoring-construction/1.2/composition-bindings within the future immutable
+  ACC 1.2 closure. This resolves resource selection; it does not publish ACC
+  1.2 or authorize runtime composition execution.
 
   The binding chosen here is compiler-owned insertion of separate prepared
   children. Verification of a pre-embedded child, and any dual-writer
@@ -792,9 +760,10 @@ notes: |
   publication is not a substitute for ACC 1.2 publication.
 
   ACC 1.2 resource design is specified by DEC-0279 and MUST NOT be created or
-  published by this PR. No implementation is authorized. After human
-  acceptance and ACC 1.2 publication, and only then, a follow-on may qualify
-  the one matrix row or fail closed with the named diagnostics. A later
+  published by this acceptance PR. No runtime composition implementation is
+  authorized here. After separate ACC 1.2 publication, and only then, a
+  separately authorized follow-on may qualify the one matrix row or fail
+  closed with the named diagnostics. A later
   separately authorized slice may insert the child canonical object and pass
   the containment proof to the existing minimal-root selector. Host adapters
   pass that result through unchanged. Do not call the historical ACC 1.0

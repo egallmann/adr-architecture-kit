@@ -1,9 +1,10 @@
-//! Internal ACC 1.2 composition qualification, never composition construction.
+//! Internal ACC 1.2 composition qualification and its private insertion seam.
 //!
 //! Only the verified publication supplies binding rows. Inputs are borrowed:
-//! this component cannot insert children, mint identities, seal sources, or
-//! produce a transport result. `Qualified` describes binding preconditions;
-//! outstanding compiler/interpretation obligations always remain.
+//! the qualifier cannot insert children, mint identities, seal sources, or
+//! produce a transport result. The separate insertion module consumes those
+//! preconditions without changing the qualifier. `Qualified` describes binding
+//! preconditions; outstanding interpretation obligations always remain.
 
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -13,6 +14,9 @@ use super::{
     authoring_construction_basis_v11 as basis, object, schema_validation, semantic_contract,
     string, Json,
 };
+
+#[path = "authoring_construction_insertion_v12.rs"]
+pub(crate) mod insertion;
 
 const SCF: &str = "scf:v1:sha256:8da499420e996c446cbc416dc7db9b4bbb2692ea5039f14461f668aaa48b9e0c";
 const AI_SCF: &str =
@@ -195,20 +199,7 @@ pub(crate) fn qualify(definition: &Json, resources: &[Json], request: &Json) -> 
     result.authority = Check::Qualified;
     // Extra supplied resources are never authority, even if closure validation
     // permits them. Project the map to the verified manifest only.
-    let names: BTreeSet<_> = array(definition, "resourceManifest")
-        .iter()
-        .map(|entry| text(entry, "canonicalResourceKey"))
-        .collect();
-    let sealed: BTreeMap<_, _> = resources
-        .iter()
-        .filter(|entry| names.contains(text(entry, "canonicalResourceKey")))
-        .map(|entry| {
-            (
-                text(entry, "canonicalResourceKey").to_owned(),
-                entry.get("content").cloned().unwrap_or(Json::Null),
-            )
-        })
-        .collect();
+    let sealed = manifest_resources(definition, resources);
     let rules = &sealed[RULES];
     let composition = rules.get("composition").unwrap_or(&Json::Null);
     let binding = composition.get("binding_authority").unwrap_or(&Json::Null);
@@ -904,6 +895,24 @@ fn replace_schema_literal(value: &mut Json, path: &[&str], literal: &str) {
         replace_schema_literal(child, rest, literal);
     }
 }
+/// Projection only, never verification. Call only after exact closure succeeds.
+fn manifest_resources(definition: &Json, resources: &[Json]) -> BTreeMap<String, Json> {
+    let names: BTreeSet<_> = array(definition, "resourceManifest")
+        .iter()
+        .map(|entry| text(entry, "canonicalResourceKey"))
+        .collect();
+    resources
+        .iter()
+        .filter(|entry| names.contains(text(entry, "canonicalResourceKey")))
+        .map(|entry| {
+            (
+                text(entry, "canonicalResourceKey").to_owned(),
+                entry.get("content").cloned().unwrap_or(Json::Null),
+            )
+        })
+        .collect()
+}
+
 fn at<'a>(value: &'a Json, path: &[&str]) -> &'a Json {
     path.iter()
         .fold(value, |v, key| v.get(key).unwrap_or(&Json::Null))

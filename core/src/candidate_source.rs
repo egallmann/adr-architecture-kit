@@ -931,7 +931,7 @@ fn ensure_acyclic_containment(
     Ok(())
 }
 
-fn authoring_schema_resources() -> Result<BTreeMap<String, Json>, String> {
+pub(crate) fn authoring_schema_resources() -> Result<BTreeMap<String, Json>, String> {
     [
         (
             "authoring/1.7/schema/adr-common.schema",

@@ -12,10 +12,10 @@ fn root() -> PathBuf {
 fn read(path: &str) -> Value {
     serde_json::from_slice(&fs::read(root().join(path)).unwrap()).unwrap()
 }
-fn j(value: &Value) -> Json {
+pub(super) fn j(value: &Value) -> Json {
     serde_json::from_value(value.clone()).unwrap()
 }
-fn bundle() -> &'static (Value, Vec<Value>) {
+pub(super) fn bundle() -> &'static (Value, Vec<Value>) {
     static BUNDLE: OnceLock<(Value, Vec<Value>)> = OnceLock::new();
     BUNDLE.get_or_init(|| {
         let definition = read("contracts/authoring-construction/v1.2/contract.json");
@@ -55,12 +55,12 @@ fn qualification(family: &str, version: &str, prefix: &str) -> Value {
     );
     json!({"family":family,"version":version,"resources":members(&manifest)})
 }
-fn fixture(number: usize) -> Value {
+pub(super) fn fixture(number: usize) -> Value {
     read("contracts/authoring-construction/v1.2/resources/conformance.json")["cases"][number - 1]
         ["fixture"]["input"]
         .clone()
 }
-fn request(input: &Value) -> Value {
+pub(super) fn request(input: &Value) -> Value {
     let mut fragments = input["fragments"].clone();
     for fragment in fragments.as_array_mut().unwrap() {
         fragment["semantic_kind"] = json!(fragment["semantic_type"]

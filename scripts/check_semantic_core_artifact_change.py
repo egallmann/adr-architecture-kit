@@ -1,4 +1,4 @@
-"""Require updated WASM artifacts or fresh proof that their bytes are unchanged."""
+"""Require tracked WASM artifacts whenever semantic-core source changes."""
 
 from __future__ import annotations
 
@@ -13,42 +13,6 @@ ARTIFACTS = {
     "packages/node/src/generated/semantic-core.wasm",
 }
 SOURCE_PREFIXES = ("core/src/", "core/Cargo.toml", "core/Cargo.lock")
-
-
-def verify_unchanged_artifacts() -> None:
-    """Build current source; never accept a cached artifact as parity evidence.
-
-    Internal-only Rust changes can disappear from the exported WASM after
-    optimization. In that case an artifact diff cannot exist. Compile without
-    overwriting host copies and compare both working and committed copies.
-    """
-    subprocess.run(
-        [
-            "cargo",
-            "build",
-            "--manifest-path",
-            "core/Cargo.toml",
-            "--target",
-            "wasm32-unknown-unknown",
-            "--release",
-            "--locked",
-        ],
-        cwd=ROOT,
-        check=True,
-    )
-    source = ROOT / "core/target/wasm32-unknown-unknown/release/adr_kit_semantic_core.wasm"
-    compiled = source.read_bytes()
-    if not compiled:
-        raise SystemExit("source-built semantic-core WASM must not be empty")
-    for relative in sorted(ARTIFACTS):
-        committed = subprocess.run(
-            ["git", "show", f"HEAD:{relative}"], cwd=ROOT, check=True, capture_output=True
-        ).stdout
-        if committed != compiled or (ROOT / relative).read_bytes() != compiled:
-            raise SystemExit(
-                "semantic-core source changed its WASM bytes; build and commit both host artifacts"
-            )
-    print("fresh source build is byte-identical to both committed host WASM artifacts")
 
 
 def changed_files() -> set[str]:
@@ -68,11 +32,14 @@ def changed_files() -> set[str]:
 
 def main() -> int:
     changed = changed_files()
-    semantic_source_changed = any(path.startswith(SOURCE_PREFIXES) for path in changed)
+    semantic_source_changed = any(
+        path.startswith(SOURCE_PREFIXES) for path in changed
+    )
     if semantic_source_changed and not ARTIFACTS.issubset(changed):
-        if ARTIFACTS.intersection(changed):
-            raise SystemExit("semantic-core artifact updates must include both host copies")
-        verify_unchanged_artifacts()
+        raise SystemExit(
+            "semantic-core source changed without both tracked host WASM artifacts; "
+            "build and commit the current source-built artifact"
+        )
     print("semantic-core source/artifact change guard passed")
     return 0
 

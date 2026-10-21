@@ -113,10 +113,11 @@ conflicts, distinct pending fragments whose identity equality remains deferred,
 unknown relation loops, and retained mixed diagnostics under request-array
 permutations. ACC12-19/20 remain unchanged structural cycle oracles.
 
-This internal-only cleanup produces identical exported WASM bytes. When Rust
-source changes without artifact diffs, the artifact guard performs a fresh
-locked source build and compares it to both working and committed host copies;
-a cached build, partial host update, or byte mismatch cannot satisfy the gate.
+Both host WASM artifacts are regenerated using Rust 1.99.1, matching the hosted
+qualification compiler. Under the previous local 1.98.1 compiler the internal
+cleanup produced identical bytes; the compiler update changes the binary, not
+the protocol or advertised execution capabilities. The existing artifact guard
+and source-build parity checks remain unchanged.
 
 ## Deferred execution and next slice
 

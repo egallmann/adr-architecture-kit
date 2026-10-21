@@ -1010,7 +1010,7 @@ fn validate_declared_fingerprint(
 // interpreted here: they are metadata, not dependency edges.  Remote `$ref`
 // values are rejected because a live network lookup cannot be part of an
 // immutable semantic definition.
-fn relative_resource_key(
+pub(crate) fn relative_resource_key(
     resource_key: &str,
     reference: &str,
 ) -> Result<Option<String>, (String, String)> {

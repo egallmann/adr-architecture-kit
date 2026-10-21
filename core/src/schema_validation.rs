@@ -11,7 +11,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use regex::Regex;
 
-use super::Json;
+use super::{semantic_contract, Json};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub(crate) struct SchemaError {
@@ -48,31 +48,43 @@ pub(crate) fn validate_fragment(
     pointer: &str,
     value: &Json,
 ) -> Result<(), SchemaError> {
-    let Some(root) = resources.get(root_key) else {
-        return Err(SchemaError {
-            path: String::new(),
-            message: format!("schema validation failed: sealed schema resource {root_key} is unavailable"),
-        });
-    };
-    let mut schema = root;
-    for segment in pointer.trim_start_matches('/').split('/') {
-        if segment.is_empty() {
-            continue;
-        }
-        let segment = segment.replace("~1", "/").replace("~0", "~");
-        schema = schema
-            .as_object()
-            .and_then(|object| object.get(&segment))
-            .ok_or_else(|| SchemaError {
-                path: String::new(),
-                message: format!("schema validation failed: schema fragment {pointer} is unresolved"),
-            })?;
-    }
+    let (key, schema) = resolve_reference(resources, root_key, &format!("#{pointer}"))?;
     let mut context = Context {
         resources,
         active_refs: BTreeSet::new(),
     };
-    context.validate(value, schema, root_key, "")
+    context.validate(value, &schema, &key, "")
+}
+
+/// Resolve only inside the supplied sealed map, using the same canonical path
+/// normalization as semantic-contract closure verification.
+pub(crate) fn resolve_reference(
+    resources: &BTreeMap<String, Json>,
+    root_key: &str,
+    reference: &str,
+) -> Result<(String, Json), SchemaError> {
+    Context {
+        resources,
+        active_refs: BTreeSet::new(),
+    }
+    .resolve_ref(root_key, reference, "")
+}
+
+/// Check all schema branches reachable from the selected fragment before
+/// validating input. Unsupported keywords in an alternative or an absent
+/// optional property must not be mistaken for an ordinary non-match. Unused
+/// definitions (notably complete ACC result schemas) are outside this check.
+pub(crate) fn preflight_fragment(
+    resources: &BTreeMap<String, Json>,
+    root_key: &str,
+    pointer: &str,
+) -> Result<(), SchemaError> {
+    let (key, schema) = resolve_reference(resources, root_key, &format!("#{pointer}"))?;
+    Context {
+        resources,
+        active_refs: BTreeSet::new(),
+    }
+    .preflight(&schema, &key, &mut BTreeSet::new())
 }
 
 struct Context<'a> {
@@ -81,6 +93,61 @@ struct Context<'a> {
 }
 
 impl<'a> Context<'a> {
+    fn preflight(
+        &mut self,
+        schema: &Json,
+        key: &str,
+        seen: &mut BTreeSet<String>,
+    ) -> Result<(), SchemaError> {
+        let Some(schema) = schema.as_object() else {
+            return Err(self.error("", "schema must be an object"));
+        };
+        self.reject_unsupported_keywords(schema, "")?;
+        if let Some(reference) = schema.get("$ref").and_then(Json::as_str) {
+            let reference_key = format!("{key}#{reference}");
+            if !seen.contains(&reference_key) {
+                if !self.active_refs.insert(reference_key.clone()) {
+                    return Err(
+                        self.error("", "schema validation failed: cyclic $ref is unsupported")
+                    );
+                }
+                let (target_key, target) = self.resolve_ref(key, reference, "")?;
+                self.preflight(&target, &target_key, seen)?;
+                self.active_refs.remove(&reference_key);
+                seen.insert(reference_key);
+            }
+        }
+        for name in ["properties", "patternProperties"] {
+            if let Some(children) = schema.get(name).and_then(Json::as_object) {
+                for child in children.values() {
+                    self.preflight(child, key, seen)?;
+                }
+            }
+        }
+        for name in ["allOf", "anyOf", "oneOf", "items"] {
+            if let Some(children) = schema.get(name).and_then(Json::as_array) {
+                for child in children {
+                    self.preflight(child, key, seen)?;
+                }
+            }
+        }
+        for name in [
+            "items",
+            "additionalProperties",
+            "contains",
+            "if",
+            "then",
+            "else",
+            "not",
+            "propertyNames",
+        ] {
+            if let Some(child @ Json::Object(_)) = schema.get(name) {
+                self.preflight(child, key, seen)?;
+            }
+        }
+        Ok(())
+    }
+
     fn validate(
         &mut self,
         value: &Json,
@@ -321,7 +388,10 @@ impl<'a> Context<'a> {
             }
         }
         if schema.get("uniqueItems").and_then(Json::as_bool) == Some(true)
-            && values.iter().enumerate().any(|(index, value)| values[..index].contains(value))
+            && values
+                .iter()
+                .enumerate()
+                .any(|(index, value)| values[..index].contains(value))
         {
             return Err(self.error(path, "schema validation failed: array items must be unique"));
         }
@@ -358,10 +428,7 @@ impl<'a> Context<'a> {
                     resources: self.resources,
                     active_refs: self.active_refs.clone(),
                 };
-                if probe
-                    .validate(item, contains, resource_key, path)
-                    .is_ok()
-                {
+                if probe.validate(item, contains, resource_key, path).is_ok() {
                     matches += 1;
                 }
             }
@@ -468,7 +535,9 @@ impl<'a> Context<'a> {
         if let Some(additional) = schema.get("additionalProperties") {
             for (property, property_value) in value {
                 if properties.is_some_and(|properties| properties.contains_key(property))
-                    || matching_pattern.iter().any(|pattern| pattern.is_match(property))
+                    || matching_pattern
+                        .iter()
+                        .any(|pattern| pattern.is_match(property))
                 {
                     continue;
                 }
@@ -542,23 +611,18 @@ impl<'a> Context<'a> {
         path: &str,
     ) -> Result<(String, Json), SchemaError> {
         let (resource_ref, fragment) = reference.split_once('#').unwrap_or((reference, ""));
-        let target_key = if resource_ref.is_empty() {
-            resource_key.to_owned()
+        // Preserve the existing direct authoring/<version>/... key spelling;
+        // every other location is relative to the containing canonical key.
+        let base = if resource_ref.starts_with("authoring/") {
+            "schema"
         } else {
-            let directory = resource_key
-                .rsplit_once('/')
-                .map(|(directory, _)| directory)
-                .unwrap_or("");
-            let mut key = if resource_ref.ends_with(".json") {
-                resource_ref.trim_end_matches(".json").to_owned()
-            } else {
-                resource_ref.to_owned()
-            };
-            if !key.starts_with("authoring/") && !directory.is_empty() {
-                key = format!("{directory}/{key}");
-            }
-            key
+            resource_key
         };
+        let target_key = semantic_contract::relative_resource_key(base, reference)
+            .map_err(|(_, message)| {
+                self.error(path, format!("schema validation failed: {message}"))
+            })?
+            .unwrap_or_else(|| resource_key.to_owned());
         let Some(resource) = self.resources.get(&target_key) else {
             return Err(self.error(
                 path,
@@ -576,11 +640,40 @@ impl<'a> Context<'a> {
         })?;
         let mut current = resource;
         for segment in pointer.split('/') {
-            let segment = segment.replace("~1", "/").replace("~0", "~");
-            current = current
-                .as_object()
-                .and_then(|object| object.get(&segment))
-                .ok_or_else(|| self.error(path, format!("schema validation failed: sealed $ref pointer {reference} is unresolved")))?;
+            let mut decoded = String::new();
+            let mut chars = segment.chars();
+            while let Some(character) = chars.next() {
+                decoded.push(if character == '~' {
+                    match chars.next() {
+                        Some('0') => '~',
+                        Some('1') => '/',
+                        _ => {
+                            return Err(self.error(
+                                path,
+                                "schema validation failed: invalid JSON Pointer escape",
+                            ))
+                        }
+                    }
+                } else {
+                    character
+                });
+            }
+            current = match current {
+                Json::Object(object) => object.get(&decoded),
+                Json::Array(array) if decoded == "0" || !decoded.starts_with('0') => decoded
+                    .parse::<usize>()
+                    .ok()
+                    .and_then(|index| array.get(index)),
+                _ => None,
+            }
+            .ok_or_else(|| {
+                self.error(
+                    path,
+                    format!(
+                        "schema validation failed: sealed $ref pointer {reference} is unresolved"
+                    ),
+                )
+            })?;
         }
         Ok((target_key, current.clone()))
     }
@@ -682,11 +775,101 @@ fn display_json(value: &Json) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::{validate, Json};
+    use super::{preflight_fragment, resolve_reference, validate, validate_fragment, Json};
     use std::collections::BTreeMap;
 
     fn parsed(value: &str) -> Json {
         serde_json::from_str(value).expect("test JSON is valid")
+    }
+
+    #[test]
+    fn normalizes_parent_refs_and_preserves_sealed_and_legacy_refs() {
+        let resources = BTreeMap::from([
+            (
+                "authoring-construction/1.2/schema".into(),
+                parsed(r##"{"$defs":{"value":{"$ref":"../1.1/./schema.json#/$defs/value"}}}"##),
+            ),
+            (
+                "authoring-construction/1.1/schema".into(),
+                parsed(r##"{"$defs":{"value":{"type":"string"}}}"##),
+            ),
+            (
+                "authoring/1.7/schema/types.schema".into(),
+                parsed(r##"{"definitions":{"name":{"type":"string"}}}"##),
+            ),
+        ]);
+        assert!(preflight_fragment(
+            &resources,
+            "authoring-construction/1.2/schema",
+            "/$defs/value"
+        )
+        .is_ok());
+        assert!(validate_fragment(
+            &resources,
+            "authoring-construction/1.2/schema",
+            "/$defs/value",
+            &parsed("\"yes\"")
+        )
+        .is_ok());
+        assert!(validate_fragment(
+            &resources,
+            "authoring-construction/1.2/schema",
+            "/$defs/value",
+            &parsed("42")
+        )
+        .is_err());
+        assert!(resolve_reference(
+            &resources,
+            "authoring-construction/1.2/schema",
+            "authoring/1.7/schema/types.schema.json#/definitions/name"
+        )
+        .is_ok());
+        for reference in [
+            "../../../escape.json",
+            "../../../../escape.json",
+            "https://example.com/schema.json",
+            "/authoring/1.7/schema/types.schema.json",
+            "../1.3/schema.json",
+            "../1.1/schema.json#/$defs/missing",
+            "#/$defs/~2invalid",
+            "../1.1\\schema.json",
+        ] {
+            assert!(
+                resolve_reference(&resources, "authoring-construction/1.2/schema", reference)
+                    .is_err(),
+                "{reference}"
+            );
+        }
+        let missing = BTreeMap::from([(
+            "authoring-construction/1.2/schema".into(),
+            resources["authoring-construction/1.2/schema"].clone(),
+        )]);
+        assert!(preflight_fragment(
+            &missing,
+            "authoring-construction/1.2/schema",
+            "/$defs/value"
+        )
+        .is_err());
+    }
+
+    #[test]
+    fn preflight_catches_unsupported_alternatives_and_optional_fields() {
+        for schema in [
+            r#"{"anyOf":[{"type":"string"},{"unevaluatedProperties":false}]}"#,
+            r#"{"properties":{"optional":{"format":"date"}}}"#,
+            r##"{"anyOf":[{"type":"string"},{"$ref":"missing.json"}]}"##,
+            r##"{"$ref":"#"}"##,
+        ] {
+            let resources = BTreeMap::from([("test/1.0/schema".into(), parsed(schema))]);
+            assert!(preflight_fragment(&resources, "test/1.0/schema", "").is_err());
+        }
+        let resources = BTreeMap::from([(
+            "test/1.0/schema".into(),
+            parsed(
+                r#"{"$defs":{"unused":{"unevaluatedProperties":false},"request":{"type":"string"}}}"#,
+            ),
+        )]);
+        assert!(preflight_fragment(&resources, "test/1.0/schema", "/$defs/request").is_ok());
     }
 
     #[test]

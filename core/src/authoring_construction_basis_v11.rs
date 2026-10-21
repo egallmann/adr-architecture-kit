@@ -1056,7 +1056,7 @@ fn exact_ai12(
             == Some(ACC_FINGERPRINT)
 }
 
-fn exact_resource_set(
+pub(crate) fn exact_resource_set(
     value: Option<&Json>,
     family: &str,
     version: &str,
@@ -1103,7 +1103,7 @@ fn exact_resource_set(
     !expected.is_empty() && resource_members_match(value.get("resources"), &expected)
 }
 
-fn resource_members_match(value: Option<&Json>, expected: &[Json]) -> bool {
+pub(crate) fn resource_members_match(value: Option<&Json>, expected: &[Json]) -> bool {
     let Some(actual) = value.and_then(Json::as_array) else {
         return false;
     };
@@ -1216,7 +1216,7 @@ fn resource_content<'a>(resources: &'a [Json], key: &str) -> Option<&'a Json> {
     })
 }
 
-fn is_uuid_v7(value: &str) -> bool {
+pub(crate) fn is_uuid_v7(value: &str) -> bool {
     let bytes = value.as_bytes();
     bytes.len() == 36
         && [8, 13, 18, 23].iter().all(|index| bytes[*index] == b'-')

@@ -10,6 +10,9 @@ mod authoring_construction;
 mod authoring_construction_orchestration;
 mod authoring_construction_v11;
 mod authoring_construction_basis_v11;
+// Internal qualification seam for a later authorized compiler; no protocol route.
+#[allow(dead_code)]
+mod authoring_construction_v12;
 pub(crate) mod candidate_source;
 mod linkage;
 mod materialization;

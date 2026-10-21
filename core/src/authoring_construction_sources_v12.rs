@@ -272,42 +272,9 @@ pub(crate) fn qualify_accounting(
     // Exact-property accounting is complete for the participating units only.
     // Other AI-governed authored memberships cannot silently evade the identity
     // union check; their ownership accounting is outside this bounded slice.
-    let sealed = manifest_resources(definition, resources);
-    for p in &proven.proofs {
-        let b = &p.binding;
-        let ai = &sealed[text(at(&b.binding, &["ai_authority"]), "canonical_resource_key")];
-        let source = serde_json::to_value(
-            candidate_source::decode_canonical_candidate(
-                &proven.materials[&b.parent_request_key].bytes,
-            )
-            .unwrap(),
-        )
-        .unwrap();
-        let selected: BTreeSet<_> = proven
-            .proofs
-            .iter()
-            .filter(|p| p.binding.parent_request_key == b.parent_request_key)
-            .map(|p| text(&p.binding.binding, "semantic_field_key"))
-            .collect();
-        for field in array(ai, "semantic_types")
-            .iter()
-            .filter(|t| text(t, "semantic_type") == text(&b.binding, "parent_semantic_type"))
-            .flat_map(|t| array(t, "field_dispositions"))
-        {
-            let field_key = text(field, "semantic_field_key");
-            if text(field, "destination_ref") != "child_membership" || selected.contains(field_key)
-            {
-                continue;
-            }
-            let Some((_, pointer)) = field_key.split_once('#') else {
-                continue;
-            };
-            if source
-                .pointer(pointer)
-                .is_some_and(|v| !v.as_array().is_some_and(Vec::is_empty))
-            {
-                result.issue(Status::Unavailable, "evidence_unavailable", field_key, "Additional authored child membership requires independently qualified ownership accounting");
-            }
+    for (_, field, values) in additional_memberships(definition, resources, proven) {
+        if !values.as_array().is_some_and(Vec::is_empty) {
+            result.issue(Status::Unavailable, "evidence_unavailable", text(&field, "semantic_field_key"), "Additional authored child membership requires independently qualified ownership accounting");
         }
     }
     if !result.diagnostics.is_empty() {
@@ -387,6 +354,61 @@ pub(crate) fn qualify_accounting(
             .remove("exact_subtree_and_minimal_root_accounting");
     }
     result.finish()
+}
+
+/// Inspect the exact AI-declared, nonselected memberships after insertion
+/// receipt verification. Values are evidence only, never new binding authority.
+pub(super) fn additional_memberships(
+    definition: &Json,
+    resources: &[Json],
+    proven: &InsertionResult,
+) -> Vec<(String, Json, Json)> {
+    let mut inspections = BTreeMap::new();
+    let sealed = manifest_resources(definition, resources);
+    for p in &proven.proofs {
+        let b = &p.binding;
+        let ai = &sealed[text(at(&b.binding, &["ai_authority"]), "canonical_resource_key")];
+        let source = serde_json::to_value(
+            candidate_source::decode_canonical_candidate(
+                &proven.materials[&b.parent_request_key].bytes,
+            )
+            .unwrap(),
+        )
+        .unwrap();
+        let selected: BTreeSet<_> = proven
+            .proofs
+            .iter()
+            .filter(|p| p.binding.parent_request_key == b.parent_request_key)
+            .map(|p| text(&p.binding.binding, "semantic_field_key"))
+            .collect();
+        for field in array(ai, "semantic_types")
+            .iter()
+            .filter(|t| text(t, "semantic_type") == text(&b.binding, "parent_semantic_type"))
+            .flat_map(|t| array(t, "field_dispositions"))
+        {
+            let field_key = text(field, "semantic_field_key");
+            if text(field, "destination_ref") != "child_membership" || selected.contains(field_key)
+            {
+                continue;
+            }
+            let Some((_, pointer)) = field_key.split_once('#') else {
+                continue;
+            };
+            let values = source
+                .pointer(pointer)
+                .cloned()
+                .unwrap_or(serde_json::json!([]));
+            inspections.insert(
+                (b.parent_request_key.clone(), field_key.to_owned()),
+                (
+                    b.parent_request_key.clone(),
+                    field.clone(),
+                    serde_json::from_value(values).unwrap(),
+                ),
+            );
+        }
+    }
+    inspections.into_values().collect()
 }
 
 #[cfg(test)]

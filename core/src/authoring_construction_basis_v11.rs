@@ -1439,3 +1439,58 @@ mod tests {
         );
     }
 }
+
+/// Reuse the historical resolver after a successor has qualified its bounded
+/// request/target policies. No identity allocation or source construction.
+pub(crate) fn resolve_qualified_references(
+    fragments: &[Json],
+    basis: &BTreeMap<String, Json>,
+) -> Result<BTreeMap<String, Json>, Vec<Json>> {
+    let by_key = fragments
+        .iter()
+        .map(|f| {
+            (
+                f.get("request_key")
+                    .and_then(Json::as_str)
+                    .unwrap_or_default()
+                    .to_owned(),
+                f,
+            )
+        })
+        .collect();
+    let identities = fragments
+        .iter()
+        .map(|f| {
+            (
+                f.get("request_key")
+                    .and_then(Json::as_str)
+                    .unwrap_or_default()
+                    .to_owned(),
+                orchestration::Identity {
+                    id: f
+                        .get("fields")
+                        .and_then(|v| v.get("id"))
+                        .and_then(Json::as_str)
+                        .unwrap_or_default()
+                        .to_owned(),
+                    disposition: "preserved",
+                },
+            )
+        })
+        .collect();
+    let mut diagnostics = Vec::new();
+    let mut status = BasisStatus::Sealed;
+    let resolved = resolve_references(
+        fragments,
+        &by_key,
+        &identities,
+        basis,
+        &mut diagnostics,
+        &mut status,
+    );
+    if status == BasisStatus::Sealed {
+        Ok(resolved)
+    } else {
+        Err(diagnostics)
+    }
+}

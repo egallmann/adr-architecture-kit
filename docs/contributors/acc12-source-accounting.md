@@ -80,13 +80,19 @@ relabeled as executed.
 The result contains no `CandidateSourceBasis`, basis digest, sealed flag,
 detached NM context or complete composition record. It never invokes the
 complete-basis sealer. Non-composition references and relationships remain
-explicit outstanding obligations even when a fixture has no such intent.
+explicit outstanding obligations at this stage even when a fixture has no such intent.
 Before complete composed-source sealing, a later slice must qualify those
 dependencies, assemble and validate every required composition-record semantic,
 integrity and qualification field, and qualify the complete source basis and
 detached context. NM interpretation, ledgers/equivalence and Constructed remain
 unimplemented. Protocol 1.5, host behavior, current SCS and immutable authorities
 are unchanged.
+
+The [dependency qualifier](acc12-dependencies.md) now checks explicit local and
+active-existing references and explicitly empty collections against this proof
+boundary. Unsupported relationships, retired/custom reference reuse and
+additional membership ownership remain unavailable. Dependency qualification
+does not seal this source-accounting result or produce composition records.
 
 ## WASM acceptance
 

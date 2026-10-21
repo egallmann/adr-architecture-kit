@@ -18,6 +18,9 @@ use super::{
 #[path = "authoring_construction_insertion_v12.rs"]
 pub(crate) mod insertion;
 
+#[path = "authoring_construction_sources_v12.rs"]
+pub(crate) mod sources;
+
 const SCF: &str = "scf:v1:sha256:8da499420e996c446cbc416dc7db9b4bbb2692ea5039f14461f668aaa48b9e0c";
 const AI_SCF: &str =
     "scf:v1:sha256:2a9300b1d7bdc9a80421cb94294fbd2f345531b5147644d02ae4bcc5c436d75a";

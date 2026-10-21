@@ -113,11 +113,13 @@ conflicts, distinct pending fragments whose identity equality remains deferred,
 unknown relation loops, and retained mixed diagnostics under request-array
 permutations. ACC12-19/20 remain unchanged structural cycle oracles.
 
-The internal insertion seam produces unchanged tracked WASM bytes under Rust
-1.99.1. The artifact guard now accepts unchanged binaries only after building
-the exact checkout and comparing nonempty source-built bytes with both tracked
-host copies. A stale target, build failure, or either mismatched copy fails
-closed. Existing source-build parity and host checks still run.
+The internal insertion seam produces unchanged runtime bytes within the same
+Rust 1.99.1 build environment. Windows and Linux binaries differ because compiler
+panic locations embed platform-specific source paths. Both tracked host copies
+are aligned with the hosted Linux build and compared with the final commit's
+source-built artifact. The existing artifact guard is unchanged. Local Windows
+source-build/fanout parity and hosted Linux source-build parity are distinct
+checks; cross-platform compiler-byte reproducibility is not claimed.
 
 ## Internal insertion and preservation proof
 

@@ -1,4 +1,4 @@
-"""Require tracked WASM updates or prove unchanged bytes with a fresh build."""
+"""Require tracked WASM artifacts whenever semantic-core source changes."""
 
 from __future__ import annotations
 
@@ -13,32 +13,6 @@ ARTIFACTS = {
     "packages/node/src/generated/semantic-core.wasm",
 }
 SOURCE_PREFIXES = ("core/src/", "core/Cargo.toml", "core/Cargo.lock")
-
-
-def verify_unchanged_artifacts() -> None:
-    # Internal/test-only Rust can optimize out completely. Never accept that
-    # assertion from a change label or stale target file: build this checkout.
-    subprocess.run(
-        [
-            "cargo",
-            "build",
-            "--manifest-path",
-            str(ROOT / "core/Cargo.toml"),
-            "--target",
-            "wasm32-unknown-unknown",
-            "--release",
-        ],
-        cwd=ROOT,
-        check=True,
-    )
-    built = ROOT / "core/target/wasm32-unknown-unknown/release/adr_kit_semantic_core.wasm"
-    expected = built.read_bytes()
-    if not expected or any((ROOT / path).read_bytes() != expected for path in ARTIFACTS):
-        raise SystemExit(
-            "semantic-core source-built bytes differ from tracked host artifacts; "
-            "build and commit both current host copies"
-        )
-    print("fresh source build proves both tracked host artifacts unchanged")
 
 
 def changed_files() -> set[str]:
@@ -58,9 +32,14 @@ def changed_files() -> set[str]:
 
 def main() -> int:
     changed = changed_files()
-    semantic_source_changed = any(path.startswith(SOURCE_PREFIXES) for path in changed)
+    semantic_source_changed = any(
+        path.startswith(SOURCE_PREFIXES) for path in changed
+    )
     if semantic_source_changed and not ARTIFACTS.issubset(changed):
-        verify_unchanged_artifacts()
+        raise SystemExit(
+            "semantic-core source changed without both tracked host WASM artifacts; "
+            "build and commit the current source-built artifact"
+        )
     print("semantic-core source/artifact change guard passed")
     return 0
 

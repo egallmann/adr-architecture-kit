@@ -612,6 +612,9 @@ fn qualify_intents(
     let mut memberships = BTreeSet::new();
     let mut orderings = BTreeSet::new();
     let mut owners: BTreeMap<&str, &str> = BTreeMap::new();
+    // Request locators distinguish already-resolved fragment objects. They
+    // never supply canonical identity (including in diagnostic identity slots).
+    let mut fragment_owners: BTreeMap<&str, &str> = BTreeMap::new();
     let mut edges: BTreeMap<&str, BTreeSet<&str>> = BTreeMap::new();
     let mut endpoints_complete = true;
     for intent in intents {
@@ -686,7 +689,6 @@ fn qualify_intents(
         };
         let parent_key = text(parent, "request_key");
         let child_key = text(child, "request_key");
-        edges.entry(parent_key).or_default().insert(child_key);
         if !memberships.insert((parent_key, child_key)) {
             result.composition(
                 Status::Rejected,
@@ -695,11 +697,20 @@ fn qualify_intents(
                 intent,
             );
         }
-        if let Some(child_identity) = identity(child) {
-            if let Some(previous) = owners.insert(child_identity, parent_key) {
-                if previous != parent_key {
-                    result.composition(Status::Rejected, "duplicate_identity", Some(child), intent);
-                }
+        if governed_containment(table, relation, parent, child) {
+            edges.entry(parent_key).or_default().insert(child_key);
+            // DEC-0274: the same child fragment cannot acquire two owners,
+            // even before its one eventual canonical UUID is established.
+            let same_fragment_conflict = fragment_owners
+                .insert(child_key, parent_key)
+                .is_some_and(|previous| previous != parent_key);
+            let canonical_conflict = identity(child).is_some_and(|child_identity| {
+                owners
+                    .insert(child_identity, parent_key)
+                    .is_some_and(|previous| previous != parent_key)
+            });
+            if same_fragment_conflict || canonical_conflict {
+                result.composition(Status::Rejected, "duplicate_identity", Some(child), intent);
             }
         }
         let values = BTreeMap::from([
@@ -813,6 +824,29 @@ fn qualify_intents(
     } else {
         Check::Blocked
     };
+}
+
+/// Structural containment meaning comes from the qualified table, not an
+/// arbitrary relation string or a successful full binding decision. ACC12-20
+/// requires recognizing a cycle of containment intents even when one semantic
+/// type pair is unsupported. Endpoint-policy failures do not establish an edge.
+fn governed_containment(table: &Json, relation: &str, parent: &Json, child: &Json) -> bool {
+    array(table, "relation_vocabulary")
+        .iter()
+        .any(|r| r.as_str() == Some(relation))
+        && array(table, "rows").iter().any(|row| {
+            text(row, "relation") == relation
+                && text(at(row, &["required_ai_disposition"]), "destination_ref")
+                    == "child_membership"
+                && [("parent", parent), ("child", child)]
+                    .into_iter()
+                    .all(|(role, fragment)| {
+                        text(fragment, "operation") == text(at(row, &["operations"]), role)
+                            && array(row, "input_modes")
+                                .iter()
+                                .any(|mode| mode.as_str() == Some(text(fragment, "input_mode")))
+                    })
+        })
 }
 
 fn reaches<'a>(start: &'a str, edges: &BTreeMap<&'a str, BTreeSet<&'a str>>) -> bool {

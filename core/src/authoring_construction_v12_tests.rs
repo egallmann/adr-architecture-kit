@@ -255,11 +255,213 @@ fn identities_are_supplied_or_pending_never_minted() {
         }
     }
     let result = run(&request);
-    assert_eq!(result.status, Status::Qualified);
+    assert_eq!(result.status, Status::Rejected);
     assert!(result
         .outstanding_dependencies
         .contains("duplicate_identity_after_identity_establishment"));
-    assert!(!codes(&result).contains("authoring_construction.composition.duplicate_identity"));
+    assert!(codes(&result).contains("authoring_construction.composition.duplicate_identity"));
+    assert!(result
+        .diagnostics
+        .iter()
+        .filter(|d| d.code.ends_with("duplicate_identity"))
+        .all(|d| d.semantic_identity.is_none()));
+    assert!(result.bindings.is_empty());
+}
+
+fn assert_permutations(request: &mut Value) -> Qualification {
+    let expected = run(request);
+    for _ in 0..request["request"]["compositions"]
+        .as_array()
+        .unwrap()
+        .len()
+        .max(2)
+    {
+        request["request"]["fragments"]
+            .as_array_mut()
+            .unwrap()
+            .reverse();
+        request["request"]["compositions"]
+            .as_array_mut()
+            .unwrap()
+            .rotate_left(1);
+        assert_eq!(run(request), expected);
+    }
+    expected
+}
+
+#[test]
+fn pending_child_multi_parent_ownership_is_provable_without_canonical_identity() {
+    let mut request = request(&fixture(41));
+    for fragment in request["request"]["fragments"].as_array_mut().unwrap() {
+        fragment["fields"].as_object_mut().unwrap().remove("id");
+    }
+    let original = request.clone();
+    let result = assert_permutations(&mut request);
+    assert_eq!(result.status, Status::Rejected);
+    let conflicts = result
+        .diagnostics
+        .iter()
+        .filter(|d| d.code.ends_with("duplicate_identity"))
+        .collect::<Vec<_>>();
+    assert_eq!(conflicts.len(), 1);
+    assert_eq!(conflicts[0].semantic_identity, None);
+    assert!(result.bindings.is_empty());
+    assert!(result
+        .outstanding_dependencies
+        .contains("canonical_identity_establishment"));
+    assert!(result
+        .outstanding_dependencies
+        .contains("duplicate_identity_after_identity_establishment"));
+    assert_eq!(
+        original["request"]["fragments"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|f| f["fields"].get("id").is_none())
+            .count(),
+        3
+    );
+    // Equal content in distinct pending fragments is not proof of equal IDs.
+    let mut request = original;
+    let mut other = request["request"]["fragments"][1].clone();
+    other["request_key"] = json!("other-child");
+    request["request"]["fragments"]
+        .as_array_mut()
+        .unwrap()
+        .push(other);
+    request["request"]["compositions"][1]["child"] = json!("other-child");
+    let result = assert_permutations(&mut request);
+    assert_eq!(result.status, Status::Qualified);
+    assert_eq!(result.bindings.len(), 2);
+    assert!(result.bindings.iter().all(|b| b.child_identity.is_none()));
+
+    // Ownership remains independently provable alongside other failed intents.
+    let mut request = super::tests::request(&fixture(41));
+    for fragment in request["request"]["fragments"].as_array_mut().unwrap() {
+        fragment["fields"].as_object_mut().unwrap().remove("id");
+    }
+    let mut unmapped_child = request["request"]["fragments"][1].clone();
+    unmapped_child["request_key"] = json!("unmapped-child");
+    unmapped_child["semantic_type"] = json!("entity/invariant");
+    request["request"]["fragments"]
+        .as_array_mut()
+        .unwrap()
+        .push(unmapped_child);
+    request["request"]["compositions"]
+        .as_array_mut()
+        .unwrap()
+        .extend([
+            json!({"parent":"parent","child":"parent","relation":"unmapped","ordering":0}),
+            json!({"parent":"parent","child":"unmapped-child","relation":"contains","ordering":20}),
+            json!({"parent":"parent","child":"missing","relation":"contains","ordering":30}),
+        ]);
+    let result = assert_permutations(&mut request);
+    assert_eq!(result.status, Status::Rejected);
+    for code in [
+        "duplicate_identity",
+        "relation_unknown",
+        "binding_unavailable",
+        "endpoint_unresolved",
+    ] {
+        assert!(
+            codes(&result).contains(format!("authoring_construction.composition.{code}").as_str())
+        );
+    }
+    assert!(!codes(&result).contains("authoring_construction.composition.cycle"));
+}
+
+#[test]
+fn unknown_and_unmapped_relation_intents_cannot_create_containment_cycles() {
+    for relation in ["composed_of", "unmapped"] {
+        let mut request = request(&fixture(20));
+        request["request"]["compositions"][1]["relation"] = json!(relation);
+        let result = assert_permutations(&mut request);
+        assert_eq!(result.status, Status::Rejected);
+        assert_eq!(
+            codes(&result),
+            BTreeSet::from(["authoring_construction.composition.relation_unknown"])
+        );
+        // An unknown self-relation is not self-containment either.
+        request["request"]["compositions"] = json!([
+            {"parent":"parent","child":"parent","relation":relation,"ordering":0}
+        ]);
+        assert!(!codes(&assert_permutations(&mut request))
+            .contains("authoring_construction.composition.cycle"));
+    }
+}
+
+#[test]
+fn containment_edges_require_the_qualified_tables_endpoint_policy() {
+    let table = j(&resource(TABLE));
+    let input = fixture(1);
+    let parent = j(&input["fragments"][0]);
+    let child = j(&input["fragments"][1]);
+    let relation = text(
+        &table.get("rows").unwrap().as_array().unwrap()[0],
+        "relation",
+    );
+    assert!(governed_containment(&table, relation, &parent, &child));
+    // Structural cycle rejection remains independent of full type-pair binding
+    // availability, as required by the unchanged ACC12-20 oracle.
+    assert!(governed_containment(&table, relation, &child, &parent));
+    for role in [0, 1] {
+        for operation in ["reference", "retire", "update"] {
+            let mut fragments = input["fragments"].clone();
+            fragments[role]["operation"] = json!(operation);
+            assert!(!governed_containment(
+                &table,
+                relation,
+                &j(&fragments[0]),
+                &j(&fragments[1])
+            ));
+        }
+        let mut fragments = input["fragments"].clone();
+        fragments[role]["input_mode"] = json!("compact");
+        assert!(!governed_containment(
+            &table,
+            relation,
+            &j(&fragments[0]),
+            &j(&fragments[1])
+        ));
+    }
+}
+
+#[test]
+fn governed_cycles_remain_independent_of_unavailable_and_unknown_intents() {
+    let mut request = request(&fixture(20));
+    let mut outsider = request["request"]["fragments"][0].clone();
+    outsider["request_key"] = json!("outsider");
+    outsider["fields"]["id"] = json!("01900000-0000-7000-8000-000000000003");
+    request["request"]["fragments"]
+        .as_array_mut()
+        .unwrap()
+        .push(outsider);
+    request["request"]["compositions"]
+        .as_array_mut()
+        .unwrap()
+        .extend([
+            json!({"parent":"outsider","child":"outsider","relation":"unmapped","ordering":0}),
+            json!({"parent":"parent","child":"missing","relation":"contains","ordering":30}),
+        ]);
+    let result = assert_permutations(&mut request);
+    assert_eq!(result.status, Status::Rejected);
+    for code in [
+        "cycle",
+        "binding_unavailable",
+        "relation_unknown",
+        "endpoint_unresolved",
+    ] {
+        assert!(
+            codes(&result).contains(format!("authoring_construction.composition.{code}").as_str())
+        );
+    }
+    let cycle = result
+        .diagnostics
+        .iter()
+        .find(|d| d.code.ends_with(".cycle"))
+        .unwrap();
+    assert_eq!(cycle.payload, j(&json!(["child", "parent"])));
+    assert!(result.bindings.is_empty());
 }
 
 #[test]

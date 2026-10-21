@@ -56,8 +56,23 @@ compiler ownership of the selected property. Property presence includes null,
 an empty array, and an otherwise equal child value. No field is changed.
 
 Absent create identities remain pending. Supplied valid UUIDv7 values are
-preserved; no identity minter is called. Identity-dependent duplicate checks
-remain outstanding until identities exist. These preconditions do not validate
+preserved; no identity minter is called. The same resolved child fragment under
+two distinct parents is already a provable ownership violation under DEC-0274,
+including while its UUID is pending. It emits `duplicate_identity` with the
+unresolved identity sentinel. Request keys locate the resolved fragment objects;
+they never become canonical identities. Equality of canonical identities between
+distinct pending fragments remains outstanding until identities exist.
+
+Cycle edges require a relation whose containment meaning is selected from the
+qualified table, plus unambiguous endpoints satisfying its create/prepared
+policy. Unknown or unmapped relation tokens contribute no containment edges.
+Structural containment intent is distinct from successful type-pair binding:
+frozen ACC12-20 requires rejecting the two `contains` intents' cycle even though
+the reverse type pair independently has no row. Such structural violations
+remain visible alongside other independent failures. An unavailable binding
+does not authorize insertion or make an arbitrary relation containment.
+
+These preconditions do not validate
 complete prepared Authoring objects or relationships: those remain later
 construction obligations, along with reference interpretation outside these
 composition endpoints.
@@ -86,12 +101,23 @@ is relabeled as implemented runtime coverage.
 | 27–32 | Missing/tampered resources, incorrect digest/version/SCF, incomplete closure | No construction claim |
 | 33–37 | Inner authority recheck guards for AI/ADC disagreement, duplicate rows, unqualified row claims; table schema rejection | Entry-point tampering fails earlier exact closure verification; no alternate publication is accepted |
 | 38–39 | Independent diagnostic retention, stable ordering and status precedence | No ACC construction outcome is emitted |
-| 40–41 | Reference-basis endpoint rejection; supplied child identity under multiple parents | Complete composition evidence |
+| 40–41 | Reference-basis endpoint rejection; supplied child identity under multiple parents; same-fragment pending-ID ownership regression | Complete composition evidence |
 
 Additional tests cover both endpoint roles, forbidden fallbacks, missing
 companion/inherited schema resources, invalid schema references, unsupported
 schema branches, unqualified fragments, invalid supplied IDs, and absence of a
 protocol 1.5 route. Existing ACC 1.0/1.1 and host tests remain regression gates.
+
+The post-merge ownership/cycle cleanup also tests pending-ID multi-parent
+conflicts, distinct pending fragments whose identity equality remains deferred,
+unknown relation loops, and retained mixed diagnostics under request-array
+permutations. ACC12-19/20 remain unchanged structural cycle oracles.
+
+Both host WASM artifacts are regenerated using Rust 1.99.1, matching the hosted
+qualification compiler. Under the previous local 1.98.1 compiler the internal
+cleanup produced identical bytes; the compiler update changes the binary, not
+the protocol or advertised execution capabilities. The existing artifact guard
+and source-build parity checks remain unchanged.
 
 ## Deferred execution and next slice
 

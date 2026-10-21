@@ -72,10 +72,9 @@ the reverse type pair independently has no row. Such structural violations
 remain visible alongside other independent failures. An unavailable binding
 does not authorize insertion or make an arbitrary relation containment.
 
-These preconditions do not validate
-complete prepared Authoring objects or relationships: those remain later
-construction obligations, along with reference interpretation outside these
-composition endpoints.
+These preconditions do not themselves validate complete prepared Authoring
+objects. The separate internal insertion seam below validates those objects;
+reference interpretation outside composition endpoints remains deferred.
 
 Diagnostics retain the ACC codes and aggregate in the order Rejected,
 Unavailable, Unresolved, then internal Qualified. They sort by status rank,
@@ -92,12 +91,13 @@ is relabeled as implemented runtime coverage.
 
 | ACC12 cases | Properties exercised by Rust tests | Remaining assertions |
 | --- | --- | --- |
-| 01–02 | Exact row/endpoint selection; authored sibling ordering | Embedding, artifacts, complete records and roots |
-| 03 | Binding-decision permutation invariance | Constructed parent-byte equality |
-| 04 | Supplied identity retention and input non-mutation | Complete embedded child equality |
-| 05 | Missing create identity remains pending | Minting and all constructed-byte assertions |
+| 01–02 | Exact row/endpoint selection; complete child insertion, authored sibling ordering, retained unsealed child bytes | Qualified artifacts, complete records and roots |
+| 03 | Binding-decision and composed-byte permutation invariance with fixed identities | Complete construction qualification |
+| 04 | Supplied identity retention, complete embedded child equality and input non-mutation | Complete records and roots |
+| 05 | One UUIDv7 establishment per participating create fragment, complete child bytes | Complete construction qualification; independent mint calls are not claimed byte-identical |
 | 06–22 | Published structural diagnostic codes and qualification status precedence | Complete construction result/evidence |
-| 23–26 | Deferred | Child/identity mutation during insertion; exact-subtree and root accounting |
+| 23–24 | Independent proof gate rejects child-field and identity mutation in actual serialized bytes | Complete composition records and source sealing |
+| 25–26 | Deferred | Exact-subtree root omission and source-root accounting |
 | 27–32 | Missing/tampered resources, incorrect digest/version/SCF, incomplete closure | No construction claim |
 | 33–37 | Inner authority recheck guards for AI/ADC disagreement, duplicate rows, unqualified row claims; table schema rejection | Entry-point tampering fails earlier exact closure verification; no alternate publication is accepted |
 | 38–39 | Independent diagnostic retention, stable ordering and status precedence | No ACC construction outcome is emitted |
@@ -113,24 +113,66 @@ conflicts, distinct pending fragments whose identity equality remains deferred,
 unknown relation loops, and retained mixed diagnostics under request-array
 permutations. ACC12-19/20 remain unchanged structural cycle oracles.
 
-Both host WASM artifacts are regenerated using Rust 1.99.1, matching the hosted
-qualification compiler. Under the previous local 1.98.1 compiler the internal
-cleanup produced identical bytes; the compiler update changes the binary, not
-the protocol or advertised execution capabilities. The existing artifact guard
-and source-build parity checks remain unchanged.
+The internal insertion seam produces unchanged tracked WASM bytes under Rust
+1.99.1. The artifact guard now accepts unchanged binaries only after building
+the exact checkout and comparing nonempty source-built bytes with both tracked
+host copies. A stale target, build failure, or either mismatched copy fails
+closed. Existing source-build parity and host checks still run.
+
+## Internal insertion and preservation proof
+
+`authoring_construction_v12::insertion::insert` consumes the existing qualifier's
+binding decisions. It is not a protocol operation. The bounded seam supports
+requests whose fragments all participate in qualified compositions; unbound
+native aggregation remains explicitly unavailable. No identity is allocated
+until initial authority, structural, schema-preflight and serializer-authority
+checks pass. Missing create IDs use the existing environmental `IdentityMinter`
+and `establish_identity` helper; supplied IDs bypass minting. Every participating
+fragment is established once, even when a parent has several children. A sorted
+request-key map schedules allocation; keys never enter the minter. Environmental
+allocation is not claimed repeatable across independent mint operations.
+
+The established request clone is requalified to reuse canonical-identity and
+ownership checks. The original request is untouched. Selected Authoring 1.7
+schemas come from verified binding rows and the sealed resource map. Prepared
+child objects contain exactly the supplied fields plus established ID. No alias,
+rationale, optional array or other default is manufactured. The complete parent
+is validated after compiler-owned insertion, since its required child property
+must be absent in prepared input. All reachable selected schema branches are
+preflighted. The governed serializer's compiled schema catalog must equal the
+verified closure; it cannot supply fallback authority.
+
+The coordinator consumes the qualifier's authored binding order and property
+selectors. It retains each native child separately and serializes parents and
+children using `adr-kit.authoring-yaml/v1`. A separate proof gate decodes actual
+bytes, verifies canonical rerendering and qualified schema selectors, compares embedded and
+retained children deeply against immutable prepared fields plus established ID,
+and checks every other parent field remains unchanged. Membership count and
+ordering must match the qualified decisions. The result is `PreservationProven`,
+an internal status with partial subtree proofs, never `Sealed` or an ACC outcome.
+
+Any failure releases no materials or subtree proofs. Governed child/identity
+mutation diagnostics retain their published codes and sorting. Internal typed
+`PreservationFailure` values also distinguish parent-field mutation, missing
+material, changed membership, invalid serialization and changed retained child
+material; these are implementation proof failures, not new ACC wire codes.
+Failure tests modify actual rendered bytes independently of the compiler path.
+An environmental mint failure is unavailable; duplicate allocated IDs are
+rejected by the reused qualifier. Allocation may consume entropy before a later
+validation failure; no persistence or rollback is implied.
 
 ## Deferred execution and next slice
 
-No compiler insertion, canonical child materialization, child-field equality,
-identity-preservation proof during insertion, exact-subtree/root omission proof,
-composition record, or composed candidate sealing is produced. Complete NM
+No child-root omission, complete composition record, final source references,
+source-basis sealing, or composed candidate admission is produced. Complete NM
 2.4 interpretation, ledgers, comparison and construction qualification remain
 unavailable. Protocol 1.5 and its composition capability flags are unchanged;
 ACC 1.1 composition remains unavailable. Published contract bytes and current
 semantic-contract selection are unchanged.
 
-The next separately authorized slice can reuse these binding decisions to
-establish identities once, insert the complete prepared child under compiler
-ownership, validate Authoring fields, and produce the ACC 1.2 semantic/integrity
-proof partitions and exact-subtree evidence before minimal-root sealing. This
-internal qualifier supplies preconditions for that work, not those proofs.
+The next separately authorized slice can consume retained native material and
+subtree proofs to establish qualified source references/digests, exact-subtree
+child-root omission, complete semantic/integrity composition evidence, and
+minimal composed-source sealing. Non-composition references must also be
+qualified before any complete basis claim. The current proofs satisfy only the
+insertion and preservation obligations, not these remaining obligations.

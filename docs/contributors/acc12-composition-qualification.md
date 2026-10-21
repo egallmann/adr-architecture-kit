@@ -91,13 +91,13 @@ is relabeled as implemented runtime coverage.
 
 | ACC12 cases | Properties exercised by Rust tests | Remaining assertions |
 | --- | --- | --- |
-| 01–02 | Exact row/endpoint selection; complete child insertion, authored sibling ordering, retained unsealed child bytes | Qualified artifacts, complete records and roots |
+| 01–02 | Exact row/endpoint selection; complete child insertion, authored sibling ordering, qualified retained child artifacts and minimal roots | Complete records and sealed basis |
 | 03 | Binding-decision and composed-byte permutation invariance with fixed identities | Complete construction qualification |
 | 04 | Supplied identity retention, complete embedded child equality and input non-mutation | Complete records and roots |
 | 05 | One UUIDv7 establishment per participating create fragment, complete child bytes | Complete construction qualification; independent mint calls are not claimed byte-identical |
 | 06–22 | Published structural diagnostic codes and qualification status precedence | Complete construction result/evidence |
 | 23–24 | Independent proof gate rejects child-field and identity mutation in actual serialized bytes | Complete composition records and source sealing |
-| 25–26 | Deferred | Exact-subtree root omission and source-root accounting |
+| 25–26 | Reject child-root inclusion after proof and omission without proof at the internal accounting boundary | Complete records and sealed basis |
 | 27–32 | Missing/tampered resources, incorrect digest/version/SCF, incomplete closure | No construction claim |
 | 33–37 | Inner authority recheck guards for AI/ADC disagreement, duplicate rows, unqualified row claims; table schema rejection | Entry-point tampering fails earlier exact closure verification; no alternate publication is accepted |
 | 38–39 | Independent diagnostic retention, stable ordering and status precedence | No ACC construction outcome is emitted |
@@ -117,7 +117,8 @@ The internal insertion seam produces unchanged runtime bytes within the same
 Rust 1.99.1 build environment. Windows and Linux binaries differ because compiler
 panic locations embed platform-specific source paths. Both tracked host copies
 are aligned with the hosted Linux build and compared with the final commit's
-source-built artifact. The existing artifact guard is unchanged. Local Windows
+source-built artifact. Unchanged artifacts now require a fresh exact byte proof
+from the source/artifact guard. Local Windows
 source-build/fanout parity and hosted Linux source-build parity are distinct
 checks; cross-platform compiler-byte reproducibility is not claimed.
 
@@ -165,16 +166,15 @@ validation failure; no persistence or rollback is implied.
 
 ## Deferred execution and next slice
 
-No child-root omission, complete composition record, final source references,
-source-basis sealing, or composed candidate admission is produced. Complete NM
+No complete composition record, source-basis sealing, or composed candidate
+admission is produced. Complete NM
 2.4 interpretation, ledgers, comparison and construction qualification remain
 unavailable. Protocol 1.5 and its composition capability flags are unchanged;
 ACC 1.1 composition remains unavailable. Published contract bytes and current
 semantic-contract selection are unchanged.
 
-The next separately authorized slice can consume retained native material and
-subtree proofs to establish qualified source references/digests, exact-subtree
-child-root omission, complete semantic/integrity composition evidence, and
-minimal composed-source sealing. Non-composition references must also be
-qualified before any complete basis claim. The current proofs satisfy only the
-insertion and preservation obligations, not these remaining obligations.
+The [internal source-accounting seam](acc12-source-accounting.md) now consumes
+these proofs for qualified artifact references/digests and exact-subtree child
+root omission. Non-composition references, complete semantic/integrity
+composition records, and composed-source sealing remain outstanding. No complete
+basis or construction claim follows from insertion and root accounting alone.

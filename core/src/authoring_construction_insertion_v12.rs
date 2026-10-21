@@ -53,6 +53,9 @@ pub(crate) struct InsertionResult {
     pub preservation_failures: Vec<PreservationFailure>,
     pub materials: BTreeMap<String, Material>,
     pub proofs: Vec<SubtreeProof>,
+    // Not a transport field. Only successful insertion can issue this receipt.
+    established_request: Option<Json>,
+    identity_dispositions: BTreeMap<String, &'static str>,
 }
 
 impl InsertionResult {
@@ -68,6 +71,8 @@ impl InsertionResult {
             preservation_failures: Vec::new(),
             materials: BTreeMap::new(),
             proofs: Vec::new(),
+            established_request: None,
+            identity_dispositions: BTreeMap::new(),
         }
     }
 }
@@ -280,7 +285,90 @@ pub(crate) fn insert(
     if q.status != Status::Qualified {
         return InsertionResult::blocked(q);
     }
-    finish_proof(q, &expected, materials)
+    let mut result = finish_proof(q, &expected, materials);
+    if result.status == InsertionStatus::PreservationProven {
+        // Request list order is nonsemantic; normalize only private replay
+        // evidence, retaining authored ordering values and every source field.
+        let body = established
+            .as_object_mut()
+            .unwrap()
+            .get_mut("request")
+            .unwrap()
+            .as_object_mut()
+            .unwrap();
+        body.get_mut("fragments")
+            .unwrap()
+            .as_array_mut()
+            .unwrap()
+            .sort_by_cached_key(|f| text(f, "request_key").to_owned());
+        body.get_mut("compositions")
+            .unwrap()
+            .as_array_mut()
+            .unwrap()
+            .sort_by_cached_key(canonical);
+        result.established_request = Some(established);
+        result.identity_dispositions = identities
+            .into_iter()
+            .map(|(key, identity)| (key, identity.disposition))
+            .collect();
+    }
+    result
+}
+
+/// Recheck the actual material and exact proof set against insertion's private
+/// receipt. Neither a caller-set status nor a qualifier-only result is proof.
+pub(super) fn recheck_preservation(
+    definition: &Json,
+    resources: &[Json],
+    result: &InsertionResult,
+) -> Result<Json, (Status, &'static str)> {
+    if result.status != InsertionStatus::PreservationProven
+        || !result.preservation_failures.is_empty()
+    {
+        return Err((
+            Status::Rejected,
+            "completed insertion and preservation proof are required",
+        ));
+    }
+    let request = result
+        .established_request
+        .as_ref()
+        .ok_or((Status::Rejected, "private insertion receipt is absent"))?;
+    if result.materials.iter().any(|(key, material)| {
+        result.identity_dispositions.get(key) != Some(&material.identity_disposition)
+    }) {
+        return Err((
+            Status::Rejected,
+            "identity disposition differs from insertion receipt",
+        ));
+    }
+    let qualification = qualify(definition, resources, request);
+    if qualification.status != Status::Qualified {
+        return Err((
+            qualification.status,
+            "insertion receipt no longer qualifies under exact authority",
+        ));
+    }
+    let expected = array(at(request, &["request"]), "fragments")
+        .iter()
+        .map(|f| {
+            (
+                text(f, "request_key").to_owned(),
+                at(f, &["fields"]).clone(),
+            )
+        })
+        .collect();
+    let checked = finish_proof(qualification, &expected, result.materials.clone());
+    if checked.status != InsertionStatus::PreservationProven
+        || checked.qualification != result.qualification
+        || checked.proofs != result.proofs
+    {
+        return Err((
+            Status::Rejected,
+            "material, qualifications or subtree proofs differ from verified insertion",
+        ));
+    }
+    Ok(request.clone())
 }
 
 /// Independent proof gate over actual serialized bytes. The immutable expected
@@ -400,6 +488,8 @@ fn finish_proof(
             preservation_failures: failures.into_iter().collect(),
             materials: BTreeMap::new(),
             proofs: Vec::new(),
+            established_request: None,
+            identity_dispositions: BTreeMap::new(),
         };
     }
     for completed in [
@@ -415,6 +505,8 @@ fn finish_proof(
         preservation_failures: Vec::new(),
         materials,
         proofs,
+        established_request: None,
+        identity_dispositions: BTreeMap::new(),
     }
 }
 

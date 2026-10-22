@@ -183,6 +183,66 @@ pub(crate) fn qualify_dependencies(
     ]));
     let fragments = array(at(&request, &["request"]), "fragments");
     let entries = array(at(request_basis, &["reference_basis"]), "entries");
+    // Canonical identity is shared across candidate and reference bases. Multiple
+    // selectors may reuse one consistent identity, but cannot change its type,
+    // qualification or assert contradictory existing-target states.
+    let mut claims = BTreeMap::<String, (BTreeSet<String>, BTreeSet<String>)>::new();
+    for (value, local) in fragments
+        .iter()
+        .map(|f| (f, true))
+        .chain(entries.iter().map(|e| (e, false)))
+    {
+        let id = if local {
+            text(at(value, &["fields"]), "id")
+        } else {
+            text(value, "canonical_uuid")
+        };
+        let claim = claims.entry(id.into()).or_default();
+        claim.0.insert(canonical(&object([
+            (
+                "semantic_kind".into(),
+                at(value, &["semantic_kind"]).clone(),
+            ),
+            (
+                "semantic_type".into(),
+                at(value, &["semantic_type"]).clone(),
+            ),
+            (
+                "qualification".into(),
+                normalized_qualification(at(
+                    value,
+                    &[if local {
+                        "contract_qualification"
+                    } else {
+                        "qualification"
+                    }],
+                )),
+            ),
+        ])));
+        if !local {
+            claim.1.insert(text(value, "existence_state").into());
+        }
+    }
+    for (id, (identities, states)) in claims {
+        if identities.len() > 1 || states.len() > 1 {
+            result.issue(
+                Status::Rejected,
+                "authoring_construction.reference.expectation_mismatch",
+                Some(&id),
+                "canonical_identity",
+                &object([
+                    (
+                        "claims".into(),
+                        Json::Array(identities.into_iter().map(string).collect()),
+                    ),
+                    (
+                        "existing_states".into(),
+                        Json::Array(states.into_iter().map(string).collect()),
+                    ),
+                ]),
+            );
+        }
+    }
     // Optional descriptors are integrity evidence, not alternate lookup paths.
     for entry in entries {
         if entry.get("source_basis").is_some_and(|s| {

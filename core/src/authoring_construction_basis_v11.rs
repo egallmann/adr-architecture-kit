@@ -1494,3 +1494,11 @@ pub(crate) fn resolve_qualified_references(
         Err(diagnostics)
     }
 }
+
+/// Reuse the governed ACC basis projection without changing historical callers.
+pub(crate) fn qualified_basis_to_json(
+    basis: &candidate_source::CandidateSourceBasis,
+    source_contract: &Json,
+) -> Json {
+    basis_to_json(basis, source_contract)
+}

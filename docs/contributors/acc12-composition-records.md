@@ -55,8 +55,9 @@ completion. They do not relabel full frozen construction cases as passed.
 Historical contracts, protocol 1.5, host capabilities and current SCS remain
 unchanged.
 
-Complete composed-source sealing and detached context remain separate work.
+The [internal composed-source sealing gate](acc12-composed-source-sealing.md)
+now replays these records before sealing and deriving detached context.
 Pending relationships, retired/custom/owner-local references and additional
 membership ownership still block records. After all applicable dependencies and
-records qualify, a later slice may seal the complete source basis. NM 2.4
+records qualify, the sealing gate may seal the complete source basis. NM 2.4
 interpretation, ledgers/equality and complete construction remain deferred.

@@ -5,10 +5,10 @@ high_water_marks:
   CAP: 9002
   COMP: 23
   CONTRACT: 5
-  DEC: 9000
+  DEC: 9008
   IFACE: 36
   IMPL: 29
-  INV: 292
+  INV: 300
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -2176,6 +2176,54 @@ allocations:
   file_path: adrs/logical/ADR-L-9000-kernel-boot-publication-surface.yaml
   source_pointer: /decisions/0/id
   state: active
+- id: DEC-9001
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_pointer: /decisions/0/alias_id
+  state: active
+  adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- id: DEC-9002
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_pointer: /decisions/1/alias_id
+  state: active
+  adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- id: DEC-9003
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_pointer: /decisions/2/alias_id
+  state: active
+  adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- id: DEC-9004
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_pointer: /decisions/3/alias_id
+  state: active
+  adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- id: DEC-9005
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_pointer: /decisions/4/alias_id
+  state: active
+  adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- id: DEC-9006
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_pointer: /decisions/5/alias_id
+  state: active
+  adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- id: DEC-9007
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_pointer: /decisions/6/alias_id
+  state: active
+  adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- id: DEC-9008
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_pointer: /decisions/7/alias_id
+  state: active
+  adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
 - id: IFACE-0001
   entity_type: interface
   adr_id: ADR-P-0001
@@ -4120,3 +4168,51 @@ allocations:
   source_pointer: /invariants/8/alias_id
   state: active
   adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+- id: INV-0293
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_pointer: /invariants/0/alias_id
+  state: active
+  adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- id: INV-0294
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_pointer: /invariants/1/alias_id
+  state: active
+  adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- id: INV-0295
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_pointer: /invariants/2/alias_id
+  state: active
+  adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- id: INV-0296
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_pointer: /invariants/3/alias_id
+  state: active
+  adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- id: INV-0297
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_pointer: /invariants/4/alias_id
+  state: active
+  adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- id: INV-0298
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_pointer: /invariants/5/alias_id
+  state: active
+  adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- id: INV-0299
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_pointer: /invariants/6/alias_id
+  state: active
+  adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- id: INV-0300
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_pointer: /invariants/7/alias_id
+  state: active
+  adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2

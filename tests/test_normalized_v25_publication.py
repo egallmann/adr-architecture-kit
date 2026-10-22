@@ -31,67 +31,74 @@ SCHEMA_ROOT = ROOT / "schema" / "normalized-model" / "v2.5"
 OLD_ROOT = ROOT / "schema" / "normalized-model" / "v2.4"
 CONTRACT_ROOT = ROOT / "contracts" / "semantic-contract" / "v1.0"
 BUNDLED = ROOT / "src" / "adr_kit" / "semantic_contract" / "v1_0"
-NAMES = ["normalized-architecture-model.schema.json","normalized-entity-registry.schema.json","normalized-entity.schema.json","relationship-record.schema.json","relationship-registry.schema.json","unresolved-registry.schema.json"]
+NAMES = [
+    "normalized-architecture-model.schema.json",
+    "normalized-entity-registry.schema.json",
+    "normalized-entity.schema.json",
+    "relationship-record.schema.json",
+    "relationship-registry.schema.json",
+    "unresolved-registry.schema.json",
+]
 EXPECTED_SCF = "scf:v1:sha256:bb48720502668e434d378445004aec7783346a0e74254c9e0d3cb01a8798d9d7"
 UUID = "019109a0-b1c2-7def-8a00-112233445566"
 BASELINE_GIT_BLOBS = {
-  "contracts/compatibility/host-capabilities.json": "c1f0c7c9d1bede96b1645141a00da63f3e37a0d3",
-  "contracts/semantic-contract/v1.0/catalog/semantic-contract-catalog-1.0.json": "4659545c9b93af7b7e72d93a404ad8e4930f5bb5",
-  "contracts/semantic-contract/v1.0/current/semantic-contract-current-1.0.json": "4383eb0bf08795823bed583b4169eb0a2bf4e677",
-  "contracts/semantic-contract/v1.0/definitions/architecture-interpretation-1.1.json": "71b7248658c387a7bf23ac3cc51317d4d696b9b6",
-  "contracts/semantic-contract/v1.0/definitions/architecture-interpretation-1.2.json": "e297a2fcbe07ba47cebcbc873d11b82249004dc5",
-  "contracts/semantic-contract/v1.0/definitions/architecture-interpretation.json": "9f044344c33fc3479549d5558675451d48574a75",
-  "contracts/semantic-contract/v1.0/definitions/authoring-construction-1.0.json": "b00fd399e1870b9577f8f7ec54dfc67f66196069",
-  "contracts/semantic-contract/v1.0/definitions/authoring-construction-1.1.json": "14981aefe18f9780152f0f96348e29e00a2f8cab",
-  "contracts/semantic-contract/v1.0/definitions/authoring-construction-1.2.json": "1918ad7eb7bf27ef2de187dc0215f6f399f3dc2b",
-  "contracts/semantic-contract/v1.0/definitions/normalized-model-2.4.json": "a0559a5bda8fd65b90b5b0d9b79949c745df464c",
-  "contracts/semantic-contract/v1.0/definitions/normalized-model.json": "6b49bd32ff0fd91198a531654c911da1e9f4e925",
-  "contracts/semantic-contract/v1.0/definitions/normative-semantics-1.0.json": "2ae295dee7b7f6a9d353839ec8b019798a670464",
-  "contracts/semantic-contract/v1.0/definitions/normative-semantics.json": "2ae295dee7b7f6a9d353839ec8b019798a670464",
-  "contracts/semantic-contract/v1.0/policy/semantic-contract-policy-1.0.json": "363e8535ddc8f5fdffcc7f375ebb9b13bf40f562",
-  "contracts/semantic-contract/v1.0/resources/normalized-model-2.4-conformance.json": "47ec0af3b6c59774aacc85ed6ef4eddbe2a63b3a",
-  "contracts/semantic-contract/v1.0/resources/normalized-model-2.4-schema-normalized-architecture-model.schema.json": "51ab6b0fc9538696946a7bd617600898fda16e4b",
-  "contracts/semantic-contract/v1.0/resources/normalized-model-2.4-schema-normalized-entity-registry.schema.json": "36cfa43d043f52a6e5f716958f33925580f92cf3",
-  "contracts/semantic-contract/v1.0/resources/normalized-model-2.4-schema-normalized-entity.schema.json": "392c89dc7cfd91dfa2e93ba08448cac9b9d63c9c",
-  "contracts/semantic-contract/v1.0/resources/normalized-model-2.4-schema-relationship-record.schema.json": "1fe37c1195387bcd7e8eeb791f6dca0df3295588",
-  "contracts/semantic-contract/v1.0/resources/normalized-model-2.4-schema-relationship-registry.schema.json": "8d0c87b1d460e1c3d15f72693eca74278331718f",
-  "contracts/semantic-contract/v1.0/resources/normalized-model-2.4-schema-unresolved-registry.schema.json": "3a799c04c6c3244034422d380711e862f1bc0146",
-  "contracts/semantic-contract/v1.0/sets/scs-v1-sha256-2cf903fe80c50b97443645369b28443c7fa186ed758e2e22d7ce758ccb0d6020.json": "a038827f86a122d71bb8ae148f69bf7e1acc8598",
-  "contracts/semantic-contract/v1.0/sets/scs-v1-sha256-d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6.json": "361a336464c8ce0dc1bf936145066dd4b8d6be8f",
-  "packages/node/src/generated/semantic-core.wasm": "7ad5c0594effa63b8246e77e5926e20545fd34f3",
-  "schema/normalized-model/v2.3/normalized-architecture-model.schema.json": "c5caf6b3f008b9d32dacaeed9d251e2978773004",
-  "schema/normalized-model/v2.3/normalized-entity-registry.schema.json": "c3ba0f7648127dc874bf6887bf59dc33e430bcab",
-  "schema/normalized-model/v2.3/normalized-entity.schema.json": "cc5bd2bac84978bd3a82fa99b480767df21d8926",
-  "schema/normalized-model/v2.3/relationship-record.schema.json": "e3e3ebe44c510f83e8b819fd2b07efbf8aa8a24d",
-  "schema/normalized-model/v2.3/relationship-registry.schema.json": "f48a86f505c95cb4b426f2183d68f0273e4da0e2",
-  "schema/normalized-model/v2.3/unresolved-registry.schema.json": "a53140c599338ae13f285c29a6ac18315e204958",
-  "schema/normalized-model/v2.4/normalized-architecture-model.schema.json": "51ab6b0fc9538696946a7bd617600898fda16e4b",
-  "schema/normalized-model/v2.4/normalized-entity-registry.schema.json": "36cfa43d043f52a6e5f716958f33925580f92cf3",
-  "schema/normalized-model/v2.4/normalized-entity.schema.json": "392c89dc7cfd91dfa2e93ba08448cac9b9d63c9c",
-  "schema/normalized-model/v2.4/relationship-record.schema.json": "1fe37c1195387bcd7e8eeb791f6dca0df3295588",
-  "schema/normalized-model/v2.4/relationship-registry.schema.json": "8d0c87b1d460e1c3d15f72693eca74278331718f",
-  "schema/normalized-model/v2.4/unresolved-registry.schema.json": "3a799c04c6c3244034422d380711e862f1bc0146",
-  "src/adr_kit/semantic_contract/v1_0/catalog/semantic-contract-catalog-1.0.json": "4659545c9b93af7b7e72d93a404ad8e4930f5bb5",
-  "src/adr_kit/semantic_contract/v1_0/current/semantic-contract-current-1.0.json": "4383eb0bf08795823bed583b4169eb0a2bf4e677",
-  "src/adr_kit/semantic_contract/v1_0/definitions/architecture-interpretation-1.1.json": "71b7248658c387a7bf23ac3cc51317d4d696b9b6",
-  "src/adr_kit/semantic_contract/v1_0/definitions/architecture-interpretation-1.2.json": "e297a2fcbe07ba47cebcbc873d11b82249004dc5",
-  "src/adr_kit/semantic_contract/v1_0/definitions/authoring-construction-1.0.json": "b00fd399e1870b9577f8f7ec54dfc67f66196069",
-  "src/adr_kit/semantic_contract/v1_0/definitions/authoring-construction-1.1.json": "14981aefe18f9780152f0f96348e29e00a2f8cab",
-  "src/adr_kit/semantic_contract/v1_0/definitions/authoring-construction-1.2.json": "1918ad7eb7bf27ef2de187dc0215f6f399f3dc2b",
-  "src/adr_kit/semantic_contract/v1_0/definitions/normalized-model-2.4.json": "a0559a5bda8fd65b90b5b0d9b79949c745df464c",
-  "src/adr_kit/semantic_contract/v1_0/definitions/normative-semantics-1.0.json": "2ae295dee7b7f6a9d353839ec8b019798a670464",
-  "src/adr_kit/semantic_contract/v1_0/normalized-model-2.4.json": "a0559a5bda8fd65b90b5b0d9b79949c745df464c",
-  "src/adr_kit/semantic_contract/v1_0/normalized-model.json": "6b49bd32ff0fd91198a531654c911da1e9f4e925",
-  "src/adr_kit/semantic_contract/v1_0/policy/semantic-contract-policy-1.0.json": "363e8535ddc8f5fdffcc7f375ebb9b13bf40f562",
-  "src/adr_kit/semantic_contract/v1_0/resources/normalized-model-2.4-conformance.json": "47ec0af3b6c59774aacc85ed6ef4eddbe2a63b3a",
-  "src/adr_kit/semantic_contract/v1_0/resources/normalized-model-2.4-schema-normalized-architecture-model.schema.json": "51ab6b0fc9538696946a7bd617600898fda16e4b",
-  "src/adr_kit/semantic_contract/v1_0/resources/normalized-model-2.4-schema-normalized-entity-registry.schema.json": "36cfa43d043f52a6e5f716958f33925580f92cf3",
-  "src/adr_kit/semantic_contract/v1_0/resources/normalized-model-2.4-schema-normalized-entity.schema.json": "392c89dc7cfd91dfa2e93ba08448cac9b9d63c9c",
-  "src/adr_kit/semantic_contract/v1_0/resources/normalized-model-2.4-schema-relationship-record.schema.json": "1fe37c1195387bcd7e8eeb791f6dca0df3295588",
-  "src/adr_kit/semantic_contract/v1_0/resources/normalized-model-2.4-schema-relationship-registry.schema.json": "8d0c87b1d460e1c3d15f72693eca74278331718f",
-  "src/adr_kit/semantic_contract/v1_0/resources/normalized-model-2.4-schema-unresolved-registry.schema.json": "3a799c04c6c3244034422d380711e862f1bc0146",
-  "src/adr_kit/semantic_contract/v1_0/sets/scs-v1-sha256-2cf903fe80c50b97443645369b28443c7fa186ed758e2e22d7ce758ccb0d6020.json": "a038827f86a122d71bb8ae148f69bf7e1acc8598",
-  "src/adr_kit/semantic_contract/v1_0/sets/scs-v1-sha256-d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6.json": "361a336464c8ce0dc1bf936145066dd4b8d6be8f"
+    "contracts/compatibility/host-capabilities.json": "c1f0c7c9d1bede96b1645141a00da63f3e37a0d3",
+    "contracts/semantic-contract/v1.0/catalog/semantic-contract-catalog-1.0.json": "4659545c9b93af7b7e72d93a404ad8e4930f5bb5",
+    "contracts/semantic-contract/v1.0/current/semantic-contract-current-1.0.json": "4383eb0bf08795823bed583b4169eb0a2bf4e677",
+    "contracts/semantic-contract/v1.0/definitions/architecture-interpretation-1.1.json": "71b7248658c387a7bf23ac3cc51317d4d696b9b6",
+    "contracts/semantic-contract/v1.0/definitions/architecture-interpretation-1.2.json": "e297a2fcbe07ba47cebcbc873d11b82249004dc5",
+    "contracts/semantic-contract/v1.0/definitions/architecture-interpretation.json": "9f044344c33fc3479549d5558675451d48574a75",
+    "contracts/semantic-contract/v1.0/definitions/authoring-construction-1.0.json": "b00fd399e1870b9577f8f7ec54dfc67f66196069",
+    "contracts/semantic-contract/v1.0/definitions/authoring-construction-1.1.json": "14981aefe18f9780152f0f96348e29e00a2f8cab",
+    "contracts/semantic-contract/v1.0/definitions/authoring-construction-1.2.json": "1918ad7eb7bf27ef2de187dc0215f6f399f3dc2b",
+    "contracts/semantic-contract/v1.0/definitions/normalized-model-2.4.json": "a0559a5bda8fd65b90b5b0d9b79949c745df464c",
+    "contracts/semantic-contract/v1.0/definitions/normalized-model.json": "6b49bd32ff0fd91198a531654c911da1e9f4e925",
+    "contracts/semantic-contract/v1.0/definitions/normative-semantics-1.0.json": "2ae295dee7b7f6a9d353839ec8b019798a670464",
+    "contracts/semantic-contract/v1.0/definitions/normative-semantics.json": "2ae295dee7b7f6a9d353839ec8b019798a670464",
+    "contracts/semantic-contract/v1.0/policy/semantic-contract-policy-1.0.json": "363e8535ddc8f5fdffcc7f375ebb9b13bf40f562",
+    "contracts/semantic-contract/v1.0/resources/normalized-model-2.4-conformance.json": "47ec0af3b6c59774aacc85ed6ef4eddbe2a63b3a",
+    "contracts/semantic-contract/v1.0/resources/normalized-model-2.4-schema-normalized-architecture-model.schema.json": "51ab6b0fc9538696946a7bd617600898fda16e4b",
+    "contracts/semantic-contract/v1.0/resources/normalized-model-2.4-schema-normalized-entity-registry.schema.json": "36cfa43d043f52a6e5f716958f33925580f92cf3",
+    "contracts/semantic-contract/v1.0/resources/normalized-model-2.4-schema-normalized-entity.schema.json": "392c89dc7cfd91dfa2e93ba08448cac9b9d63c9c",
+    "contracts/semantic-contract/v1.0/resources/normalized-model-2.4-schema-relationship-record.schema.json": "1fe37c1195387bcd7e8eeb791f6dca0df3295588",
+    "contracts/semantic-contract/v1.0/resources/normalized-model-2.4-schema-relationship-registry.schema.json": "8d0c87b1d460e1c3d15f72693eca74278331718f",
+    "contracts/semantic-contract/v1.0/resources/normalized-model-2.4-schema-unresolved-registry.schema.json": "3a799c04c6c3244034422d380711e862f1bc0146",
+    "contracts/semantic-contract/v1.0/sets/scs-v1-sha256-2cf903fe80c50b97443645369b28443c7fa186ed758e2e22d7ce758ccb0d6020.json": "a038827f86a122d71bb8ae148f69bf7e1acc8598",
+    "contracts/semantic-contract/v1.0/sets/scs-v1-sha256-d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6.json": "361a336464c8ce0dc1bf936145066dd4b8d6be8f",
+    "packages/node/src/generated/semantic-core.wasm": "7ad5c0594effa63b8246e77e5926e20545fd34f3",
+    "schema/normalized-model/v2.3/normalized-architecture-model.schema.json": "c5caf6b3f008b9d32dacaeed9d251e2978773004",
+    "schema/normalized-model/v2.3/normalized-entity-registry.schema.json": "c3ba0f7648127dc874bf6887bf59dc33e430bcab",
+    "schema/normalized-model/v2.3/normalized-entity.schema.json": "cc5bd2bac84978bd3a82fa99b480767df21d8926",
+    "schema/normalized-model/v2.3/relationship-record.schema.json": "e3e3ebe44c510f83e8b819fd2b07efbf8aa8a24d",
+    "schema/normalized-model/v2.3/relationship-registry.schema.json": "f48a86f505c95cb4b426f2183d68f0273e4da0e2",
+    "schema/normalized-model/v2.3/unresolved-registry.schema.json": "a53140c599338ae13f285c29a6ac18315e204958",
+    "schema/normalized-model/v2.4/normalized-architecture-model.schema.json": "51ab6b0fc9538696946a7bd617600898fda16e4b",
+    "schema/normalized-model/v2.4/normalized-entity-registry.schema.json": "36cfa43d043f52a6e5f716958f33925580f92cf3",
+    "schema/normalized-model/v2.4/normalized-entity.schema.json": "392c89dc7cfd91dfa2e93ba08448cac9b9d63c9c",
+    "schema/normalized-model/v2.4/relationship-record.schema.json": "1fe37c1195387bcd7e8eeb791f6dca0df3295588",
+    "schema/normalized-model/v2.4/relationship-registry.schema.json": "8d0c87b1d460e1c3d15f72693eca74278331718f",
+    "schema/normalized-model/v2.4/unresolved-registry.schema.json": "3a799c04c6c3244034422d380711e862f1bc0146",
+    "src/adr_kit/semantic_contract/v1_0/catalog/semantic-contract-catalog-1.0.json": "4659545c9b93af7b7e72d93a404ad8e4930f5bb5",
+    "src/adr_kit/semantic_contract/v1_0/current/semantic-contract-current-1.0.json": "4383eb0bf08795823bed583b4169eb0a2bf4e677",
+    "src/adr_kit/semantic_contract/v1_0/definitions/architecture-interpretation-1.1.json": "71b7248658c387a7bf23ac3cc51317d4d696b9b6",
+    "src/adr_kit/semantic_contract/v1_0/definitions/architecture-interpretation-1.2.json": "e297a2fcbe07ba47cebcbc873d11b82249004dc5",
+    "src/adr_kit/semantic_contract/v1_0/definitions/authoring-construction-1.0.json": "b00fd399e1870b9577f8f7ec54dfc67f66196069",
+    "src/adr_kit/semantic_contract/v1_0/definitions/authoring-construction-1.1.json": "14981aefe18f9780152f0f96348e29e00a2f8cab",
+    "src/adr_kit/semantic_contract/v1_0/definitions/authoring-construction-1.2.json": "1918ad7eb7bf27ef2de187dc0215f6f399f3dc2b",
+    "src/adr_kit/semantic_contract/v1_0/definitions/normalized-model-2.4.json": "a0559a5bda8fd65b90b5b0d9b79949c745df464c",
+    "src/adr_kit/semantic_contract/v1_0/definitions/normative-semantics-1.0.json": "2ae295dee7b7f6a9d353839ec8b019798a670464",
+    "src/adr_kit/semantic_contract/v1_0/normalized-model-2.4.json": "a0559a5bda8fd65b90b5b0d9b79949c745df464c",
+    "src/adr_kit/semantic_contract/v1_0/normalized-model.json": "6b49bd32ff0fd91198a531654c911da1e9f4e925",
+    "src/adr_kit/semantic_contract/v1_0/policy/semantic-contract-policy-1.0.json": "363e8535ddc8f5fdffcc7f375ebb9b13bf40f562",
+    "src/adr_kit/semantic_contract/v1_0/resources/normalized-model-2.4-conformance.json": "47ec0af3b6c59774aacc85ed6ef4eddbe2a63b3a",
+    "src/adr_kit/semantic_contract/v1_0/resources/normalized-model-2.4-schema-normalized-architecture-model.schema.json": "51ab6b0fc9538696946a7bd617600898fda16e4b",
+    "src/adr_kit/semantic_contract/v1_0/resources/normalized-model-2.4-schema-normalized-entity-registry.schema.json": "36cfa43d043f52a6e5f716958f33925580f92cf3",
+    "src/adr_kit/semantic_contract/v1_0/resources/normalized-model-2.4-schema-normalized-entity.schema.json": "392c89dc7cfd91dfa2e93ba08448cac9b9d63c9c",
+    "src/adr_kit/semantic_contract/v1_0/resources/normalized-model-2.4-schema-relationship-record.schema.json": "1fe37c1195387bcd7e8eeb791f6dca0df3295588",
+    "src/adr_kit/semantic_contract/v1_0/resources/normalized-model-2.4-schema-relationship-registry.schema.json": "8d0c87b1d460e1c3d15f72693eca74278331718f",
+    "src/adr_kit/semantic_contract/v1_0/resources/normalized-model-2.4-schema-unresolved-registry.schema.json": "3a799c04c6c3244034422d380711e862f1bc0146",
+    "src/adr_kit/semantic_contract/v1_0/sets/scs-v1-sha256-2cf903fe80c50b97443645369b28443c7fa186ed758e2e22d7ce758ccb0d6020.json": "a038827f86a122d71bb8ae148f69bf7e1acc8598",
+    "src/adr_kit/semantic_contract/v1_0/sets/scs-v1-sha256-d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6.json": "361a336464c8ce0dc1bf936145066dd4b8d6be8f",
 }
 
 
@@ -110,8 +117,7 @@ def refuse_network(uri: str) -> Resource[Any]:
 def validator(name: str) -> Draft7Validator:
     documents = schemas()
     registry = Registry(retrieve=refuse_network).with_resources(
-        (document["$id"], Resource.from_contents(document))
-        for document in documents.values()
+        (document["$id"], Resource.from_contents(document)) for document in documents.values()
     )
     return Draft7Validator(documents[name], registry=registry)
 
@@ -210,14 +216,33 @@ def test_nm25_schemas_are_draft07_and_all_refs_resolve_without_network() -> None
         assert schema["$schema"] == "http://json-schema.org/draft-07/schema#"
         assert "v2.4" not in json.dumps(schema)
         assert validator(name).is_valid(
-            normalized_root() if name == NAMES[0]
-            else {"schema_version": "2.5", "type": "normalized_entity_registry", "entities": []}
-            if name == NAMES[1] else regular_entity()
-            if name == NAMES[2] else relationship()
-            if name == NAMES[3]
-            else {"schema_version": "2.5", "type": "relationship_registry", "relationships": []}
-            if name == NAMES[4]
-            else {"schema_version": "2.5", "type": "unresolved_registry", "unresolved": []}
+            normalized_root()
+            if name == NAMES[0]
+            else (
+                {"schema_version": "2.5", "type": "normalized_entity_registry", "entities": []}
+                if name == NAMES[1]
+                else (
+                    regular_entity()
+                    if name == NAMES[2]
+                    else (
+                        relationship()
+                        if name == NAMES[3]
+                        else (
+                            {
+                                "schema_version": "2.5",
+                                "type": "relationship_registry",
+                                "relationships": [],
+                            }
+                            if name == NAMES[4]
+                            else {
+                                "schema_version": "2.5",
+                                "type": "unresolved_registry",
+                                "unresolved": [],
+                            }
+                        )
+                    )
+                )
+            )
         )
 
 
@@ -233,9 +258,7 @@ def test_nm25_changes_exactly_version_identification_and_lifecycle_accepted() ->
         assert (SCHEMA_ROOT / name).read_text(encoding="utf-8") == expected
 
 
-@pytest.mark.parametrize(
-    "stage", ("proposed", "accepted", "active", "deprecated", "superseded")
-)
+@pytest.mark.parametrize("stage", ("proposed", "accepted", "active", "deprecated", "superseded"))
 def test_nm25_all_regular_lifecycle_values(stage: str) -> None:
     entity = regular_entity()
     entity["lifecycle_stage"] = stage
@@ -310,17 +333,9 @@ def test_nm25_conformance_distinguishes_normative_from_executable_cases() -> Non
     document = read_json(CONTRACT_ROOT / "resources" / "normalized-model-2.5-conformance.json")
     cases = document["cases"]
     assert len(cases) == 16
-    assert [case["id"] for case in cases] == [
-        f"NM25-{number:03d}" for number in range(1, 17)
-    ]
-    assert all(
-        case["classification"] == "inherited-normative-proposition"
-        for case in cases[:4]
-    )
-    assert all(
-        case["classification"] == "executable-schema-assertion"
-        for case in cases[4:]
-    )
+    assert [case["id"] for case in cases] == [f"NM25-{number:03d}" for number in range(1, 17)]
+    assert all(case["classification"] == "inherited-normative-proposition" for case in cases[:4])
+    assert all(case["classification"] == "executable-schema-assertion" for case in cases[4:])
     assert document["schemaVersion"] == "2.5"
     assert document["schemas"] == NAMES
 
@@ -335,9 +350,7 @@ def test_nm25_exact_definition_and_complete_closure_are_valid() -> None:
     keys = [entry.canonical_resource_key for entry in contract.resource_manifest]
     assert keys == sorted(keys)
     assert len(keys) == len(set(keys)) == 7
-    assert contract.frozen_normative_conformance_resources == (
-        "normalized-model/2.5/conformance",
-    )
+    assert contract.frozen_normative_conformance_resources == ("normalized-model/2.5/conformance",)
     result = validate_semantic_resource_closure(contract, bundle)
     assert result.success and result.closure_valid
     for entry, resource in zip(contract.resource_manifest, bundle):
@@ -372,10 +385,14 @@ def test_nm25_bad_digests_dependencies_missing_extra_duplicate_rejected() -> Non
 
 def test_nm25_exact_discovery_does_not_change_historical_selection() -> None:
     assert get_semantic_contract("normalized-model", "2.4").semantic_contract_version == "2.4"
-    assert next(
-        version for version in list_semantic_contracts()
-        if version.semantic_contract_family == "normalized-model"
-    ).semantic_contract_version == "2.3"
+    assert (
+        next(
+            version
+            for version in list_semantic_contracts()
+            if version.semantic_contract_family == "normalized-model"
+        ).semantic_contract_version
+        == "2.3"
+    )
     with pytest.raises(LookupError):
         get_semantic_contract("normalized-model", "2.6")
     for name in (
@@ -397,14 +414,14 @@ def test_nm25_python_package_and_semantic_resource_mirrors_are_byte_exact() -> N
     assert (CONTRACT_ROOT / "resources" / conformance).read_bytes() == (
         BUNDLED / "resources" / conformance
     ).read_bytes()
-    authority = (CONTRACT_ROOT / "definitions" / conformance.replace(
-        "-conformance", ""
-    )).read_bytes()
+    authority = (
+        CONTRACT_ROOT / "definitions" / conformance.replace("-conformance", "")
+    ).read_bytes()
     assert authority == (BUNDLED / "definitions" / "normalized-model-2.5.json").read_bytes()
     assert authority == (BUNDLED / "normalized-model-2.5.json").read_bytes()
-    assert '"adr_kit.schema.v2_5" = ["*.json"]' in (
-        ROOT / "pyproject.toml"
-    ).read_text(encoding="utf-8")
+    assert '"adr_kit.schema.v2_5" = ["*.json"]' in (ROOT / "pyproject.toml").read_text(
+        encoding="utf-8"
+    )
 
 
 def test_nm25_successor_only_generation_is_byte_deterministic() -> None:
@@ -414,14 +431,8 @@ def test_nm25_successor_only_generation_is_byte_deterministic() -> None:
         BUNDLED / "normalized-model-2.5.json",
         CONTRACT_ROOT / "resources" / "normalized-model-2.5-conformance.json",
         BUNDLED / "resources" / "normalized-model-2.5-conformance.json",
-        *[
-            CONTRACT_ROOT / "resources" / ("normalized-model-2.5-schema-" + name)
-            for name in NAMES
-        ],
-        *[
-            BUNDLED / "resources" / ("normalized-model-2.5-schema-" + name)
-            for name in NAMES
-        ],
+        *[CONTRACT_ROOT / "resources" / ("normalized-model-2.5-schema-" + name) for name in NAMES],
+        *[BUNDLED / "resources" / ("normalized-model-2.5-schema-" + name) for name in NAMES],
     ]
     original = {path: path.read_bytes() for path in targets}
     for _ in range(2):

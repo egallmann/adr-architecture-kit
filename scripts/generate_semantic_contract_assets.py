@@ -12,6 +12,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import sys
 from pathlib import Path, PurePosixPath
 from typing import Any, cast
 
@@ -3029,5 +3030,52 @@ def main() -> None:
     # by the dedicated semantic-core v1.1 vectors.
 
 
+
+def publish_normalized_model_25() -> None:
+    """Publish only NM 2.5, without historical regeneration or SCS production."""
+    schema_names = (
+        "normalized-architecture-model.schema.json",
+        "normalized-entity-registry.schema.json",
+        "normalized-entity.schema.json",
+        "relationship-record.schema.json",
+        "relationship-registry.schema.json",
+        "unresolved-registry.schema.json",
+    )
+    for name in schema_names:
+        data = (ROOT / "schema" / "normalized-model" / "v2.5" / name).read_bytes()
+        filename = f"normalized-model-2.5-schema-{name}"
+        (RESOURCES / filename).write_bytes(data)
+        (BUNDLED / "resources" / filename).write_bytes(data)
+
+    conformance_filename = "normalized-model-2.5-conformance.json"
+    (BUNDLED / "resources" / conformance_filename).write_bytes(
+        (RESOURCES / conformance_filename).read_bytes()
+    )
+    schema_keys = [
+        f"normalized-model/2.5/schema/{name.removesuffix('.json')}"
+        for name in schema_names
+    ]
+    manifest = [
+        resource(key, key.replace("/", "-") + ".json", "normalized-model-schema")
+        for key in schema_keys
+    ]
+    conformance_key = "normalized-model/2.5/conformance"
+    manifest.append(
+        resource(conformance_key, conformance_filename, "normalized-model-conformance")
+    )
+    successor = definition("normalized-model", manifest, [conformance_key], version="2.5")
+    for path in (
+        CANONICAL / "definitions" / "normalized-model-2.5.json",
+        BUNDLED / "definitions" / "normalized-model-2.5.json",
+        BUNDLED / "normalized-model-2.5.json",
+    ):
+        write_json(path, successor)
+
+
 if __name__ == "__main__":
-    main()
+    if sys.argv[1:] == ["--publish-nm25-only"]:
+        publish_normalized_model_25()
+    elif sys.argv[1:]:
+        raise SystemExit("Unsupported generator mode")
+    else:
+        main()

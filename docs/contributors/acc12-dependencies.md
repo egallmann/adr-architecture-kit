@@ -98,12 +98,15 @@ qualification resource arrays without changing evidence or diagnostic order.
 
 ## Remaining slice
 
-Compose and validate all required published composition-record semantic,
-integrity and qualification fields against these independently verified inputs.
+The [internal composition-record gate](acc12-composition-records.md) now assembles
+and validates all required published semantic, integrity and qualification fields
+against these independently verified inputs. It replays dependency qualification
+rather than trusting this stage's status or a caller's completion flag.
 Requests with pending relationship construction, custom/retired reference
 handling or additional membership ownership still cannot qualify a complete
 basis. Only after every applicable dependency is executable and proven may a
 separately authorized slice seal the composed source basis and detached context.
-There is no complete record, sealed basis, NM model or Constructed outcome here.
+This dependency stage itself emits no composition record, sealed basis, NM model
+or Constructed outcome.
 Historical ACC 1.0/1.1 operations, frozen authorities, protocol 1.5 and current
 SCS selection remain unchanged.

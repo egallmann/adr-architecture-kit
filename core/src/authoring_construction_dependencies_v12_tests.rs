@@ -3,6 +3,66 @@ use super::*;
 use crate::authoring_construction_orchestration::EntropyUuidV7Minter;
 use serde_json::{json, Value};
 
+#[test]
+fn canonical_identity_claims_are_reconciled_across_candidate_and_reference_bases() {
+    let mut input = request(&fixture(1));
+    existing(&mut input);
+    input["basis"]["reference_basis"]["entries"][0]["canonical_uuid"] =
+        input["request"]["fragments"][1]["fields"]["id"].clone();
+    refs(
+        &mut input,
+        json!([
+            reference("local", "request", "child"),
+            reference("external", "existing", "external")
+        ]),
+    );
+    passed(&run(&input)); // Multiple selectors for one consistent identity are valid.
+    input["basis"]["reference_basis"]["entries"][0]["semantic_type"] = json!("entity/invariant");
+    let result = run(&input);
+    failed(&result, DependencyStatus::Rejected);
+    assert!(result
+        .diagnostics
+        .iter()
+        .any(|d| d.field_or_relation_key == "canonical_identity"));
+    input["request"]["fragments"]
+        .as_array_mut()
+        .unwrap()
+        .reverse();
+    assert_eq!(run(&input), result);
+}
+
+#[test]
+fn contradictory_existing_claims_fail_even_with_distinct_selectors() {
+    for field in ["semantic_type", "existence_state", "qualification"] {
+        let mut input = request(&fixture(1));
+        let mut conflicting = existing(&mut input);
+        conflicting["reference_id"] = json!("second");
+        match field {
+            "semantic_type" => conflicting[field] = json!("entity/invariant"),
+            "existence_state" => conflicting[field] = json!("retired"),
+            _ => {
+                conflicting[field]["resources"][0]["content_digest"] =
+                    json!(format!("sha256:{}", "0".repeat(64)))
+            }
+        }
+        input["basis"]["reference_basis"]["entries"]
+            .as_array_mut()
+            .unwrap()
+            .push(conflicting);
+        refs(
+            &mut input,
+            json!([reference("external", "existing", "external")]),
+        );
+        let result = run(&input);
+        failed(&result, DependencyStatus::Rejected);
+        input["basis"]["reference_basis"]["entries"]
+            .as_array_mut()
+            .unwrap()
+            .reverse();
+        assert_eq!(run(&input), result);
+    }
+}
+
 fn prepared(input: &Value) -> (InsertionResult, AccountingResult) {
     let p = insertion::insert(
         &j(&bundle().0),

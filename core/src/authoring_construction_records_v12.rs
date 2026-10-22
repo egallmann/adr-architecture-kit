@@ -261,7 +261,6 @@ fn verify(
         .map(<[Json]>::to_vec)
         .unwrap_or_else(|| expected.clone());
     for record in &mut records {
-        normalize_record(record);
         if let Err(error) = schema_validation::validate_fragment(
             &sealed,
             SCHEMA,
@@ -273,6 +272,11 @@ fn verify(
                 "composition_record",
                 &format!("{}: {}", error.path, error.message),
             );
+        } else {
+            // Only schema-qualified resource members may reach the canonical
+            // set normalizer. Malformed proposed records remain ordinary
+            // deterministic failures, never a qualified-boundary panic.
+            normalize_record(record);
         }
     }
     records.sort_by_cached_key(record_key);

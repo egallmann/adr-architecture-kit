@@ -138,6 +138,22 @@ fn missing_duplicate_and_fabricated_records_fail_atomically() {
 }
 
 #[test]
+fn malformed_proposed_resource_members_fail_without_canonicalizer_panics() {
+    let (p, roots, deps) = prepared(&request(&fixture(1)));
+    let good = records(&run(&p, &roots, &deps));
+    for malformed in [
+        json!(9007199254740992_u64),
+        json!({"unqualified":9007199254740992_u64}),
+    ] {
+        let mut altered = good.clone();
+        altered[0]["qualification"]["custom_entity"]["resources"] = json!([malformed, {}]);
+        let r = validate(&p, &roots, &deps, &altered);
+        failed(&r);
+        assert_eq!(r.status, RecordStatus::Rejected);
+    }
+}
+
+#[test]
 fn every_record_field_is_checked_against_independent_proof_not_just_shape() {
     let (p, roots, deps) = prepared(&request(&fixture(1)));
     let good = records(&run(&p, &roots, &deps));

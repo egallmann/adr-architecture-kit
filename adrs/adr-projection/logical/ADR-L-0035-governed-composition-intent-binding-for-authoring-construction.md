@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: e10ae5a6c22a80977ba9275fa6a9fc4186b0680fefd93a1a33d28c36136cd4a9
-rendered_hash: b49a914d06d8716e66be50906ecd9eba0f956c29b2f2398d2e1263e885487a7b
+source_hash: ff1d169f370640854329f2b65b3058e59730e37d37dd453e4913a82197fa5a8a
+rendered_hash: ede4a71acd05237fa9f1374f8804aa4308a91de1484e71802199517d8587d3cf
 -->
 
 # ADR-L-0035: Governed Composition-Intent Binding for Authoring Construction
@@ -920,7 +920,14 @@ flowchart LR
 - [ADR-L-0032](ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.md)
 - [ADR-L-0033](ADR-L-0033-governed-candidate-binding-for-authoring-construction.md)
 - [ADR-L-0034](ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.md)
+- [ADR-L-0037](ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.md)
 
+
+## Architecture Relationships
+
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-L-0037 — Lossless Authored Lifecycle and Declaring-ADR Provenance](ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.md) | refines | `DEC-9006 -[:refines]-> DEC-0274` |
 
 
 

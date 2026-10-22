@@ -45840,3 +45840,1203 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c2453eed033
+  alias_id: DEC-9001
+  alias_name: preserve-authored-lifecycle-under-successor-authority
+  alias_ref: DEC-9001:preserve-authored-lifecycle-under-successor-authority
+  entity_type: decision
+  name: Preserve authored lifecycle literally through NM 2.5, AI 1.3 and ACC 1.3
+  summary: The proposed successor chain is Authoring 1.7 to Architecture Interpretation
+    1.3 to Normalized Model 2.5, selected by Authoring Construction 1.3. For adr/logical,
+    adr/physical-system and adr/physical-component, status ma
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2453eed033
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:ac0177c81e8bb6beefbbe1b28fd95c6260148b14db495967b5962d6f5a948f53
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2453eed033
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    adr_alias_id: ADR-L-0037
+    related_invariants: []
+    enforces_invariants:
+    - 01a16457-a08c-76a2-8c85-0c2cd4f79a6c
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a10888-daba-75bc-a071-d34018be0d8e
+    - 01a10888-daba-75bc-a071-d3416d58355d
+    alias_name: preserve-authored-lifecycle-under-successor-authority
+    alias_id: DEC-9001
+  relationships:
+    declared_in:
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    references: []
+    related_to: []
+    enforces:
+    - 01a16457-a08c-76a2-8c85-0c2cd4f79a6c
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a10888-daba-75bc-a071-d34018be0d8e
+    - 01a10888-daba-75bc-a071-d3416d58355d
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2453eed033
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c2525f0b3a5
+  alias_id: DEC-9002
+  alias_name: qualify-native-standalone-lifecycle-without-invented-owners
+  alias_ref: DEC-9002:qualify-native-standalone-lifecycle-without-invented-owners
+  entity_type: decision
+  name: Separate native standalone representation from qualified complete interpretation
+  summary: A native authoring_fragment remains an authorized source representation
+    and a minimal source root. Its artifact, canonical identity and exact bytes remain
+    available even when a later interpretation capability is unavaila
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2525f0b3a5
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:01861a4d2aa84df2291a3ea59953c67d4ef315e38ff8f21e53f795c782384c7c
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2525f0b3a5
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    adr_alias_id: ADR-L-0037
+    related_invariants: []
+    enforces_invariants:
+    - 01a16457-a08c-76a2-8c85-0c2d810a4969
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a10888-daba-75bc-a071-d34592ae0d52
+    alias_name: qualify-native-standalone-lifecycle-without-invented-owners
+    alias_id: DEC-9002
+  relationships:
+    declared_in:
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    references: []
+    related_to: []
+    enforces:
+    - 01a16457-a08c-76a2-8c85-0c2d810a4969
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a10888-daba-75bc-a071-d34592ae0d52
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2525f0b3a5
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c26bd9b102f
+  alias_id: DEC-9003
+  alias_name: inherit-declaration-lifecycle-only-through-qualified-ownership
+  alias_ref: DEC-9003:inherit-declaration-lifecycle-only-through-qualified-ownership
+  entity_type: decision
+  name: Authorize explicit scoped declaring-ADR lifecycle propagation
+  summary: AI 1.3 shall publish an explicit semantic ownership rule for embedded built-in
+    entity/boundary, entity/capability, entity/component, entity/contract, entity/data_flow,
+    entity/decision, entity/evidence_expectation, entity
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c26bd9b102f
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:533c89df96451ecdec07b774c90e23b8e1b88d4003a261d32c46223547ce81a8
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c26bd9b102f
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    adr_alias_id: ADR-L-0037
+    related_invariants: []
+    enforces_invariants:
+    - 01a16457-a08c-76a2-8c85-0c2e0ba076a9
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a10888-daba-75bc-a071-d3416d58355d
+    - 01a10888-daba-75bc-a071-d34463d939dc
+    - 01a10888-daba-75bc-a071-d34592ae0d52
+    alias_name: inherit-declaration-lifecycle-only-through-qualified-ownership
+    alias_id: DEC-9003
+  relationships:
+    declared_in:
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    references: []
+    related_to: []
+    enforces:
+    - 01a16457-a08c-76a2-8c85-0c2e0ba076a9
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a10888-daba-75bc-a071-d3416d58355d
+    - 01a10888-daba-75bc-a071-d34463d939dc
+    - 01a10888-daba-75bc-a071-d34592ae0d52
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c26bd9b102f
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c274d7f4ee1
+  alias_id: DEC-9004
+  alias_name: carry-inherited-lifecycle-in-ai-owned-normalized-metadata
+  alias_ref: DEC-9004:carry-inherited-lifecycle-in-ai-owned-normalized-metadata
+  entity_type: decision
+  name: Carry qualified inherited-lifecycle facts in existing open NM metadata
+  summary: 'Use /metadata/ai_lifecycle_provenance on the normalized child, with its
+    closed schema and meaning defined solely by an exact AI 1.3 resource. NM''s existing
+    open metadata object is sufficient; no new NM envelope property '
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c274d7f4ee1
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:9fd9df05b2e45d8af0df26b41536b0fc61581182c0974c5359530b0f766335a0
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c274d7f4ee1
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    adr_alias_id: ADR-L-0037
+    related_invariants: []
+    enforces_invariants:
+    - 01a16457-a08c-76a2-8c85-0c2f9bc890a3
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a10888-daba-75bc-a071-d3416d58355d
+    - 01a10888-daba-75bc-a071-d34463d939dc
+    alias_name: carry-inherited-lifecycle-in-ai-owned-normalized-metadata
+    alias_id: DEC-9004
+  relationships:
+    declared_in:
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    references: []
+    related_to: []
+    enforces:
+    - 01a16457-a08c-76a2-8c85-0c2f9bc890a3
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a10888-daba-75bc-a071-d3416d58355d
+    - 01a10888-daba-75bc-a071-d34463d939dc
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c274d7f4ee1
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c284989e244
+  alias_id: DEC-9005
+  alias_name: compare-complete-lifecycle-meaning-and-qualified-provenance
+  alias_ref: DEC-9005:compare-complete-lifecycle-meaning-and-qualified-provenance
+  entity_type: decision
+  name: Compare inherited lifecycle meaning and independently verify its authority
+  summary: 'Expected and observed whole-ledger projections must compare the complete
+    literal lifecycle value under the child''s semantic identity. They must also compare
+    contextual provenance under context/declaring_adr_lifecycle#: d'
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c284989e244
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:63a661f47a2e7f785d4eb529cd0615c8bb1112042cb85485a552fc4bf10c3950
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c284989e244
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    adr_alias_id: ADR-L-0037
+    related_invariants: []
+    enforces_invariants:
+    - 01a16457-a08c-76a2-8c85-0c30fac83040
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a10888-daba-75bc-a071-d34018be0d8e
+    - 01a10888-daba-75bc-a071-d3416d58355d
+    - 01a10888-daba-75bc-a071-d34463d939dc
+    - 01a10888-daba-75bc-a071-d34592ae0d52
+    alias_name: compare-complete-lifecycle-meaning-and-qualified-provenance
+    alias_id: DEC-9005
+  relationships:
+    declared_in:
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    references: []
+    related_to: []
+    enforces:
+    - 01a16457-a08c-76a2-8c85-0c30fac83040
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a10888-daba-75bc-a071-d34018be0d8e
+    - 01a10888-daba-75bc-a071-d3416d58355d
+    - 01a10888-daba-75bc-a071-d34463d939dc
+    - 01a10888-daba-75bc-a071-d34592ae0d52
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c284989e244
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c290f9e5899
+  alias_id: DEC-9006
+  alias_name: replace-only-successor-authority-selection-clauses
+  alias_ref: DEC-9006:replace-only-successor-authority-selection-clauses
+  entity_type: decision
+  name: Replace only version-selection clauses for successor construction
+  summary: This proposed decision has effect only after separate human acceptance
+    and successor publication. It does not rebind any historical operation. The following
+    are prospective clause replacements, not whole-decision retirem
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c290f9e5899
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:78dde078e4e469f854f8a92362664ba8b6dfc17fe1f566f8e1da698177ee70b5
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c290f9e5899
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    adr_alias_id: ADR-L-0037
+    related_invariants: []
+    enforces_invariants:
+    - 01a16457-a08c-76a2-8c85-0c318059bd45
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a10888-daba-75bc-a071-d34018be0d8e
+    - 01a10888-daba-75bc-a071-d3416d58355d
+    - 01a10888-daba-75bc-a071-d34250a1b891
+    - 01a10888-daba-75bc-a071-d34463d939dc
+    - 01a10888-daba-75bc-a071-d34592ae0d52
+    - 01a1514b-805c-75ff-a7ee-e98d9d102cff
+    - 01a1514b-805c-75ff-a7ee-e98ef774ad1f
+    - 01a1514b-805c-75ff-a7ee-e98fd08780d2
+    - 01a1514b-805c-75ff-a7ee-e9900b046f24
+    - 01a1514b-805c-75ff-a7ee-e9913dbcd63e
+    - 01a151af-ee18-75c7-a457-6a99e97be6be
+    alias_name: replace-only-successor-authority-selection-clauses
+    alias_id: DEC-9006
+  relationships:
+    declared_in:
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    references: []
+    related_to: []
+    enforces:
+    - 01a16457-a08c-76a2-8c85-0c318059bd45
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a10888-daba-75bc-a071-d34018be0d8e
+    - 01a10888-daba-75bc-a071-d3416d58355d
+    - 01a10888-daba-75bc-a071-d34250a1b891
+    - 01a10888-daba-75bc-a071-d34463d939dc
+    - 01a10888-daba-75bc-a071-d34592ae0d52
+    - 01a1514b-805c-75ff-a7ee-e98d9d102cff
+    - 01a1514b-805c-75ff-a7ee-e98ef774ad1f
+    - 01a1514b-805c-75ff-a7ee-e98fd08780d2
+    - 01a1514b-805c-75ff-a7ee-e9900b046f24
+    - 01a1514b-805c-75ff-a7ee-e9913dbcd63e
+    - 01a151af-ee18-75c7-a457-6a99e97be6be
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c290f9e5899
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c2a155783cf
+  alias_id: DEC-9007
+  alias_name: qualify-successor-enum-domains-without-retroactive-republication
+  alias_ref: DEC-9007:qualify-successor-enum-domains-without-retroactive-republication
+  entity_type: decision
+  name: Require exact cross-contract enum-domain compatibility for successors
+  summary: 'Successor publication must resolve exact qualified source and destination
+    schema closures, including local and relative references and applicable constraints.
+    For exact field placement, prove every permitted source enum '
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2a155783cf
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:6dbb261c2fa78cac17f1929ad97f2775386fee4dc5c79a2fe25bc2a5b3cf40c3
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2a155783cf
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    adr_alias_id: ADR-L-0037
+    related_invariants: []
+    enforces_invariants:
+    - 01a16457-a08c-76a2-8c85-0c322bd3ddf5
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: qualify-successor-enum-domains-without-retroactive-republication
+    alias_id: DEC-9007
+  relationships:
+    declared_in:
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    references: []
+    related_to: []
+    enforces:
+    - 01a16457-a08c-76a2-8c85-0c322bd3ddf5
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2a155783cf
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c2bc45c95f7
+  alias_id: DEC-9008
+  alias_name: separate-successor-governance-publication-and-execution
+  alias_ref: DEC-9008:separate-successor-governance-publication-and-execution
+  entity_type: decision
+  name: Require human acceptance before publication and separately authorized execution
+  summary: This ADR remains proposed until explicit human acceptance of the reviewed
+    canonical decision and commit. Direction approval and passing CI are not ADR acceptance
+    metadata. This change publishes no NM 2.5, AI 1.3 or ACC 1
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2bc45c95f7
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:1affc3e65ddeb2d671bb368ec1c4edc820637fe5b7f496b637b706f85435e1c4
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2bc45c95f7
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    adr_alias_id: ADR-L-0037
+    related_invariants: []
+    enforces_invariants:
+    - 01a16457-a08c-76a2-8c85-0c33210a4fac
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: separate-successor-governance-publication-and-execution
+    alias_id: DEC-9008
+  relationships:
+    declared_in:
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    references: []
+    related_to: []
+    enforces:
+    - 01a16457-a08c-76a2-8c85-0c33210a4fac
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2bc45c95f7
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c2cd4f79a6c
+  alias_id: INV-0293
+  alias_name: authored-status-remains-an-exact-semantic-value
+  alias_ref: INV-0293:authored-status-remains-an-exact-semantic-value
+  entity_type: invariant
+  name: INV-0293
+  summary: Successor interpretation MUST preserve each authored ADR status literally;
+    accepted MUST NOT become active, ceremony, a default, or evidence of deployment.
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2cd4f79a6c
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:80f8b5a6a26a867a7c8c4880d68743b96f7b3e9cb8db12af5f65b3bc3af95748
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2cd4f79a6c
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    adr_alias_id: ADR-L-0037
+    scope: semantic-authority
+    statement: Successor interpretation MUST preserve each authored ADR status literally;
+      accepted MUST NOT become active, ceremony, a default, or evidence of deployment.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a16457-a08c-76a2-8c85-0c2453eed033
+    supersedes: []
+    alias_id: INV-0293
+    alias_name: authored-status-remains-an-exact-semantic-value
+  relationships:
+    declared_in:
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2cd4f79a6c
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c2d810a4969
+  alias_id: INV-0294
+  alias_name: native-standalone-roots-do-not-invent-lifecycle
+  alias_ref: INV-0294:native-standalone-roots-do-not-invent-lifecycle
+  entity_type: invariant
+  name: INV-0294
+  summary: Native standalone fragments MUST remain roots without synthetic ADRs; complete
+    interpretation MUST remain Unavailable when required lifecycle provenance cannot
+    be qualified.
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2d810a4969
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:db36f1f293f23eadf14aca40e63f4ced051aa950b7e5e5b463f7b8016b66e0f6
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2d810a4969
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    adr_alias_id: ADR-L-0037
+    scope: semantic-authority
+    statement: Native standalone fragments MUST remain roots without synthetic ADRs;
+      complete interpretation MUST remain Unavailable when required lifecycle provenance
+      cannot be qualified.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a16457-a08c-76a2-8c85-0c2525f0b3a5
+    supersedes: []
+    alias_id: INV-0294
+    alias_name: native-standalone-roots-do-not-invent-lifecycle
+  relationships:
+    declared_in:
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2d810a4969
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c2e0ba076a9
+  alias_id: INV-0295
+  alias_name: embedded-lifecycle-requires-qualified-declaring-ownership
+  alias_ref: INV-0295:embedded-lifecycle-requires-qualified-declaring-ownership
+  entity_type: invariant
+  name: INV-0295
+  summary: Inherited lifecycle MUST equal the unique qualified declaring ADR status
+    for an explicitly selected built-in ownership rule; reference-only, custom, owner-local
+    and unqualified standalone contexts MUST NOT acquire that r
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2e0ba076a9
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:3686db99484bc70bdbd7d7a14ee6b2e9d9b9c44760d36a9035d92d1865e0874b
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2e0ba076a9
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    adr_alias_id: ADR-L-0037
+    scope: semantic-authority
+    statement: Inherited lifecycle MUST equal the unique qualified declaring ADR status
+      for an explicitly selected built-in ownership rule; reference-only, custom,
+      owner-local and unqualified standalone contexts MUST NOT acquire that rule.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a16457-a08c-76a2-8c85-0c26bd9b102f
+    supersedes: []
+    alias_id: INV-0295
+    alias_name: embedded-lifecycle-requires-qualified-declaring-ownership
+  relationships:
+    declared_in:
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2e0ba076a9
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c2f9bc890a3
+  alias_id: INV-0296
+  alias_name: inherited-lifecycle-has-ai-owned-observed-evidence
+  alias_ref: INV-0296:inherited-lifecycle-has-ai-owned-observed-evidence
+  entity_type: invariant
+  name: INV-0296
+  summary: Every inherited lifecycle MUST have independently verified AI-qualified
+    metadata.ai_lifecycle_provenance bound to the child UUID, declaring ADR UUID,
+    exact status source and governing ownership rule; source locations MUS
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2f9bc890a3
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:f4e82ed60e2cbb32853113a8caa96e6fefebcbdb7c84c6a1a384b79fe7e0f95e
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2f9bc890a3
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    adr_alias_id: ADR-L-0037
+    scope: semantic-authority
+    statement: Every inherited lifecycle MUST have independently verified AI-qualified
+      metadata.ai_lifecycle_provenance bound to the child UUID, declaring ADR UUID,
+      exact status source and governing ownership rule; source locations MUST NOT
+      become owner identity.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a16457-a08c-76a2-8c85-0c274d7f4ee1
+    supersedes: []
+    alias_id: INV-0296
+    alias_name: inherited-lifecycle-has-ai-owned-observed-evidence
+  relationships:
+    declared_in:
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2f9bc890a3
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c30fac83040
+  alias_id: INV-0297
+  alias_name: lifecycle-context-participates-in-whole-ledger-equality
+  alias_ref: INV-0297:lifecycle-context-participates-in-whole-ledger-equality
+  entity_type: invariant
+  name: INV-0297
+  summary: 'Whole-ledger equality MUST compare the literal lifecycle and meaning-bearing
+    contextual provenance under child identity and the stable AI-owned contextual
+    key; integrity digests and replay copies MUST NOT substitute for '
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c30fac83040
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:80e216ec82255abedb47ff4bc8e9dd37a238c48798dece6097ef589d5f5ec9c5
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c30fac83040
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    adr_alias_id: ADR-L-0037
+    scope: semantic-authority
+    statement: Whole-ledger equality MUST compare the literal lifecycle and meaning-bearing
+      contextual provenance under child identity and the stable AI-owned contextual
+      key; integrity digests and replay copies MUST NOT substitute for semantic equality.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a16457-a08c-76a2-8c85-0c284989e244
+    supersedes: []
+    alias_id: INV-0297
+    alias_name: lifecycle-context-participates-in-whole-ledger-equality
+  relationships:
+    declared_in:
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c30fac83040
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c318059bd45
+  alias_id: INV-0298
+  alias_name: successor-selection-does-not-rebind-historical-authority
+  alias_ref: INV-0298:successor-selection-does-not-rebind-historical-authority
+  entity_type: invariant
+  name: INV-0298
+  summary: Successor construction MUST select exact ACC 1.3, AI 1.3 and NM 2.5 authority
+    after publication; historical authorities, SCFs, conformance and protocol 1.5
+    MUST remain immutable and MUST NOT silently select successor sem
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c318059bd45
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:ffaab12a460847a92f2e7cd036ec5f3ed8b7ed5645ca01c6efeaeae6f95b5053
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c318059bd45
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    adr_alias_id: ADR-L-0037
+    scope: semantic-authority
+    statement: Successor construction MUST select exact ACC 1.3, AI 1.3 and NM 2.5
+      authority after publication; historical authorities, SCFs, conformance and protocol
+      1.5 MUST remain immutable and MUST NOT silently select successor semantics.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a16457-a08c-76a2-8c85-0c290f9e5899
+    supersedes: []
+    alias_id: INV-0298
+    alias_name: successor-selection-does-not-rebind-historical-authority
+  relationships:
+    declared_in:
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c318059bd45
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c322bd3ddf5
+  alias_id: INV-0299
+  alias_name: successor-enum-placement-requires-complete-domain-inclusion
+  alias_ref: INV-0299:successor-enum-placement-requires-complete-domain-inclusion
+  entity_type: invariant
+  name: INV-0299
+  summary: 'Successor publication MUST prove exact source enum-domain inclusion in
+    every selected normalized destination, including inherited lifecycle destinations;
+    missing or ambiguous qualification MUST block publication without '
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c322bd3ddf5
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:4b1e9e0d5e66d1f4c18fedc3b4ea34dead4ff9e2430d41eba2e690294e790e47
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c322bd3ddf5
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    adr_alias_id: ADR-L-0037
+    scope: semantic-authority
+    statement: Successor publication MUST prove exact source enum-domain inclusion
+      in every selected normalized destination, including inherited lifecycle destinations;
+      missing or ambiguous qualification MUST block publication without retroactively
+      changing historical acceptance criteria.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a16457-a08c-76a2-8c85-0c2a155783cf
+    supersedes: []
+    alias_id: INV-0299
+    alias_name: successor-enum-placement-requires-complete-domain-inclusion
+  relationships:
+    declared_in:
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c322bd3ddf5
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c33210a4fac
+  alias_id: INV-0300
+  alias_name: proposed-lifecycle-decision-does-not-authorize-execution
+  alias_ref: INV-0300:proposed-lifecycle-decision-does-not-authorize-execution
+  entity_type: invariant
+  name: INV-0300
+  summary: This proposed ADR MUST NOT be treated as accepted authority, contract publication,
+    interpreter implementation, Constructed support, persistence or promotion; explicit
+    human acceptance MUST precede the separately reviewed
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c33210a4fac
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:761b35cb068e0a3005ce5a352aa2dc08411ecc8ad1c06fe3b64319e8fe680621
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c33210a4fac
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    adr_alias_id: ADR-L-0037
+    scope: semantic-authority
+    statement: This proposed ADR MUST NOT be treated as accepted authority, contract
+      publication, interpreter implementation, Constructed support, persistence or
+      promotion; explicit human acceptance MUST precede the separately reviewed successor
+      publications.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a16457-a08c-76a2-8c85-0c2bc45c95f7
+    supersedes: []
+    alias_id: INV-0300
+    alias_name: proposed-lifecycle-decision-does-not-authorize-execution
+  relationships:
+    declared_in:
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c33210a4fac
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+  alias_id: ADR-L-0037
+  alias_name: lossless-authored-lifecycle-and-declaring-adr-provenance
+  alias_ref: ADR-L-0037:lossless-authored-lifecycle-and-declaring-adr-provenance
+  entity_type: adr
+  name: Lossless Authored Lifecycle and Declaring-ADR Provenance
+  summary: Authoring 1.7 permits status accepted on adr/logical, adr/physical-system
+    and adr/physical-component. AI 1.2 assigns each status to entity_lifecycle_stage
+    through canonical_field_placement/exact_typed_value, but NM 2.4 p
+  uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c34a56ce5f2
+  created_at: '2026-10-22T16:00:26.764Z'
+  entity_fingerprint: sha256:79ba2966ad46e835c869eb35c246aaee7ac2c26581595f60fab9fa9ee5071257
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - architecture
+    - semantic-authority
+    - authoring
+    - conformance
+    tags:
+    - lifecycle
+    - normalized-model-2.5
+    - architecture-interpretation-1.3
+    - authoring-construction-1.3
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
+    alias_name: lossless-authored-lifecycle-and-declaring-adr-provenance
+    alias_id: ADR-L-0037
+  relationships:
+    declared_in: []
+    references:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index

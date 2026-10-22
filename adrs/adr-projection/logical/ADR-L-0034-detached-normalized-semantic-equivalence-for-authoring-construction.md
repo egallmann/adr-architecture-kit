@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 12b9e793788ca6568f019ca2d54282981706f1daa35e8cb86e98e1827a17c445
-rendered_hash: d8ed0f6e05f4e65c2ac17a32d149a52be73e8c5fb6e33f8f3c057e9ff13a97ed
+source_hash: 9159ed3d84c157144911d498b4f3672568b6b626986bbb094d582fac2849a3c7
+rendered_hash: 09c50375dc43362e7b57d837f726e6753541717095660e304cdf52b96accfa2a
 -->
 
 # ADR-L-0034: Detached Normalized Semantic Equivalence for Authoring Construction
@@ -517,7 +517,14 @@ ADR-L-0033 remains downstream and independently verifies construction qualificat
 - [ADR-L-0032](ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.md)
 - [ADR-L-0033](ADR-L-0033-governed-candidate-binding-for-authoring-construction.md)
 - [ADR-L-0035](ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.md)
+- [ADR-L-0037](ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.md)
 
+
+## Architecture Relationships
+
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-L-0037 — Lossless Authored Lifecycle and Declaring-ADR Provenance](ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.md) | refines | `DEC-9001 -[:refines]-> DEC-0268` |
 
 
 

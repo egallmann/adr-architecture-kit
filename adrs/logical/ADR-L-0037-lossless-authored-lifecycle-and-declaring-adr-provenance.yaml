@@ -1,0 +1,441 @@
+schema_version: '1.5'
+adr_type: logical
+id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+alias_id: ADR-L-0037
+alias_name: lossless-authored-lifecycle-and-declaring-adr-provenance
+title: Lossless Authored Lifecycle and Declaring-ADR Provenance
+status: proposed
+created_date: '2026-10-22'
+authors:
+- erik.gallmann
+domains:
+- architecture
+- semantic-authority
+- authoring
+- conformance
+tags:
+- lifecycle
+- normalized-model-2.5
+- architecture-interpretation-1.3
+- authoring-construction-1.3
+related_adrs:
+- 01a0d054-b885-70b3-a72f-d3630d2e76c6
+- 01a10888-daba-75bc-a071-d33f43ab8a8b
+- 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+context: |-
+  Authoring 1.7 permits status accepted on adr/logical, adr/physical-system
+  and adr/physical-component. AI 1.2 assigns each status to entity_lifecycle_stage
+  through canonical_field_placement/exact_typed_value, but NM 2.4 permits only
+  proposed, active, deprecated and superseded. Therefore accepted is valid source
+  and invalid destination without a value change forbidden by accepted DEC-0271.
+  Historical accepted-to-active conversion is not forward semantic authority.
+
+  Historical regular embedded entity normalization also copies parent status,
+  while AI 1.2 supplies no explicit qualified inheritance rule. Native standalone
+  decisions have no authored status at all. DEC-0273 and INV-0279 preserve native
+  fragment roots; their interpretation guarantee needs an explicit successor
+  qualification rather than invented owner context or synthetic ADR wrappers.
+
+  This proposed logical ADR records the selected successor direction and the
+  missing semantic authority. It does not amend any frozen contract, accept
+  itself, or resume the blocked AI execution slice.
+decisions:
+- id: 01a16457-a08c-76a2-8c85-0c2453eed033
+  alias_id: DEC-9001
+  alias_name: preserve-authored-lifecycle-under-successor-authority
+  summary: Preserve authored lifecycle literally through NM 2.5, AI 1.3 and ACC 1.3
+  rationale: |-
+    The proposed successor chain is Authoring 1.7 to Architecture Interpretation
+    1.3 to Normalized Model 2.5, selected by Authoring Construction 1.3. For
+    adr/logical, adr/physical-system and adr/physical-component, status maps to
+    lifecycle_stage without changing the typed value: proposed to proposed,
+    accepted to accepted, deprecated to deprecated and superseded to superseded.
+    The inverse over that four-value source image is the identity mapping.
+    Normalized Model 2.5 adds accepted to the regular entity lifecycle domain and
+    retains active for independently qualified uses. active has no inverse to an
+    Authoring 1.7 ADR status under this rule. Neither accepted nor inherited
+    accepted proves implementation, deployment, operation, effectivity or admission.
+
+    DEC-0271 remains unchanged: canonical_field_placement is exact and lossless;
+    value-changing normalization, fallback and field loss remain mismatch. Authored
+    status is semantic, never ceremony. No accepted-to-active conversion is
+    authorized. Schema permission for active is not an AI mapping or default.
+    Historical mapping behavior supplies evidence of intent, not forward authority.
+  refines:
+  - 01a10888-daba-75bc-a071-d34018be0d8e
+  - 01a10888-daba-75bc-a071-d3416d58355d
+  alternatives_considered:
+  - name: Reversible accepted-to-active mapping under successor AI authority
+    rejected_because: A bijection of strings does not establish equivalent meaning; preserving accepted
+      avoids imposing that equivalence.
+  - name: Preserve accepted only in metadata while emitting active as lifecycle_stage
+    rejected_because: The first-class value would still change and a replay copy cannot repair the DEC-0271
+      mismatch.
+  - name: Restrict forward construction to proposed ADRs
+    rejected_because: This leaves valid accepted authoring input without faithful forward interpretation.
+  enforces_invariants:
+  - 01a16457-a08c-76a2-8c85-0c2cd4f79a6c
+- id: 01a16457-a08c-76a2-8c85-0c2525f0b3a5
+  alias_id: DEC-9002
+  alias_name: qualify-native-standalone-lifecycle-without-invented-owners
+  summary: Separate native standalone representation from qualified complete interpretation
+  rationale: |-
+    A native authoring_fragment remains an authorized source representation and a
+    minimal source root. Its artifact, canonical identity and exact bytes remain
+    available even when a later interpretation capability is unavailable. No
+    synthetic ADR, owner, lifecycle status or context may be invented to satisfy a
+    normalized schema. In particular, native entity/decision has no independent
+    authored lifecycle status in Authoring 1.7.
+
+    For successor construction, narrow only DEC-0273's unconditional promise that
+    a standalone authoring_fragment is interpreted as a native semantic unit:
+    native interpretation is successful only when every required semantic fact,
+    including lifecycle provenance, is independently qualified by selected exact
+    authority. Missing lifecycle provenance produces Unavailable, not fabricated
+    semantics or an Unresolved reference that no resolver has established. Retain
+    all independent violations under Rejected > Unavailable > Unresolved.
+    Do not expose a partial model as complete interpretation or Constructed.
+
+    INV-0279's native-root, minimal-basis, exactly-once and no-wrapper obligations
+    are retained. They guarantee representation and accounting, not that all
+    required normalized values exist. A reference to an ADR, a request key, a
+    filename or root position does not establish declaring ownership. This ADR
+    does not authorize a new standalone owner-selection mechanism. Standalone
+    units without qualified lifecycle provenance remain blocked; existing
+    lifecycle-free normative propositions retain their separately governed rules.
+    Historical authority and conformance are not retroactively narrowed.
+  refines:
+  - 01a10888-daba-75bc-a071-d34592ae0d52
+  enforces_invariants:
+  - 01a16457-a08c-76a2-8c85-0c2d810a4969
+- id: 01a16457-a08c-76a2-8c85-0c26bd9b102f
+  alias_id: DEC-9003
+  alias_name: inherit-declaration-lifecycle-only-through-qualified-ownership
+  summary: Authorize explicit scoped declaring-ADR lifecycle propagation
+  rationale: |-
+    AI 1.3 shall publish an explicit semantic ownership rule for embedded built-in
+    entity/boundary, entity/capability, entity/component, entity/contract,
+    entity/data_flow, entity/decision, entity/evidence_expectation, entity/gap,
+    entity/implementation_decision, entity/interface, entity/invariant,
+    entity/system and entity/system_boundary. For each actually selected source
+    schema occurrence, independently qualify its unique declaring ADR canonical
+    UUID, exact parent semantic type and schema-governed ownership path. The
+    child's lifecycle_stage equals that declaring ADR's literal authored status.
+    The lifecycle describes the architectural declaration, not independent child
+    approval or operational state. A schema-owned system descriptor sharing its
+    ADR identity does not manufacture a second semantic unit or lifecycle owner;
+    the existing source mapping identity rules still govern that case.
+
+    The future AI rule catalog must enumerate exact parent/child/schema ownership
+    selectors; the type list alone does not authorize arbitrary containment. A
+    verified ACC binding can prove ownership only for its selected containment.
+    This rule does not authorize additional composition bindings or compiler
+    insertion paths. References are not definitions and do not propagate lifecycle.
+    Duplicate or ambiguous declaring ownership cannot be resolved by traversal.
+
+    Normative propositions remain lifecycle-free. Custom entities, relationships,
+    owner-local topology values and standalone units lacking qualified declaring
+    context acquire no lifecycle rule here. Custom existence_state is a separate
+    semantic domain. A missing rule is unavailable, never an implicit fallback.
+    Propagation is explicitly governed semantic interpretation, not ceremony or
+    an authored child field. It changes no child identity or source bytes.
+  refines:
+  - 01a10888-daba-75bc-a071-d3416d58355d
+  - 01a10888-daba-75bc-a071-d34463d939dc
+  - 01a10888-daba-75bc-a071-d34592ae0d52
+  enforces_invariants:
+  - 01a16457-a08c-76a2-8c85-0c2e0ba076a9
+- id: 01a16457-a08c-76a2-8c85-0c274d7f4ee1
+  alias_id: DEC-9004
+  alias_name: carry-inherited-lifecycle-in-ai-owned-normalized-metadata
+  summary: Carry qualified inherited-lifecycle facts in existing open NM metadata
+  rationale: |-
+    Use /metadata/ai_lifecycle_provenance on the normalized child, with its closed
+    schema and meaning defined solely by an exact AI 1.3 resource. NM's existing
+    open metadata object is sufficient; no new NM envelope property is required.
+    The child's id carries its canonical UUID and lifecycle_stage carries the
+    inherited literal value. The carrier contains declaring_adr_id,
+    declaring_adr_semantic_type, status_semantic_field_key, status_source_authority,
+    ownership_rule and value_destination. value_destination is the fixed normalized
+    semantic destination /lifecycle_stage, not a runtime source locator.
+
+    status_source_authority qualifies Authoring 1.7 and the exact schema resource
+    key, digest and schema selector for the declaring status. ownership_rule
+    qualifies AI 1.3 by family/version/SCF plus exact rule resource key, digest and
+    rule identifier. The selected rule must in turn qualify the exact source
+    ownership selectors. Publication schemas must be closed and preserve these
+    facts without coercion. No enclosing SCF is embedded recursively in its own
+    resource closure; instance qualifications are populated after publication.
+
+    Do not duplicate lifecycle_stage as a second mutable value in the carrier.
+    Verify its value against the qualified declaring source. A missing carrier,
+    wrong child association, owner, status selector, rule, authority or destination
+    prevents complete qualification. Independently verify ownership and value from
+    the sealed source basis; metadata assertions alone are not proof. Runtime
+    source pointers, paths and array positions may locate evidence but never
+    identify the declaring owner. Generic NM consumers gain no intrinsic meaning
+    for this object without exact AI qualification.
+
+    AI 1.3 shall declare a contextual semantic-fact catalog, separate from authored
+    field coverage, with the stable key context/declaring_adr_lifecycle# matched
+    inside the child's canonical semantic identity. This is a narrow extension to
+    DEC-0269's authored-schema-relative key model: the contextual key is not a
+    pretend Authoring child field. Its destination schema and closed fact inventory
+    are selected from the AI closure. Existing source field keys remain unchanged.
+    There is no sixth implicit disposition class or ceremony exception.
+  refines:
+  - 01a10888-daba-75bc-a071-d3416d58355d
+  - 01a10888-daba-75bc-a071-d34463d939dc
+  enforces_invariants:
+  - 01a16457-a08c-76a2-8c85-0c2f9bc890a3
+- id: 01a16457-a08c-76a2-8c85-0c284989e244
+  alias_id: DEC-9005
+  alias_name: compare-complete-lifecycle-meaning-and-qualified-provenance
+  summary: Compare inherited lifecycle meaning and independently verify its authority
+  rationale: |-
+    Expected and observed whole-ledger projections must compare the complete
+    literal lifecycle value under the child's semantic identity. They must also
+    compare contextual provenance under context/declaring_adr_lifecycle#: declaring
+    ADR UUID and semantic type, stable source status field identity and governing
+    ownership rule meaning. These facts qualify whose declaration the child
+    represents and cannot disappear as provenance-only metadata. The contextual
+    entry binds to the one first-class lifecycle value rather than replaying that
+    value as another independently owned semantic field.
+
+    Exact AI and Authoring qualifications, schema/resource digests and source
+    locations must be independently verified. Incidental source locations and
+    digests are integrity evidence, not owner identity or replacements for semantic
+    comparison. Rule identity and any qualification that defines its meaning must
+    be matched under the same exact selected authority; no cross-version rule
+    equivalence or ambient substitution is inferred. Missing, additional, changed
+    or ambiguous contextual facts fail whole-result equality. Changing accepted to
+    active is a mismatch even when a replay copy retains accepted. Preserve all
+    DEC-0271 difference rules and DEC-0272 semantic/integrity partitions.
+  refines:
+  - 01a10888-daba-75bc-a071-d34018be0d8e
+  - 01a10888-daba-75bc-a071-d3416d58355d
+  - 01a10888-daba-75bc-a071-d34463d939dc
+  - 01a10888-daba-75bc-a071-d34592ae0d52
+  enforces_invariants:
+  - 01a16457-a08c-76a2-8c85-0c30fac83040
+- id: 01a16457-a08c-76a2-8c85-0c290f9e5899
+  alias_id: DEC-9006
+  alias_name: replace-only-successor-authority-selection-clauses
+  summary: Replace only version-selection clauses for successor construction
+  rationale: |-
+    This proposed decision has effect only after separate human acceptance and
+    successor publication. It does not rebind any historical operation. The
+    following are prospective clause replacements, not whole-decision retirement:
+
+    ADR-L-0034 DEC-0268: select ACC 1.3, AI 1.3 and NM 2.5 for successor complete
+    ledger construction; retain complete comparison and identity/multiplicity.
+    DEC-0269: replace AI 1.2/ACC 1.1/NM 2.4 selection and the unchanged-NM claim;
+    retain field coverage and add only the explicit contextual fact mechanism.
+    DEC-0270: replace the NM target only, retaining detached domains and derivation.
+    DEC-0271: no supersession. DEC-0272: refine qualified lifecycle provenance only.
+    DEC-0273: narrowly qualify standalone interpretation as specified above.
+    INV-0276: replace the NM 2.4 target by NM 2.5 for successor results only.
+    INV-0277: replace AI 1.2 selection by AI 1.3 and qualify contextual fact coverage.
+    INV-0278: unchanged. INV-0279 and INV-0280: retain all existing principles and
+    clarify conditional interpretation and lifecycle provenance participation.
+
+    ADR-L-0035 DEC-0274 through DEC-0279: carry their endpoint, binding, ownership,
+    ordering, preservation and evidence semantics forward, replacing only the
+    successor ACC/AI/NM version references, composition-binding resource selections
+    and qualification targets by ACC 1.3/AI 1.3/NM 2.5. The successor binding keys
+    are authoring-construction/1.3/composition-bindings and its .schema companion;
+    row selection remains exact and independently content qualified. No additional
+    binding row is authorized. INV-0284 and INV-0292 receive those prospective
+    authority-selector replacements only. INV-0285 through INV-0291 retain their
+    substantive requirements; version-scoped historical statements remain true.
+    ACC 1.3 must have its own frozen conformance namespace, not rebind ACC 1.2's.
+
+    The canonical refines relationships express this clause-level evolution.
+    Do not use a whole-entity supersedes edge to retire still-valid accepted
+    decisions or invariants. Old authority remains valid for its exact versions.
+    Current SCS selection and protocol 1.5 are unchanged; ACC 1.2 cannot select
+    unqualified AI 1.3 or NM 2.5 through fallback or host options.
+  refines:
+  - 01a10888-daba-75bc-a071-d34018be0d8e
+  - 01a10888-daba-75bc-a071-d3416d58355d
+  - 01a10888-daba-75bc-a071-d34250a1b891
+  - 01a10888-daba-75bc-a071-d34463d939dc
+  - 01a10888-daba-75bc-a071-d34592ae0d52
+  - 01a1514b-805c-75ff-a7ee-e98d9d102cff
+  - 01a1514b-805c-75ff-a7ee-e98ef774ad1f
+  - 01a1514b-805c-75ff-a7ee-e98fd08780d2
+  - 01a1514b-805c-75ff-a7ee-e9900b046f24
+  - 01a1514b-805c-75ff-a7ee-e9913dbcd63e
+  - 01a151af-ee18-75c7-a457-6a99e97be6be
+  enforces_invariants:
+  - 01a16457-a08c-76a2-8c85-0c318059bd45
+- id: 01a16457-a08c-76a2-8c85-0c2a155783cf
+  alias_id: DEC-9007
+  alias_name: qualify-successor-enum-domains-without-retroactive-republication
+  summary: Require exact cross-contract enum-domain compatibility for successors
+  rationale: |-
+    Successor publication must resolve exact qualified source and destination
+    schema closures, including local and relative references and applicable
+    constraints. For exact field placement, prove every permitted source enum
+    value is accepted by the selected normalized destination without changing its
+    typed value. For inherited lifecycle, perform the same check from the qualified
+    declaring ADR status domain to every selected child lifecycle destination.
+    Missing references, ambiguous applicable branches or unestablished domain
+    inclusion prevent successor publication; a successful spot check is not a
+    domain proof. Do not silently ignore schema constraints or infer conversion.
+
+    Record the existing AI 1.2 status contradiction as a historical compatibility
+    finding: for all three ADR roots, accepted is allowed by Authoring 1.7, required
+    unchanged by AI 1.2 and excluded by NM 2.4. Do not edit frozen bytes, change old
+    SCFs or vectors, or retroactively fail historical publication/conformance under
+    a new acceptance rule. Existing integrity checks retain their original scope.
+    The new guard applies to successor publication; a historical diagnostic probe
+    can demonstrate the finding without reclassifying old frozen cases as failed.
+
+    Future positive/negative conformance must cover all four statuses for all three
+    ADR roots, every selected embedded type/owner selector, lifecycle-free NP,
+    missing/ambiguous/wrong owners, unsupported custom and standalone cases, forged
+    carrier facts, wrong rule/qualification, absent metadata, changed enum domains,
+    exact equality, reference-only nonownership and request/source permutations.
+    No case passes solely because its schema or provenance copy validates.
+  enforces_invariants:
+  - 01a16457-a08c-76a2-8c85-0c322bd3ddf5
+- id: 01a16457-a08c-76a2-8c85-0c2bc45c95f7
+  alias_id: DEC-9008
+  alias_name: separate-successor-governance-publication-and-execution
+  summary: Require human acceptance before publication and separately authorized execution
+  rationale: |-
+    This ADR remains proposed until explicit human acceptance of the reviewed
+    canonical decision and commit. Direction approval and passing CI are not ADR
+    acceptance metadata. This change publishes no NM 2.5, AI 1.3 or ACC 1.3 bytes,
+    implements no interpreter, and does not authorize Constructed or protocol work.
+
+    After acceptance, publish NM 2.5 first, then independently fingerprinted AI 1.3
+    selecting Authoring 1.7 and NM 2.5 with qualified lifecycle ownership/carrier
+    rules, then independently fingerprinted ACC 1.3 selecting those exact closures
+    and successor composition/equality qualification. Publication and execution
+    remain separate; use exact family/version/fingerprint and resource digests.
+    Do not change the current selected semantic-contract set as a publication side
+    effect. Preserve ADC 1.1, CEC 1.0 and all existing frozen resources.
+
+    Historical results retain their original qualified meaning. Migration requires
+    explicit re-interpretation of retained source under successor authority; never
+    blindly rewrite historical active to accepted, infer source status from that
+    value, or mutate retained artifacts. Consumer enum models and validators must
+    adopt the successor explicitly before reading accepted as a lifecycle value.
+    Then authorize bounded Rust execution, complete NM assembly, expected/observed
+    ledgers and whole-result equivalence in separate reviewed slices. No persistence,
+    promotion, new composition rows or complete construction capability is enabled
+    by this governance change.
+  enforces_invariants:
+  - 01a16457-a08c-76a2-8c85-0c33210a4fac
+invariants:
+- id: 01a16457-a08c-76a2-8c85-0c2cd4f79a6c
+  alias_id: INV-0293
+  alias_name: authored-status-remains-an-exact-semantic-value
+  statement: Successor interpretation MUST preserve each authored ADR status literally; accepted MUST
+    NOT become active, ceremony, a default, or evidence of deployment.
+  scope: semantic-authority
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Preserve authored lifecycle literally through NM 2.5, AI 1.3 and ACC 1.3.
+  upheld_by_decisions:
+  - 01a16457-a08c-76a2-8c85-0c2453eed033
+- id: 01a16457-a08c-76a2-8c85-0c2d810a4969
+  alias_id: INV-0294
+  alias_name: native-standalone-roots-do-not-invent-lifecycle
+  statement: Native standalone fragments MUST remain roots without synthetic ADRs; complete interpretation
+    MUST remain Unavailable when required lifecycle provenance cannot be qualified.
+  scope: semantic-authority
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Separate native standalone representation from qualified complete interpretation.
+  upheld_by_decisions:
+  - 01a16457-a08c-76a2-8c85-0c2525f0b3a5
+- id: 01a16457-a08c-76a2-8c85-0c2e0ba076a9
+  alias_id: INV-0295
+  alias_name: embedded-lifecycle-requires-qualified-declaring-ownership
+  statement: Inherited lifecycle MUST equal the unique qualified declaring ADR status for an explicitly
+    selected built-in ownership rule; reference-only, custom, owner-local and unqualified standalone contexts
+    MUST NOT acquire that rule.
+  scope: semantic-authority
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Authorize explicit scoped declaring-ADR lifecycle propagation.
+  upheld_by_decisions:
+  - 01a16457-a08c-76a2-8c85-0c26bd9b102f
+- id: 01a16457-a08c-76a2-8c85-0c2f9bc890a3
+  alias_id: INV-0296
+  alias_name: inherited-lifecycle-has-ai-owned-observed-evidence
+  statement: Every inherited lifecycle MUST have independently verified AI-qualified metadata.ai_lifecycle_provenance
+    bound to the child UUID, declaring ADR UUID, exact status source and governing ownership rule; source
+    locations MUST NOT become owner identity.
+  scope: semantic-authority
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Carry qualified inherited-lifecycle facts in existing open NM metadata.
+  upheld_by_decisions:
+  - 01a16457-a08c-76a2-8c85-0c274d7f4ee1
+- id: 01a16457-a08c-76a2-8c85-0c30fac83040
+  alias_id: INV-0297
+  alias_name: lifecycle-context-participates-in-whole-ledger-equality
+  statement: Whole-ledger equality MUST compare the literal lifecycle and meaning-bearing contextual provenance
+    under child identity and the stable AI-owned contextual key; integrity digests and replay copies MUST
+    NOT substitute for semantic equality.
+  scope: semantic-authority
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Compare inherited lifecycle meaning and independently verify its authority.
+  upheld_by_decisions:
+  - 01a16457-a08c-76a2-8c85-0c284989e244
+- id: 01a16457-a08c-76a2-8c85-0c318059bd45
+  alias_id: INV-0298
+  alias_name: successor-selection-does-not-rebind-historical-authority
+  statement: Successor construction MUST select exact ACC 1.3, AI 1.3 and NM 2.5 authority after publication;
+    historical authorities, SCFs, conformance and protocol 1.5 MUST remain immutable and MUST NOT silently
+    select successor semantics.
+  scope: semantic-authority
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Replace only version-selection clauses for successor construction.
+  upheld_by_decisions:
+  - 01a16457-a08c-76a2-8c85-0c290f9e5899
+- id: 01a16457-a08c-76a2-8c85-0c322bd3ddf5
+  alias_id: INV-0299
+  alias_name: successor-enum-placement-requires-complete-domain-inclusion
+  statement: Successor publication MUST prove exact source enum-domain inclusion in every selected normalized
+    destination, including inherited lifecycle destinations; missing or ambiguous qualification MUST block
+    publication without retroactively changing historical acceptance criteria.
+  scope: semantic-authority
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Require exact cross-contract enum-domain compatibility for successors.
+  upheld_by_decisions:
+  - 01a16457-a08c-76a2-8c85-0c2a155783cf
+- id: 01a16457-a08c-76a2-8c85-0c33210a4fac
+  alias_id: INV-0300
+  alias_name: proposed-lifecycle-decision-does-not-authorize-execution
+  statement: This proposed ADR MUST NOT be treated as accepted authority, contract publication, interpreter
+    implementation, Constructed support, persistence or promotion; explicit human acceptance MUST precede
+    the separately reviewed successor publications.
+  scope: semantic-authority
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Require human acceptance before publication and separately authorized execution.
+  upheld_by_decisions:
+  - 01a16457-a08c-76a2-8c85-0c2bc45c95f7
+gaps: []
+notes: |-
+  Proposed governance only. Human acceptance of this reviewed ADR/commit remains
+  required. No approval metadata is asserted. The local ignored Design Journal
+  is convergence state, not runtime authority or a required PR artifact.
+  Derived projections and indexes are generated, never independent authority.
+  No historical ADR source or published contract is changed by this proposal.

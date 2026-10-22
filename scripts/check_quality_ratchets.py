@@ -153,6 +153,12 @@ def collect_mypy() -> dict[str, object]:
 
 
 def collect_black() -> dict[str, object]:
+    diagnostic = _run(
+        ["-m", "black", "--no-cache", "--diff", "tests/test_normalized_v25_publication.py"]
+    )
+    print("NM25 BLACK FORMAT DIAGNOSTIC START", flush=True)
+    print(diagnostic.stdout + diagnostic.stderr, flush=True)
+    print("NM25 BLACK FORMAT DIAGNOSTIC END", flush=True)
     result = _run(["-m", "black", "--no-cache", "--check", *FORMAT_TARGETS])
     if result.returncode not in (0, 1):
         raise RuntimeError(result.stdout + result.stderr)

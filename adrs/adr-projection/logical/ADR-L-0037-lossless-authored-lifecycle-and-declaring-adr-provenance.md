@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: ebf5898b2a108446c323bb4492c11a52f97bb38c8ae80935944462fc13d957bb
-rendered_hash: fa1ee79d54ac2f18c2a59c8d3c602d0db2612bbe6193f1319056c6f83f062d38
+source_hash: 7ff3be5546fb26dabfb0121cc38ea3c18a5cece099474c3a63ee63373e08bcac
+rendered_hash: ddb2624818b6614e87207203af39397ae68331f3e2c1f53ab4be388eb827f53d
 -->
 
 # ADR-L-0037: Lossless Authored Lifecycle and Declaring-ADR Provenance
@@ -14,7 +14,7 @@ rendered_hash: fa1ee79d54ac2f18c2a59c8d3c602d0db2612bbe6193f1319056c6f83f062d38
 ## Identity / Status
 
 **Type:** logical<br>
-**Status:** proposed<br>
+**Status:** accepted<br>
 **Alias:** ADR-L-0037<br>
 **Authoring contract:** authoring v1.5<br>
 **Created:** 2026-10-22<br>
@@ -27,7 +27,7 @@ rendered_hash: fa1ee79d54ac2f18c2a59c8d3c602d0db2612bbe6193f1319056c6f83f062d38
 | | |
 | --- | --- |
 | Logical authority | ADR-L-0037 |
-| Status | proposed |
+| Status | accepted |
 | Decisions | 8 |
 | Invariants | 8 |
 
@@ -47,9 +47,11 @@ decisions have no authored status at all. DEC-0273 and INV-0279 preserve native
 fragment roots; their interpretation guarantee needs an explicit successor
 qualification rather than invented owner context or synthetic ADR wrappers.
 
-This proposed logical ADR records the selected successor direction and the
-missing semantic authority. It does not amend any frozen contract, accept
-itself, or resume the blocked AI execution slice.
+This accepted logical ADR records the selected successor direction and the
+missing semantic authority. Human acceptance of PR #173 at reviewed commit
+7f3272b5b2e2bb8736a73d95c7b8a3d0f32c06c3 authorizes this lifecycle
+transition. It does not amend frozen contracts or resume the blocked AI
+execution slice before successor publication.
 ## Architectural Decisions
 
 | Decision | Choice | Traceability |
@@ -67,7 +69,7 @@ itself, or resume the blocked AI execution slice.
 
 **Rationale**
 
-The proposed successor chain is Authoring 1.7 to Architecture Interpretation
+The selected successor chain is Authoring 1.7 to Architecture Interpretation
 1.3 to Normalized Model 2.5, selected by Authoring Construction 1.3. For
 adr/logical, adr/physical-system and adr/physical-component, status maps to
 lifecycle_stage without changing the typed value: proposed to proposed,
@@ -244,7 +246,7 @@ DEC-0271 difference rules and DEC-0272 semantic/integrity partitions.
 
 **Rationale**
 
-This proposed decision has effect only after separate human acceptance and
+This accepted decision governs successor construction only after separate
 successor publication. It does not rebind any historical operation. The
 following are prospective clause replacements, not whole-decision retirement:
 
@@ -327,9 +329,9 @@ No case passes solely because its schema or provenance copy validates.
 
 **Rationale**
 
-This ADR remains proposed until explicit human acceptance of the reviewed
-canonical decision and commit. Direction approval and passing CI are not ADR
-acceptance metadata. This change publishes no NM 2.5, AI 1.3 or ACC 1.3 bytes,
+Human review and acceptance of PR #173 at commit
+7f3272b5b2e2bb8736a73d95c7b8a3d0f32c06c3 authorizes ADR acceptance.
+This acceptance publishes no NM 2.5, AI 1.3 or ACC 1.3 bytes,
 implements no interpreter, and does not authorize Constructed or protocol work.
 
 After acceptance, publish NM 2.5 first, then independently fingerprinted AI 1.3
@@ -368,7 +370,7 @@ by this governance change.
 | INV-0297 | Whole-ledger equality MUST compare the literal lifecycle and meaning-bearing contextual provenance under child… | MUST / design | automated |
 | INV-0298 | Successor construction MUST select exact ACC 1.3, AI 1.3 and NM 2.5 authority after publication; historical… | MUST / design | automated |
 | INV-0299 | Successor publication MUST prove exact source enum-domain inclusion in every selected normalized destination,… | MUST / design | automated |
-| INV-0300 | This proposed ADR MUST NOT be treated as accepted authority, contract publication, interpreter implementation,… | MUST / design | automated |
+| INV-0300 | Acceptance of this ADR MUST NOT be treated as contract publication, interpreter implementation, Constructed support,… | MUST / design | automated |
 
 ### INV-0293
 
@@ -500,7 +502,7 @@ Require exact cross-contract enum-domain compatibility for successors.
 
 **Statement**
 
-This proposed ADR MUST NOT be treated as accepted authority, contract publication, interpreter implementation, Constructed support, persistence or promotion; explicit human acceptance MUST precede the separately reviewed successor publications.
+Acceptance of this ADR MUST NOT be treated as contract publication, interpreter implementation, Constructed support, persistence or promotion; successor publication and execution MUST remain separate reviewed steps.
 
 **Scope:** semantic-authority
 
@@ -552,6 +554,13 @@ flowchart LR
 
 
 
+## Governance / Bindings / Evidence
+
+### Governance
+
+**Approved by:** egallmann
+**Approved date:** 2026-10-22 16:53:50+00:00
+
 
 ## Lifecycle / Related Architecture
 
@@ -578,11 +587,15 @@ flowchart LR
 
 ## Notes
 
-Proposed governance only. Human acceptance of this reviewed ADR/commit remains
-required. No approval metadata is asserted. The local ignored Design Journal
-is convergence state, not runtime authority or a required PR artifact.
-Derived projections and indexes are generated, never independent authority.
-No historical ADR source or published contract is changed by this proposal.
+Accepted following explicit human review and acceptance of PR #173 at commit
+7f3272b5b2e2bb8736a73d95c7b8a3d0f32c06c3. Governance approval metadata
+records that authorization; it does not assert a steelman review or grant
+runtime execution authority. Stable entity identities and aliases are retained.
+The local ignored Design Journal is convergence state, not runtime authority
+or a required PR artifact. Derived projections and indexes are generated,
+never independent authority. Historical published contracts remain unchanged.
+NM 2.5, AI 1.3 and ACC 1.3 publication remain separate prerequisites before
+resuming successor lifecycle interpretation.
 
 
 ---

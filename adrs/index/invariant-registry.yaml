@@ -17622,7 +17622,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2cd4f79a6c
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:80f8b5a6a26a867a7c8c4880d68743b96f7b3e9cb8db12af5f65b3bc3af95748
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2cd4f79a6c
@@ -17689,7 +17689,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2d810a4969
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:db36f1f293f23eadf14aca40e63f4ced051aa950b7e5e5b463f7b8016b66e0f6
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2d810a4969
@@ -17757,7 +17757,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2e0ba076a9
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:3686db99484bc70bdbd7d7a14ee6b2e9d9b9c44760d36a9035d92d1865e0874b
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2e0ba076a9
@@ -17825,7 +17825,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2f9bc890a3
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:f4e82ed60e2cbb32853113a8caa96e6fefebcbdb7c84c6a1a384b79fe7e0f95e
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2f9bc890a3
@@ -17894,7 +17894,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c30fac83040
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:80e216ec82255abedb47ff4bc8e9dd37a238c48798dece6097ef589d5f5ec9c5
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c30fac83040
@@ -17962,7 +17962,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c318059bd45
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:ffaab12a460847a92f2e7cd036ec5f3ed8b7ed5645ca01c6efeaeae6f95b5053
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c318059bd45
@@ -18030,7 +18030,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c322bd3ddf5
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:4b1e9e0d5e66d1f4c18fedc3b4ea34dead4ff9e2430d41eba2e690294e790e47
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c322bd3ddf5
@@ -18093,13 +18093,13 @@ entities:
   alias_ref: INV-0300:proposed-lifecycle-decision-does-not-authorize-execution
   entity_type: invariant
   name: INV-0300
-  summary: This proposed ADR MUST NOT be treated as accepted authority, contract publication,
-    interpreter implementation, Constructed support, persistence or promotion; explicit
-    human acceptance MUST precede the separately reviewed
+  summary: Acceptance of this ADR MUST NOT be treated as contract publication, interpreter
+    implementation, Constructed support, persistence or promotion; successor publication
+    and execution MUST remain separate reviewed steps.
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c33210a4fac
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:761b35cb068e0a3005ce5a352aa2dc08411ecc8ad1c06fe3b64319e8fe680621
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c33210a4fac
@@ -18109,10 +18109,9 @@ entities:
     adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
     adr_alias_id: ADR-L-0037
     scope: semantic-authority
-    statement: This proposed ADR MUST NOT be treated as accepted authority, contract
-      publication, interpreter implementation, Constructed support, persistence or
-      promotion; explicit human acceptance MUST precede the separately reviewed successor
-      publications.
+    statement: Acceptance of this ADR MUST NOT be treated as contract publication,
+      interpreter implementation, Constructed support, persistence or promotion; successor
+      publication and execution MUST remain separate reviewed steps.
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions:

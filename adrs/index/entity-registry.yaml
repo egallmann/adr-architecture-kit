@@ -45846,13 +45846,13 @@ entities:
   alias_ref: DEC-9001:preserve-authored-lifecycle-under-successor-authority
   entity_type: decision
   name: Preserve authored lifecycle literally through NM 2.5, AI 1.3 and ACC 1.3
-  summary: The proposed successor chain is Authoring 1.7 to Architecture Interpretation
+  summary: The selected successor chain is Authoring 1.7 to Architecture Interpretation
     1.3 to Normalized Model 2.5, selected by Authoring Construction 1.3. For adr/logical,
     adr/physical-system and adr/physical-component, status ma
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2453eed033
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:ac0177c81e8bb6beefbbe1b28fd95c6260148b14db495967b5962d6f5a948f53
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2453eed033
@@ -45923,7 +45923,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2525f0b3a5
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:01861a4d2aa84df2291a3ea59953c67d4ef315e38ff8f21e53f795c782384c7c
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2525f0b3a5
@@ -45992,7 +45992,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c26bd9b102f
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:533c89df96451ecdec07b774c90e23b8e1b88d4003a261d32c46223547ce81a8
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c26bd9b102f
@@ -46065,7 +46065,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c274d7f4ee1
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:9fd9df05b2e45d8af0df26b41536b0fc61581182c0974c5359530b0f766335a0
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c274d7f4ee1
@@ -46136,7 +46136,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c284989e244
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:63a661f47a2e7f785d4eb529cd0615c8bb1112042cb85485a552fc4bf10c3950
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c284989e244
@@ -46205,13 +46205,13 @@ entities:
   alias_ref: DEC-9006:replace-only-successor-authority-selection-clauses
   entity_type: decision
   name: Replace only version-selection clauses for successor construction
-  summary: This proposed decision has effect only after separate human acceptance
-    and successor publication. It does not rebind any historical operation. The following
-    are prospective clause replacements, not whole-decision retirem
+  summary: This accepted decision governs successor construction only after separate
+    successor publication. It does not rebind any historical operation. The following
+    are prospective clause replacements, not whole-decision retireme
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c290f9e5899
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:78dde078e4e469f854f8a92362664ba8b6dfc17fe1f566f8e1da698177ee70b5
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c290f9e5899
@@ -46300,7 +46300,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2a155783cf
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:6dbb261c2fa78cac17f1929ad97f2775386fee4dc5c79a2fe25bc2a5b3cf40c3
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2a155783cf
@@ -46361,13 +46361,13 @@ entities:
   alias_ref: DEC-9008:separate-successor-governance-publication-and-execution
   entity_type: decision
   name: Require human acceptance before publication and separately authorized execution
-  summary: This ADR remains proposed until explicit human acceptance of the reviewed
-    canonical decision and commit. Direction approval and passing CI are not ADR acceptance
-    metadata. This change publishes no NM 2.5, AI 1.3 or ACC 1
+  summary: 'Human review and acceptance of PR #173 at commit 7f3272b5b2e2bb8736a73d95c7b8a3d0f32c06c3
+    authorizes ADR acceptance. This acceptance publishes no NM 2.5, AI 1.3 or ACC
+    1.3 bytes, implements no interpreter, and does not a'
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2bc45c95f7
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:1affc3e65ddeb2d671bb368ec1c4edc820637fe5b7f496b637b706f85435e1c4
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2bc45c95f7
@@ -46433,7 +46433,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2cd4f79a6c
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:80f8b5a6a26a867a7c8c4880d68743b96f7b3e9cb8db12af5f65b3bc3af95748
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2cd4f79a6c
@@ -46500,7 +46500,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2d810a4969
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:db36f1f293f23eadf14aca40e63f4ced051aa950b7e5e5b463f7b8016b66e0f6
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2d810a4969
@@ -46568,7 +46568,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2e0ba076a9
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:3686db99484bc70bdbd7d7a14ee6b2e9d9b9c44760d36a9035d92d1865e0874b
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2e0ba076a9
@@ -46636,7 +46636,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c2f9bc890a3
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:f4e82ed60e2cbb32853113a8caa96e6fefebcbdb7c84c6a1a384b79fe7e0f95e
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c2f9bc890a3
@@ -46705,7 +46705,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c30fac83040
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:80e216ec82255abedb47ff4bc8e9dd37a238c48798dece6097ef589d5f5ec9c5
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c30fac83040
@@ -46773,7 +46773,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c318059bd45
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:ffaab12a460847a92f2e7cd036ec5f3ed8b7ed5645ca01c6efeaeae6f95b5053
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c318059bd45
@@ -46841,7 +46841,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c322bd3ddf5
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:4b1e9e0d5e66d1f4c18fedc3b4ea34dead4ff9e2430d41eba2e690294e790e47
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c322bd3ddf5
@@ -46904,13 +46904,13 @@ entities:
   alias_ref: INV-0300:proposed-lifecycle-decision-does-not-authorize-execution
   entity_type: invariant
   name: INV-0300
-  summary: This proposed ADR MUST NOT be treated as accepted authority, contract publication,
-    interpreter implementation, Constructed support, persistence or promotion; explicit
-    human acceptance MUST precede the separately reviewed
+  summary: Acceptance of this ADR MUST NOT be treated as contract publication, interpreter
+    implementation, Constructed support, persistence or promotion; successor publication
+    and execution MUST remain separate reviewed steps.
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c33210a4fac
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:761b35cb068e0a3005ce5a352aa2dc08411ecc8ad1c06fe3b64319e8fe680621
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2#01a16457-a08c-76a2-8c85-0c33210a4fac
@@ -46920,10 +46920,9 @@ entities:
     adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
     adr_alias_id: ADR-L-0037
     scope: semantic-authority
-    statement: This proposed ADR MUST NOT be treated as accepted authority, contract
-      publication, interpreter implementation, Constructed support, persistence or
-      promotion; explicit human acceptance MUST precede the separately reviewed successor
-      publications.
+    statement: Acceptance of this ADR MUST NOT be treated as contract publication,
+      interpreter implementation, Constructed support, persistence or promotion; successor
+      publication and execution MUST remain separate reviewed steps.
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions:
@@ -46979,14 +46978,14 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16457-a08c-76a2-8c85-0c34a56ce5f2
   created_at: '2026-10-22T16:00:26.764Z'
   entity_fingerprint: sha256:79ba2966ad46e835c869eb35c246aaee7ac2c26581595f60fab9fa9ee5071257
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
     artifact_path: adrs/logical/ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - architecture
     - semantic-authority

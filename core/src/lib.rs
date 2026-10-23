@@ -2378,3 +2378,6 @@ mod semantic_core_v11_tests {
 mod authoring_construction_authority;
 #[allow(dead_code)]
 mod authoring_construction_v13;
+
+#[allow(dead_code)]
+mod architecture_interpretation_v13;

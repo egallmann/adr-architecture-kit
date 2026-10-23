@@ -17,7 +17,7 @@ fn j(v: &Value) -> Json {
 fn value(v: &Json) -> Value {
     serde_json::to_value(v).unwrap()
 }
-fn bundle() -> &'static (Json, Vec<Json>, Json) {
+pub(crate) fn bundle() -> &'static (Json, Vec<Json>, Json) {
     static BUNDLE: OnceLock<(Json, Vec<Json>, Json)> = OnceLock::new();
     BUNDLE.get_or_init(|| {
         let d = read("contracts/authoring-construction/v1.3/contract.json");
@@ -37,7 +37,7 @@ fn qualification(family: &str, version: &str, prefix: &str) -> Value {
     }
     result
 }
-fn request(case: usize) -> Value {
+pub(crate) fn request(case: usize) -> Value {
     let input = read("contracts/authoring-construction/v1.3/resources/conformance.json")["cases"]
         [case - 1]["fixture"]["input"]
         .clone();
@@ -72,7 +72,7 @@ fn request(case: usize) -> Value {
             "architecture_interpretation":{"family":"architecture-interpretation","version":"1.3","semantic_contract_fingerprint":PROFILE.expected().ai_scf,"authority_closure":{"family":"architecture-interpretation","version":"1.3","resources":members}},
             "custom_entity":null,"reference_basis":{"sealed":true,"entries":[]},"existing_source_basis":{"sealed":true,"entries":[]},"identity_establishment":identity,"provenance":{}}})
 }
-fn refs(input: &Value) -> BTreeMap<String, String> {
+pub(crate) fn refs(input: &Value) -> BTreeMap<String, String> {
     input["request"]["fragments"]
         .as_array()
         .unwrap()
@@ -89,7 +89,7 @@ impl IdentityMinter for NoMint {
         panic!("supplied identities and replay must not mint")
     }
 }
-fn run(input: &Value) -> SealResult {
+pub(crate) fn run(input: &Value) -> SealResult {
     prepare(
         &bundle().0,
         &bundle().1,

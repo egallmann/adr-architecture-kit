@@ -482,6 +482,11 @@ def load_semantic_resource(key: str) -> Any:
         not ai13 and parts[1] not in {"1.0", "1.1", "1.2", "1.5", "1.6", "2.3", "2.4", "2.5"}
     ):
         raise LookupError(f"Unsupported semantic resource: {key}")
+    if ai13 and key not in {
+        entry.canonical_resource_key
+        for entry in get_semantic_contract("architecture-interpretation", "1.3").resource_manifest
+    }:
+        raise LookupError(f"Bundled semantic resource is missing: {key}")
     package = resources.files("adr_kit.semantic_contract.v1_0.resources")
     candidates = [f"{key.replace('/', '-')}.json"]
     if len(parts) == 3 and not ai13:

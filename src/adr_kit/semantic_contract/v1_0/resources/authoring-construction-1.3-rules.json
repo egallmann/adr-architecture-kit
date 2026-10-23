@@ -1,0 +1,528 @@
+{
+  "resource_kind": "authoring-construction-rules",
+  "resource_version": "1.3",
+  "publication_posture": {
+    "status": "published_authority_only",
+    "execution_capability_advertised": false,
+    "execution_implemented": false,
+    "current_semantic_contract_selection": false
+  },
+  "semanticDependencies": [
+    "architecture-interpretation/1.0/source-decoding-1.5",
+    "architecture-interpretation/1.0/source-decoding-1.6",
+    "architecture-interpretation/1.0/source-mapping-1.5-to-2.3",
+    "architecture-interpretation/1.0/source-mapping-1.6-to-2.3",
+    "architecture-interpretation/1.2/legacy-compatibility",
+    "architecture-interpretation/1.2/source-decoding-1.7",
+    "architecture-interpretation/1.3/conformance",
+    "architecture-interpretation/1.3/conformance.schema",
+    "architecture-interpretation/1.3/contextual-facts",
+    "architecture-interpretation/1.3/contextual-facts.schema",
+    "architecture-interpretation/1.3/contract",
+    "architecture-interpretation/1.3/detached-context",
+    "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5",
+    "architecture-interpretation/1.3/field-dispositions.schema",
+    "architecture-interpretation/1.3/lifecycle-ownership",
+    "architecture-interpretation/1.3/lifecycle-ownership.schema",
+    "architecture-interpretation/1.3/lifecycle-provenance.schema",
+    "architecture-interpretation/1.3/rules",
+    "architecture-interpretation/1.3/source-mapping-1.7-to-2.5",
+    "authoring-construction/1.1/ledger.schema",
+    "authoring-construction/1.3/composition-bindings",
+    "authoring-construction/1.3/composition-bindings.schema",
+    "authoring-construction/1.3/ledger.schema",
+    "authoring-domain/1.1/contract",
+    "authoring-domain/1.1/schema",
+    "authoring/1.5/schema/adr-common.schema",
+    "authoring/1.5/schema/adr-logical.schema",
+    "authoring/1.5/schema/adr-physical-base.schema",
+    "authoring/1.5/schema/adr-physical-component.schema",
+    "authoring/1.5/schema/adr-physical-system.schema",
+    "authoring/1.5/schema/types.schema",
+    "authoring/1.6/schema/adr-common.schema",
+    "authoring/1.6/schema/adr-logical.schema",
+    "authoring/1.6/schema/adr-physical-base.schema",
+    "authoring/1.6/schema/adr-physical-component.schema",
+    "authoring/1.6/schema/adr-physical-system.schema",
+    "authoring/1.6/schema/types.schema",
+    "authoring/1.7/schema/adr-common.schema",
+    "authoring/1.7/schema/adr-logical.schema",
+    "authoring/1.7/schema/adr-physical-base.schema",
+    "authoring/1.7/schema/adr-physical-component.schema",
+    "authoring/1.7/schema/adr-physical-system.schema",
+    "authoring/1.7/schema/types.schema",
+    "custom-entity/1.0/conformance",
+    "custom-entity/1.0/contract",
+    "custom-entity/1.0/schema",
+    "normalized-model/2.3/schema/normalized-architecture-model.schema",
+    "normalized-model/2.3/schema/normalized-entity-registry.schema",
+    "normalized-model/2.3/schema/normalized-entity.schema",
+    "normalized-model/2.3/schema/relationship-record.schema",
+    "normalized-model/2.3/schema/relationship-registry.schema",
+    "normalized-model/2.3/schema/unresolved-registry.schema",
+    "normalized-model/2.5/conformance",
+    "normalized-model/2.5/schema/normalized-architecture-model.schema",
+    "normalized-model/2.5/schema/normalized-entity-registry.schema",
+    "normalized-model/2.5/schema/normalized-entity.schema",
+    "normalized-model/2.5/schema/relationship-record.schema",
+    "normalized-model/2.5/schema/relationship-registry.schema",
+    "normalized-model/2.5/schema/unresolved-registry.schema"
+  ],
+  "operation_identifiers": [
+    "validate_authoring",
+    "construct_authoring_set"
+  ],
+  "compatibility": {
+    "historical_contract": "authoring-construction/1.2",
+    "preserved": [
+      "operation_identifiers",
+      "detached_construction_boundary",
+      "canonical_uuidv7_identity_establishment",
+      "explicit_reference_and_composition_inputs",
+      "candidate_artifact_identity_and_bytes",
+      "minimal_non_overlapping_candidate_source_roots",
+      "four_outcomes",
+      "fail_closed_authority_selection",
+      "aggregated_independent_diagnostics"
+    ],
+    "successor_definitions": [
+      "exact_architecture_interpretation_authority_is_1.3",
+      "round_trip_qualification_is_complete_whole_ledger_equality",
+      "normalized_result_model_is_complete_schema_valid_normalized_model_2.5",
+      "construction_qualification_evidence_is_required_for_constructed",
+      "diagnostics_identify_semantic_unit_and_stable_field_or_relation_key",
+      "composition_binding_is_exact_verified_closure_resource",
+      "partitioned_composition_records"
+    ],
+    "historical_bytes_mutated": false
+  },
+  "authority": {
+    "selection": "exact_content_qualified_only",
+    "latest_or_ambient_resolution": false,
+    "architecture_interpretation": {
+      "family": "architecture-interpretation",
+      "version": "1.3",
+      "fingerprint": "scf:v1:sha256:d4a60e843c3069cfd7eb869a4d924d3a70bf900079d3a2ad86ae28884c6ac167",
+      "closure_source": "architecture-interpretation/1.3/contract",
+      "required_resource_set": "exact manifest closure of that definition"
+    },
+    "authoring_domain": {
+      "contract_id": "adr-kit.authoring-domain",
+      "version": "1.1",
+      "content_resource": "authoring-domain/1.1/contract",
+      "construction_execution": "composition_policy_and_identity_policy_only_as_selected_by_binding_table; input_contract_is_not_prepared_field_inventory"
+    },
+    "authoring": {
+      "schema_version": "1.7",
+      "resource_family": "authoring/1.7/schema"
+    },
+    "normalized_model": {
+      "family": "normalized-model",
+      "version": "2.5",
+      "schema_family": "normalized-model/2.5/schema",
+      "fingerprint": "scf:v1:sha256:bb48720502668e434d378445004aec7783346a0e74254c9e0d3cb01a8798d9d7"
+    },
+    "custom_entity": {
+      "contract_id": "adr-kit.custom-entity",
+      "version": "1.0",
+      "definition_qualification": "exact semantic_kind, semantic_type, consumer_namespace, contract_version, contract_fingerprint, definition_source, and definition_digest",
+      "registry_selection": "bounded_exact_source_basis_only"
+    },
+    "missing_or_incomplete": "Unavailable"
+  },
+  "ledger": {
+    "authority": "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5",
+    "schema": "authoring-construction/1.3/ledger.schema",
+    "expected_side": {
+      "source": "complete post-construction semantic state after identity establishment, reference resolution, custom qualification, and composition validation",
+      "request_dto_is_authority": false,
+      "candidate_serialized_bytes_are_authority": false,
+      "field_meaning_source": "exact Architecture Interpretation 1.3 semantic-field key and disposition",
+      "unclassified_field": "Rejected"
+    },
+    "observed_side": {
+      "source_chain": [
+        "sealed candidate source basis",
+        "minimal non-overlapping source roots",
+        "Authoring 1.7 validation",
+        "exact Architecture Interpretation 1.3",
+        "complete schema-valid Normalized Model 2.5",
+        "Architecture Interpretation 1.3 semantic projection"
+      ],
+      "candidate_artifact_set_is_source_root_set": false,
+      "embedded_child_counted_twice": false,
+      "reference_only_dependency_creates_definition": false,
+      "standalone_fragment_synthetic_adr_wrapper": false
+    },
+    "aggregation": {
+      "semantic_unit_ownership": "one entry per canonical semantic identity across the union of minimal roots",
+      "documents": "include root and embedded units exactly once",
+      "standalone_fragments": "native semantic units included exactly once; complete interpretation requires independently qualified lifecycle facts; otherwise Unavailable",
+      "mixed_roots": "canonical union with duplicate identity rejected",
+      "custom_entities": "include after exact CEC qualification",
+      "relationships": "include canonical, custom, topology, composition-derived, and compatibility projections according to exact AI 1.3 identity rules",
+      "topology": "owner_uuidv7 plus topology_key",
+      "compatibility": "AI 1.3 semantic matching tuple and occurrence multiplicity",
+      "unresolved": "retain explicit unresolved record; cannot qualify Constructed"
+    },
+    "completeness": {
+      "every_supported_field_resolves_to_exactly_one_ai13_disposition": true,
+      "duplicate_semantic_field_key_within_unit": "Rejected",
+      "duplicate_canonical_unit_identity": "Rejected",
+      "unclassified_or_ambiguous_field": "Rejected",
+      "unexpected_normalized_semantic_record": "Rejected",
+      "missing_expected_semantic_record": "Rejected",
+      "unresolved_record": "prevents_Constructed"
+    },
+    "identities": {
+      "canonical_semantic_unit": "uuidv7",
+      "topology_value": [
+        "owner_uuidv7",
+        "topology_key"
+      ],
+      "compatibility_occurrence": "exact AI 1.3 matching_identity policy tuple",
+      "forbidden_identity_inputs": [
+        "request_order",
+        "source_order",
+        "root_traversal_order",
+        "filename",
+        "source_instance_pointer",
+        "incidental_array_index",
+        "generated_compatibility_id"
+      ]
+    },
+    "contextual_semantics": {
+      "authority": "architecture-interpretation/1.3/contextual-facts",
+      "semantic_field_key": "context/declaring_adr_lifecycle#",
+      "carrier": "/metadata/ai_lifecycle_provenance",
+      "carrier_schema": "architecture-interpretation/1.3/lifecycle-provenance.schema",
+      "identity": "canonical_child_UUIDv7",
+      "value_projection": [
+        "declaring_adr_id",
+        "declaring_adr_semantic_type",
+        "status_semantic_field_key",
+        "ownership_rule.rule_id"
+      ],
+      "inherited_first_class_value": "semantic_unit.lifecycle_stage_or_existing_qualified_authored_status_once_only",
+      "authored_ADR_status": "existing_stable_authored_status_field_key_no_duplicate_lifecycle_slot",
+      "context_value_contains_lifecycle": false,
+      "independent_verification": "verify_owner_status_source_rule_meaning_and_complete_carrier_against_sealed_basis_and_exact_AI_closure",
+      "qualification_not_semantic_value": "source_authority_and_resource_digests_independently_required_not_owner_identity_or_equivalence",
+      "missing_additional_changed_or_ambiguous_context": "semantic_mismatch",
+      "shared_descriptor": {
+        "authority": "architecture-interpretation/1.3/lifecycle-ownership",
+        "rule": "reuse_existing_semantic_unit_if_same_canonical_identity",
+        "required_proof": "independently_qualify_shared_canonical_identity_and_governed_existing_unit_type_from_sealed_sources",
+        "value": "reuse_the_existing_qualified_authored_status_field_without_another_lifecycle_slot_or_unit",
+        "schema_admission": "does_not_select_unit_type_or_prove_identity_coincidence"
+      }
+    }
+  },
+  "equivalence": {
+    "algorithm_id": "authoring-construction/1.1/complete-semantic-ledger-equality",
+    "inputs": [
+      "complete_expected_ledger",
+      "complete_observed_ledger"
+    ],
+    "field_key_authority": "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5",
+    "field_value_equality": "RFC8785-canonical-JSON-structural-equality-after-AI-1.3-authorized-order-normalization",
+    "matching": "exact unit identity, stable semantic_field_key, or AI-authorized relationship tuple",
+    "disposition_application": {
+      "direct_semantic_value": "compare exact typed value at the stable AI field key",
+      "canonical_field_placement": "compare the same stable AI field key after the exact AI-declared destination mapping; do not compare source and destination property names as different semantics",
+      "compatibility_projection": "compare the AI-declared relationship tuple and all semantic tuple components; compare occurrences as a multiset with multiplicity",
+      "declared_absence": "omit only the exact field and target named by the AI declaration; any other absence is a mismatch",
+      "deterministic_ceremony": "exclude only values whose exact AI derivation rule resolves from fixed authority and established identities; if derivation is not proven, fail closed"
+    },
+    "first_class_and_extension_duplicate": "Rejected",
+    "provenance_substitution_for_missing_semantics": false,
+    "fingerprint_or_count_substitution_for_ledger_equality": false,
+    "direct_semantic_value": "direct typed semantic equality; it is not a difference class",
+    "authorized_difference_classes": [
+      "canonical_field_placement",
+      "compatibility_projection",
+      "declared_absence",
+      "deterministic_ceremony"
+    ],
+    "success": "all expected and observed semantic members match with equal multiplicity and no unclassified or unexpected semantic members",
+    "incomplete_or_nondeterministic": "not_evaluated_and_never_semantic_equivalent"
+  },
+  "canonicalization": {
+    "unordered_collections": "sort by governed semantic identity before comparison",
+    "ordered_values": "preserve only ordering declared by exact Architecture Interpretation 1.3 authority",
+    "compatibility_occurrences": "compare as multisets and preserve multiplicity",
+    "object_keys": "RFC8785 canonical JSON ordering",
+    "root_and_result_order": "non-semantic"
+  },
+  "normalized_result": {
+    "contract": {
+      "family": "normalized-model",
+      "version": "2.5",
+      "schema": "exact normalized-model/2.5/schema closure"
+    },
+    "model": "complete schema-valid Normalized Model 2.5 result; no selected subset or ACC-local stub",
+    "semantic_digest": "integrity evidence only; never equivalence authority",
+    "detached_context": "exact Architecture Interpretation 1.3 detached-context authority",
+    "repository_placement_implied": false
+  },
+  "qualification_evidence": {
+    "required_for_constructed": [
+      "exact selected authority identity and closure",
+      "candidate source-basis integrity and minimal-root selection evidence",
+      "complete interpretation from the sealed source basis",
+      "complete Normalized Model 2.5 schema validation",
+      "complete expected and observed semantic ledgers",
+      "whole-ledger comparison result semantic_equivalent",
+      "one partitioned qualified composition record for every intent when compositions are present",
+      "independently qualified complete literal lifecycle, contextual facts and carrier evidence under exact AI 1.3"
+    ],
+    "evidence_not_substitutes": [
+      "source digest",
+      "normalized fingerprint",
+      "entity count",
+      "fragment count",
+      "provenance replay"
+    ]
+  },
+  "diagnostics": {
+    "statuses": [
+      "violation",
+      "blocked",
+      "unresolved",
+      "unavailable"
+    ],
+    "sort_key": [
+      "status_rank",
+      "semantic_unit_identity",
+      "semantic_field_key_or_relationship_identity",
+      "diagnostic_code",
+      "stable_payload_digest"
+    ],
+    "source_instance_pointer": "optional locator for diagnostics or integrity only",
+    "discovery_order": "not observable",
+    "independent_discoverable_violations": "retain_even_when_other_checks_are_blocked"
+  },
+  "outcomes": {
+    "exact": [
+      "Constructed",
+      "Rejected",
+      "Unavailable",
+      "Unresolved"
+    ],
+    "precedence": [
+      "Rejected",
+      "Unavailable",
+      "Unresolved",
+      "Constructed"
+    ],
+    "Constructed": {
+      "requires": [
+        "complete_validation",
+        "exact_authority",
+        "minimal_sealed_source_basis",
+        "complete_interpretation",
+        "complete_schema_valid_normalized_model_2.5",
+        "complete_ledgers",
+        "semantic_equivalent",
+        "complete_literal_lifecycle_and_contextual_semantic_accounting"
+      ],
+      "partial": false
+    },
+    "Rejected": "authority_available_and_any_independently_established_construction_or_equivalence_violation_exists",
+    "Unavailable": "no_established_violation_and_required_exact_authority_or_capability_is_missing_or_blocked",
+    "Unresolved": "no_established_violation_or_unavailability_and_governed_reference_or_dependency_remains_unresolved",
+    "blocked_is_success": false,
+    "all_independent_diagnostics_retained": true
+  },
+  "detached_boundary": {
+    "context_authority": "architecture-interpretation/1.3/detached-context",
+    "repository_path_or_admission": false,
+    "persistence": false,
+    "alias_reservation": false,
+    "promotion": false,
+    "runtime_admission": false
+  },
+  "implementation_posture": {
+    "whole_result_comparator": "not_implemented",
+    "native_fragment_assembler": "not_implemented",
+    "detached_interpreter": "not_implemented",
+    "candidate_binding": "not_implemented",
+    "public_execution_capability": "not_advertised"
+  },
+  "composition": {
+    "binding_authority": {
+      "canonical_resource_key": "authoring-construction/1.3/composition-bindings",
+      "content_digest": "sha256:99d73d0e49221aa2f3bdbea593c9ffe9eb320aff0bf2ef7334e17199fe7eb03d"
+    },
+    "schema_authority": {
+      "canonical_resource_key": "authoring-construction/1.3/composition-bindings.schema",
+      "content_digest": "sha256:348e67ba3eb3e5524f02bfdc8171bd7dda197778541627415580561b2c332bee"
+    },
+    "selection_sequence": [
+      "verify_complete_exact_ACC_1.3_closure",
+      "match_request_ACC_family_version_and_enclosing_SCF",
+      "verify_table_schema",
+      "recheck_named_exact_AI_disposition_and_ADC_policies",
+      "check_relation_vocabulary",
+      "resolve_exact_same_request_create_request_key_endpoints",
+      "resolve_semantic_types",
+      "select_exactly_one_table_row"
+    ],
+    "request_acc_fingerprint": "must_equal_verified_enclosing_definition; never_embed_enclosing_SCF_in_resource",
+    "independent_binding_rows": "forbidden_in_Rust_hosts_protocol_or_ADR_prose",
+    "prepared_fields_authority": "table.child_schema and table.parent_schema under exact Authoring 1.7",
+    "adc_policy_scope": [
+      "composition_policy",
+      "identity_policy"
+    ],
+    "adc_input_contract_is_prepared_field_inventory": false,
+    "identity": "ACC create rule before interpretation: preserve supplied UUIDv7 or mint once; composition never replaces or derives identity",
+    "endpoint_resolution": "exact string equality to one same-request fragment request_key; no alias, UUID, path, source_ref, reference or existing-basis fallback",
+    "ownership": "prepared parent must lack the property key, including no empty array or null; compiler is sole writer",
+    "child_preservation": "copy the complete prepared child object plus established id; no added, removed, renamed, defaulted, retyped or rewritten fields; JSON deep equality after canonical parse",
+    "parent_preservation": "only established id and selected array insertion may change; all other fields remain unchanged; ordinary Authoring 1.7 validation follows",
+    "ordering": "sort sibling members by authored ordering integer ascending; ties rejected; non-dense values allowed; induced UUID sequence is semantic; integer stays in evidence, never child fields",
+    "record_sort_key": [
+      "parent_canonical_uuid",
+      "ordering",
+      "child_canonical_uuid"
+    ],
+    "induced_sequence_index": "zero_based_position_after_authored_ordering_sort",
+    "record_cardinality": "one complete qualified composition record per bound intent; no silently omitted dependency",
+    "record_qualification": "exact request ACC 1.3 SCF and binding resource key/digest plus exact ADC, Authoring and AI basis members from the same verified closure",
+    "integrity": "retain exact source_refs and content digests, induced_sequence_index, identity_disposition and all four true proof flags; integrity cannot replace semantic equality",
+    "minimal_roots": "child remains authoring_fragment candidate artifact; omit child root only after exact-subtree proof; parent remains root; no double counting",
+    "partial_composition": false,
+    "empty_compositions": "existing non-composition obligations remain; never automatic success",
+    "diagnostic_identity_before_uuid": "stable_unresolved_sentinel; request_key is integrity payload",
+    "runtime_execution": "not_implemented_not_advertised",
+    "protocol_1_5_composition_resolution": false,
+    "ACC_1_1_composition": "Unavailable: authoring_construction.composition.evidence_unavailable",
+    "diagnostics": [
+      {
+        "code": "authoring_construction.composition.relation_unknown",
+        "outcome": "Rejected",
+        "condition": "relation outside [contains], including composed_of"
+      },
+      {
+        "code": "authoring_construction.composition.binding_unavailable",
+        "outcome": "Unavailable",
+        "condition": "known relation and resolved types with no matching table row"
+      },
+      {
+        "code": "authoring_construction.composition.authority_inconsistent",
+        "outcome": "Unavailable",
+        "condition": "table schema invalid or exact AI/ADC policies disagree"
+      },
+      {
+        "code": "authoring_construction.composition.key_unbound",
+        "outcome": "Unavailable",
+        "condition": "non-empty fragment composition_keys"
+      },
+      {
+        "code": "authoring_construction.composition.endpoint_unresolved",
+        "outcome": "Unresolved",
+        "condition": "no request_key match and no request-visible reference identity match"
+      },
+      {
+        "code": "authoring_construction.composition.reference_not_definition",
+        "outcome": "Rejected",
+        "condition": "endpoint identifies a reference fragment/reference basis identity, or operation reference; reference is never copied as a definition"
+      },
+      {
+        "code": "authoring_construction.composition.endpoint_ambiguous",
+        "outcome": "Rejected",
+        "condition": "more than one fragment request_key match"
+      },
+      {
+        "code": "authoring_construction.composition.operation_unsupported",
+        "outcome": "Rejected",
+        "condition": "parent or child operation retire"
+      },
+      {
+        "code": "authoring_construction.composition.update_unavailable",
+        "outcome": "Unavailable",
+        "condition": "parent or child operation update"
+      },
+      {
+        "code": "authoring_construction.composition.cycle",
+        "outcome": "Rejected",
+        "condition": "self-containment or a containment cycle"
+      },
+      {
+        "code": "authoring_construction.composition.duplicate_membership",
+        "outcome": "Rejected",
+        "condition": "same parent-child pair repeated"
+      },
+      {
+        "code": "authoring_construction.composition.duplicate_identity",
+        "outcome": "Rejected",
+        "condition": "canonical UUID repeated or same child identity under multiple parents"
+      },
+      {
+        "code": "authoring_construction.composition.ordering_conflict",
+        "outcome": "Rejected",
+        "condition": "sibling children share an ordering integer"
+      },
+      {
+        "code": "authoring_construction.composition.ownership_conflict",
+        "outcome": "Rejected",
+        "condition": "prepared parent contains selected property, including [] or null"
+      },
+      {
+        "code": "authoring_construction.composition.child_mutation",
+        "outcome": "Rejected",
+        "condition": "embedded child differs in any non-identity field from prepared fields plus established id"
+      },
+      {
+        "code": "authoring_construction.composition.identity_mutation",
+        "outcome": "Rejected",
+        "condition": "embedded child id differs from established child candidate id"
+      },
+      {
+        "code": "authoring_construction.composition.containment_accounting",
+        "outcome": "Rejected",
+        "condition": "child root omitted without exact-subtree proof or retained as a root after proof"
+      },
+      {
+        "code": "authoring_construction.fragment.compact_unavailable",
+        "outcome": "Unavailable",
+        "condition": "parent or child compact input; missing transformation, not a semantic violation"
+      },
+      {
+        "code": "semantic_contract.exact_authority_mismatch",
+        "outcome": "Unavailable",
+        "condition": "wrong ACC family/version/SCF, modified binding, wrong digest or incomplete closure"
+      },
+      {
+        "code": "authoring_construction.authority.unavailable",
+        "outcome": "Unavailable",
+        "condition": "required exact authority missing or unqualified"
+      }
+    ],
+    "declaring_lifecycle_ownership": "selected_binding_and_independently_verified_AI_ownership_rule_and_sealed_containment_only; request_intent_is_not_proof"
+  },
+  "lifecycle": {
+    "authority": "architecture-interpretation/1.3/lifecycle-ownership",
+    "source": "exact_qualified_declaring_ADR_literal_status",
+    "root_mapping": {
+      "proposed": "proposed",
+      "accepted": "accepted",
+      "deprecated": "deprecated",
+      "superseded": "superseded"
+    },
+    "active_is_accepted": false,
+    "default": "forbidden",
+    "independent_approval_or_deployment": false,
+    "standalone_representation": "native_authoring_fragment_and_minimal_root_preserved",
+    "missing_qualified_lifecycle_provenance": "Unavailable",
+    "synthetic_owner_or_ADR": false,
+    "excluded": [
+      "entity/normative_proposition",
+      "entity/extension",
+      "relationship/*",
+      "value/*",
+      "unqualified_standalone_fragment"
+    ]
+  }
+}

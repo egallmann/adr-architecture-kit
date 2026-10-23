@@ -15,7 +15,7 @@ test("Node exposes exact ACC 1.2 authority without selecting it or advertising e
   const contract = getSemanticContract("authoring-construction", "1.2");
   assert.deepEqual(contract, canonical);
   assert.notEqual(contract.semanticContractFingerprint, getSemanticContract("authoring-construction", "1.1").semanticContractFingerprint);
-  assert.throws(() => getSemanticContract("authoring-construction", "1.3"));
+  assert.throws(() => getSemanticContract("authoring-construction", "1.4"));
   assert.equal((await verifySemanticContract(contract)).success, true);
   const resources = contract.resourceManifest.map((item) => ({
     canonicalResourceKey: item.canonicalResourceKey,

@@ -472,6 +472,9 @@ def load_semantic_resource(key: str) -> Any:
 
     parts = key.split("/")
     ai13 = len(parts) >= 3 and parts[:2] == ["architecture-interpretation", "1.3"]
+    acc13 = len(parts) >= 3 and parts[:2] == ["authoring-construction", "1.3"]
+    if key == "architecture-interpretation/1.3/contract":
+        return get_semantic_contract("architecture-interpretation", "1.3").to_wire()
     if len(parts) == 4 and parts[:3] == ["authoring", "1.7", "schema"]:
         filename = f"{parts[3]}.json"
         resource = resources.files("adr_kit.schema.authoring.v1_7").joinpath(filename)
@@ -479,17 +482,18 @@ def load_semantic_resource(key: str) -> Any:
             return json.loads(resource.read_text(encoding="utf-8"))
         raise LookupError(f"Bundled semantic resource is missing: {key}")
     if len(parts) < 3 or (
-        not ai13 and parts[1] not in {"1.0", "1.1", "1.2", "1.5", "1.6", "2.3", "2.4", "2.5"}
+        not (ai13 or acc13)
+        and parts[1] not in {"1.0", "1.1", "1.2", "1.5", "1.6", "2.3", "2.4", "2.5"}
     ):
         raise LookupError(f"Unsupported semantic resource: {key}")
-    if ai13 and key not in {
+    if (ai13 or acc13) and key not in {
         entry.canonical_resource_key
-        for entry in get_semantic_contract("architecture-interpretation", "1.3").resource_manifest
+        for entry in get_semantic_contract(parts[0], "1.3").resource_manifest
     }:
         raise LookupError(f"Bundled semantic resource is missing: {key}")
     package = resources.files("adr_kit.semantic_contract.v1_0.resources")
     candidates = [f"{key.replace('/', '-')}.json"]
-    if len(parts) == 3 and not ai13:
+    if len(parts) == 3 and not (ai13 or acc13):
         candidates.append(f"{parts[0]}-{parts[2]}.json")
     for name in candidates:
         resource = package.joinpath(name)

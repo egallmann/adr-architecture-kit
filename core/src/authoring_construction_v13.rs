@@ -151,7 +151,7 @@ fn definition_qualifies(
         == Some(true)
 }
 
-fn authority_qualifies(definition: &Json, resources: &[Json], nm_definition: &Json) -> bool {
+pub(crate) fn authority_qualifies(definition: &Json, resources: &[Json], nm_definition: &Json) -> bool {
     let expected = PROFILE.expected();
     if !definition_qualifies(
         definition,
@@ -459,4 +459,4 @@ pub(crate) fn verify(
 
 #[cfg(test)]
 #[path = "authoring_construction_v13_tests.rs"]
-mod tests;
+pub(crate) mod tests;

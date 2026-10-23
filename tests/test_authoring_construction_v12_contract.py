@@ -131,7 +131,7 @@ def test_exact_acc12_definition_and_complete_closure_verify_in_rust() -> None:
     assert exact.semantic_contract_fingerprint == contract["semanticContractFingerprint"]
     assert exact != get_semantic_contract("authoring-construction", "1.1")
     with pytest.raises(LookupError):
-        get_semantic_contract("authoring-construction", "1.3")
+        get_semantic_contract("authoring-construction", "1.4")
     resources = _resources()
     result = validate_semantic_resource_closure(contract, resources)
     assert result.success and result.closure_valid

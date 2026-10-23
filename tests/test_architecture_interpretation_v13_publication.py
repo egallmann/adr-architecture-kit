@@ -1050,7 +1050,7 @@ def test_exact_discovery_and_byte_identical_package_mirrors() -> None:
     with pytest.raises(LookupError):
         load_semantic_resource("architecture-interpretation/1.3/lifecycle/ownership")
     with pytest.raises(LookupError):
-        get_semantic_contract("authoring-construction", "1.3")
+        get_semantic_contract("authoring-construction", "1.4")
 
 
 def test_successor_only_generation_deterministic_and_historical_bytes_unchanged() -> None:

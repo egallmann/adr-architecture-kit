@@ -1,0 +1,53 @@
+{
+  "resource": "architecture-interpretation/1.3/contextual-facts",
+  "semanticDependencies": [
+    "architecture-interpretation/1.3/contextual-facts.schema",
+    "architecture-interpretation/1.3/lifecycle-provenance.schema",
+    "architecture-interpretation/1.3/lifecycle-ownership",
+    "normalized-model/2.5/schema/normalized-architecture-model.schema",
+    "normalized-model/2.5/schema/normalized-entity-registry.schema",
+    "normalized-model/2.5/schema/normalized-entity.schema",
+    "normalized-model/2.5/schema/relationship-record.schema",
+    "normalized-model/2.5/schema/relationship-registry.schema",
+    "normalized-model/2.5/schema/unresolved-registry.schema"
+  ],
+  "authored_field_inventory": "separate_not_an_authored_child_field_or_sixth_disposition_class",
+  "facts": [
+    {
+      "semantic_field_key": "context/declaring_adr_lifecycle#",
+      "semantic_identity": "normalized_child_canonical_UUIDv7",
+      "normalized_carrier": "/metadata/ai_lifecycle_provenance",
+      "carrier_schema": "architecture-interpretation/1.3/lifecycle-provenance.schema",
+      "first_class_value_destination": "/lifecycle_stage",
+      "source_of_truth": "independently_qualified_declaring_ADR_status_and_schema_ownership_from_sealed_basis",
+      "semantic_equality_fields": [
+        "declaring_adr_id",
+        "declaring_adr_semantic_type",
+        "status_semantic_field_key",
+        "ownership_rule.rule_id"
+      ],
+      "rule_meaning": "same_exact_qualified_AI_authority_and_ownership_rule_no_inferred_cross_version_equivalence",
+      "first_class_value": "compared_once_as_complete_literal_lifecycle_value_not_copied_into_carrier",
+      "qualification_fields": [
+        "status_source_authority",
+        "ownership_rule.family",
+        "ownership_rule.version",
+        "ownership_rule.semantic_contract_fingerprint",
+        "ownership_rule.canonical_resource_key",
+        "ownership_rule.content_digest"
+      ],
+      "qualification_rule": "independently_verify_exact_resource_identity_digest_selector_and_rule_against_selected_closure",
+      "missing_additional_changed_ambiguous_semantics": "semantic_mismatch",
+      "integrity_not_semantic_identity": [
+        "source_pointer",
+        "file_path",
+        "array_position",
+        "traversal_order",
+        "resource_digest",
+        "source_ref",
+        "replay_copy"
+      ],
+      "carrier_assertions_alone": "insufficient_proof_of_ownership_or_lifecycle"
+    }
+  ]
+}

@@ -1,0 +1,831 @@
+{
+  "resource": "architecture-interpretation/1.3/lifecycle-ownership",
+  "source_contract": "authoring@1.7",
+  "output_contract": "normalized-model@2.5",
+  "output_authority": {
+    "family": "normalized-model",
+    "version": "2.5",
+    "semantic_contract_fingerprint": "scf:v1:sha256:bb48720502668e434d378445004aec7783346a0e74254c9e0d3cb01a8798d9d7"
+  },
+  "semanticDependencies": [
+    "architecture-interpretation/1.3/lifecycle-ownership.schema",
+    "authoring/1.7/schema/adr-common.schema",
+    "authoring/1.7/schema/adr-logical.schema",
+    "authoring/1.7/schema/adr-physical-base.schema",
+    "authoring/1.7/schema/adr-physical-component.schema",
+    "authoring/1.7/schema/adr-physical-system.schema",
+    "authoring/1.7/schema/types.schema",
+    "normalized-model/2.5/conformance",
+    "normalized-model/2.5/schema/normalized-architecture-model.schema",
+    "normalized-model/2.5/schema/normalized-entity-registry.schema",
+    "normalized-model/2.5/schema/normalized-entity.schema",
+    "normalized-model/2.5/schema/relationship-record.schema",
+    "normalized-model/2.5/schema/relationship-registry.schema",
+    "normalized-model/2.5/schema/unresolved-registry.schema"
+  ],
+  "rules": {
+    "lifecycle": "literal_declaring_adr_status",
+    "qualification_basis": "independently_verified_sealed_minimal_source_roots",
+    "owner_identity": "declaring_ADR_canonical_UUIDv7_from_id",
+    "reference_only": "never_a_definition_or_declaring_owner",
+    "wildcard_meaning": "schema_items_only_not_runtime_identity_or_order",
+    "missing_lifecycle_provenance": "Unavailable",
+    "ambiguous_or_competing_established_ownership": "Rejected",
+    "unqualified_rule_or_authority": "Unavailable",
+    "unresolved_dependency": "Unresolved_only_if_governed_resolution_established_it",
+    "partial_interpretation": "never_a_complete_qualified_result",
+    "precedence": [
+      "Rejected",
+      "Unavailable",
+      "Unresolved"
+    ],
+    "not_implied": [
+      "implementation",
+      "deployment",
+      "operation",
+      "effectivity",
+      "admission",
+      "independent_child_approval"
+    ],
+    "excluded": [
+      "entity/normative_proposition",
+      "entity/extension",
+      "relationship/*",
+      "value/*",
+      "unqualified_standalone_fragment"
+    ],
+    "forbidden_owner_derivation": [
+      "filename",
+      "path",
+      "source_pointer",
+      "array_index",
+      "traversal_order",
+      "root_position",
+      "request_key",
+      "reference"
+    ],
+    "source_bytes": "unchanged",
+    "canonical_identities": "preserved_no_new_identity",
+    "additional_composition_bindings": false
+  },
+  "rows": [
+    {
+      "rule_id": "declaring-lifecycle.adr-logical.architectural_boundaries",
+      "declaring_adr_semantic_type": "adr/logical",
+      "parent_semantic_type": "adr/logical",
+      "child_semantic_type": "entity/boundary",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": ""
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/boundary"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+          "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+          "schema_pointer": "/properties/architectural_boundaries/items"
+        }
+      ],
+      "source_instance_pattern": "/architectural_boundaries/*",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/logical#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "not_applicable"
+    },
+    {
+      "rule_id": "declaring-lifecycle.adr-logical.capabilities",
+      "declaring_adr_semantic_type": "adr/logical",
+      "parent_semantic_type": "adr/logical",
+      "child_semantic_type": "entity/capability",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": ""
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/capability"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+          "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+          "schema_pointer": "/properties/capabilities/items"
+        }
+      ],
+      "source_instance_pattern": "/capabilities/*",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/logical#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "not_applicable"
+    },
+    {
+      "rule_id": "declaring-lifecycle.adr-logical.contracts",
+      "declaring_adr_semantic_type": "adr/logical",
+      "parent_semantic_type": "adr/logical",
+      "child_semantic_type": "entity/contract",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": ""
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/contract"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+          "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+          "schema_pointer": "/properties/contracts/items"
+        }
+      ],
+      "source_instance_pattern": "/contracts/*",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/logical#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "not_applicable"
+    },
+    {
+      "rule_id": "declaring-lifecycle.adr-logical.decisions",
+      "declaring_adr_semantic_type": "adr/logical",
+      "parent_semantic_type": "adr/logical",
+      "child_semantic_type": "entity/decision",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": ""
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/decision"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+          "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+          "schema_pointer": "/properties/decisions/items"
+        }
+      ],
+      "source_instance_pattern": "/decisions/*",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/logical#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "not_applicable"
+    },
+    {
+      "rule_id": "declaring-lifecycle.adr-logical.evidence_expectations",
+      "declaring_adr_semantic_type": "adr/logical",
+      "parent_semantic_type": "adr/logical",
+      "child_semantic_type": "entity/evidence_expectation",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": ""
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/evidence_expectation"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+          "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+          "schema_pointer": "/properties/evidence_expectations/items"
+        }
+      ],
+      "source_instance_pattern": "/evidence_expectations/*",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/logical#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "not_applicable"
+    },
+    {
+      "rule_id": "declaring-lifecycle.adr-logical.gaps",
+      "declaring_adr_semantic_type": "adr/logical",
+      "parent_semantic_type": "adr/logical",
+      "child_semantic_type": "entity/gap",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": ""
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/gap"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+          "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+          "schema_pointer": "/properties/gaps/items"
+        }
+      ],
+      "source_instance_pattern": "/gaps/*",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/logical#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "not_applicable"
+    },
+    {
+      "rule_id": "declaring-lifecycle.adr-logical.invariants",
+      "declaring_adr_semantic_type": "adr/logical",
+      "parent_semantic_type": "adr/logical",
+      "child_semantic_type": "entity/invariant",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": ""
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/invariant"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+          "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+          "schema_pointer": "/properties/invariants/items"
+        }
+      ],
+      "source_instance_pattern": "/invariants/*",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/logical#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "not_applicable"
+    },
+    {
+      "rule_id": "declaring-lifecycle.adr-physical-component.component_specifications",
+      "declaring_adr_semantic_type": "adr/physical-component",
+      "parent_semantic_type": "adr/physical-component",
+      "child_semantic_type": "entity/component",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+        "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+        "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+        "schema_pointer": ""
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/component"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+          "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+          "schema_pointer": "/properties/component_specifications/items"
+        }
+      ],
+      "source_instance_pattern": "/component_specifications/*",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/physical-component#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+        "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "not_applicable"
+    },
+    {
+      "rule_id": "declaring-lifecycle.adr-physical-component.component_specifications.interfaces",
+      "declaring_adr_semantic_type": "adr/physical-component",
+      "parent_semantic_type": "entity/component",
+      "child_semantic_type": "entity/interface",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+        "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/component"
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/interface"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+          "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+          "schema_pointer": "/properties/component_specifications/items"
+        },
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/component/properties/interfaces/items"
+        }
+      ],
+      "source_instance_pattern": "/component_specifications/*/interfaces/*",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/physical-component#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+        "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "not_applicable"
+    },
+    {
+      "rule_id": "declaring-lifecycle.adr-physical-component.evidence_expectations",
+      "declaring_adr_semantic_type": "adr/physical-component",
+      "parent_semantic_type": "adr/physical-component",
+      "child_semantic_type": "entity/evidence_expectation",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+        "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+        "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+        "schema_pointer": ""
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/evidence_expectation"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+          "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+          "schema_pointer": "/properties/evidence_expectations/items"
+        }
+      ],
+      "source_instance_pattern": "/evidence_expectations/*",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/physical-component#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+        "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "not_applicable"
+    },
+    {
+      "rule_id": "declaring-lifecycle.adr-physical-component.gaps",
+      "declaring_adr_semantic_type": "adr/physical-component",
+      "parent_semantic_type": "adr/physical-component",
+      "child_semantic_type": "entity/gap",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+        "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+        "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+        "schema_pointer": ""
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/gap"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+          "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+          "schema_pointer": "/properties/gaps/items"
+        }
+      ],
+      "source_instance_pattern": "/gaps/*",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/physical-component#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+        "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "not_applicable"
+    },
+    {
+      "rule_id": "declaring-lifecycle.adr-physical-component.implementation_decisions",
+      "declaring_adr_semantic_type": "adr/physical-component",
+      "parent_semantic_type": "adr/physical-component",
+      "child_semantic_type": "entity/implementation_decision",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+        "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+        "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+        "schema_pointer": ""
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/implementation_decision"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+          "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+          "schema_pointer": "/properties/implementation_decisions/items"
+        }
+      ],
+      "source_instance_pattern": "/implementation_decisions/*",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/physical-component#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+        "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "not_applicable"
+    },
+    {
+      "rule_id": "declaring-lifecycle.adr-physical-system.data_flows",
+      "declaring_adr_semantic_type": "adr/physical-system",
+      "parent_semantic_type": "adr/physical-system",
+      "child_semantic_type": "entity/data_flow",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+        "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+        "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+        "schema_pointer": ""
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/data_flow"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/data_flows/items"
+        }
+      ],
+      "source_instance_pattern": "/data_flows/*",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/physical-system#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+        "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "not_applicable"
+    },
+    {
+      "rule_id": "declaring-lifecycle.adr-physical-system.evidence_expectations",
+      "declaring_adr_semantic_type": "adr/physical-system",
+      "parent_semantic_type": "adr/physical-system",
+      "child_semantic_type": "entity/evidence_expectation",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+        "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+        "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+        "schema_pointer": ""
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/evidence_expectation"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/evidence_expectations/items"
+        }
+      ],
+      "source_instance_pattern": "/evidence_expectations/*",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/physical-system#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+        "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "not_applicable"
+    },
+    {
+      "rule_id": "declaring-lifecycle.adr-physical-system.gaps",
+      "declaring_adr_semantic_type": "adr/physical-system",
+      "parent_semantic_type": "adr/physical-system",
+      "child_semantic_type": "entity/gap",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+        "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+        "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+        "schema_pointer": ""
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/gap"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/gaps/items"
+        }
+      ],
+      "source_instance_pattern": "/gaps/*",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/physical-system#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+        "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "not_applicable"
+    },
+    {
+      "rule_id": "declaring-lifecycle.adr-physical-system.system",
+      "declaring_adr_semantic_type": "adr/physical-system",
+      "parent_semantic_type": "adr/physical-system",
+      "child_semantic_type": "entity/system",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+        "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+        "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+        "schema_pointer": ""
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/system"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/system"
+        }
+      ],
+      "source_instance_pattern": "/system",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/physical-system#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+        "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "reuse_existing_semantic_unit_if_same_canonical_identity"
+    },
+    {
+      "rule_id": "declaring-lifecycle.adr-physical-system.system_boundaries",
+      "declaring_adr_semantic_type": "adr/physical-system",
+      "parent_semantic_type": "adr/physical-system",
+      "child_semantic_type": "entity/system_boundary",
+      "source_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+        "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+        "schema_pointer": ""
+      },
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+        "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+        "schema_pointer": ""
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+        "schema_pointer": "/definitions/system_boundary"
+      },
+      "ownership_schema_path": [
+        {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/system_boundaries/items"
+        }
+      ],
+      "source_instance_pattern": "/system_boundaries/*",
+      "declaring_adr_identity_selector": "/id",
+      "parent_identity_selector": "/id",
+      "child_identity_selector": "/id",
+      "status_semantic_field_key": "adr/physical-system#/status",
+      "status_source_authority": {
+        "family": "authoring",
+        "version": "1.7",
+        "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+        "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+        "schema_pointer": "/properties/status"
+      },
+      "governing_rule": "literal_declaring_adr_status",
+      "value_destination": "/lifecycle_stage",
+      "canonical_identity": "preserve_established_uuidv7",
+      "shared_system_descriptor": "not_applicable"
+    }
+  ],
+  "destination_schema": {
+    "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+    "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+    "schema_pointer": "/oneOf/0/properties/lifecycle_stage"
+  }
+}

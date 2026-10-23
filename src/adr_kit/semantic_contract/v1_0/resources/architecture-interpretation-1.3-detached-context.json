@@ -8,7 +8,7 @@
   "derivation": {
     "basis_digest": "exact sealed candidate_source_basis digest, lower-case hex without prefix in URI",
     "source_ref_digest": "SHA-256 of exact UTF-8 source_ref bytes, lower-case hex",
-    "contract_identity": "exact AI 1.2 and NM 2.4 identities participate in context qualification but not locator derivation"
+    "contract_identity": "exact AI 1.3 and NM 2.5 identities participate in context qualification but not locator derivation"
   },
   "identity_distinctions": {
     "canonical_source_identity": "semantic identity from UUIDv7 or governed owner-local identity",

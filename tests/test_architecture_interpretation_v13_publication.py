@@ -30,7 +30,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CANONICAL = ROOT / "contracts/architecture-interpretation/v1.3"
 ASSETS = ROOT / "contracts/semantic-contract/v1.0"
 BUNDLED = ROOT / "src/adr_kit/semantic_contract/v1_0"
-EXPECTED_SCF = "scf:v1:sha256:f0877812637f3b256451a0292a9c461b8a538a5ed29b10808b73fe1b5673aff9"
+EXPECTED_SCF = "scf:v1:sha256:d4a60e843c3069cfd7eb869a4d924d3a70bf900079d3a2ad86ae28884c6ac167"
 UUID = "019109a0-b1c2-7def-8a00-112233445566"
 HISTORICAL_SHA256: dict[str, str] = {
     "contracts/architecture-interpretation/v1.1/contract.json": "cd247ae436f1154cc20884c56709cb8d7fec28047edccf15c198e66c5ee104a5",
@@ -734,6 +734,21 @@ def test_exact_selector_coverage_and_nested_interface_owner() -> None:
     assert all(row["declaring_adr_identity_selector"] == "/id" for row in expected)
 
 
+def test_successor_semantic_extensions_and_context_select_successor_authority() -> None:
+    rules = read(CANONICAL / "resources/rules.json")
+    assert rules["semantic_extensions"]["carrier"]["contract_family"] == "normalized-model"
+    assert rules["semantic_extensions"]["carrier"]["contract_version"] == "2.5"
+    assert (
+        rules["semantic_extensions"]["meaning_authority"]["contract_family"]
+        == "architecture-interpretation"
+    )
+    assert rules["semantic_extensions"]["meaning_authority"]["contract_version"] == "1.3"
+    context = read(CANONICAL / "resources/detached-context.json")
+    assert context["derivation"]["contract_identity"] == (
+        "exact AI 1.3 and NM 2.5 identities participate in context qualification but not locator derivation"
+    )
+
+
 @pytest.mark.parametrize("index", range(17))
 def test_closed_carrier_schema_accepts_each_qualified_rule_shape(index: int) -> None:
     schema = read(CANONICAL / "resources/lifecycle-provenance.schema.json")
@@ -819,6 +834,9 @@ def test_schema_valid_carrier_is_not_runtime_ownership_or_digest_proof() -> None
         "nonliteral_status",
         "root_source_authority",
         "root_output_authority",
+        "stale_extension_carrier",
+        "stale_extension_authority",
+        "stale_context_qualification",
         "changed_disposition",
         "unknown_destination",
         "missing_carrier_property",
@@ -845,6 +863,19 @@ def test_publication_faults_prevent_qualification(candidate: Path, fault: str) -
         value["rows"][0]["status_semantic_field_key"] = "adr/logical#/title"
     elif fault == "wrong_destination":
         value["destination_schema"]["schema_pointer"] = "/oneOf/1"
+    elif fault in {"stale_extension_carrier", "stale_extension_authority"}:
+        name = "rules"
+        value = read(base / (name + ".json"))
+        field = "carrier" if fault == "stale_extension_carrier" else "meaning_authority"
+        value["semantic_extensions"][field]["contract_version"] = (
+            "2.4" if field == "carrier" else "1.2"
+        )
+    elif fault == "stale_context_qualification":
+        name = "detached-context"
+        value = read(base / (name + ".json"))
+        value["derivation"][
+            "contract_identity"
+        ] = "exact AI 1.2 and NM 2.4 identities participate in context qualification but not locator derivation"
     elif fault in {"missing_fact", "extra_fact", "wrong_context_identity"}:
         name = "contextual-facts"
         value = read(base / (name + ".json"))

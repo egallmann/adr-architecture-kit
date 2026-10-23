@@ -41,13 +41,25 @@ def retarget_ai12(value: Any) -> Any:
     if isinstance(value, list):
         return [retarget_ai12(child) for child in value]
     if isinstance(value, dict):
-        return {key: retarget_ai12(child) for key, child in value.items()}
+        result = {key: retarget_ai12(child) for key, child in value.items()}
+        if (
+            value.get("contract_family") == "normalized-model"
+            and value.get("contract_version") == "2.4"
+        ):
+            result["contract_version"] = "2.5"
+        if (
+            value.get("contract_family") == "architecture-interpretation"
+            and value.get("contract_version") == "1.2"
+        ):
+            result["contract_version"] = "1.3"
+        return result
     if isinstance(value, str):
         for old, new in (
             ("architecture-interpretation/1.2", "architecture-interpretation/1.3"),
             ("architecture-interpretation@1.2", "architecture-interpretation@1.3"),
             ("Architecture Interpretation 1.2", "Architecture Interpretation 1.3"),
             ("Interpretation 1.2", "Interpretation 1.3"),
+            ("AI 1.2 and NM 2.4", "AI 1.3 and NM 2.5"),
             ("/v1.2/", "/v1.3/"),
             ("normalized-model/2.4", "normalized-model/2.5"),
             ("normalized-model@2.4", "normalized-model@2.5"),

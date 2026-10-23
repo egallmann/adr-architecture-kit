@@ -6,7 +6,7 @@ import { getSemanticContract, listSemanticContracts, loadSemanticResource, verif
 
 test("AI 1.3 exact publication is available without selection or execution", async () => {
   const definition = getSemanticContract("architecture-interpretation", "1.3");
-  assert.equal(definition.semanticContractFingerprint, "scf:v1:sha256:f0877812637f3b256451a0292a9c461b8a538a5ed29b10808b73fe1b5673aff9");
+  assert.equal(definition.semanticContractFingerprint, "scf:v1:sha256:d4a60e843c3069cfd7eb869a4d924d3a70bf900079d3a2ad86ae28884c6ac167");
   assert.equal(definition.resourceManifest.length, 52);
   assert.deepEqual(definition.frozenNormativeConformanceResources, ["architecture-interpretation/1.3/conformance"]);
   const keys = definition.resourceManifest.map((entry) => entry.canonicalResourceKey);

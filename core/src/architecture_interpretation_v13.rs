@@ -625,14 +625,13 @@ pub(crate) fn interpret(
     supplied: &SealResult,
 ) -> Projection {
     let mut result = Projection::new();
-    let authority = match Authority::qualify(definition, resources, nm_definition) {
-        Ok(a) => a,
-        Err(e) => {
-            result.issue(Status::Unavailable, "authority", e);
-            return result.finish();
-        }
-    };
-    result.authority_qualified = true;
+    let qualification = Authority::qualify(definition, resources, nm_definition);
+    result.authority_qualified = qualification.is_ok();
+    if let Err(e) = &qualification {
+        result.issue(Status::Unavailable, "authority", e.clone());
+    }
+    // Preserve independently discoverable predecessor violations even when
+    // AI catalog execution is blocked. Neither result can authorize the other.
     let verified = acc::verify(
         definition,
         resources,
@@ -673,6 +672,10 @@ pub(crate) fn interpret(
         }
         return result.finish();
     }
+    let authority = match qualification {
+        Ok(a) => a,
+        Err(_) => return result.finish(),
+    };
     let evidence = verified.evidence.as_ref().unwrap();
     let mut identities = BTreeSet::new();
     let mut owners = BTreeMap::new();

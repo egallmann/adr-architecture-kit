@@ -98,6 +98,14 @@ fn failed(r: &Projection) {
     assert_eq!(r.complete_interpretation, Status::Unavailable);
 }
 
+fn replace(root: &mut Json, path: &[&str], value: Json) {
+    let mut node = root;
+    for key in path {
+        node = node.as_object_mut().unwrap().get_mut(*key).unwrap();
+    }
+    *node = value;
+}
+
 #[test]
 fn exact_authority_substitution_missing_and_corrupt_resources_fail_closed() {
     let input = request(1);
@@ -161,7 +169,7 @@ fn independent_projection_verification_rejects_mutated_meaning_and_provenance() 
     let seal = run(&input);
     let good = qualify(&input, &seal);
     assert_eq!(good.status, Status::DispositionsQualified, "{good:#?}");
-    for mutation in 0..10 {
+    for mutation in 0..17 {
         let mut forged = good.clone();
         let child = forged
             .units
@@ -217,9 +225,39 @@ fn independent_projection_verification_rejects_mutated_meaning_and_provenance() 
                 child.coverage.clear();
             }
             8 => {}
-            _ => {
+            9 => {
                 forged.complete_interpretation = Status::DispositionsQualified;
             }
+            10 => replace(
+                child.lifecycle_provenance.as_mut().unwrap(),
+                &["ownership_rule", "rule_id"],
+                string("declaring-lifecycle.adr-logical.capabilities"),
+            ),
+            11 => replace(
+                child.lifecycle_provenance.as_mut().unwrap(),
+                &["ownership_rule", "semantic_contract_fingerprint"],
+                string(Profile::Acc12.expected().ai_scf),
+            ),
+            12 => replace(
+                child.lifecycle_provenance.as_mut().unwrap(),
+                &["status_source_authority", "schema_pointer"],
+                string("/properties/id"),
+            ),
+            13 => {
+                child.contextual_fact.as_mut().unwrap().semantic_identity =
+                    "01900000-0000-7000-8000-000000000099".into();
+            }
+            14 => replace(
+                &mut child.coverage[0].disposition,
+                &["disposition"],
+                string("deterministic_ceremony"),
+            ),
+            15 => replace(
+                &mut child.source_qualification,
+                &["content_digest"],
+                string("sha256:invalid"),
+            ),
+            _ => {}
         }
         if mutation == 8 {
             let duplicate = forged
@@ -229,6 +267,19 @@ fn independent_projection_verification_rejects_mutated_meaning_and_provenance() 
                 .unwrap()
                 .clone();
             forged.units.push(duplicate);
+        }
+        if mutation == 16 {
+            forged
+                .units
+                .iter_mut()
+                .find(|u| u.semantic_type == "adr/logical")
+                .unwrap()
+                .semantic_extensions
+                .get_mut("adr/logical#/decisions")
+                .unwrap()
+                .as_array_mut()
+                .unwrap()
+                .reverse();
         }
         let r = verify_projection(
             &bundle().0,
@@ -425,6 +476,33 @@ fn complete_structured_child_values_and_authored_membership_are_preserved() {
         .unwrap()
         .iter()
         .all(|id| id.as_str().is_some()));
+    let mut forged = r.clone();
+    let child = forged
+        .units
+        .iter_mut()
+        .find(|u| {
+            u.id == input["request"]["fragments"][1]["fields"]["id"]
+                .as_str()
+                .unwrap()
+        })
+        .unwrap();
+    replace(
+        child
+            .semantic_extensions
+            .get_mut("entity/decision#/consequences")
+            .unwrap(),
+        &["positive"],
+        j(&json!(["a", "z", "z"])),
+    );
+    failed(&verify_projection(
+        &bundle().0,
+        &bundle().1,
+        &bundle().2,
+        &j(&input),
+        &refs(&input),
+        &seal,
+        &forged,
+    ));
 }
 
 #[test]

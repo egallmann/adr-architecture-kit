@@ -543,7 +543,25 @@ def validator(name: str = "schema", fragment: str = "") -> Draft202012Validator:
     documents: dict[str, Resource[Any]] = {}
     for entry in bundle():
         value = entry["content"]
-        if isinstance(value, dict) and "json-schema.org/" in value.get("$schema", ""):
+        if (
+            isinstance(value, dict)
+            and "$schema" in value
+            and value["$schema"]
+            not in {
+                "http://json-schema.org/draft-07/schema#",
+                "https://json-schema.org/draft/2020-12/schema",
+            }
+        ):
+            # These are ordinary contract instances, not JSON Schema documents.
+            assert (
+                entry["canonicalResourceKey"]
+                in {"authoring-domain/1.1/contract", "custom-entity/1.0/contract"}
+                and value["$schema"] == "./schema.json"
+            )
+        if isinstance(value, dict) and value.get("$schema") in {
+            "http://json-schema.org/draft-07/schema#",
+            "https://json-schema.org/draft/2020-12/schema",
+        }:
             resource = Resource.from_contents(value)
             if "$id" in value:
                 documents[value["$id"]] = resource

@@ -46,6 +46,22 @@ producer mechanics take an explicit closed profile. Private receipts commit to
 that profile, the verified definition, original request, established identities
 and identity dispositions. Cross-version receipt reuse fails closed.
 
+Reusable predecessor primitives have explicit, bounded roles:
+
+- `candidate_source` remains the native Authoring serializer, artifact verifier,
+  minimal-root primitive and sole basis descriptor/sealer.
+- The basis-v1.1 UUID predicate, exact resource-set checks, qualified-reference
+  resolver and basis-to-JSON projection operate on explicitly supplied inputs.
+  Successor callers qualify those inputs against the successor closure first.
+- `authoring-construction/1.1/schema` supplies the unchanged resolved-reference
+  shape as an explicit ACC 1.3 manifest dependency. It does not select ACC 1.1
+  execution.
+- The historical interpreter's source/output-context structs are data carriers
+  only. No AI 1.1 interpretation function is invoked.
+
+Version-dependent binding, disposition, record-schema and detached-context
+selection always use the verified profile's exact keys.
+
 ## Producer and verifier
 
 `authoring_construction_v13::prepare` accepts ACC definition/resources, the NM

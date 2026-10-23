@@ -800,7 +800,7 @@
           ],
           "properties": {
             "algorithm": {
-              "const": "authoring-construction/1.1/complete-semantic-ledger-equality"
+              "const": "authoring-construction/1.3/complete-semantic-ledger-equality"
             },
             "status": {
               "enum": [

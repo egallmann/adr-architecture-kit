@@ -31,7 +31,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / "contracts/authoring-construction/v1.3"
 ASSETS = ROOT / "contracts/semantic-contract/v1.0"
 PACKAGE = ROOT / "src/adr_kit/semantic_contract/v1_0"
-SCF = "scf:v1:sha256:e809df8b4c13da7db8afd5513af31329222b488fcbd1590d1a25246aaf64f96a"
+SCF = "scf:v1:sha256:5828fe0c3b1692240726152f57ca6de037a1e07f38bb8f9ecda223af105d1b49"
 UUID = "01900000-0000-7000-8000-000000000002"
 HISTORICAL_GIT_BLOBS: dict[str, str] = {
     "contracts/architecture-interpretation/v1.1/contract.json": "a2686672169c7d8b4abea313f2871aea222bab0a",
@@ -887,6 +887,13 @@ def test_contextual_mismatch_oracle_is_not_a_runtime_comparator() -> None:
     rules = read(BASE / "resources/rules.json")
     assert rules["equivalence"]["fingerprint_or_count_substitution_for_ledger_equality"] is False
     assert rules["equivalence"]["provenance_substitution_for_missing_semantics"] is False
+    assert (
+        rules["equivalence"]["algorithm_id"]
+        == publication.PREFIX + "complete-semantic-ledger-equality"
+    )
+    assert read(BASE / "schema.json")["$defs"]["construction_qualification"]["properties"][
+        "comparison"
+    ]["properties"]["algorithm"] == {"const": rules["equivalence"]["algorithm_id"]}
     assert rules["lifecycle"]["missing_qualified_lifecycle_provenance"] == "Unavailable"
     assert rules["outcomes"]["precedence"] == [
         "Rejected",

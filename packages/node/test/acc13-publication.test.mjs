@@ -6,7 +6,7 @@ import { getSemanticContract, loadSemanticResource, listSemanticContracts, verif
 
 test("ACC 1.3 is an exact immutable publication without runtime construction selection", async () => {
   const d = getSemanticContract("authoring-construction", "1.3");
-  assert.equal(d.semanticContractFingerprint, "scf:v1:sha256:e809df8b4c13da7db8afd5513af31329222b488fcbd1590d1a25246aaf64f96a");
+  assert.equal(d.semanticContractFingerprint, "scf:v1:sha256:5828fe0c3b1692240726152f57ca6de037a1e07f38bb8f9ecda223af105d1b49");
   assert.equal(d.resourceManifest.length, 94);
   assert.deepEqual(d.frozenNormativeConformanceResources, ["authoring-construction/1.3/conformance"]);
   assert.equal((await verifySemanticContract(d)).success, true);

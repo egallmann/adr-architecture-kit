@@ -358,6 +358,9 @@ def schema(root: Path) -> dict[str, Any]:
     }
     for name in ("expected_ledger", "observed_ledger"):
         cq[name] = {"$ref": "ledger.schema.json"}
+    cq["comparison"]["properties"]["algorithm"] = {
+        "const": PREFIX + "complete-semantic-ledger-equality"
+    }
     return cast(dict[str, Any], value)
 
 
@@ -377,6 +380,7 @@ def successor_resources(root: Path = ROOT) -> dict[str, Any]:
     rules["normalized_result"]["contract"]["version"] = "2.5"
     rules["compatibility"]["historical_contract"] = "authoring-construction/1.2"
     rules["ledger"]["schema"] = PREFIX + "ledger.schema"
+    rules["equivalence"]["algorithm_id"] = PREFIX + "complete-semantic-ledger-equality"
     rules["semanticDependencies"] = sorted(
         set(
             rules["semanticDependencies"]

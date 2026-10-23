@@ -3030,7 +3030,6 @@ def main() -> None:
     # by the dedicated semantic-core v1.1 vectors.
 
 
-
 def publish_normalized_model_25() -> None:
     """Publish only NM 2.5, without historical regeneration or SCS production."""
     schema_names = (
@@ -3072,9 +3071,92 @@ def publish_normalized_model_25() -> None:
         write_json(path, successor)
 
 
+def publish_architecture_interpretation_13() -> None:
+    """Publish only AI 1.3 after schema, ownership and enum-domain qualification."""
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from scripts.qualify_ai13_publication import RESOURCE_NAMES, qualify_publication
+
+    qualify_publication(ROOT)
+    prefix = "architecture-interpretation/1.3/"
+    source = ROOT / "contracts" / "architecture-interpretation" / "v1.3"
+    own = {
+        prefix + name: read_json(source / "resources" / f"{name}.json") for name in RESOURCE_NAMES
+    }
+    historical_roles: dict[str, str] = {}
+    for path in (
+        ROOT / "contracts" / "architecture-interpretation" / "v1.2" / "contract.json",
+        CANONICAL / "definitions" / "normalized-model-2.5.json",
+    ):
+        historical_roles.update(
+            {
+                entry["canonicalResourceKey"]: entry["role"]
+                for entry in read_json(path)["resourceManifest"]
+            }
+        )
+    contents: dict[str, Any] = {}
+    pending = set(own)
+    while pending:
+        key = min(pending)
+        pending.remove(key)
+        value = own[key] if key in own else resource_value(key)
+        contents[key] = value
+        pending.update(discovered_dependencies(key, value) - contents.keys())
+    manifest = []
+    for key in sorted(contents):
+        if key.startswith(prefix):
+            name = key.removeprefix(prefix)
+            role = (
+                "interpretation-conformance"
+                if name == "conformance"
+                else (
+                    "source-contract-schema"
+                    if name.endswith(".schema")
+                    else (
+                        "source-contract-mapping"
+                        if name.startswith(("source-mapping", "field-dispositions-"))
+                        else "interpretation-rule"
+                    )
+                )
+            )
+        else:
+            role = historical_roles[key]
+        manifest.append(
+            {
+                "canonicalResourceKey": key,
+                "contentDigest": digest(contents[key]),
+                "role": role,
+                "dependencies": [
+                    {
+                        "canonicalResourceKey": dependency,
+                        "contentDigest": digest(contents[dependency]),
+                    }
+                    for dependency in sorted(discovered_dependencies(key, contents[key]))
+                ],
+            }
+        )
+    successor = definition(
+        "architecture-interpretation", manifest, [prefix + "conformance"], version="1.3"
+    )
+    for name in RESOURCE_NAMES:
+        data = (source / "resources" / f"{name}.json").read_bytes()
+        filename = f"architecture-interpretation-1.3-{name}.json"
+        (RESOURCES / filename).write_bytes(data)
+        (BUNDLED / "resources" / filename).write_bytes(data)
+    for path in (
+        source / "contract.json",
+        CANONICAL / "definitions" / "architecture-interpretation-1.3.json",
+        BUNDLED / "definitions" / "architecture-interpretation-1.3.json",
+        BUNDLED / "architecture-interpretation-1.3.json",
+    ):
+        write_json(path, successor)
+
+
 if __name__ == "__main__":
     if sys.argv[1:] == ["--publish-nm25-only"]:
         publish_normalized_model_25()
+    elif sys.argv[1:] == ["--publish-ai13-only"]:
+        publish_architecture_interpretation_13()
     elif sys.argv[1:]:
         raise SystemExit("Unsupported generator mode")
     else:

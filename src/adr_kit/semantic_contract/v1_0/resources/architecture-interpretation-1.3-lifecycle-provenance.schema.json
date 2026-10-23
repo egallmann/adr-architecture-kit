@@ -1,0 +1,552 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/semantic-contract/resources/architecture-interpretation/1.3/lifecycle-provenance.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "declaring_adr_id",
+    "declaring_adr_semantic_type",
+    "status_semantic_field_key",
+    "status_source_authority",
+    "ownership_rule",
+    "value_destination"
+  ],
+  "properties": {
+    "declaring_adr_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "declaring_adr_semantic_type": {
+      "enum": [
+        "adr/logical",
+        "adr/physical-system",
+        "adr/physical-component"
+      ]
+    },
+    "status_semantic_field_key": {
+      "enum": [
+        "adr/logical#/status",
+        "adr/physical-system#/status",
+        "adr/physical-component#/status"
+      ]
+    },
+    "status_source_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "family",
+        "version",
+        "canonical_resource_key",
+        "content_digest",
+        "schema_pointer"
+      ],
+      "properties": {
+        "family": {
+          "const": "authoring"
+        },
+        "version": {
+          "const": "1.7"
+        },
+        "canonical_resource_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "schema_pointer": {
+          "type": "string",
+          "pattern": "^(?:/.*)?$"
+        }
+      }
+    },
+    "ownership_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "family",
+        "version",
+        "semantic_contract_fingerprint",
+        "canonical_resource_key",
+        "content_digest",
+        "rule_id"
+      ],
+      "properties": {
+        "family": {
+          "const": "architecture-interpretation"
+        },
+        "version": {
+          "const": "1.3"
+        },
+        "semantic_contract_fingerprint": {
+          "type": "string",
+          "pattern": "^scf:v1:sha256:[0-9a-f]{64}$"
+        },
+        "canonical_resource_key": {
+          "const": "architecture-interpretation/1.3/lifecycle-ownership"
+        },
+        "content_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "rule_id": {
+          "enum": [
+            "declaring-lifecycle.adr-logical.architectural_boundaries",
+            "declaring-lifecycle.adr-logical.capabilities",
+            "declaring-lifecycle.adr-logical.contracts",
+            "declaring-lifecycle.adr-logical.decisions",
+            "declaring-lifecycle.adr-logical.evidence_expectations",
+            "declaring-lifecycle.adr-logical.gaps",
+            "declaring-lifecycle.adr-logical.invariants",
+            "declaring-lifecycle.adr-physical-component.component_specifications",
+            "declaring-lifecycle.adr-physical-component.component_specifications.interfaces",
+            "declaring-lifecycle.adr-physical-component.evidence_expectations",
+            "declaring-lifecycle.adr-physical-component.gaps",
+            "declaring-lifecycle.adr-physical-component.implementation_decisions",
+            "declaring-lifecycle.adr-physical-system.data_flows",
+            "declaring-lifecycle.adr-physical-system.evidence_expectations",
+            "declaring-lifecycle.adr-physical-system.gaps",
+            "declaring-lifecycle.adr-physical-system.system",
+            "declaring-lifecycle.adr-physical-system.system_boundaries"
+          ]
+        }
+      }
+    },
+    "value_destination": {
+      "const": "/lifecycle_stage"
+    }
+  },
+  "semanticDependencies": [
+    "architecture-interpretation/1.3/lifecycle-ownership",
+    "authoring/1.7/schema/adr-common.schema",
+    "authoring/1.7/schema/adr-logical.schema",
+    "authoring/1.7/schema/adr-physical-base.schema",
+    "authoring/1.7/schema/adr-physical-component.schema",
+    "authoring/1.7/schema/adr-physical-system.schema",
+    "authoring/1.7/schema/types.schema",
+    "normalized-model/2.5/schema/normalized-architecture-model.schema",
+    "normalized-model/2.5/schema/normalized-entity-registry.schema",
+    "normalized-model/2.5/schema/normalized-entity.schema",
+    "normalized-model/2.5/schema/relationship-record.schema",
+    "normalized-model/2.5/schema/relationship-registry.schema",
+    "normalized-model/2.5/schema/unresolved-registry.schema"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/logical"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status_semantic_field_key": {
+            "const": "adr/logical#/status"
+          },
+          "status_source_authority": {
+            "const": {
+              "family": "authoring",
+              "version": "1.7",
+              "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+              "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+              "schema_pointer": "/properties/status"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/physical-system"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status_semantic_field_key": {
+            "const": "adr/physical-system#/status"
+          },
+          "status_source_authority": {
+            "const": {
+              "family": "authoring",
+              "version": "1.7",
+              "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+              "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+              "schema_pointer": "/properties/status"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/physical-component"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status_semantic_field_key": {
+            "const": "adr/physical-component#/status"
+          },
+          "status_source_authority": {
+            "const": {
+              "family": "authoring",
+              "version": "1.7",
+              "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+              "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+              "schema_pointer": "/properties/status"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-logical.architectural_boundaries"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/logical"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-logical.capabilities"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/logical"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-logical.contracts"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/logical"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-logical.decisions"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/logical"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-logical.evidence_expectations"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/logical"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-logical.gaps"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/logical"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-logical.invariants"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/logical"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-physical-component.component_specifications"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/physical-component"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-physical-component.component_specifications.interfaces"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/physical-component"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-physical-component.evidence_expectations"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/physical-component"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-physical-component.gaps"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/physical-component"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-physical-component.implementation_decisions"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/physical-component"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-physical-system.data_flows"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/physical-system"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-physical-system.evidence_expectations"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/physical-system"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-physical-system.gaps"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/physical-system"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-physical-system.system"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/physical-system"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ownership_rule": {
+            "properties": {
+              "rule_id": {
+                "const": "declaring-lifecycle.adr-physical-system.system_boundaries"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "declaring_adr_semantic_type": {
+            "const": "adr/physical-system"
+          }
+        }
+      }
+    }
+  ]
+}

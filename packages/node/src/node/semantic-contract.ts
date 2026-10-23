@@ -241,12 +241,13 @@ export function getSemanticContract(family: string, version: string): SemanticCo
 
 export function loadSemanticResource(key: string): unknown {
   const parts = key.split("/");
+  const ai13 = parts.length >= 3 && parts[0] === "architecture-interpretation" && parts[1] === "1.3";
   if (parts.length === 4 && parts[0] === "authoring" && parts[1] === "1.7" && parts[2] === "schema") {
     const resource = canonicalSchemas[`authoring/v1.7/${parts[3]}.json` as keyof typeof canonicalSchemas];
     if (resource) return deepFreeze(structuredClone(resource));
     throw new Error(`Missing bundled semantic resource: ${key}`);
   }
-  if (parts.length < 3 || !["1.0", "1.1", "1.2", "1.5", "1.6", "2.3", "2.4", "2.5"].includes(parts[1] ?? "")) throw new Error(`Unsupported semantic resource: ${key}`);
+  if (parts.length < 3 || (!ai13 && !["1.0", "1.1", "1.2", "1.5", "1.6", "2.3", "2.4", "2.5"].includes(parts[1] ?? ""))) throw new Error(`Unsupported semantic resource: ${key}`);
   const names = [`${key.replaceAll("/", "-")}.json`];
   if (parts.length === 3) names.push(`${parts[0]}-${parts[2]}.json`);
   for (const name of names) {

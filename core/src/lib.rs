@@ -2373,3 +2373,8 @@ mod semantic_core_v11_tests {
         );
     }
 }
+
+// Internal successor modules; no protocol dispatch or capability registration.
+mod authoring_construction_authority;
+#[allow(dead_code)]
+mod authoring_construction_v13;

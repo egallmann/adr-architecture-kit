@@ -8,8 +8,6 @@ use super::*;
 use crate::architecture_interpretation::{InterpretationSourceContext, NormalizedOutputContext};
 use crate::candidate_source::{self, CandidateSourceArtifact, CandidateSourceBasis};
 
-const CONTEXT: &str = "architecture-interpretation/1.2/detached-context";
-
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum SealingStatus {
     Rejected,
@@ -109,7 +107,28 @@ pub(crate) fn prepare(
     dependencies: &DependencyResult,
     records: &RecordResult,
 ) -> SealingResult {
-    let checked = records::qualify_records(
+    prepare_for(
+        Profile::Acc12,
+        definition,
+        resources,
+        insertion,
+        roots,
+        dependencies,
+        records,
+    )
+}
+
+pub(crate) fn prepare_for(
+    profile: Profile,
+    definition: &Json,
+    resources: &[Json],
+    insertion: &InsertionResult,
+    roots: &AccountingResult,
+    dependencies: &DependencyResult,
+    records: &RecordResult,
+) -> SealingResult {
+    let checked = records::qualify_records_for(
+        profile,
         definition,
         resources,
         insertion,
@@ -168,9 +187,11 @@ pub(crate) fn prepare(
     let source_contract = &basis.artifacts[0].source_contract;
     let candidate_source_basis = basis::qualified_basis_to_json(&basis, source_contract);
     let sealed = manifest_resources(definition, resources);
-    if let Err(error) =
-        schema_validation::preflight_fragment(&sealed, SCHEMA, "/$defs/candidate_source_basis")
-    {
+    if let Err(error) = schema_validation::preflight_fragment(
+        &sealed,
+        profile.expected().schema,
+        "/$defs/candidate_source_basis",
+    ) {
         result.issue(
             Status::Unavailable,
             "candidate_source_basis",
@@ -180,7 +201,7 @@ pub(crate) fn prepare(
     }
     if let Err(error) = schema_validation::validate_fragment(
         &sealed,
-        SCHEMA,
+        profile.expected().schema,
         "/$defs/candidate_source_basis",
         &candidate_source_basis,
     ) {
@@ -191,7 +212,7 @@ pub(crate) fn prepare(
         );
         return result.finish();
     }
-    let context = match derive_context(definition, &sealed, &basis, insertion, records) {
+    let context = match derive_context(profile, definition, &sealed, &basis, insertion, records) {
         Ok(context) => context,
         Err(message) => {
             result.issue(Status::Unavailable, "detached_context", &message);
@@ -219,7 +240,30 @@ pub(crate) fn qualify_seal(
     records: &RecordResult,
     supplied: &SealingResult,
 ) -> SealingResult {
-    let mut expected = prepare(
+    qualify_seal_for(
+        Profile::Acc12,
+        definition,
+        resources,
+        insertion,
+        roots,
+        dependencies,
+        records,
+        supplied,
+    )
+}
+
+pub(crate) fn qualify_seal_for(
+    profile: Profile,
+    definition: &Json,
+    resources: &[Json],
+    insertion: &InsertionResult,
+    roots: &AccountingResult,
+    dependencies: &DependencyResult,
+    records: &RecordResult,
+    supplied: &SealingResult,
+) -> SealingResult {
+    let mut expected = prepare_for(
+        profile,
         definition,
         resources,
         insertion,
@@ -238,18 +282,22 @@ pub(crate) fn qualify_seal(
 }
 
 fn derive_context(
+    profile: Profile,
     definition: &Json,
     sealed: &BTreeMap<String, Json>,
     basis: &CandidateSourceBasis,
     insertion: &InsertionResult,
     records: &RecordResult,
 ) -> Result<DetachedContext, String> {
-    let authority = sealed
-        .get(CONTEXT)
-        .ok_or("Exact AI 1.2 detached-context authority unavailable")?;
+    let authority = sealed.get(profile.expected().context).ok_or_else(|| {
+        format!(
+            "Exact AI {} detached-context authority unavailable",
+            profile.expected().ai_version
+        )
+    })?;
     let member = array(definition, "resourceManifest")
         .iter()
-        .find(|m| text(m, "canonicalResourceKey") == CONTEXT)
+        .find(|m| text(m, "canonicalResourceKey") == profile.expected().context)
         .ok_or("Detached-context manifest member unavailable")?;
     let hex = basis
         .basis_digest
@@ -305,7 +353,10 @@ fn derive_context(
             (
                 "detached_context".into(),
                 object([
-                    ("canonical_resource_key".into(), string(CONTEXT)),
+                    (
+                        "canonical_resource_key".into(),
+                        string(profile.expected().context),
+                    ),
                     (
                         "content_digest".into(),
                         at(member, &["contentDigest"]).clone(),

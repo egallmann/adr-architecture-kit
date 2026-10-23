@@ -514,7 +514,7 @@ fn semantic_authority_rechecks_reject_disagreement_and_duplicate_rows() {
     let definition = j(&bundle().0);
     let base = sealed();
     let table = base[TABLE].clone();
-    assert!(qualify_table(&definition, &base, &table));
+    assert!(qualify_table(Profile::Acc12, &definition, &base, &table));
     for (key, path, value) in [
         (
             "authoring-domain/1.1/contract",
@@ -555,18 +555,28 @@ fn semantic_authority_rechecks_reject_disagreement_and_duplicate_rows() {
         }
         resources.insert(key.into(), j(&content));
         assert!(
-            !qualify_table(&definition, &resources, &table),
+            !qualify_table(Profile::Acc12, &definition, &resources, &table),
             "{key} {path:?}"
         );
     }
     let mut table: Value = serde_json::from_str(&canonical(&table)).unwrap();
     let row = table["rows"][0].clone();
     table["rows"].as_array_mut().unwrap().push(row);
-    assert!(!qualify_table(&definition, &base, &j(&table)));
+    assert!(!qualify_table(
+        Profile::Acc12,
+        &definition,
+        &base,
+        &j(&table)
+    ));
     table["rows"].as_array_mut().unwrap().pop();
     table["rows"][0]["ai_authority"]["content_digest"] =
         json!(format!("sha256:{}", "0".repeat(64)));
-    assert!(!qualify_table(&definition, &base, &j(&table)));
+    assert!(!qualify_table(
+        Profile::Acc12,
+        &definition,
+        &base,
+        &j(&table)
+    ));
     assert!(schema_validation::validate(&base, TABLE_SCHEMA, &j(&json!({"rows":[]}))).is_err());
 }
 
@@ -670,7 +680,11 @@ fn missing_companion_and_dependency_resources_never_use_ambient_authority() {
     for key in [TABLE_SCHEMA, TABLE] {
         let mut resources = sealed();
         resources.insert(key.into(), j(&json!({"unsupported":true})));
-        assert!(!qualify_binding_authority(&definition, &resources));
+        assert!(!qualify_binding_authority(
+            Profile::Acc12,
+            &definition,
+            &resources
+        ));
     }
 }
 
@@ -774,4 +788,40 @@ fn internal_qualification_does_not_add_a_protocol_route_or_public_capability() {
         read("contracts/authoring-construction/v1.2/contract.json")["semanticContractFingerprint"],
         json!(SCF)
     );
+}
+
+// Captured independently from the unmodified 5ab992a tree.
+
+#[test]
+fn historical_diagnostic_commitments() {
+    for variant in 0..5 {
+        let mut input = request(&fixture(2));
+        match variant {
+            0 => input["request"]["compositions"][0]["relation"] = json!("unknown"),
+            1 => input["request"]["compositions"][0]["child"] = json!("absent"),
+            2 => input["request"]["fragments"][0]["input_mode"] = json!("compact"),
+            3 => {
+                input["request"]["fragments"][1]["fields"]["id"] =
+                    input["request"]["fragments"][0]["fields"]["id"].clone()
+            }
+            _ => {
+                input["request"]["compositions"][0]["relation"] = json!("unknown");
+                input["request"]["compositions"][1]["child"] = json!("absent");
+                input["request"]["fragments"][0]["input_mode"] = json!("compact");
+            }
+        }
+        assert_eq!(
+            format!(
+                "{:x}",
+                Sha256::digest(format!("{:?}", run(&input)).as_bytes())
+            ),
+            [
+                "8adb142d54cbc471eb445c49ea5619e2179a08b0cc2abb6800b48fc0fdd16e6a",
+                "21f1f0d008dcf86f684164fa59a1c941c8b3cb2adf71bc7f5dbcc57209e5fb68",
+                "85f4a25ef03738c121c2269a441f48c8719adc1b461e8b328d775fee1000d7a8",
+                "4d4b40116ee7c41c778c13c4f508ff27f779049c3d4f407ccfdb3d29e85c5421",
+                "f146ece3446555206c9c7d0c82377199e6c5fa2baa809f873b32bc953af23d44"
+            ][variant]
+        );
+    }
 }

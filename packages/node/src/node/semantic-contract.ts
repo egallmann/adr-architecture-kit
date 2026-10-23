@@ -249,7 +249,7 @@ export function loadSemanticResource(key: string): unknown {
   }
   if (parts.length < 3 || (!ai13 && !["1.0", "1.1", "1.2", "1.5", "1.6", "2.3", "2.4", "2.5"].includes(parts[1] ?? ""))) throw new Error(`Unsupported semantic resource: ${key}`);
   const names = [`${key.replaceAll("/", "-")}.json`];
-  if (parts.length === 3) names.push(`${parts[0]}-${parts[2]}.json`);
+  if (parts.length === 3 && !ai13) names.push(`${parts[0]}-${parts[2]}.json`);
   for (const name of names) {
     const resource = assets[`resources/${name}`];
     if (resource) return deepFreeze(structuredClone(resource));

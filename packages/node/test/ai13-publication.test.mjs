@@ -32,4 +32,5 @@ test("AI 1.3 exact publication is available without selection or execution", asy
   assert.throws(() => getSemanticContract("authoring-construction", "1.3"), /Unsupported semantic contract/);
   assert.throws(() => loadSemanticResource("architecture-interpretation/1.4/rules"), /Unsupported semantic resource/);
   assert.throws(() => loadSemanticResource("architecture-interpretation/1.3/missing"), /Missing bundled semantic resource/);
+  assert.throws(() => loadSemanticResource("architecture-interpretation/1.3/source-decoding-1.5"), /Missing bundled semantic resource/);
 });

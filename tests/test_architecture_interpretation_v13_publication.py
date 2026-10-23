@@ -1046,6 +1046,8 @@ def test_exact_discovery_and_byte_identical_package_mirrors() -> None:
     with pytest.raises(LookupError):
         load_semantic_resource("architecture-interpretation/1.3/not-published")
     with pytest.raises(LookupError):
+        load_semantic_resource("architecture-interpretation/1.3/source-decoding-1.5")
+    with pytest.raises(LookupError):
         get_semantic_contract("authoring-construction", "1.3")
 
 

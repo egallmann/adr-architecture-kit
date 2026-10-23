@@ -484,7 +484,7 @@ def load_semantic_resource(key: str) -> Any:
         raise LookupError(f"Unsupported semantic resource: {key}")
     package = resources.files("adr_kit.semantic_contract.v1_0.resources")
     candidates = [f"{key.replace('/', '-')}.json"]
-    if len(parts) == 3:
+    if len(parts) == 3 and not ai13:
         candidates.append(f"{parts[0]}-{parts[2]}.json")
     for name in candidates:
         resource = package.joinpath(name)

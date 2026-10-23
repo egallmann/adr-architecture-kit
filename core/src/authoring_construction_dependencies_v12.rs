@@ -96,6 +96,16 @@ pub(crate) fn qualify_dependencies(
     proven: &InsertionResult,
     roots: &AccountingResult,
 ) -> DependencyResult {
+    qualify_dependencies_for(Profile::Acc12, definition, resources, proven, roots)
+}
+
+pub(crate) fn qualify_dependencies_for(
+    profile: Profile,
+    definition: &Json,
+    resources: &[Json],
+    proven: &InsertionResult,
+    roots: &AccountingResult,
+) -> DependencyResult {
     let mut result = DependencyResult {
         status: DependencyStatus::Unavailable,
         authority: None,
@@ -106,7 +116,7 @@ pub(crate) fn qualify_dependencies(
         diagnostics: proven.qualification.diagnostics.clone(),
         outstanding_dependencies: proven.qualification.outstanding_dependencies.clone(),
     };
-    let request = match insertion::recheck_preservation(definition, resources, proven) {
+    let request = match insertion::recheck_preservation(profile, definition, resources, proven) {
         Ok(request) => request,
         Err((status, message)) => {
             result.issue(
@@ -120,7 +130,8 @@ pub(crate) fn qualify_dependencies(
         }
     };
     if roots.status == AccountingStatus::RootsAccounted {
-        let checked = sources::qualify_accounting(
+        let checked = sources::qualify_accounting_for(
+            profile,
             definition,
             resources,
             proven,
@@ -353,7 +364,7 @@ pub(crate) fn qualify_dependencies(
                     ]),
                 );
             }
-            let descriptor = type_authority(&sealed, target_type);
+            let descriptor = type_authority(profile, &sealed, target_type);
             if descriptor
                 .is_some_and(|d| text(at(d, &["key"]), "kind") != text(resolved, "semantic_kind"))
             {
@@ -387,19 +398,58 @@ pub(crate) fn qualify_dependencies(
                     *q = normalized_qualification(q);
                 }
                 qualified.push(reference);
-                governing.entry(source_key.clone()).or_default().push(object([
-                    ("reference_key".into(),string(key)),("acc_fingerprint".into(),string(SCF)),
-                    ("target_basis".into(),object([
-                        ("selector".into(),string(target)),("reference_kind".into(),string(kind)),
-                        ("canonical_uuid".into(),string(id)),("semantic_type".into(),string(target_type)),
-                        ("semantic_kind".into(),string(text(resolved,"semantic_kind"))),
-                        ("qualification".into(),qualification.clone()),
-                        ("existence_state".into(),if kind=="existing" {string(text(resolved,"existence_state"))} else {Json::Null}),
-                        ("source_basis".into(),resolved.get("source_basis").cloned().unwrap_or(Json::Null)),
-                    ])),
-                    ("authority_resources".into(),Json::Array(array(definition,"resourceManifest").iter().filter(|r|matches!(text(r,"canonicalResourceKey"),"authoring-domain/1.1/contract"|"architecture-interpretation/1.2/field-dispositions-1.7-to-2.4")).cloned().collect())),
-                    ("adc_reference_policy".into(),at(descriptor.unwrap(),&["reference_policy"]).clone()),
-                ]));
+                governing
+                    .entry(source_key.clone())
+                    .or_default()
+                    .push(object([
+                        ("reference_key".into(), string(key)),
+                        ("acc_fingerprint".into(), string(SCF)),
+                        (
+                            "target_basis".into(),
+                            object([
+                                ("selector".into(), string(target)),
+                                ("reference_kind".into(), string(kind)),
+                                ("canonical_uuid".into(), string(id)),
+                                ("semantic_type".into(), string(target_type)),
+                                (
+                                    "semantic_kind".into(),
+                                    string(text(resolved, "semantic_kind")),
+                                ),
+                                ("qualification".into(), qualification.clone()),
+                                (
+                                    "existence_state".into(),
+                                    if kind == "existing" {
+                                        string(text(resolved, "existence_state"))
+                                    } else {
+                                        Json::Null
+                                    },
+                                ),
+                                (
+                                    "source_basis".into(),
+                                    resolved.get("source_basis").cloned().unwrap_or(Json::Null),
+                                ),
+                            ]),
+                        ),
+                        (
+                            "authority_resources".into(),
+                            Json::Array(
+                                array(definition, "resourceManifest")
+                                    .iter()
+                                    .filter(|r| {
+                                        text(r, "canonicalResourceKey")
+                                            == "authoring-domain/1.1/contract"
+                                            || text(r, "canonicalResourceKey")
+                                                == profile.expected().dispositions
+                                    })
+                                    .cloned()
+                                    .collect(),
+                            ),
+                        ),
+                        (
+                            "adc_reference_policy".into(),
+                            at(descriptor.unwrap(), &["reference_policy"]).clone(),
+                        ),
+                    ]));
             }
         }
         qualified.sort_by_cached_key(canonical);
@@ -416,7 +466,7 @@ pub(crate) fn qualify_dependencies(
     result.relationships_explicitly_empty = relationships.is_empty();
     for relationship in relationships {
         let key = text(relationship, "relationship_key");
-        let descriptor = type_authority(&sealed, text(relationship, "relationship_type"));
+        let descriptor = type_authority(profile, &sealed, text(relationship, "relationship_type"));
         let authority = if descriptor.is_some_and(|d| {
             text(at(d, &["key"]), "kind") == "relationship"
                 && text(d, "semantic_type_ownership") == "adr_kit"
@@ -550,7 +600,11 @@ fn normalized_qualification(value: &Json) -> Json {
 }
 
 /// Select only exact ADC + AI type authority, never schema/prose heuristics.
-fn type_authority<'a>(sealed: &'a BTreeMap<String, Json>, semantic_type: &str) -> Option<&'a Json> {
+fn type_authority<'a>(
+    profile: Profile,
+    sealed: &'a BTreeMap<String, Json>,
+    semantic_type: &str,
+) -> Option<&'a Json> {
     let types: Vec<_> = array(&sealed["authoring-domain/1.1/contract"], "types")
         .iter()
         .filter(|t| {
@@ -561,13 +615,10 @@ fn type_authority<'a>(sealed: &'a BTreeMap<String, Json>, semantic_type: &str) -
             ) == semantic_type
         })
         .collect();
-    let ai = array(
-        &sealed["architecture-interpretation/1.2/field-dispositions-1.7-to-2.4"],
-        "semantic_types",
-    )
-    .iter()
-    .filter(|t| text(t, "semantic_type") == semantic_type)
-    .count();
+    let ai = array(&sealed[profile.expected().dispositions], "semantic_types")
+        .iter()
+        .filter(|t| text(t, "semantic_type") == semantic_type)
+        .count();
     (types.len() == 1 && ai == 1).then(|| types[0])
 }
 

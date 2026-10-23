@@ -4,6 +4,46 @@ use super::*;
 use crate::authoring_construction_orchestration::{self, EntropyUuidV7Minter};
 use serde_json::{json, Value};
 
+// Captured on unmodified develop 5ab992a before introducing successor plumbing.
+// Commit every observable stage, not just success status or test counts.
+#[test]
+fn historical_complete_producer_parity() {
+    for case in [1, 2] {
+        let mut input = request(&fixture(case));
+        for (index, fragment) in input["request"]["fragments"]
+            .as_array_mut()
+            .unwrap()
+            .iter_mut()
+            .enumerate()
+        {
+            fragment["fields"]["id"] = json!(format!("019b0000-0000-7000-8000-{:012x}", index + 1));
+        }
+        let (p, roots, deps, records) = chain(&input);
+        let sealed = run(&p, &roots, &deps, &records);
+        passed(&sealed);
+        let complete = format!(
+            "{:?}",
+            (
+                &p.qualification,
+                &p.materials,
+                &p.proofs,
+                &roots,
+                &deps,
+                &records,
+                &sealed
+            )
+        );
+        assert_eq!(
+            format!("{:x}", Sha256::digest(complete.as_bytes())),
+            if case == 1 {
+                "7f6d39f91f95489cbf594c4ea514e51a4b0b55ede8b2cd24e2bfcb7f5659ff2b"
+            } else {
+                "5e3ee08d26093d3c09412c7ce4fb9fbf793387a625afc5b788dc922f956f702a"
+            }
+        );
+    }
+}
+
 fn chain(
     input: &Value,
 ) -> (
@@ -512,7 +552,9 @@ fn exact_context_authority_cannot_be_replaced_or_omitted() {
         let mut resources = bundle().1.clone();
         let i = resources
             .iter()
-            .position(|r| r["canonicalResourceKey"] == CONTEXT)
+            .position(|r| {
+                r["canonicalResourceKey"] == "architecture-interpretation/1.2/detached-context"
+            })
             .unwrap();
         match variant {
             0 => {

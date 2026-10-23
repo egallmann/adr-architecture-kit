@@ -91,8 +91,18 @@ pub(crate) fn prepare(
     proven: &InsertionResult,
     source_refs: &BTreeMap<String, String>,
 ) -> AccountingResult {
+    prepare_for(Profile::Acc12, definition, resources, proven, source_refs)
+}
+
+pub(crate) fn prepare_for(
+    profile: Profile,
+    definition: &Json,
+    resources: &[Json],
+    proven: &InsertionResult,
+    source_refs: &BTreeMap<String, String>,
+) -> AccountingResult {
     let mut result = AccountingResult::new(proven);
-    let request = match receipt(definition, resources, proven, &mut result) {
+    let request = match receipt(profile, definition, resources, proven, &mut result) {
         Some(request) => request,
         None => return result.finish(),
     };
@@ -138,10 +148,11 @@ pub(crate) fn prepare(
     if !result.diagnostics.is_empty() {
         return result.finish();
     }
-    qualify_accounting(definition, resources, proven, artifacts, None)
+    qualify_accounting_for(profile, definition, resources, proven, artifacts, None)
 }
 
 fn receipt(
+    profile: Profile,
     definition: &Json,
     resources: &[Json],
     proven: &InsertionResult,
@@ -167,7 +178,7 @@ fn receipt(
         }
         return None;
     }
-    match insertion::recheck_preservation(definition, resources, proven) {
+    match insertion::recheck_preservation(profile, definition, resources, proven) {
         Ok(request) => Some(request),
         Err((status, message)) => {
             result.issue(
@@ -192,11 +203,29 @@ pub(crate) fn qualify_accounting(
     definition: &Json,
     resources: &[Json],
     proven: &InsertionResult,
+    artifacts: Vec<CandidateSourceArtifact>,
+    proposed_roots: Option<&[String]>,
+) -> AccountingResult {
+    qualify_accounting_for(
+        Profile::Acc12,
+        definition,
+        resources,
+        proven,
+        artifacts,
+        proposed_roots,
+    )
+}
+
+pub(crate) fn qualify_accounting_for(
+    profile: Profile,
+    definition: &Json,
+    resources: &[Json],
+    proven: &InsertionResult,
     mut artifacts: Vec<CandidateSourceArtifact>,
     proposed_roots: Option<&[String]>,
 ) -> AccountingResult {
     let mut result = AccountingResult::new(proven);
-    let request = match receipt(definition, resources, proven, &mut result) {
+    let request = match receipt(profile, definition, resources, proven, &mut result) {
         Some(request) => request,
         None => return result.finish(),
     };

@@ -6,6 +6,8 @@
 //! preconditions without changing the qualifier. `Qualified` describes binding
 //! preconditions; outstanding interpretation obligations always remain.
 
+use crate::authoring_construction_authority::Profile;
+
 use std::collections::{BTreeMap, BTreeSet};
 
 use sha2::{Digest, Sha256};
@@ -188,7 +190,25 @@ impl Qualification {
 /// Accepts exactly the published definition/resource bundle and ACC request.
 /// No host options, repository state, ADR prose, or ambient registry are read.
 pub(crate) fn qualify(definition: &Json, resources: &[Json], request: &Json) -> Qualification {
+    qualify_for(Profile::Acc12, definition, resources, request)
+}
+
+pub(crate) fn qualify_for(
+    profile: Profile,
+    definition: &Json,
+    resources: &[Json],
+    request: &Json,
+) -> Qualification {
+    let expected = profile.expected();
     let mut result = Qualification::new();
+    if profile == Profile::Acc13 {
+        result
+            .outstanding_dependencies
+            .remove("complete_nm_2_4_interpretation");
+        result
+            .outstanding_dependencies
+            .insert(expected.interpretation);
+    }
     let closure = semantic_contract::validate_closure(&object([
         ("definition".into(), definition.clone()),
         ("resources".into(), Json::Array(resources.to_vec())),
@@ -196,8 +216,8 @@ pub(crate) fn qualify(definition: &Json, resources: &[Json], request: &Json) -> 
     result.authority_diagnostics = array(&closure, "diagnostics").to_vec();
     if closure.get("closure_valid").and_then(Json::as_bool) != Some(true)
         || text(definition, "semanticContractFamily") != "authoring-construction"
-        || text(definition, "semanticContractVersion") != "1.2"
-        || text(definition, "semanticContractFingerprint") != SCF
+        || text(definition, "semanticContractVersion") != expected.acc_version
+        || text(definition, "semanticContractFingerprint") != expected.acc_scf
     {
         result.diagnostic(
             Status::Unavailable,
@@ -212,11 +232,11 @@ pub(crate) fn qualify(definition: &Json, resources: &[Json], request: &Json) -> 
     // Extra supplied resources are never authority, even if closure validation
     // permits them. Project the map to the verified manifest only.
     let sealed = manifest_resources(definition, resources);
-    let rules = &sealed[RULES];
+    let rules = &sealed[expected.rules];
     let composition = rules.get("composition").unwrap_or(&Json::Null);
     let binding = composition.get("binding_authority").unwrap_or(&Json::Null);
-    let table = sealed.get(TABLE).unwrap_or(&Json::Null);
-    let table_ok = qualify_binding_authority(definition, &sealed);
+    let table = sealed.get(expected.table).unwrap_or(&Json::Null);
+    let table_ok = qualify_binding_authority(profile, definition, &sealed);
     result.binding_table = if table_ok {
         Check::Qualified
     } else {
@@ -235,10 +255,10 @@ pub(crate) fn qualify(definition: &Json, resources: &[Json], request: &Json) -> 
     let mut canonical_request = String::new();
     let canonical_result = semantic_contract::canonicalize_value(request, &mut canonical_request);
     let acc = at(request, &["basis", "acc"]);
-    let exact_request = text(request, "contract_version") == "1.2"
+    let exact_request = text(request, "contract_version") == expected.acc_version
         && text(acc, "family") == "authoring-construction"
-        && text(acc, "version") == "1.2"
-        && text(acc, "semantic_contract_fingerprint") == SCF;
+        && text(acc, "version") == expected.acc_version
+        && text(acc, "semantic_contract_fingerprint") == expected.acc_scf;
     if !exact_request {
         result.diagnostic(
             Status::Unavailable,
@@ -264,7 +284,7 @@ pub(crate) fn qualify(definition: &Json, resources: &[Json], request: &Json) -> 
         );
     }
     if let Err(error) =
-        schema_validation::preflight_fragment(&sealed, SCHEMA, "/$defs/authoring_request")
+        schema_validation::preflight_fragment(&sealed, expected.schema, "/$defs/authoring_request")
     {
         result.diagnostic(
             Status::Unavailable,
@@ -279,7 +299,7 @@ pub(crate) fn qualify(definition: &Json, resources: &[Json], request: &Json) -> 
     // Inspect independent shape violations even when an ACC literal mismatches.
     // This local schema probe never becomes an execution request or authority.
     let mut schema_probe = request.clone();
-    if !exact_request {
+    if !exact_request && profile == Profile::Acc12 {
         replace_schema_literal(&mut schema_probe, &["contract_version"], "1.2");
         replace_schema_literal(
             &mut schema_probe,
@@ -290,15 +310,46 @@ pub(crate) fn qualify(definition: &Json, resources: &[Json], request: &Json) -> 
         replace_schema_literal(
             &mut schema_probe,
             &["basis", "acc", "semantic_contract_fingerprint"],
-            SCF,
+            expected.acc_scf,
         );
     }
     if let Err(error) = schema_validation::validate_fragment(
         &sealed,
-        SCHEMA,
+        expected.schema,
         "/$defs/authoring_request",
         &schema_probe,
     ) {
+        if profile == Profile::Acc13
+            && crate::authoring_construction_v13::authority_selector_error(&error)
+        {
+            result.diagnostic(
+                Status::Unavailable,
+                "semantic_contract.exact_authority_mismatch",
+                None,
+                &error.path,
+                &string(error.message),
+            );
+            // Inspect independent body/operation violations using exact schema
+            // fragments. Never rewrite authority literals or execute this request.
+            for field in ["contract_family", "operation", "request"] {
+                if let Err(shape) = schema_validation::validate_fragment(
+                    &sealed,
+                    expected.schema,
+                    &format!("/$defs/authoring_request/properties/{field}"),
+                    at(request, &[field]),
+                ) {
+                    result.diagnostic(
+                        Status::Rejected,
+                        "authoring_construction.request.schema",
+                        None,
+                        field,
+                        &string(shape.message),
+                    );
+                }
+            }
+            result.request_schema = Check::Blocked;
+            return result.finish();
+        }
         result.diagnostic(
             Status::Rejected,
             "authoring_construction.request.schema",
@@ -317,7 +368,7 @@ pub(crate) fn qualify(definition: &Json, resources: &[Json], request: &Json) -> 
     if canonical_result.is_err() {
         return result.finish();
     }
-    if !qualify_basis(definition, &sealed, request) {
+    if !qualify_basis(profile, definition, &sealed, request) {
         result.diagnostic(
             Status::Unavailable,
             "semantic_contract.exact_authority_mismatch",
@@ -327,12 +378,20 @@ pub(crate) fn qualify(definition: &Json, resources: &[Json], request: &Json) -> 
         );
     }
     if table_ok && exact_request {
-        qualify_intents(request, definition, &sealed, table, binding, &mut result);
+        qualify_intents(
+            profile,
+            request,
+            definition,
+            &sealed,
+            table,
+            binding,
+            &mut result,
+        );
     }
     result.finish()
 }
 
-fn qualified_resource(
+pub(crate) fn qualified_resource(
     definition: &Json,
     sealed: &BTreeMap<String, Json>,
     qualification: &Json,
@@ -347,21 +406,40 @@ fn qualified_resource(
         && text(entries[0], "contentDigest") == text(qualification, "content_digest")
 }
 
-fn qualify_binding_authority(definition: &Json, sealed: &BTreeMap<String, Json>) -> bool {
-    let composition = at(sealed.get(RULES).unwrap_or(&Json::Null), &["composition"]);
+fn qualify_binding_authority(
+    profile: Profile,
+    definition: &Json,
+    sealed: &BTreeMap<String, Json>,
+) -> bool {
+    let expected = profile.expected();
+    let composition = at(
+        sealed.get(expected.rules).unwrap_or(&Json::Null),
+        &["composition"],
+    );
     let binding = at(composition, &["binding_authority"]);
     let schema = at(composition, &["schema_authority"]);
-    let table = sealed.get(TABLE).unwrap_or(&Json::Null);
-    text(binding, "canonical_resource_key") == TABLE
-        && text(schema, "canonical_resource_key") == TABLE_SCHEMA
+    let table = sealed.get(expected.table).unwrap_or(&Json::Null);
+    text(binding, "canonical_resource_key") == expected.table
+        && text(schema, "canonical_resource_key") == expected.table_schema
         && qualified_resource(definition, sealed, binding)
         && qualified_resource(definition, sealed, schema)
-        && schema_validation::preflight_fragment(sealed, TABLE_SCHEMA, "").is_ok()
-        && schema_validation::validate(sealed, TABLE_SCHEMA, table).is_ok()
-        && qualify_table(definition, sealed, table)
+        && schema_validation::preflight_fragment(sealed, expected.table_schema, "").is_ok()
+        && schema_validation::validate(sealed, expected.table_schema, table).is_ok()
+        && qualify_table(profile, definition, sealed, table)
 }
 
-fn qualify_basis(definition: &Json, sealed: &BTreeMap<String, Json>, request: &Json) -> bool {
+fn qualify_basis(
+    profile: Profile,
+    definition: &Json,
+    sealed: &BTreeMap<String, Json>,
+    request: &Json,
+) -> bool {
+    let expected = profile.expected();
+    let nm_prefix = if profile == Profile::Acc12 {
+        format!("normalized-model/{}/schema/", expected.nm_version)
+    } else {
+        format!("normalized-model/{}/", expected.nm_version)
+    };
     let Some(definition) = definition.as_object() else {
         return false;
     };
@@ -372,25 +450,23 @@ fn qualify_basis(definition: &Json, sealed: &BTreeMap<String, Json>, request: &J
         (
             "normalized_model",
             "normalized-model",
-            "2.4",
-            "normalized-model/2.4/schema/",
+            expected.nm_version,
+            nm_prefix.as_str(),
         ),
     ];
     let ai = request_basis
         .get("architecture_interpretation")
         .unwrap_or(&Json::Null);
-    let ai_definition = sealed
-        .get("architecture-interpretation/1.2/contract")
-        .unwrap_or(&Json::Null);
+    let ai_definition = sealed.get(expected.ai_contract).unwrap_or(&Json::Null);
     let ai_closure = ai.get("authority_closure").unwrap_or(&Json::Null);
     let exact = sets.iter().all(|(name, family, version, prefix)| {
         basis::exact_resource_set(request_basis.get(name), family, version, definition, prefix)
     }) && text(ai, "family") == "architecture-interpretation"
-        && text(ai, "version") == "1.2"
-        && text(ai, "semantic_contract_fingerprint") == AI_SCF
-        && text(ai_definition, "semanticContractFingerprint") == AI_SCF
+        && text(ai, "version") == expected.ai_version
+        && text(ai, "semantic_contract_fingerprint") == expected.ai_scf
+        && text(ai_definition, "semanticContractFingerprint") == expected.ai_scf
         && text(ai_closure, "family") == "architecture-interpretation"
-        && text(ai_closure, "version") == "1.2"
+        && text(ai_closure, "version") == expected.ai_version
         && basis::resource_members_match(
             ai_closure.get("resources"),
             array(ai_definition, "resourceManifest"),
@@ -410,7 +486,12 @@ fn qualify_basis(definition: &Json, sealed: &BTreeMap<String, Json>, request: &J
 }
 
 /// Rechecks named semantic authorities, not ADC's compact input inventory.
-fn qualify_table(definition: &Json, sealed: &BTreeMap<String, Json>, table: &Json) -> bool {
+fn qualify_table(
+    profile: Profile,
+    definition: &Json,
+    sealed: &BTreeMap<String, Json>,
+    table: &Json,
+) -> bool {
     let selection = table.get("selection").unwrap_or(&Json::Null);
     let keys: Vec<_> = array(selection, "key")
         .iter()
@@ -433,11 +514,21 @@ fn qualify_table(definition: &Json, sealed: &BTreeMap<String, Json>, table: &Jso
                 && array(table, "relation_vocabulary")
                     .iter()
                     .any(|relation| relation.as_str() == Some(text(row, "relation")))
-                && qualify_row(definition, sealed, row)
+                && qualify_row(profile, definition, sealed, row)
         })
 }
 
-fn qualify_row(definition: &Json, sealed: &BTreeMap<String, Json>, row: &Json) -> bool {
+fn qualify_row(
+    profile: Profile,
+    definition: &Json,
+    sealed: &BTreeMap<String, Json>,
+    row: &Json,
+) -> bool {
+    if profile == Profile::Acc13
+        && !crate::authoring_construction_v13::qualify_ownership(definition, sealed, row)
+    {
+        return false;
+    }
     for name in [
         "ai_authority",
         "adc_authority",
@@ -556,6 +647,7 @@ fn qualify_row(definition: &Json, sealed: &BTreeMap<String, Json>, row: &Json) -
 }
 
 fn qualify_intents(
+    profile: Profile,
     request: &Json,
     definition: &Json,
     sealed: &BTreeMap<String, Json>,
@@ -800,8 +892,8 @@ fn qualify_intents(
                 qualified_semantic_field: selected_ai_field(row, sealed)
                     .expect("qualified unique AI field")
                     .clone(),
-                acc_fingerprint: SCF.into(),
-                binding_resource_key: TABLE.into(),
+                acc_fingerprint: profile.expected().acc_scf.into(),
+                binding_resource_key: profile.expected().table.into(),
                 binding_content_digest: text(binding, "content_digest").into(),
             });
         }
@@ -908,7 +1000,7 @@ fn replace_schema_literal(value: &mut Json, path: &[&str], literal: &str) {
     }
 }
 /// Projection only, never verification. Call only after exact closure succeeds.
-fn manifest_resources(definition: &Json, resources: &[Json]) -> BTreeMap<String, Json> {
+pub(crate) fn manifest_resources(definition: &Json, resources: &[Json]) -> BTreeMap<String, Json> {
     let names: BTreeSet<_> = array(definition, "resourceManifest")
         .iter()
         .map(|entry| text(entry, "canonicalResourceKey"))
@@ -925,26 +1017,26 @@ fn manifest_resources(definition: &Json, resources: &[Json]) -> BTreeMap<String,
         .collect()
 }
 
-fn at<'a>(value: &'a Json, path: &[&str]) -> &'a Json {
+pub(crate) fn at<'a>(value: &'a Json, path: &[&str]) -> &'a Json {
     path.iter()
         .fold(value, |v, key| v.get(key).unwrap_or(&Json::Null))
 }
-fn text<'a>(value: &'a Json, key: &str) -> &'a str {
+pub(crate) fn text<'a>(value: &'a Json, key: &str) -> &'a str {
     value.get(key).and_then(Json::as_str).unwrap_or("")
 }
-fn array<'a>(value: &'a Json, key: &str) -> &'a [Json] {
+pub(crate) fn array<'a>(value: &'a Json, key: &str) -> &'a [Json] {
     value
         .get(key)
         .and_then(Json::as_array)
         .map(Vec::as_slice)
         .unwrap_or(&[])
 }
-fn canonical(value: &Json) -> String {
+pub(crate) fn canonical(value: &Json) -> String {
     let mut out = String::new();
     semantic_contract::canonicalize_value(value, &mut out).expect("JSON from a qualified boundary");
     out
 }
-fn digest(value: &Json) -> String {
+pub(crate) fn digest(value: &Json) -> String {
     format!("{:x}", Sha256::digest(canonical(value).as_bytes()))
 }
 

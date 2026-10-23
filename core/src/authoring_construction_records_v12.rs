@@ -71,7 +71,33 @@ pub(crate) fn assemble(
     roots: &AccountingResult,
     dependencies: &DependencyResult,
 ) -> RecordResult {
-    verify(definition, resources, insertion, roots, dependencies, None)
+    assemble_for(
+        Profile::Acc12,
+        definition,
+        resources,
+        insertion,
+        roots,
+        dependencies,
+    )
+}
+
+pub(crate) fn assemble_for(
+    profile: Profile,
+    definition: &Json,
+    resources: &[Json],
+    insertion: &InsertionResult,
+    roots: &AccountingResult,
+    dependencies: &DependencyResult,
+) -> RecordResult {
+    verify(
+        profile,
+        definition,
+        resources,
+        insertion,
+        roots,
+        dependencies,
+        None,
+    )
 }
 
 /// Replays every producer and checks both schema and deep semantic/integrity
@@ -84,7 +110,28 @@ pub(crate) fn qualify_records(
     dependencies: &DependencyResult,
     records: &[Json],
 ) -> RecordResult {
+    qualify_records_for(
+        Profile::Acc12,
+        definition,
+        resources,
+        insertion,
+        roots,
+        dependencies,
+        records,
+    )
+}
+
+pub(crate) fn qualify_records_for(
+    profile: Profile,
+    definition: &Json,
+    resources: &[Json],
+    insertion: &InsertionResult,
+    roots: &AccountingResult,
+    dependencies: &DependencyResult,
+    records: &[Json],
+) -> RecordResult {
     verify(
+        profile,
         definition,
         resources,
         insertion,
@@ -95,6 +142,7 @@ pub(crate) fn qualify_records(
 }
 
 fn verify(
+    profile: Profile,
     definition: &Json,
     resources: &[Json],
     proven: &InsertionResult,
@@ -108,7 +156,7 @@ fn verify(
         diagnostics: Vec::new(),
         outstanding_dependencies: proven.qualification.outstanding_dependencies.clone(),
     };
-    let request = match insertion::recheck_preservation(definition, resources, proven) {
+    let request = match insertion::recheck_preservation(profile, definition, resources, proven) {
         Ok(request) => request,
         Err((status, message)) => {
             result.issue(status, "insertion", message);
@@ -117,7 +165,8 @@ fn verify(
     };
     // This producer independently recomputes and compares the complete root
     // result. It also rechecks the exact closure, schema and dependency set.
-    let checked = dependencies::qualify_dependencies(definition, resources, proven, roots);
+    let checked =
+        dependencies::qualify_dependencies_for(profile, definition, resources, proven, roots);
     result.diagnostics.extend(checked.diagnostics.clone());
     result.outstanding_dependencies = checked.outstanding_dependencies.clone();
     if &checked != supplied_dependencies {
@@ -138,9 +187,11 @@ fn verify(
         return result.finish();
     }
     let sealed = manifest_resources(definition, resources);
-    if let Err(error) =
-        schema_validation::preflight_fragment(&sealed, SCHEMA, "/$defs/composition_record")
-    {
+    if let Err(error) = schema_validation::preflight_fragment(
+        &sealed,
+        profile.expected().schema,
+        "/$defs/composition_record",
+    ) {
         result.issue(Status::Unavailable, "composition_record", &error.message);
         return result.finish();
     }
@@ -152,7 +203,7 @@ fn verify(
         result.issue(Status::Rejected, "composition_records", "Every bound intent requires exactly one insertion proof, root-accounting entry and complete record");
         return result.finish();
     }
-    let authority = composition_authority(definition, &request);
+    let authority = composition_authority(profile, definition, &request);
     let fragments = array(at(&request, &["request"]), "fragments");
     let mut expected = Vec::new();
     for accounting in &roots.accounting {
@@ -263,7 +314,7 @@ fn verify(
     for record in &mut records {
         if let Err(error) = schema_validation::validate_fragment(
             &sealed,
-            SCHEMA,
+            profile.expected().schema,
             "/$defs/composition_record",
             record,
         ) {
@@ -299,7 +350,7 @@ fn record_key(record: &Json) -> (String, u64, String) {
     )
 }
 
-fn composition_authority(definition: &Json, request: &Json) -> Json {
+fn composition_authority(profile: Profile, definition: &Json, request: &Json) -> Json {
     let basis = at(request, &["basis"]);
     let adc = array(definition, "resourceManifest")
         .iter()
@@ -362,10 +413,13 @@ fn composition_authority(definition: &Json, request: &Json) -> Json {
             ("composition_binding".into(), {
                 let member = array(definition, "resourceManifest")
                     .iter()
-                    .find(|m| text(m, "canonicalResourceKey") == TABLE)
+                    .find(|m| text(m, "canonicalResourceKey") == profile.expected().table)
                     .unwrap();
                 object([
-                    ("canonical_resource_key".into(), string(TABLE)),
+                    (
+                        "canonical_resource_key".into(),
+                        string(profile.expected().table),
+                    ),
                     (
                         "content_digest".into(),
                         at(member, &["contentDigest"]).clone(),

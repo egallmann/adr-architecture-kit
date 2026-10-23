@@ -55,10 +55,17 @@ pub(crate) struct InsertionResult {
     pub proofs: Vec<SubtreeProof>,
     // Not a transport field. Only successful insertion can issue this receipt.
     established_request: Option<Json>,
+    profile: Profile,
+    original_request: Option<Json>,
+    authority_commitment: Option<String>,
     identity_dispositions: BTreeMap<String, &'static str>,
 }
 
 impl InsertionResult {
+    pub(crate) fn matches_request(&self, request: &Json) -> bool {
+        self.original_request.as_ref() == Some(&normalized_request(request))
+    }
+
     fn blocked(qualification: Qualification) -> Self {
         let status = match qualification.status {
             Status::Rejected => InsertionStatus::Rejected,
@@ -72,9 +79,32 @@ impl InsertionResult {
             materials: BTreeMap::new(),
             proofs: Vec::new(),
             established_request: None,
+            profile: Profile::Acc12,
+            original_request: None,
+            authority_commitment: None,
             identity_dispositions: BTreeMap::new(),
         }
     }
+}
+
+fn normalized_request(request: &Json) -> Json {
+    let mut normalized = request.clone();
+    if let Some(body) = normalized
+        .as_object_mut()
+        .and_then(|v| v.get_mut("request"))
+        .and_then(Json::as_object_mut)
+    {
+        for key in ["fragments", "compositions"] {
+            if let Some(values) = body.get_mut(key).and_then(Json::as_array_mut) {
+                if key == "fragments" {
+                    values.sort_by_cached_key(|f| text(f, "request_key").to_owned());
+                } else {
+                    values.sort_by_cached_key(canonical);
+                }
+            }
+        }
+    }
+    normalized
 }
 
 fn selector(row: &Json, role: &str) -> CandidateSourceSelector {
@@ -97,7 +127,17 @@ pub(crate) fn insert(
     request: &Json,
     minter: &mut dyn IdentityMinter,
 ) -> InsertionResult {
-    let mut q = qualify(definition, resources, request);
+    insert_for(Profile::Acc12, definition, resources, request, minter)
+}
+
+pub(crate) fn insert_for(
+    profile: Profile,
+    definition: &Json,
+    resources: &[Json],
+    request: &Json,
+    minter: &mut dyn IdentityMinter,
+) -> InsertionResult {
+    let mut q = qualify_for(profile, definition, resources, request);
     if q.status != Status::Qualified {
         return InsertionResult::blocked(q);
     }
@@ -223,7 +263,7 @@ pub(crate) fn insert(
         expected.insert(key, fields.clone());
     }
     // Reuse all duplicate identity/ownership checks with the established IDs.
-    q = qualify(definition, resources, &established);
+    q = qualify_for(profile, definition, resources, &established);
     if q.status != Status::Qualified {
         return InsertionResult::blocked(q);
     }
@@ -306,6 +346,9 @@ pub(crate) fn insert(
             .as_array_mut()
             .unwrap()
             .sort_by_cached_key(canonical);
+        result.profile = profile;
+        result.original_request = Some(normalized_request(request));
+        result.authority_commitment = Some(digest(definition));
         result.established_request = Some(established);
         result.identity_dispositions = identities
             .into_iter()
@@ -317,7 +360,8 @@ pub(crate) fn insert(
 
 /// Recheck the actual material and exact proof set against insertion's private
 /// receipt. Neither a caller-set status nor a qualifier-only result is proof.
-pub(super) fn recheck_preservation(
+pub(crate) fn recheck_preservation(
+    profile: Profile,
     definition: &Json,
     resources: &[Json],
     result: &InsertionResult,
@@ -334,6 +378,15 @@ pub(super) fn recheck_preservation(
         .established_request
         .as_ref()
         .ok_or((Status::Rejected, "private insertion receipt is absent"))?;
+    if result.profile != profile
+        || (profile == Profile::Acc13
+            && result.authority_commitment.as_deref() != Some(digest(definition).as_str()))
+    {
+        return Err((
+            Status::Rejected,
+            "insertion receipt belongs to another authority or version",
+        ));
+    }
     if result.materials.iter().any(|(key, material)| {
         result.identity_dispositions.get(key) != Some(&material.identity_disposition)
     }) {
@@ -342,7 +395,62 @@ pub(super) fn recheck_preservation(
             "identity disposition differs from insertion receipt",
         ));
     }
-    let qualification = qualify(definition, resources, request);
+    if profile == Profile::Acc13 {
+        let mut original = result
+            .original_request
+            .clone()
+            .ok_or((Status::Rejected, "original request receipt absent"))?;
+        let body = original
+            .as_object_mut()
+            .unwrap()
+            .get_mut("request")
+            .unwrap()
+            .as_object_mut()
+            .unwrap();
+        let fragments = body.get_mut("fragments").unwrap().as_array_mut().unwrap();
+        for fragment in fragments.iter_mut() {
+            let key = text(fragment, "request_key").to_owned();
+            let material = result
+                .materials
+                .get(&key)
+                .ok_or((Status::Rejected, "established identity missing"))?;
+            let supplied = at(fragment, &["fields", "id"]).as_str();
+            let expected_disposition = if supplied.is_some() {
+                "preserved"
+            } else {
+                "minted"
+            };
+            if supplied.is_some_and(|id| id != material.identity)
+                || material.identity_disposition != expected_disposition
+            {
+                return Err((
+                    Status::Rejected,
+                    "identity differs from original request commitment",
+                ));
+            }
+            fragment
+                .as_object_mut()
+                .unwrap()
+                .get_mut("fields")
+                .unwrap()
+                .as_object_mut()
+                .unwrap()
+                .insert("id".into(), string(&material.identity));
+        }
+        fragments.sort_by_cached_key(|f| text(f, "request_key").to_owned());
+        body.get_mut("compositions")
+            .unwrap()
+            .as_array_mut()
+            .unwrap()
+            .sort_by_cached_key(canonical);
+        if &original != request {
+            return Err((
+                Status::Rejected,
+                "established request differs from original request",
+            ));
+        }
+    }
+    let qualification = qualify_for(profile, definition, resources, request);
     if qualification.status != Status::Qualified {
         return Err((
             qualification.status,
@@ -489,6 +597,9 @@ fn finish_proof(
             materials: BTreeMap::new(),
             proofs: Vec::new(),
             established_request: None,
+            profile: Profile::Acc12,
+            original_request: None,
+            authority_commitment: None,
             identity_dispositions: BTreeMap::new(),
         };
     }
@@ -506,6 +617,9 @@ fn finish_proof(
         materials,
         proofs,
         established_request: None,
+        profile: Profile::Acc12,
+        original_request: None,
+        authority_commitment: None,
         identity_dispositions: BTreeMap::new(),
     }
 }

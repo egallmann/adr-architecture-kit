@@ -5,10 +5,10 @@ high_water_marks:
   CAP: 9002
   COMP: 23
   CONTRACT: 5
-  DEC: 9008
+  DEC: 9016
   IFACE: 36
   IMPL: 29
-  INV: 300
+  INV: 308
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -2224,6 +2224,54 @@ allocations:
   source_pointer: /decisions/7/alias_id
   state: active
   adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- id: DEC-9009
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_pointer: /decisions/0/alias_id
+  state: active
+  adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+- id: DEC-9010
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_pointer: /decisions/1/alias_id
+  state: active
+  adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+- id: DEC-9011
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_pointer: /decisions/2/alias_id
+  state: active
+  adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+- id: DEC-9012
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_pointer: /decisions/3/alias_id
+  state: active
+  adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+- id: DEC-9013
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_pointer: /decisions/4/alias_id
+  state: active
+  adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+- id: DEC-9014
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_pointer: /decisions/5/alias_id
+  state: active
+  adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+- id: DEC-9015
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_pointer: /decisions/6/alias_id
+  state: active
+  adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+- id: DEC-9016
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_pointer: /decisions/7/alias_id
+  state: active
+  adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
 - id: IFACE-0001
   entity_type: interface
   adr_id: ADR-P-0001
@@ -4216,3 +4264,51 @@ allocations:
   source_pointer: /invariants/7/alias_id
   state: active
   adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- id: INV-0301
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_pointer: /invariants/0/alias_id
+  state: active
+  adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+- id: INV-0302
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_pointer: /invariants/1/alias_id
+  state: active
+  adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+- id: INV-0303
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_pointer: /invariants/2/alias_id
+  state: active
+  adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+- id: INV-0304
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_pointer: /invariants/3/alias_id
+  state: active
+  adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+- id: INV-0305
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_pointer: /invariants/4/alias_id
+  state: active
+  adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+- id: INV-0306
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_pointer: /invariants/5/alias_id
+  state: active
+  adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+- id: INV-0307
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_pointer: /invariants/6/alias_id
+  state: active
+  adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+- id: INV-0308
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_pointer: /invariants/7/alias_id
+  state: active
+  adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32

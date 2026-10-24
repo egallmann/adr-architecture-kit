@@ -47039,3 +47039,1162 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
+- id: 01a16bb0-e681-73eb-819e-b30d98e60963
+  alias_id: DEC-9009
+  alias_name: separate-required-output-coverage-from-authored-field-coverage
+  alias_ref: DEC-9009:separate-required-output-coverage-from-authored-field-coverage
+  entity_type: decision
+  name: Require exactly one qualified producer for every applicable normalized output
+  summary: The v0.13 objective remains complete end-to-end semantic execution for
+    all 27 published semantic types, not permanent support for only Logical ADR/Decision.
+    Keep the five closed authored-field dispositions unchanged. A s
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b30d98e60963
+  created_at: '2026-10-24T02:15:17.889Z'
+  entity_fingerprint: sha256:c588d5ef0bf264dee19ddd3d29abd1a5aa4fdd845a571d93fa8cbb5c9c991c7e
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b30d98e60963
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    adr_alias_id: ADR-L-0038
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a10888-daba-75bc-a071-d3416d58355d
+    - 01a10888-daba-75bc-a071-d343c9a83e46
+    alias_name: separate-required-output-coverage-from-authored-field-coverage
+    alias_id: DEC-9009
+  relationships:
+    declared_in:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a10888-daba-75bc-a071-d3416d58355d
+    - 01a10888-daba-75bc-a071-d343c9a83e46
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b30d98e60963
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16bb0-e681-73eb-819e-b30ea0a0e1e9
+  alias_id: DEC-9010
+  alias_name: select-type-scoped-human-facing-label-derivations
+  alias_ref: DEC-9010:select-type-scoped-human-facing-label-derivations
+  entity_type: decision
+  name: Use exact authored names or explicit type-scoped alias labels
+  summary: Keep the existing adr/logical, adr/physical-system and adr/physical-component
+    title-to-name placement and the existing name placements for boundary, capability,
+    component, data_flow and system_boundary. For each remainin
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b30ea0a0e1e9
+  created_at: '2026-10-24T02:15:17.889Z'
+  entity_fingerprint: sha256:060bb7b90c8cc98c3a1ffa85bc5d252f9faa7c1ec5c27688d9662f49dd7a4bb4
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b30ea0a0e1e9
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    adr_alias_id: ADR-L-0038
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: select-type-scoped-human-facing-label-derivations
+    alias_id: DEC-9010
+  relationships:
+    declared_in:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b30ea0a0e1e9
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16bb0-e681-73eb-819e-b30fa7d6f2b6
+  alias_id: DEC-9011
+  alias_name: select-type-scoped-summaries-without-inferred-content
+  alias_ref: DEC-9011:select-type-scoped-summaries-without-inferred-content
+  entity_type: decision
+  name: Distinguish authored summaries, literal representation copies and absent narrative
+  summary: Preserve the existing Decision and Implementation Decision summary placements.
+    For other types select exactly the required authored string in the matrix. These
+    representation-only copies do not add independent substantiv
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b30fa7d6f2b6
+  created_at: '2026-10-24T02:15:17.889Z'
+  entity_fingerprint: sha256:7b1274fba7c400be0feea7d30e06cf8b474aa89ae8910ca1ff6b6457cafc35cc
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b30fa7d6f2b6
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    adr_alias_id: ADR-L-0038
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: select-type-scoped-summaries-without-inferred-content
+    alias_id: DEC-9011
+  relationships:
+    declared_in:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b30fa7d6f2b6
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16bb0-e681-73eb-819e-b310bc681bad
+  alias_id: DEC-9012
+  alias_name: independently-verify-complete-required-output-coverage
+  alias_ref: DEC-9012:independently-verify-complete-required-output-coverage
+  entity_type: decision
+  name: Bind each output producer to exact branch, selectors, operation and evidence
+  summary: For every semantic unit independently qualify the exact output schema branch,
+    all local/relative references, allOf/oneOf/if/then requirements and applicable
+    custom-type conditions. Enumerating only the root required arra
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b310bc681bad
+  created_at: '2026-10-24T02:15:17.889Z'
+  entity_fingerprint: sha256:8c48f2a13f72315156a9ff1e47c569391762c9a63eef89821fbbcd3787814fec
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b310bc681bad
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    adr_alias_id: ADR-L-0038
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a10888-daba-75bc-a071-d34250a1b891
+    - 01a10888-daba-75bc-a071-d34463d939dc
+    alias_name: independently-verify-complete-required-output-coverage
+    alias_id: DEC-9012
+  relationships:
+    declared_in:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a10888-daba-75bc-a071-d34250a1b891
+    - 01a10888-daba-75bc-a071-d34463d939dc
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b310bc681bad
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16bb0-e681-73eb-819e-b311c48bace8
+  alias_id: DEC-9013
+  alias_name: verify-representation-without-duplicating-semantic-ownership
+  alias_ref: DEC-9013:verify-representation-without-duplicating-semantic-ownership
+  entity_type: decision
+  name: Keep independent representation verification separate from semantic equality
+  summary: 'Retain DEC-0271 exact canonical-field value preservation. An R row is
+    an output representation derivation, not another canonical-field placement and
+    not a reclassification of its authored input as ceremony. The authored '
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b311c48bace8
+  created_at: '2026-10-24T02:15:17.889Z'
+  entity_fingerprint: sha256:39c4bccfaa536e5f54f04c588a1ec2219617c4d6ce91aacb3d73dd54d6b833d0
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b311c48bace8
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    adr_alias_id: ADR-L-0038
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a10888-daba-75bc-a071-d343c9a83e46
+    - 01a10888-daba-75bc-a071-d34463d939dc
+    - 01a16457-a08c-76a2-8c85-0c284989e244
+    alias_name: verify-representation-without-duplicating-semantic-ownership
+    alias_id: DEC-9013
+  relationships:
+    declared_in:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a10888-daba-75bc-a071-d343c9a83e46
+    - 01a10888-daba-75bc-a071-d34463d939dc
+    - 01a16457-a08c-76a2-8c85-0c284989e244
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b311c48bace8
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16bb0-e681-73eb-819e-b31296c73b41
+  alias_id: DEC-9014
+  alias_name: audit-complete-envelopes-and-retain-blocked-semantic-prerequisites
+  alias_ref: DEC-9014:audit-complete-envelopes-and-retain-blocked-semantic-prerequisites
+  entity_type: decision
+  name: Account for every required destination across entity, relationship and value
+    branches
+  summary: The complete required-output audit uses these authority/evidence obligations.
+    Status refers to authority for a producer, never to runtime implementation. |
+    Required destination | Producer or explicit prerequisite | Class
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b31296c73b41
+  created_at: '2026-10-24T02:15:17.889Z'
+  entity_fingerprint: sha256:b31ff3ddbf614cf1d33f358366e884b4f41ed7ffa4f907c241fd359e9954c65b
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b31296c73b41
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    adr_alias_id: ADR-L-0038
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a16457-a08c-76a2-8c85-0c2525f0b3a5
+    - 01a16457-a08c-76a2-8c85-0c26bd9b102f
+    - 01a16457-a08c-76a2-8c85-0c274d7f4ee1
+    alias_name: audit-complete-envelopes-and-retain-blocked-semantic-prerequisites
+    alias_id: DEC-9014
+  relationships:
+    declared_in:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a16457-a08c-76a2-8c85-0c2525f0b3a5
+    - 01a16457-a08c-76a2-8c85-0c26bd9b102f
+    - 01a16457-a08c-76a2-8c85-0c274d7f4ee1
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b31296c73b41
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16bb0-e681-73eb-819e-b313463dcf5c
+  alias_id: DEC-9015
+  alias_name: publish-minimal-successors-without-rebinding-historical-authority
+  alias_ref: DEC-9015:publish-minimal-successors-without-rebinding-historical-authority
+  entity_type: decision
+  name: Select AI 1.4 and ACC 1.4 with unchanged NM 2.5 after human acceptance
+  summary: 'Recommended sequence: human acceptance of this reviewed proposed ADR;
+    independent immutable AI 1.4 publication/qualification; independent ACC 1.4 publication
+    selecting exact AI 1.4 and unchanged NM 2.5; then separately s'
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b313463dcf5c
+  created_at: '2026-10-24T02:15:17.889Z'
+  entity_fingerprint: sha256:7d7e4d3602b17586c890e43c7b555b5167ced0ceb7f5de5866a9512a815ac659
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b313463dcf5c
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    adr_alias_id: ADR-L-0038
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a16457-a08c-76a2-8c85-0c290f9e5899
+    - 01a16457-a08c-76a2-8c85-0c2bc45c95f7
+    alias_name: publish-minimal-successors-without-rebinding-historical-authority
+    alias_id: DEC-9015
+  relationships:
+    declared_in:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a16457-a08c-76a2-8c85-0c290f9e5899
+    - 01a16457-a08c-76a2-8c85-0c2bc45c95f7
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b313463dcf5c
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16bb0-e681-73eb-819e-b314b593642f
+  alias_id: DEC-9016
+  alias_name: qualify-output-authority-before-executable-materialization
+  alias_ref: DEC-9016:qualify-output-authority-before-executable-materialization
+  entity_type: decision
+  name: Require publication conformance, explicit blockers and separate human acceptance
+  summary: This proposed ADR and its generated projections are governance artifacts
+    only. No AI 1.4/ACC 1.4 contract, runtime materializer, public capability or Constructed
+    result is published or enabled. Human architectural accept
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b314b593642f
+  created_at: '2026-10-24T02:15:17.889Z'
+  entity_fingerprint: sha256:1a20ffb4ce441b5b72c053efd28e7c366e3af0cd8bf942cd05c6e05f8a0a3c1d
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b314b593642f
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    adr_alias_id: ADR-L-0038
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a10888-daba-75bc-a071-d34018be0d8e
+    - 01a16457-a08c-76a2-8c85-0c2bc45c95f7
+    alias_name: qualify-output-authority-before-executable-materialization
+    alias_id: DEC-9016
+  relationships:
+    declared_in:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a10888-daba-75bc-a071-d34018be0d8e
+    - 01a16457-a08c-76a2-8c85-0c2bc45c95f7
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b314b593642f
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16bb0-e681-73eb-819e-b31562f94c0c
+  alias_id: INV-0301
+  alias_name: required-output-needs-one-qualified-producer
+  alias_ref: INV-0301:required-output-needs-one-qualified-producer
+  entity_type: invariant
+  name: INV-0301
+  summary: Every applicable required output MUST have exactly one qualified producer;
+    a BLOCKED prerequisite MUST NOT count as a producer or complete coverage.
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b31562f94c0c
+  created_at: '2026-10-24T02:15:17.889Z'
+  entity_fingerprint: sha256:b39526ec6d345bce636578c9cf08f597b2d5a5a48876c81186c26070724121b1
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b31562f94c0c
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    adr_alias_id: ADR-L-0038
+    scope: semantic-authority
+    statement: Every applicable required output MUST have exactly one qualified producer;
+      a BLOCKED prerequisite MUST NOT count as a producer or complete coverage.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a16bb0-e681-73eb-819e-b30d98e60963
+    supersedes: []
+    alias_id: INV-0301
+    alias_name: required-output-needs-one-qualified-producer
+  relationships:
+    declared_in:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b31562f94c0c
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16bb0-e682-730f-93a9-54d6535b6993
+  alias_id: INV-0302
+  alias_name: labels-follow-explicit-type-scoped-literal-rules
+  alias_ref: INV-0302:labels-follow-explicit-type-scoped-literal-rules
+  entity_type: invariant
+  name: INV-0302
+  summary: Generated names and summaries MUST use exactly the selected type-scoped
+    input and literal operation, without implicit fallback, prose generation, truncation
+    or formatting.
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e682-730f-93a9-54d6535b6993
+  created_at: '2026-10-24T02:15:17.890Z'
+  entity_fingerprint: sha256:09c65eca094e3119653a4d79ca748c29dc73c41fdb079c89af083334c4283882
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54d6535b6993
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    adr_alias_id: ADR-L-0038
+    scope: semantic-authority
+    statement: Generated names and summaries MUST use exactly the selected type-scoped
+      input and literal operation, without implicit fallback, prose generation, truncation
+      or formatting.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a16bb0-e681-73eb-819e-b30ea0a0e1e9
+    supersedes: []
+    alias_id: INV-0302
+    alias_name: labels-follow-explicit-type-scoped-literal-rules
+  relationships:
+    declared_in:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54d6535b6993
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16bb0-e682-730f-93a9-54d7db0173ba
+  alias_id: INV-0303
+  alias_name: system-summary-does-not-invent-narrative
+  alias_ref: INV-0303:system-summary-does-not-invent-narrative
+  entity_type: invariant
+  name: INV-0303
+  summary: The entity/system summary MUST be explicit alias_name label duplication
+    only; it MUST NOT infer substantive description or borrow declaring-ADR content.
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e682-730f-93a9-54d7db0173ba
+  created_at: '2026-10-24T02:15:17.890Z'
+  entity_fingerprint: sha256:63fac07e269809d0d21c8686de0404927a70c7ec1b006671141f850c7470122c
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54d7db0173ba
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    adr_alias_id: ADR-L-0038
+    scope: semantic-authority
+    statement: The entity/system summary MUST be explicit alias_name label duplication
+      only; it MUST NOT infer substantive description or borrow declaring-ADR content.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a16bb0-e681-73eb-819e-b30fa7d6f2b6
+    supersedes: []
+    alias_id: INV-0303
+    alias_name: system-summary-does-not-invent-narrative
+  relationships:
+    declared_in:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54d7db0173ba
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16bb0-e682-730f-93a9-54d8fd3496ec
+  alias_id: INV-0304
+  alias_name: output-coverage-includes-schema-conditions-and-evidence
+  alias_ref: INV-0304:output-coverage-includes-schema-conditions-and-evidence
+  entity_type: invariant
+  name: INV-0304
+  summary: Output qualification MUST independently resolve applicable branches/conditions
+    and bind selectors, rule identity, inputs, operation, classification, equality
+    and contextual dependencies.
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e682-730f-93a9-54d8fd3496ec
+  created_at: '2026-10-24T02:15:17.890Z'
+  entity_fingerprint: sha256:b4b1d919f6b70d6dcc626f3c5dd09d16ef7611844b17af6c05992f61595f353e
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54d8fd3496ec
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    adr_alias_id: ADR-L-0038
+    scope: semantic-authority
+    statement: Output qualification MUST independently resolve applicable branches/conditions
+      and bind selectors, rule identity, inputs, operation, classification, equality
+      and contextual dependencies.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a16bb0-e681-73eb-819e-b310bc681bad
+    supersedes: []
+    alias_id: INV-0304
+    alias_name: output-coverage-includes-schema-conditions-and-evidence
+  relationships:
+    declared_in:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54d8fd3496ec
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16bb0-e682-730f-93a9-54d9b4f3c511
+  alias_id: INV-0305
+  alias_name: representation-proof-does-not-replace-semantic-equality
+  alias_ref: INV-0305:representation-proof-does-not-replace-semantic-equality
+  entity_type: invariant
+  name: INV-0305
+  summary: A representation copy MUST NOT add independent semantic ownership, remove
+    its authored semantic destination, or substitute representation verification for
+    whole-ledger equality.
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e682-730f-93a9-54d9b4f3c511
+  created_at: '2026-10-24T02:15:17.890Z'
+  entity_fingerprint: sha256:d1e87a26c84509fc20aef7ff33d21a48d304a80c1e168b721dda7cd2e4ddb636
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54d9b4f3c511
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    adr_alias_id: ADR-L-0038
+    scope: semantic-authority
+    statement: A representation copy MUST NOT add independent semantic ownership,
+      remove its authored semantic destination, or substitute representation verification
+      for whole-ledger equality.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a16bb0-e681-73eb-819e-b311c48bace8
+    supersedes: []
+    alias_id: INV-0305
+    alias_name: representation-proof-does-not-replace-semantic-equality
+  relationships:
+    declared_in:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54d9b4f3c511
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16bb0-e682-730f-93a9-54da4e44f326
+  alias_id: INV-0306
+  alias_name: blocked-semantic-prerequisites-remain-explicit
+  alias_ref: INV-0306:blocked-semantic-prerequisites-remain-explicit
+  entity_type: invariant
+  name: INV-0306
+  summary: Missing lifecycle, ownership, endpoint or output-recipe authority MUST
+    remain BLOCKED and MUST prevent complete materialization without invented semantics
+    or synthetic roots.
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e682-730f-93a9-54da4e44f326
+  created_at: '2026-10-24T02:15:17.890Z'
+  entity_fingerprint: sha256:94f47cde570a08a47d1e549716e5c19e15f6790c13f029323089609605769544
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54da4e44f326
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    adr_alias_id: ADR-L-0038
+    scope: semantic-authority
+    statement: Missing lifecycle, ownership, endpoint or output-recipe authority MUST
+      remain BLOCKED and MUST prevent complete materialization without invented semantics
+      or synthetic roots.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a16bb0-e681-73eb-819e-b31296c73b41
+    supersedes: []
+    alias_id: INV-0306
+    alias_name: blocked-semantic-prerequisites-remain-explicit
+  relationships:
+    declared_in:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54da4e44f326
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16bb0-e682-730f-93a9-54db5e0405d6
+  alias_id: INV-0307
+  alias_name: output-successors-preserve-historical-authority
+  alias_ref: INV-0307:output-successors-preserve-historical-authority
+  entity_type: invariant
+  name: INV-0307
+  summary: Successor output authority MUST select exact AI 1.4 and ACC 1.4 after publication,
+    reuse unchanged NM 2.5, and MUST NOT mutate historical resources or current selection.
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e682-730f-93a9-54db5e0405d6
+  created_at: '2026-10-24T02:15:17.890Z'
+  entity_fingerprint: sha256:59e596f5b063a82d02ecd0b1c8a795892ec297e6b962d14c5533e554061ab558
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54db5e0405d6
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    adr_alias_id: ADR-L-0038
+    scope: semantic-authority
+    statement: Successor output authority MUST select exact AI 1.4 and ACC 1.4 after
+      publication, reuse unchanged NM 2.5, and MUST NOT mutate historical resources
+      or current selection.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a16bb0-e681-73eb-819e-b313463dcf5c
+    supersedes: []
+    alias_id: INV-0307
+    alias_name: output-successors-preserve-historical-authority
+  relationships:
+    declared_in:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54db5e0405d6
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16bb0-e682-730f-93a9-54dc7feefa48
+  alias_id: INV-0308
+  alias_name: proposed-output-decision-does-not-authorize-runtime
+  alias_ref: INV-0308:proposed-output-decision-does-not-authorize-runtime
+  entity_type: invariant
+  name: INV-0308
+  summary: This proposed ADR MUST NOT imply human acceptance, successor publication,
+    materialization execution, public capability, semantic_equivalent or Constructed.
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e682-730f-93a9-54dc7feefa48
+  created_at: '2026-10-24T02:15:17.890Z'
+  entity_fingerprint: sha256:911b185e2e8c6c2169d2cc58cbd25f0f4ff633493d160ad3da12cb4b08f0b4e9
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54dc7feefa48
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    adr_alias_id: ADR-L-0038
+    scope: semantic-authority
+    statement: This proposed ADR MUST NOT imply human acceptance, successor publication,
+      materialization execution, public capability, semantic_equivalent or Constructed.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a16bb0-e681-73eb-819e-b314b593642f
+    supersedes: []
+    alias_id: INV-0308
+    alias_name: proposed-output-decision-does-not-authorize-runtime
+  relationships:
+    declared_in:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54dc7feefa48
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a16bb0-e682-730f-93a9-54ddf776af32
+  alias_id: ADR-L-0038
+  alias_name: explicit-required-output-authority-across-the-ai-catalog
+  alias_ref: ADR-L-0038:explicit-required-output-authority-across-the-ai-catalog
+  entity_type: adr
+  name: Explicit Required-Output Authority Across the AI Catalog
+  summary: At develop e262b86745c7c9e23536c81e768da1fec2c710b9, exact ACC 1.3, AI
+    1.3 and NM 2.5 closures validate. NM 2.5 requires name and summary for regular
+    entities. Among the 17 regular semantic types, 9 have no direct name p
+  uri: adr://adr-architecture-kit/entities/01a16bb0-e682-730f-93a9-54ddf776af32
+  created_at: '2026-10-24T02:15:17.890Z'
+  entity_fingerprint: sha256:c5e5776a4e185bd9b4543f78e1596667d9cb6516f85fe8e3eed54e1c609ae535
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32
+    artifact_path: adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - architecture
+    - semantic-authority
+    - authoring
+    - conformance
+    tags:
+    - required-output-coverage
+    - architecture-interpretation
+    - normalized-model-2.5
+    - v0.13
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
+    alias_name: explicit-required-output-authority-across-the-ai-catalog
+    alias_id: ADR-L-0038
+  relationships:
+    declared_in: []
+    references:
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index

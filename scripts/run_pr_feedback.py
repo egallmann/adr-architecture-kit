@@ -19,6 +19,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 # added here deliberately; silently relying on a naming convention would make
 # the PR gate look fast while allowing a semantic surface to go untested.
 SEMANTIC_TESTS: tuple[str, ...] = (
+    "tests/test_required_output_authority_design.py",
     "tests/test_authoring_construction_v13_publication.py",
     "tests/test_architecture_interpretation_v13_publication.py",
     "tests/test_import_namespace.py",

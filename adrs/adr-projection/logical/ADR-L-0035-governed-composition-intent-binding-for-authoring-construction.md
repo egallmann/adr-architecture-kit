@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 4ab99eada1a80b06e572f159f0045e954cf35106370a4547916823ef336c7059
-rendered_hash: ede4a71acd05237fa9f1374f8804aa4308a91de1484e71802199517d8587d3cf
+rendered_hash: d202997ef802143aba3088fb20611009886ca0262a9ee8a2df4a4678b2ac0812
 -->
 
 # ADR-L-0035: Governed Composition-Intent Binding for Authoring Construction
@@ -921,6 +921,7 @@ flowchart LR
 - [ADR-L-0033](ADR-L-0033-governed-candidate-binding-for-authoring-construction.md)
 - [ADR-L-0034](ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.md)
 - [ADR-L-0037](ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.md)
+- [ADR-L-0038](ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.md)
 
 
 ## Architecture Relationships

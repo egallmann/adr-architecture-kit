@@ -11,15 +11,15 @@
     "node_semantic_sha256": "e3dd3709c2db3708cd8d85e6795e80f4adeecdba4d4b7b8285c54e951ee304ca",
     "edge_semantic_sha256": "7310e69d76b19f321bd6b4b85ef1092b3a509956fa0ab7dcc56bfc405ae45faf",
     "node_types": {
-      "capability": 58,
-      "boundary": 4,
-      "invariant": 275,
       "adr": 49,
-      "decision": 287,
-      "contract": 5,
+      "boundary": 4,
+      "capability": 58,
       "component": 9,
-      "interface": 14,
+      "contract": 5,
+      "decision": 287,
       "implementation_decision": 14,
+      "interface": 14,
+      "invariant": 275,
       "system": 2
     },
     "edge_types": {
@@ -39,7 +39,7 @@
       "supersedes": 1
     },
     "baseline_identity_evidence": {
-      "uuidv7_nodes": 700,
+      "uuidv7_nodes": 717,
       "nodes_with_alias_envelope": 0,
       "uuidv7_edges": 0,
       "edges_with_alias_envelope": 0

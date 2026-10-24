@@ -455,6 +455,15 @@ def test_changed_catalog_bytes_cannot_reuse_an_old_resource_qualification(
         publication.qualify(ROOT, history=False)
 
 
+@pytest.mark.parametrize("key", ["authoring-construction/1.3/rules", PREFIX + "../rules"])
+def test_valid_but_unselected_or_malformed_resource_conveys_no_authority(
+    snapshot: dict[str, Any], key: str
+) -> None:
+    snapshot[PREFIX + CATALOG]["semanticDependencies"].append(key)
+    with pytest.raises(publication.PublicationError, match="unselected_resource_has_no_authority"):
+        publication.qualify(ROOT, history=False)
+
+
 def test_exact_installed_wheel_discovery(tmp_path: Path) -> None:
     wheel_dir = tmp_path / "wheels"
     subprocess.run(

@@ -299,6 +299,14 @@ def _qualify(root: Path, *, history: bool) -> dict[str, Any]:
         qualified_history(root)
     raw = {name: read(root, PREFIX + name) for name in NAMES}
     catalog = raw[CATALOG]
+    allowed_resources = {
+        entry["canonicalResourceKey"] for entry in read(root, BASE + "contract")["resourceManifest"]
+    } | {
+        BASE + "contract",
+        "authoring-domain/1.1/contract",
+        "authoring-domain/1.1/schema",
+        *(PREFIX + name for name in NAMES),
+    }
 
     def qualified_references(node: Any, found: set[str]) -> None:
         if isinstance(node, dict):
@@ -307,6 +315,8 @@ def _qualify(root: Path, *, history: bool) -> dict[str, Any]:
                 and "content_digest" in node
                 and "schema_pointer" in node
             ):
+                if node["canonical_resource_key"] not in allowed_resources:
+                    raise PublicationError("unselected_resource_has_no_authority")
                 resolve(root, node)
                 found.add(node["canonical_resource_key"])
             for child in node.values():
@@ -315,6 +325,9 @@ def _qualify(root: Path, *, history: bool) -> dict[str, Any]:
             for child in node:
                 qualified_references(child, found)
 
+    for value in raw.values():
+        if not set(value.get("semanticDependencies", [])).issubset(allowed_resources):
+            raise PublicationError("unselected_resource_has_no_authority")
     for value in raw.values():
         referenced: set[str] = set()
         qualified_references(value, referenced)

@@ -1,0 +1,696 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.ste.systems/contracts/architecture-interpretation/v1.4/resources/required-output-derivations.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "resource",
+    "semanticDependencies",
+    "source_contract",
+    "output_contract",
+    "field_dispositions",
+    "operation",
+    "coverage",
+    "blockers",
+    "branches",
+    "types",
+    "status_scope"
+  ],
+  "properties": {
+    "resource": {
+      "const": "architecture-interpretation/1.4/required-output-derivations"
+    },
+    "semanticDependencies": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "source_contract": {
+      "const": "authoring@1.7"
+    },
+    "output_contract": {
+      "const": "normalized-model@2.5"
+    },
+    "field_dispositions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonical_resource_key",
+        "content_digest",
+        "schema_pointer"
+      ],
+      "properties": {
+        "canonical_resource_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "schema_pointer": {
+          "type": "string",
+          "pattern": "^(|/.*)$"
+        }
+      }
+    },
+    "operation": {
+      "const": {
+        "id": "literal_string_copy",
+        "input_type": "string",
+        "output_type": "string",
+        "input_count": 1,
+        "presence": "required_authored_input",
+        "algorithm": "output is the exact input JSON string, including empty strings and arbitrary length where source-valid",
+        "fallback": false,
+        "formatting": false,
+        "semantic_ownership": "none_original_authored_field_remains_significant_once"
+      }
+    },
+    "coverage": {
+      "const": {
+        "required": "exactly_one_applicable_qualified_producer_per_destination_after_identity_accounting",
+        "BLOCKED": "missing_prerequisite_not_a_producer_or_coverage",
+        "conditions": "evaluate_all_exact_schema_branches_and_context_prerequisites_before_materialization",
+        "unknown_or_competing": "fail_closed",
+        "complete_interpretation": "Unavailable",
+        "catalog_membership_is_root_authority": false,
+        "conditional_producer": "A qualified rule is not an instance result; any missing applicability, identity or context prerequisite makes that destination BLOCKED and contributes no producer."
+      }
+    },
+    "blockers": {
+      "const": {
+        "alias_ref_recipe": "Exact alias_ref composition format is not uniquely selected by accepted forward authority.",
+        "uri_recipe": "Exact generated entity URI template/encoding is not uniquely selected; detached locators are not entity URIs.",
+        "created_at_encoding": "UUIDv7-derived time is authorized in principle; exact NM created_at encoding/precision is not uniquely selected.",
+        "fingerprint_preimage": "Exact entity_fingerprint canonical preimage and exclusion domain require qualified authority; historical hashes do not select it.",
+        "source_envelope_recipe": "Source facts are governed, but this complete NM envelope field has no uniquely selected representation recipe.",
+        "completeness_recipe": "Entity-specific completeness representation/criteria need an exact qualified recipe, not model-complete assertion.",
+        "custom_lifecycle": "No accepted custom-entity lifecycle owner/value rule exists; existence_state is not lifecycle_stage.",
+        "declaring_context": "Native standalone representation does not supply unique declaring ADR lifecycle provenance.",
+        "shared_identity": "Coalesced shared system identity cannot activate competing producers; exact applicability must resolve first.",
+        "relationship_branch": "Entity-named inherited placement does not by itself qualify the canonical-relationship output branch.",
+        "relationship_envelope": "Complete relationship record/envelope or generated identifier recipe is not selected by forward authority.",
+        "nonselected_output": "No qualified producer for this conditional destination under this type/source branch.",
+        "owner_local_context": "Governed owner identity, topology key and multiplicity must be independently qualified; no independent root.",
+        "custom_qualification": "Exact selected CEC registry/custom contract and properties must qualify; CEC closure is not registry selection."
+      }
+    },
+    "branches": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "branch_id",
+          "schema",
+          "requirements",
+          "applicability"
+        ],
+        "properties": {
+          "branch_id": {
+            "enum": [
+              "regular",
+              "normative-proposition",
+              "canonical-relationship",
+              "compatibility-relationship",
+              "proposition-owned-value",
+              "owner-local-value"
+            ]
+          },
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "canonical_resource_key",
+              "content_digest",
+              "schema_pointer"
+            ],
+            "properties": {
+              "canonical_resource_key": {
+                "type": "string",
+                "minLength": 1
+              },
+              "content_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "schema_pointer": {
+                "type": "string",
+                "pattern": "^(|/.*)$"
+              }
+            }
+          },
+          "requirements": {
+            "type": "array",
+            "minItems": 0,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "schema",
+                "keyword",
+                "constraint"
+              ],
+              "properties": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "canonical_resource_key",
+                    "content_digest",
+                    "schema_pointer"
+                  ],
+                  "properties": {
+                    "canonical_resource_key": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "content_digest": {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    },
+                    "schema_pointer": {
+                      "type": "string",
+                      "pattern": "^(|/.*)$"
+                    }
+                  }
+                },
+                "keyword": {
+                  "enum": [
+                    "required",
+                    "if",
+                    "then",
+                    "else",
+                    "not",
+                    "oneOf",
+                    "anyOf",
+                    "allOf",
+                    "dependencies",
+                    "dependentRequired"
+                  ]
+                },
+                "constraint": {}
+              }
+            }
+          },
+          "applicability": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "types": {
+      "type": "array",
+      "minItems": 27,
+      "maxItems": 27,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "semantic_type",
+          "output_branch",
+          "source_schema",
+          "identity_policy",
+          "root_permission",
+          "context_dependencies",
+          "outputs"
+        ],
+        "properties": {
+          "semantic_type": {
+            "enum": [
+              "adr/logical",
+              "adr/physical-component",
+              "adr/physical-system",
+              "entity/boundary",
+              "entity/capability",
+              "entity/component",
+              "entity/contract",
+              "entity/data_flow",
+              "entity/decision",
+              "entity/evidence_expectation",
+              "entity/extension",
+              "entity/gap",
+              "entity/implementation_decision",
+              "entity/interface",
+              "entity/invariant",
+              "entity/normative_proposition",
+              "entity/system",
+              "entity/system_boundary",
+              "relationship/calls",
+              "relationship/depends_on",
+              "relationship/extension",
+              "relationship/publishes_to",
+              "relationship/reads_from",
+              "relationship/subscribes_to",
+              "relationship/writes_to",
+              "value/normative_force",
+              "value/topology_component"
+            ]
+          },
+          "output_branch": {
+            "enum": [
+              "regular",
+              "normative-proposition",
+              "canonical-relationship",
+              "compatibility-relationship",
+              "proposition-owned-value",
+              "owner-local-value"
+            ]
+          },
+          "source_schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "canonical_resource_key",
+              "content_digest",
+              "schema_pointer"
+            ],
+            "properties": {
+              "canonical_resource_key": {
+                "type": "string",
+                "minLength": 1
+              },
+              "content_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "schema_pointer": {
+                "type": "string",
+                "pattern": "^(|/.*)$"
+              }
+            }
+          },
+          "identity_policy": {
+            "type": "string",
+            "minLength": 1
+          },
+          "root_permission": {
+            "const": "catalog_membership_does_not_authorize_independent_root"
+          },
+          "context_dependencies": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "alias_ref_recipe",
+                "uri_recipe",
+                "created_at_encoding",
+                "fingerprint_preimage",
+                "source_envelope_recipe",
+                "completeness_recipe",
+                "custom_lifecycle",
+                "declaring_context",
+                "shared_identity",
+                "relationship_branch",
+                "relationship_envelope",
+                "nonselected_output",
+                "owner_local_context",
+                "custom_qualification"
+              ]
+            }
+          },
+          "outputs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "destination",
+                "applicability",
+                "status",
+                "classification",
+                "authorities",
+                "semantic_equality",
+                "verification",
+                "prerequisites",
+                "destination_schema",
+                "required_subdestinations"
+              ],
+              "properties": {
+                "destination": {
+                  "type": "string",
+                  "pattern": "^/"
+                },
+                "applicability": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "output_branch",
+                    "evaluation",
+                    "identity",
+                    "context",
+                    "missing_prerequisite"
+                  ],
+                  "properties": {
+                    "output_branch": {
+                      "enum": [
+                        "regular",
+                        "normative-proposition",
+                        "canonical-relationship",
+                        "compatibility-relationship",
+                        "proposition-owned-value",
+                        "owner-local-value"
+                      ]
+                    },
+                    "evaluation": {
+                      "const": "complete_selected_schema_constraints_and_authored_field_presence"
+                    },
+                    "identity": {
+                      "const": "established_before_producer_selection"
+                    },
+                    "context": {
+                      "const": "all_listed_prerequisites_independently_qualified"
+                    },
+                    "missing_prerequisite": {
+                      "const": "BLOCKED_not_a_producer"
+                    }
+                  }
+                },
+                "status": {
+                  "enum": [
+                    "QUALIFIED",
+                    "BLOCKED"
+                  ]
+                },
+                "classification": {
+                  "enum": [
+                    "semantic",
+                    "representation_only",
+                    "qualification_pending"
+                  ]
+                },
+                "authorities": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "canonical_resource_key",
+                      "content_digest",
+                      "schema_pointer"
+                    ],
+                    "properties": {
+                      "canonical_resource_key": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "content_digest": {
+                        "type": "string",
+                        "pattern": "^sha256:[0-9a-f]{64}$"
+                      },
+                      "schema_pointer": {
+                        "type": "string",
+                        "pattern": "^(|/.*)$"
+                      }
+                    }
+                  }
+                },
+                "semantic_equality": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "verification": {
+                  "type": "array",
+                  "minItems": 3,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "prerequisites": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "enum": [
+                      "alias_ref_recipe",
+                      "uri_recipe",
+                      "created_at_encoding",
+                      "fingerprint_preimage",
+                      "source_envelope_recipe",
+                      "completeness_recipe",
+                      "custom_lifecycle",
+                      "declaring_context",
+                      "shared_identity",
+                      "relationship_branch",
+                      "relationship_envelope",
+                      "nonselected_output",
+                      "owner_local_context",
+                      "custom_qualification"
+                    ]
+                  }
+                },
+                "producer": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "kind",
+                    "rule_id",
+                    "rule",
+                    "inputs",
+                    "source_field"
+                  ],
+                  "properties": {
+                    "kind": {
+                      "enum": [
+                        "literal_string_copy",
+                        "field_placement",
+                        "field_inventory",
+                        "type_mapping",
+                        "contextual_rule",
+                        "schema_constant",
+                        "mapping_constant"
+                      ]
+                    },
+                    "rule_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "rule": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "canonical_resource_key",
+                            "content_digest",
+                            "schema_pointer"
+                          ],
+                          "properties": {
+                            "canonical_resource_key": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "content_digest": {
+                              "type": "string",
+                              "pattern": "^sha256:[0-9a-f]{64}$"
+                            },
+                            "schema_pointer": {
+                              "type": "string",
+                              "pattern": "^(|/.*)$"
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "local_rule"
+                          ],
+                          "properties": {
+                            "local_rule": {
+                              "const": "literal_string_copy"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "inputs": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "canonical_resource_key",
+                          "content_digest",
+                          "schema_pointer"
+                        ],
+                        "properties": {
+                          "canonical_resource_key": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "content_digest": {
+                            "type": "string",
+                            "pattern": "^sha256:[0-9a-f]{64}$"
+                          },
+                          "schema_pointer": {
+                            "type": "string",
+                            "pattern": "^(|/.*)$"
+                          }
+                        }
+                      }
+                    },
+                    "source_field": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "blocked": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "code",
+                    "missing_authority",
+                    "resolution",
+                    "allows_complete_materialization"
+                  ],
+                  "properties": {
+                    "code": {
+                      "enum": [
+                        "alias_ref_recipe",
+                        "uri_recipe",
+                        "created_at_encoding",
+                        "fingerprint_preimage",
+                        "source_envelope_recipe",
+                        "completeness_recipe",
+                        "custom_lifecycle",
+                        "declaring_context",
+                        "shared_identity",
+                        "relationship_branch",
+                        "relationship_envelope",
+                        "nonselected_output",
+                        "owner_local_context",
+                        "custom_qualification"
+                      ]
+                    },
+                    "missing_authority": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "resolution": {
+                      "const": "exact_qualified_existing_recipe_or_separately_accepted_narrow_authority_refinement"
+                    },
+                    "allows_complete_materialization": {
+                      "const": false
+                    }
+                  }
+                },
+                "destination_schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "canonical_resource_key",
+                    "content_digest",
+                    "schema_pointer"
+                  ],
+                  "properties": {
+                    "canonical_resource_key": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "content_digest": {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    },
+                    "schema_pointer": {
+                      "type": "string",
+                      "pattern": "^(|/.*)$"
+                    }
+                  }
+                },
+                "required_subdestinations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "destination",
+                      "schema",
+                      "coverage"
+                    ],
+                    "properties": {
+                      "destination": {
+                        "type": "string",
+                        "pattern": "^/"
+                      },
+                      "schema": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "canonical_resource_key",
+                          "content_digest",
+                          "schema_pointer"
+                        ],
+                        "properties": {
+                          "canonical_resource_key": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "content_digest": {
+                            "type": "string",
+                            "pattern": "^sha256:[0-9a-f]{64}$"
+                          },
+                          "schema_pointer": {
+                            "type": "string",
+                            "pattern": "^(|/.*)$"
+                          }
+                        }
+                      },
+                      "coverage": {
+                        "const": "same_complete_parent_value_no_second_producer"
+                      }
+                    }
+                  }
+                }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "status": {
+                        "const": "QUALIFIED"
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": [
+                      "producer"
+                    ],
+                    "not": {
+                      "required": [
+                        "blocked"
+                      ]
+                    }
+                  },
+                  "else": {
+                    "required": [
+                      "blocked"
+                    ],
+                    "not": {
+                      "required": [
+                        "producer"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "status_scope": {
+      "const": "publication_authority_only_all_instance_prerequisites_must_independently_qualify"
+    }
+  }
+}

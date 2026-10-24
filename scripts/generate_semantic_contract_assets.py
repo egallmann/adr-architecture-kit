@@ -3249,11 +3249,80 @@ def publish_authoring_construction_13() -> None:
         write_json(path, successor)
 
 
+def publish_architecture_interpretation_14() -> None:
+    """Append AI 1.4 only, importing unchanged authorities by exact identity."""
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from scripts.qualify_ai14_publication import BASE, NAMES, PREFIX, qualify, read
+
+    qualify(ROOT)
+    own = {PREFIX + name: read(ROOT, PREFIX + name) for name in NAMES}
+    historical_roles = {BASE + "contract": "normative-definition"}
+    for family, version in (
+        ("architecture-interpretation", "1.3"),
+        ("authoring-construction", "1.3"),
+    ):
+        for entry in read_json(CANONICAL / f"definitions/{family}-{version}.json")[
+            "resourceManifest"
+        ]:
+            historical_roles[entry["canonicalResourceKey"]] = entry["role"]
+
+    contents: dict[str, Any] = {}
+    pending = set(own)
+    while pending:
+        key = min(pending)
+        pending.remove(key)
+        value = own[key] if key in own else read(ROOT, key)
+        contents[key] = value
+        pending.update(discovered_dependencies(key, value) - contents.keys())
+    manifest = []
+    for key in sorted(contents):
+        name = key.removeprefix(PREFIX)
+        role = (
+            (
+                "interpretation-conformance"
+                if name == "conformance"
+                else "source-contract-schema" if name.endswith(".schema") else "interpretation-rule"
+            )
+            if key in own
+            else historical_roles[key]
+        )
+        manifest.append(
+            {
+                "canonicalResourceKey": key,
+                "contentDigest": digest(contents[key]),
+                "role": role,
+                "dependencies": [
+                    {"canonicalResourceKey": dep, "contentDigest": digest(contents[dep])}
+                    for dep in sorted(discovered_dependencies(key, contents[key]))
+                ],
+            }
+        )
+    successor = definition(
+        "architecture-interpretation", manifest, [PREFIX + "conformance"], version="1.4"
+    )
+    source = ROOT / "contracts/architecture-interpretation/v1.4"
+    for name in NAMES:
+        data = (source / "resources" / (name + ".json")).read_bytes()
+        filename = "architecture-interpretation-1.4-" + name + ".json"
+        (RESOURCES / filename).write_bytes(data)
+        (BUNDLED / "resources" / filename).write_bytes(data)
+    for path in (
+        source / "contract.json",
+        CANONICAL / "definitions/architecture-interpretation-1.4.json",
+        BUNDLED / "definitions/architecture-interpretation-1.4.json",
+        BUNDLED / "architecture-interpretation-1.4.json",
+    ):
+        write_json(path, successor)
+
+
 if __name__ == "__main__":
     if sys.argv[1:] == ["--publish-nm25-only"]:
         publish_normalized_model_25()
     elif sys.argv[1:] == ["--publish-ai13-only"]:
         publish_architecture_interpretation_13()
+    elif sys.argv[1:] == ["--publish-ai14-only"]:
+        publish_architecture_interpretation_14()
     elif sys.argv[1:] == ["--publish-acc13-only"]:
         publish_authoring_construction_13()
     elif sys.argv[1:]:

@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.ste.systems/contracts/architecture-interpretation/v1.4/resources/conformance.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "resource",
+    "semanticDependencies",
+    "authority_only",
+    "runtime_execution_coverage",
+    "cases"
+  ],
+  "properties": {
+    "resource": {
+      "const": "architecture-interpretation/1.4/conformance"
+    },
+    "semanticDependencies": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "authority_only": {
+      "const": true
+    },
+    "runtime_execution_coverage": {
+      "const": false
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "category",
+          "semantic_type",
+          "assertion",
+          "expected",
+          "fixture",
+          "coverage"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^AI14-[0-9]{3}$"
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1
+          },
+          "semantic_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "assertion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected": {
+            "enum": [
+              "conforms",
+              "rejects",
+              "preserves",
+              "excludes",
+              "unavailable"
+            ]
+          },
+          "fixture": {
+            "type": "object"
+          },
+          "coverage": {
+            "const": "authority_only_not_runtime_execution"
+          }
+        }
+      }
+    }
+  }
+}

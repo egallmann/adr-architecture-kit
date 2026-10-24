@@ -18166,7 +18166,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b31562f94c0c
   created_at: '2026-10-24T02:15:17.889Z'
   entity_fingerprint: sha256:b39526ec6d345bce636578c9cf08f597b2d5a5a48876c81186c26070724121b1
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b31562f94c0c
@@ -18233,7 +18233,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16bb0-e682-730f-93a9-54d6535b6993
   created_at: '2026-10-24T02:15:17.890Z'
   entity_fingerprint: sha256:09c65eca094e3119653a4d79ca748c29dc73c41fdb079c89af083334c4283882
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54d6535b6993
@@ -18300,7 +18300,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16bb0-e682-730f-93a9-54d7db0173ba
   created_at: '2026-10-24T02:15:17.890Z'
   entity_fingerprint: sha256:63fac07e269809d0d21c8686de0404927a70c7ec1b006671141f850c7470122c
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54d7db0173ba
@@ -18367,7 +18367,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16bb0-e682-730f-93a9-54d8fd3496ec
   created_at: '2026-10-24T02:15:17.890Z'
   entity_fingerprint: sha256:b4b1d919f6b70d6dcc626f3c5dd09d16ef7611844b17af6c05992f61595f353e
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54d8fd3496ec
@@ -18435,7 +18435,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16bb0-e682-730f-93a9-54d9b4f3c511
   created_at: '2026-10-24T02:15:17.890Z'
   entity_fingerprint: sha256:d1e87a26c84509fc20aef7ff33d21a48d304a80c1e168b721dda7cd2e4ddb636
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54d9b4f3c511
@@ -18503,7 +18503,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16bb0-e682-730f-93a9-54da4e44f326
   created_at: '2026-10-24T02:15:17.890Z'
   entity_fingerprint: sha256:94f47cde570a08a47d1e549716e5c19e15f6790c13f029323089609605769544
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54da4e44f326
@@ -18570,7 +18570,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16bb0-e682-730f-93a9-54db5e0405d6
   created_at: '2026-10-24T02:15:17.890Z'
   entity_fingerprint: sha256:59e596f5b063a82d02ecd0b1c8a795892ec297e6b962d14c5533e554061ab558
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54db5e0405d6
@@ -18632,12 +18632,13 @@ entities:
   alias_ref: INV-0308:proposed-output-decision-does-not-authorize-runtime
   entity_type: invariant
   name: INV-0308
-  summary: This proposed ADR MUST NOT imply human acceptance, successor publication,
-    materialization execution, public capability, semantic_equivalent or Constructed.
+  summary: This ADR MUST NOT imply human acceptance without explicit recorded approval;
+    its acceptance MUST NOT imply successor publication, materialization execution,
+    public capability, semantic_equivalent or Constructed.
   uri: adr://adr-architecture-kit/entities/01a16bb0-e682-730f-93a9-54dc7feefa48
   created_at: '2026-10-24T02:15:17.890Z'
   entity_fingerprint: sha256:911b185e2e8c6c2169d2cc58cbd25f0f4ff633493d160ad3da12cb4b08f0b4e9
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e682-730f-93a9-54dc7feefa48
@@ -18647,8 +18648,9 @@ entities:
     adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
     adr_alias_id: ADR-L-0038
     scope: semantic-authority
-    statement: This proposed ADR MUST NOT imply human acceptance, successor publication,
-      materialization execution, public capability, semantic_equivalent or Constructed.
+    statement: This ADR MUST NOT imply human acceptance without explicit recorded
+      approval; its acceptance MUST NOT imply successor publication, materialization
+      execution, public capability, semantic_equivalent or Constructed.
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions:

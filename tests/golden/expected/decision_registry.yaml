@@ -18463,7 +18463,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b30d98e60963
   created_at: '2026-10-24T02:15:17.889Z'
   entity_fingerprint: sha256:c588d5ef0bf264dee19ddd3d29abd1a5aa4fdd845a571d93fa8cbb5c9c991c7e
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b30d98e60963
@@ -18532,7 +18532,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b30ea0a0e1e9
   created_at: '2026-10-24T02:15:17.889Z'
   entity_fingerprint: sha256:060bb7b90c8cc98c3a1ffa85bc5d252f9faa7c1ec5c27688d9662f49dd7a4bb4
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b30ea0a0e1e9
@@ -18597,7 +18597,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b30fa7d6f2b6
   created_at: '2026-10-24T02:15:17.889Z'
   entity_fingerprint: sha256:7b1274fba7c400be0feea7d30e06cf8b474aa89ae8910ca1ff6b6457cafc35cc
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b30fa7d6f2b6
@@ -18662,7 +18662,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b310bc681bad
   created_at: '2026-10-24T02:15:17.889Z'
   entity_fingerprint: sha256:8c48f2a13f72315156a9ff1e47c569391762c9a63eef89821fbbcd3787814fec
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b310bc681bad
@@ -18731,7 +18731,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b311c48bace8
   created_at: '2026-10-24T02:15:17.889Z'
   entity_fingerprint: sha256:39c4bccfaa536e5f54f04c588a1ec2219617c4d6ce91aacb3d73dd54d6b833d0
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b311c48bace8
@@ -18803,7 +18803,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b31296c73b41
   created_at: '2026-10-24T02:15:17.889Z'
   entity_fingerprint: sha256:b31ff3ddbf614cf1d33f358366e884b4f41ed7ffa4f907c241fd359e9954c65b
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b31296c73b41
@@ -18868,13 +18868,13 @@ entities:
   alias_ref: DEC-9015:publish-minimal-successors-without-rebinding-historical-authority
   entity_type: decision
   name: Select AI 1.4 and ACC 1.4 with unchanged NM 2.5 after human acceptance
-  summary: 'Recommended sequence: human acceptance of this reviewed proposed ADR;
-    independent immutable AI 1.4 publication/qualification; independent ACC 1.4 publication
-    selecting exact AI 1.4 and unchanged NM 2.5; then separately s'
+  summary: 'Selected sequence: human acceptance of this reviewed ADR; independent
+    immutable AI 1.4 publication/qualification; independent ACC 1.4 publication selecting
+    exact AI 1.4 and unchanged NM 2.5; then separately scoped Rust e'
   uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b313463dcf5c
   created_at: '2026-10-24T02:15:17.889Z'
   entity_fingerprint: sha256:7d7e4d3602b17586c890e43c7b555b5167ced0ceb7f5de5866a9512a815ac659
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b313463dcf5c
@@ -18937,13 +18937,13 @@ entities:
   alias_ref: DEC-9016:qualify-output-authority-before-executable-materialization
   entity_type: decision
   name: Require publication conformance, explicit blockers and separate human acceptance
-  summary: This proposed ADR and its generated projections are governance artifacts
+  summary: This accepted ADR and its generated projections are governance artifacts
     only. No AI 1.4/ACC 1.4 contract, runtime materializer, public capability or Constructed
     result is published or enabled. Human architectural accept
   uri: adr://adr-architecture-kit/entities/01a16bb0-e681-73eb-819e-b314b593642f
   created_at: '2026-10-24T02:15:17.889Z'
   entity_fingerprint: sha256:1a20ffb4ce441b5b72c053efd28e7c366e3af0cd8bf942cd05c6e05f8a0a3c1d
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a16bb0-e682-730f-93a9-54ddf776af32#01a16bb0-e681-73eb-819e-b314b593642f

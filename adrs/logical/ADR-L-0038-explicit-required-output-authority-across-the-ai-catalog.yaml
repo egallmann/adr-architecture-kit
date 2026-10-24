@@ -4,7 +4,7 @@ id: 01a16bb0-e682-730f-93a9-54ddf776af32
 alias_id: ADR-L-0038
 alias_name: explicit-required-output-authority-across-the-ai-catalog
 title: Explicit Required-Output Authority Across the AI Catalog
-status: proposed
+status: accepted
 created_date: '2026-10-23'
 authors:
 - erik.gallmann
@@ -37,7 +37,7 @@ context: |-
   They are not 27 independent roots. DEC-0271 authorizes only uniquely governed
   ceremony and exact semantic preservation; ADR-L-0037 establishes literal
   lifecycle and explicit ownership but does not choose all output recipes.
-  This proposed successor decision closes label policy and coverage governance,
+  This accepted successor decision closes label policy and coverage governance,
   while recording missing semantic and representation prerequisites explicitly.
   It does not publish or execute successor authority.
 decisions:
@@ -106,7 +106,7 @@ decisions:
     Copy the complete string exactly: no hyphen replacement, title casing,
     whitespace trimming, truncation, prose generation or fallback to another field.
     Missing or invalid selected inputs block qualification. A source-valid value
-    must also satisfy the exact selected output schema. The proposal does not
+    must also satisfy the exact selected output schema. This decision does not
     retroactively authorize any of these generated names under AI 1.3.
     Consequences: these labels retain the authored lower-kebab spelling and change
     when that semantic alias changes; they are not prose titles or new canonical
@@ -147,7 +147,7 @@ decisions:
     defaults, summaries of prose or formatting transformations.
 
     Complete 27-type label/output-branch matrix follows. A means existing authored
-    placement; R means proposed representation-only copy; not-applicable means the
+    placement; R means selected successor representation-only copy; not-applicable means the
     selected nonentity branch has no regular name/summary requirement, not that
     the type is excluded from execution. Source selectors are relative to the
     exact Authoring 1.7 schema namespace, never runtime instance positions.
@@ -430,7 +430,7 @@ decisions:
   alias_name: publish-minimal-successors-without-rebinding-historical-authority
   summary: Select AI 1.4 and ACC 1.4 with unchanged NM 2.5 after human acceptance
   rationale: |
-    Recommended sequence: human acceptance of this reviewed proposed ADR;
+    Selected sequence: human acceptance of this reviewed ADR;
     independent immutable AI 1.4 publication/qualification; independent ACC 1.4
     publication selecting exact AI 1.4 and unchanged NM 2.5; then separately scoped
     Rust execution. Retain Authoring 1.7, ADC/CEC and unchanged semantic resources
@@ -471,11 +471,13 @@ decisions:
   alias_name: qualify-output-authority-before-executable-materialization
   summary: Require publication conformance, explicit blockers and separate human acceptance
   rationale: |-
-    This proposed ADR and its generated projections are governance artifacts only.
+    This accepted ADR and its generated projections are governance artifacts only.
     No AI 1.4/ACC 1.4 contract, runtime materializer, public capability or Constructed
     result is published or enabled. Human architectural acceptance must identify
     the reviewed ADR/commit before successor publication. Do not fabricate approval
-    or steelman metadata. Leave the non-draft governance PR open for review.
+    or steelman metadata. Explicit human authorization now permits ADR acceptance
+    and merging PR #180 after every required qualification gate passes; it does
+    not authorize successor publication or runtime execution.
 
     Successor frozen conformance must cover all 27 categories/branches, each exact
     A/R producer, long and source-permitted empty strings, absent/invalid inputs,
@@ -586,8 +588,9 @@ invariants:
 - id: 01a16bb0-e682-730f-93a9-54dc7feefa48
   alias_id: INV-0308
   alias_name: proposed-output-decision-does-not-authorize-runtime
-  statement: This proposed ADR MUST NOT imply human acceptance, successor publication, materialization
-    execution, public capability, semantic_equivalent or Constructed.
+  statement: This ADR MUST NOT imply human acceptance without explicit recorded approval; its acceptance
+    MUST NOT imply successor publication, materialization execution, public capability, semantic_equivalent
+    or Constructed.
   scope: semantic-authority
   enforcement_level: must
   enforcement_mechanism: design
@@ -597,8 +600,19 @@ invariants:
   - 01a16bb0-e681-73eb-819e-b314b593642f
 gaps: []
 notes: |-
-  Proposed for human architectural review. No approval metadata is asserted.
-  The ignored local Design Journal records alternatives and convergence only.
-  Source schemas, frozen authority/conformance, Rust/WASM, protocol and current
-  SCS remain unchanged. Generated projections/indexes are derived evidence, not
-  independent semantic authority. This PR remains open pending human review.
+  Accepted following explicit human approval in this task of the architecture
+  reviewed at PR #180 head 349eb73a94d24691b9f11303fec0607b417dfa0c,
+  including DEC-9009 through DEC-9016 and INV-0301 through INV-0308.
+  After the approval precondition was explicitly requested, the human confirmed:
+  "I am providing the approval for this task". That authorization covers this
+  ADR acceptance and merging PR #180 only after all required gates pass.
+  Governance metadata records that authorization, not a fabricated hosted review
+  or steelman assessment. All canonical identities and architectural choices
+  are retained. The ignored Design Journal is convergence state, not authority.
+  AI 1.4 and ACC 1.4 publication, Rust materialization and all runtime successor
+  capabilities remain separate prerequisites. NM 2.5, frozen authorities, current
+  SCS, protocol and public/runtime boundaries remain unchanged. Derived artifacts
+  are repository-generated evidence, never independent semantic authority.
+governance:
+  approved_by: egallmann
+  approved_date: '2026-10-24T17:47:27Z'

@@ -1,4 +1,4 @@
-"""Proposed ADR/schema audit only; no successor publication or runtime execution."""
+"""ADR/schema audit only; publication is not evidence of runtime execution."""
 
 from __future__ import annotations
 
@@ -18,6 +18,7 @@ from adr_kit.semantic_contract import (
     validate_semantic_resource_closure,
     verify_semantic_contract,
 )
+from adr_kit.validators.adr_validator import ADRValidator
 
 ROOT = Path(__file__).resolve().parents[1]
 ADR = ROOT / "adrs/logical/ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.yaml"
@@ -98,9 +99,24 @@ def matrix_errors(rows: list[dict[str, str]]) -> list[str]:
     return errors
 
 
-def test_proposed_lifecycle_identities_and_human_gate() -> None:
+def assert_governed_lifecycle(path: Path) -> None:
+    """Check governed evidence shape, not whether a human actually granted approval."""
+    adr = yaml.safe_load(path.read_text(encoding="utf-8"))
+    result = ADRValidator(project_root=ROOT).validate_file(path, mode="complete")
+    assert result.valid, result.errors
+    governance = adr.get("governance") or {}
+    if adr["status"] == "proposed":
+        assert governance.get("approved_by") is None
+        assert governance.get("approved_date") is None
+    elif adr["status"] == "accepted":
+        assert isinstance(governance.get("approved_by"), str)
+        assert governance["approved_by"].strip()
+        assert governance.get("approved_date") is not None
+
+
+def test_lifecycle_identities_and_human_gate() -> None:
+    assert_governed_lifecycle(ADR)
     adr = document()
-    assert adr["status"] == "proposed" and "governance" not in adr
     assert adr["alias_id"] == "ADR-L-0038"
     assert [d["alias_id"] for d in adr["decisions"]] == [f"DEC-{n}" for n in range(9009, 9017)]
     assert [d["alias_id"] for d in adr["invariants"]] == [f"INV-{n:04}" for n in range(301, 309)]
@@ -124,6 +140,56 @@ def test_proposed_lifecycle_identities_and_human_gate() -> None:
         "no substantive",
     ):
         assert phrase.lower() in text
+
+
+@pytest.mark.parametrize("status", ["proposed", "accepted"])
+def test_lifecycle_allows_governed_metadata_and_later_acceptance(
+    tmp_path: Path, status: str
+) -> None:
+    # Synthetic fixtures are not approval of ADR-L-0038; the source is never written.
+    adr = document()
+    adr["status"] = status
+    adr["governance"] = {"implementation_authority": "advisory"}
+    if status == "accepted":
+        adr["governance"].update(
+            approved_by="fixture-reviewer", approved_date="2026-10-24T12:00:00Z"
+        )
+    path = tmp_path / "lifecycle.yaml"
+    path.write_text(yaml.safe_dump(adr), encoding="utf-8")
+    assert_governed_lifecycle(path)
+
+
+@pytest.mark.parametrize(
+    ("status", "governance"),
+    [
+        ("proposed", {"approved_by": "fixture-reviewer"}),
+        ("proposed", {"approved_date": "2026-10-24T12:00:00Z"}),
+        ("proposed", {"approved_by": "fixture-reviewer", "approved_date": "2026-10-24T12:00:00Z"}),
+        ("accepted", {}),
+        ("accepted", {"approved_by": "fixture-reviewer"}),
+        ("accepted", {"approved_date": "2026-10-24T12:00:00Z"}),
+        ("accepted", {"approved_by": " ", "approved_date": "2026-10-24T12:00:00Z"}),
+        ("accepted", {"approved_by": "fixture-reviewer", "approved_date": "not-a-date"}),
+        (
+            "accepted",
+            {
+                "approved_by": "fixture-reviewer",
+                "approved_date": "2026-10-24T12:00:00Z",
+                "steelman_review_required": True,
+                "steelman_review_completed": True,
+            },
+        ),
+    ],
+)
+def test_lifecycle_rejects_fabricated_or_incomplete_acceptance_metadata(
+    tmp_path: Path, status: str, governance: dict[str, Any]
+) -> None:
+    adr = document()
+    adr.update(status=status, governance=governance)
+    path = tmp_path / "lifecycle.yaml"
+    path.write_text(yaml.safe_dump(adr), encoding="utf-8")
+    with pytest.raises(AssertionError):
+        assert_governed_lifecycle(path)
 
 
 def test_all_27_types_have_one_explicit_branch_and_label_policy() -> None:
@@ -261,7 +327,7 @@ def test_complete_nm_branches_and_source_permitted_strings() -> None:
         ),
     ],
 )
-def test_existing_authorities_remain_exact_and_successors_unpublished(
+def test_historical_authorities_remain_exact_independent_of_successor_publication(
     family: str, version: str, fingerprint: str, count: int
 ) -> None:
     contract = get_semantic_contract(family, version)
@@ -276,6 +342,6 @@ def test_existing_authorities_remain_exact_and_successors_unpublished(
         for e in contract.resource_manifest
     ]
     assert validate_semantic_resource_closure(contract, bundle).closure_valid
-    if family != "normalized-model":
-        with pytest.raises(LookupError):
-            get_semantic_contract(family, "1.4")
+    # Successor discovery is deliberately irrelevant to historical integrity.
+    # Neither publication nor acceptance establishes any executable capability
+    # or Constructed result; those need independently qualified runtime evidence.

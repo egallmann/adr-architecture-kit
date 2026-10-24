@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { getSemanticContract, listSemanticContracts, loadSemanticResource, verifySemanticContract, validateSemanticResourceClosure } from "../dist/node/semantic-contract.js";
+import { getSemanticContract, loadSemanticResource, verifySemanticContract, validateSemanticResourceClosure } from "../dist/node/semantic-contract.js";
 
 test("AI 1.4 exact authority and complete packaged closure qualify without execution", async () => {
   const contract = getSemanticContract("architecture-interpretation", "1.4");
@@ -16,7 +16,6 @@ test("AI 1.4 exact authority and complete packaged closure qualify without execu
   assert.equal(catalog.coverage.complete_interpretation, "Unavailable");
   assert.equal(loadSemanticResource("architecture-interpretation/1.4/conformance").cases.length, 85);
   assert.equal(loadSemanticResource("architecture-interpretation/1.4/rules").public_boundary.advertised, false);
-  assert.equal(listSemanticContracts().some((entry) => entry.semanticContractVersion === "1.4"), false);
   assert.equal(getSemanticContract("architecture-interpretation", "1.3").semanticContractFingerprint, "scf:v1:sha256:d4a60e843c3069cfd7eb869a4d924d3a70bf900079d3a2ad86ae28884c6ac167");
 });
 

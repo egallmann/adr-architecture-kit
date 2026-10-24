@@ -1040,9 +1040,9 @@ def test_exact_discovery_and_byte_identical_package_mirrors() -> None:
         assert EXPECTED_SCF not in data.decode("utf-8")
     assert all(x.semantic_contract_version != "1.3" for x in list_semantic_contracts())
     with pytest.raises(LookupError):
-        get_semantic_contract("architecture-interpretation", "1.4")
+        get_semantic_contract("architecture-interpretation", "99.99")
     with pytest.raises(LookupError):
-        load_semantic_resource("architecture-interpretation/1.4/rules")
+        load_semantic_resource("architecture-interpretation/99.99/rules")
     with pytest.raises(LookupError):
         load_semantic_resource("architecture-interpretation/1.3/not-published")
     with pytest.raises(LookupError):

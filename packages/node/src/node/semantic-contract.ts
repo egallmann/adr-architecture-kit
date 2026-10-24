@@ -242,6 +242,7 @@ export function getSemanticContract(family: string, version: string): SemanticCo
 export function loadSemanticResource(key: string): unknown {
   const parts = key.split("/");
   const ai13 = parts.length >= 3 && parts[0] === "architecture-interpretation" && parts[1] === "1.3";
+  const ai14 = parts.length >= 3 && parts[0] === "architecture-interpretation" && parts[1] === "1.4";
   const acc13 = parts.length >= 3 && parts[0] === "authoring-construction" && parts[1] === "1.3";
   if (key === "architecture-interpretation/1.3/contract") return getSemanticContract("architecture-interpretation", "1.3");
   if (parts.length === 4 && parts[0] === "authoring" && parts[1] === "1.7" && parts[2] === "schema") {
@@ -249,10 +250,10 @@ export function loadSemanticResource(key: string): unknown {
     if (resource) return deepFreeze(structuredClone(resource));
     throw new Error(`Missing bundled semantic resource: ${key}`);
   }
-  if (parts.length < 3 || (!(ai13 || acc13) && !["1.0", "1.1", "1.2", "1.5", "1.6", "2.3", "2.4", "2.5"].includes(parts[1] ?? ""))) throw new Error(`Unsupported semantic resource: ${key}`);
-  if ((ai13 || acc13) && !getSemanticContract(ai13 ? "architecture-interpretation" : "authoring-construction", "1.3").resourceManifest.some((entry) => entry.canonicalResourceKey === key)) throw new Error(`Missing bundled semantic resource: ${key}`);
+  if (parts.length < 3 || (!(ai13 || ai14 || acc13) && !["1.0", "1.1", "1.2", "1.5", "1.6", "2.3", "2.4", "2.5"].includes(parts[1] ?? ""))) throw new Error(`Unsupported semantic resource: ${key}`);
+  if ((ai13 || ai14 || acc13) && !getSemanticContract(parts[0]!, parts[1]!).resourceManifest.some((entry) => entry.canonicalResourceKey === key)) throw new Error(`Missing bundled semantic resource: ${key}`);
   const names = [`${key.replaceAll("/", "-")}.json`];
-  if (parts.length === 3 && !(ai13 || acc13)) names.push(`${parts[0]}-${parts[2]}.json`);
+  if (parts.length === 3 && !(ai13 || ai14 || acc13)) names.push(`${parts[0]}-${parts[2]}.json`);
   for (const name of names) {
     const resource = assets[`resources/${name}`];
     if (resource) return deepFreeze(structuredClone(resource));

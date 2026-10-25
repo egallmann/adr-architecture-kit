@@ -19000,3 +19000,428 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: 01a17432-c510-70a1-8a16-e5e519a009d4
+  alias_id: DEC-9017
+  alias_name: select-inherited-identity-recipes-for-successor-output-authority
+  alias_ref: DEC-9017:select-inherited-identity-recipes-for-successor-output-authority
+  entity_type: decision
+  name: Select three inherited representation operations explicitly under exact successor
+    authority
+  summary: 'ADR-L-0019 is accepted: DEC-0093 and INV-0084 select alias_ref concatenation;
+    DEC-0098, DEC-0107 and INV-0062 select a provider-qualified logical URI; DEC-0099
+    and INV-0086, INV-0087 and INV-0089 select UUIDv7 identity t'
+  uri: adr://adr-architecture-kit/entities/01a17432-c510-70a1-8a16-e5e519a009d4
+  created_at: '2026-10-25T17:54:06.736Z'
+  entity_fingerprint: sha256:e7160d4e7e18441595a0c25596dc7862835f630b26c2ee2203b5a657b564024e
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a17432-c52f-74c0-8485-97832c7671ed#01a17432-c510-70a1-8a16-e5e519a009d4
+    artifact_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+    adr_alias_id: ADR-L-0039
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 019fee89-e617-7faa-813b-d8e882418d4e
+    - 019fee89-e617-76fa-bb3e-5c088c73ebdf
+    - 019fee89-e617-75e2-a23c-f14b6602dbda
+    - 01a16bb0-e681-73eb-819e-b313463dcf5c
+    alias_name: select-inherited-identity-recipes-for-successor-output-authority
+    alias_id: DEC-9017
+  relationships:
+    declared_in:
+    - 01a17432-c52f-74c0-8485-97832c7671ed
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 019fee89-e617-75e2-a23c-f14b6602dbda
+    - 019fee89-e617-76fa-bb3e-5c088c73ebdf
+    - 019fee89-e617-7faa-813b-d8e882418d4e
+    - 01a16bb0-e681-73eb-819e-b313463dcf5c
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a17432-c52f-74c0-8485-97832c7671ed#01a17432-c510-70a1-8a16-e5e519a009d4
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a17432-c510-70a1-8a16-e5e65f5cbb7a
+  alias_id: DEC-9018
+  alias_name: derive-recognition-only-alias-reference-literally
+  alias_ref: DEC-9018:derive-recognition-only-alias-reference-literally
+  entity_type: decision
+  name: Derive alias_ref from exactly the qualified authored aliases
+  summary: 'For an applicable entity or lifecycle-free proposition, bind the exact
+    Authoring 1.7 source occurrence and its required alias_id/alias_name strings to
+    the already established canonical UUIDv7. Preserve complete authored '
+  uri: adr://adr-architecture-kit/entities/01a17432-c510-70a1-8a16-e5e65f5cbb7a
+  created_at: '2026-10-25T17:54:06.736Z'
+  entity_fingerprint: sha256:ed5d59ac5b743cf889b5a9ba063d192ca46f93a493cacaf23e042c7876db6b20
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a17432-c52f-74c0-8485-97832c7671ed#01a17432-c510-70a1-8a16-e5e65f5cbb7a
+    artifact_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+    adr_alias_id: ADR-L-0039
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 019fee89-e617-7faa-813b-d8e882418d4e
+    - 01a16bb0-e681-73eb-819e-b310bc681bad
+    - 01a16bb0-e681-73eb-819e-b311c48bace8
+    alias_name: derive-recognition-only-alias-reference-literally
+    alias_id: DEC-9018
+  relationships:
+    declared_in:
+    - 01a17432-c52f-74c0-8485-97832c7671ed
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 019fee89-e617-7faa-813b-d8e882418d4e
+    - 01a16bb0-e681-73eb-819e-b310bc681bad
+    - 01a16bb0-e681-73eb-819e-b311c48bace8
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a17432-c52f-74c0-8485-97832c7671ed#01a17432-c510-70a1-8a16-e5e65f5cbb7a
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a17432-c510-70a1-8a16-e5e7a9a7d39f
+  alias_id: DEC-9019
+  alias_name: derive-logical-uri-from-qualified-provider-namespace
+  alias_ref: DEC-9019:derive-logical-uri-from-qualified-provider-namespace
+  entity_type: decision
+  name: Derive the opaque entity resolver key from exact namespace and UUID
+  summary: 'Select the independently qualified interpretation provider context''s
+    exact architecture_namespace and the unit''s established lowercase RFC 9562 UUIDv7.
+    The namespace must be nonempty and qualify under the exact selected '
+  uri: adr://adr-architecture-kit/entities/01a17432-c510-70a1-8a16-e5e7a9a7d39f
+  created_at: '2026-10-25T17:54:06.736Z'
+  entity_fingerprint: sha256:153e788b356df4f8246e65584b3478438ecd9565da5b89f3a90f4885c3d60d12
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a17432-c52f-74c0-8485-97832c7671ed#01a17432-c510-70a1-8a16-e5e7a9a7d39f
+    artifact_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+    adr_alias_id: ADR-L-0039
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 019fee89-e617-76fa-bb3e-5c088c73ebdf
+    - 019fee89-e617-7dd5-811d-5f16482f2c3a
+    - 01a16bb0-e681-73eb-819e-b310bc681bad
+    alias_name: derive-logical-uri-from-qualified-provider-namespace
+    alias_id: DEC-9019
+  relationships:
+    declared_in:
+    - 01a17432-c52f-74c0-8485-97832c7671ed
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 019fee89-e617-76fa-bb3e-5c088c73ebdf
+    - 019fee89-e617-7dd5-811d-5f16482f2c3a
+    - 01a16bb0-e681-73eb-819e-b310bc681bad
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a17432-c52f-74c0-8485-97832c7671ed#01a17432-c510-70a1-8a16-e5e7a9a7d39f
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a17432-c510-70a1-8a16-e5e8378785e4
+  alias_id: DEC-9020
+  alias_name: encode-uuidv7-identity-time-as-exact-utc-milliseconds
+  alias_ref: DEC-9020:encode-uuidv7-identity-time-as-exact-utc-milliseconds
+  entity_type: decision
+  name: Encode UUIDv7 identity time as a qualified RFC 3339 millisecond string
+  summary: The sole input is the already established, source-bound canonical UUIDv7;
+    do not mint or replace it to derive representation. Decode its first 48 bits as
+    an unsigned integer Unix timestamp in milliseconds. Use integer qu
+  uri: adr://adr-architecture-kit/entities/01a17432-c510-70a1-8a16-e5e8378785e4
+  created_at: '2026-10-25T17:54:06.736Z'
+  entity_fingerprint: sha256:2caf943eeea84f83838e4383fe49666839507acf49d3e73b3c343fa1e05badf8
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a17432-c52f-74c0-8485-97832c7671ed#01a17432-c510-70a1-8a16-e5e8378785e4
+    artifact_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+    adr_alias_id: ADR-L-0039
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 019fee89-e617-75e2-a23c-f14b6602dbda
+    - 01a16bb0-e681-73eb-819e-b310bc681bad
+    alias_name: encode-uuidv7-identity-time-as-exact-utc-milliseconds
+    alias_id: DEC-9020
+  relationships:
+    declared_in:
+    - 01a17432-c52f-74c0-8485-97832c7671ed
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 019fee89-e617-75e2-a23c-f14b6602dbda
+    - 01a16bb0-e681-73eb-819e-b310bc681bad
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a17432-c52f-74c0-8485-97832c7671ed#01a17432-c510-70a1-8a16-e5e8378785e4
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a17432-c52f-74c0-8485-977bd24719ac
+  alias_id: DEC-9021
+  alias_name: qualify-branch-applicability-before-identity-representation
+  alias_ref: DEC-9021:qualify-branch-applicability-before-identity-representation
+  entity_type: decision
+  name: Account for all 27 types while selecting only applicable entity destinations
+  summary: 'The exact AI 1.4 catalog contains 17 regular entity types and one lifecycle-free
+    normative proposition with all three required destinations: 54 static BLOCKED
+    entries (18 alias_ref_recipe, 18 uri_recipe, 18 created_at_en'
+  uri: adr://adr-architecture-kit/entities/01a17432-c52f-74c0-8485-977bd24719ac
+  created_at: '2026-10-25T17:54:06.767Z'
+  entity_fingerprint: sha256:3e54e36de93b5d5f956a4ca1de50adc46b2c36b3aa0620fd84764a6e978490c9
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a17432-c52f-74c0-8485-97832c7671ed#01a17432-c52f-74c0-8485-977bd24719ac
+    artifact_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+    adr_alias_id: ADR-L-0039
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a16bb0-e681-73eb-819e-b31296c73b41
+    - 01a16bb0-e681-73eb-819e-b310bc681bad
+    alias_name: qualify-branch-applicability-before-identity-representation
+    alias_id: DEC-9021
+  relationships:
+    declared_in:
+    - 01a17432-c52f-74c0-8485-97832c7671ed
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a16bb0-e681-73eb-819e-b310bc681bad
+    - 01a16bb0-e681-73eb-819e-b31296c73b41
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a17432-c52f-74c0-8485-97832c7671ed#01a17432-c52f-74c0-8485-977bd24719ac
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a17432-c52f-74c0-8485-977c2f4218e9
+  alias_id: DEC-9022
+  alias_name: require-independent-recipe-evidence-before-successor-execution
+  alias_ref: DEC-9022:require-independent-recipe-evidence-before-successor-execution
+  entity_type: decision
+  name: Require closed successor publication and independent instance verification
+  summary: 'Future AI recipe authority must bind exact rule ID/resource/digest, actual
+    inherited decision/rule lineage, source/destination family/version/SCF and schema
+    selectors, resolved references and complete branch conditions. '
+  uri: adr://adr-architecture-kit/entities/01a17432-c52f-74c0-8485-977c2f4218e9
+  created_at: '2026-10-25T17:54:06.767Z'
+  entity_fingerprint: sha256:0638255698622f417d9d76ecba4e8c377b6b6ac0ff0dbf52858aa40848859513
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a17432-c52f-74c0-8485-97832c7671ed#01a17432-c52f-74c0-8485-977c2f4218e9
+    artifact_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+    adr_alias_id: ADR-L-0039
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a16bb0-e681-73eb-819e-b310bc681bad
+    - 01a16bb0-e681-73eb-819e-b311c48bace8
+    - 01a16bb0-e681-73eb-819e-b314b593642f
+    alias_name: require-independent-recipe-evidence-before-successor-execution
+    alias_id: DEC-9022
+  relationships:
+    declared_in:
+    - 01a17432-c52f-74c0-8485-97832c7671ed
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a16bb0-e681-73eb-819e-b310bc681bad
+    - 01a16bb0-e681-73eb-819e-b311c48bace8
+    - 01a16bb0-e681-73eb-819e-b314b593642f
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a17432-c52f-74c0-8485-97832c7671ed#01a17432-c52f-74c0-8485-977c2f4218e9
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index

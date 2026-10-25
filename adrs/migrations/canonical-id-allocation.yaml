@@ -5,10 +5,10 @@ high_water_marks:
   CAP: 9002
   COMP: 23
   CONTRACT: 5
-  DEC: 9016
+  DEC: 9022
   IFACE: 36
   IMPL: 29
-  INV: 308
+  INV: 314
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -2272,6 +2272,42 @@ allocations:
   source_pointer: /decisions/7/alias_id
   state: active
   adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+- id: DEC-9017
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_pointer: /decisions/0/alias_id
+  state: active
+  adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+- id: DEC-9018
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_pointer: /decisions/1/alias_id
+  state: active
+  adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+- id: DEC-9019
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_pointer: /decisions/2/alias_id
+  state: active
+  adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+- id: DEC-9020
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_pointer: /decisions/3/alias_id
+  state: active
+  adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+- id: DEC-9021
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_pointer: /decisions/4/alias_id
+  state: active
+  adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+- id: DEC-9022
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_pointer: /decisions/5/alias_id
+  state: active
+  adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
 - id: IFACE-0001
   entity_type: interface
   adr_id: ADR-P-0001
@@ -4312,3 +4348,39 @@ allocations:
   source_pointer: /invariants/7/alias_id
   state: active
   adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+- id: INV-0309
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_pointer: /invariants/0/alias_id
+  state: active
+  adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+- id: INV-0310
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_pointer: /invariants/1/alias_id
+  state: active
+  adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+- id: INV-0311
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_pointer: /invariants/2/alias_id
+  state: active
+  adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+- id: INV-0312
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_pointer: /invariants/3/alias_id
+  state: active
+  adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+- id: INV-0313
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_pointer: /invariants/4/alias_id
+  state: active
+  adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+- id: INV-0314
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0039-forward-identity-representation-recipes.yaml
+  source_pointer: /invariants/5/alias_id
+  state: active
+  adr_id: 01a17432-c52f-74c0-8485-97832c7671ed

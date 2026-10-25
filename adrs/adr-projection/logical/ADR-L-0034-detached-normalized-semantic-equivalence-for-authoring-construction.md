@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: d14674ad426a802e8e249b506cd97b0f394a547ac9f57330a81038291d28173a
-rendered_hash: 1af9d6c727a8881033d9181680bd8b1d1ca19130a877d6cd1e7414afa2af58b5
+rendered_hash: c49dd22f50fc6e45cbe61f590fa6d4c4a9386d9658b1fc5b89fa2d8c0e7dda8b
 -->
 
 # ADR-L-0034: Detached Normalized Semantic Equivalence for Authoring Construction
@@ -519,6 +519,7 @@ ADR-L-0033 remains downstream and independently verifies construction qualificat
 - [ADR-L-0035](ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.md)
 - [ADR-L-0037](ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.md)
 - [ADR-L-0038](ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.md)
+- [ADR-L-0039](ADR-L-0039-forward-identity-representation-recipes.md)
 
 
 ## Architecture Relationships

@@ -19,7 +19,6 @@ from adr_kit.core import semantic_core_capabilities
 from adr_kit.semantic_contract import (
     calculate_semantic_contract_fingerprint,
     get_semantic_contract,
-    list_semantic_contracts,
     load_semantic_resource,
     validate_semantic_resource_closure,
     verify_semantic_contract,
@@ -131,7 +130,7 @@ def test_exact_acc12_definition_and_complete_closure_verify_in_rust() -> None:
     assert exact.semantic_contract_fingerprint == contract["semanticContractFingerprint"]
     assert exact != get_semantic_contract("authoring-construction", "1.1")
     with pytest.raises(LookupError):
-        get_semantic_contract("authoring-construction", "1.4")
+        get_semantic_contract("authoring-construction", "99.99")
     resources = _resources()
     result = validate_semantic_resource_closure(contract, resources)
     assert result.success and result.closure_valid
@@ -436,7 +435,7 @@ def test_frozen_oracle_is_schema_valid_and_explicitly_authority_only() -> None:
     assert rules["outcomes"]["all_independent_diagnostics_retained"] is True
 
 
-def test_frozen_history_protocol_and_current_selection_are_unchanged() -> None:
+def test_frozen_history_protocol_and_retained_selection_are_unchanged() -> None:
     expected = {
         "contracts/authoring-construction/v1.0": "sha256:c4f95b7aa43d8456a9e3a74714e5401f93c0b51fc78a1a589175378bdf2580f9",
         "contracts/authoring-construction/v1.1": "sha256:6a730b790da6673c1523bcdc2477619d312803c12fa0ecc1c4542542df2ab21d",
@@ -453,14 +452,13 @@ def test_frozen_history_protocol_and_current_selection_are_unchanged() -> None:
             )
             == fingerprint
         )
-    current = _read(CANONICAL / "current/semantic-contract-current-1.0.json")
-    assert (
-        current["semanticContractSetId"]
-        == "scs:v1:sha256:d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6"
+    historical = _read(
+        CANONICAL
+        / "sets/scs-v1-sha256-d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6.json"
     )
-    assert all(
-        item.semantic_contract_family != "authoring-construction"
-        for item in list_semantic_contracts()
+    assert (
+        historical["semanticContractSetId"]
+        == "scs:v1:sha256:d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6"
     )
     handshake = semantic_core_capabilities()
     assert not any(

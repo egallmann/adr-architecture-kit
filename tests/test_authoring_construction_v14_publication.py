@@ -17,6 +17,7 @@ from referencing import Registry, Resource
 
 from adr_kit.semantic_contract import (
     SemanticContractVersion,
+    calculate_semantic_contract_fingerprint,
     get_semantic_contract,
     load_semantic_resource,
     validate_semantic_resource_closure,
@@ -32,7 +33,7 @@ from tests.test_authoring_construction_v13_publication import request as histori
 
 ROOT = Path(__file__).resolve().parents[1]
 PREFIX = publication.PREFIX
-SCF = "scf:v1:sha256:98bbdf394aa53ce20e1ebbc3e9835eecae1b89e0cd9568f3abee4d983c20b9f5"
+SCF = "scf:v1:sha256:19e267c5c77477a594414168bde9f733b1b9e547c06fc6836ad09392a248ea6d"
 RESOURCE_COUNT = 108
 IMMUTABLE_BYTES: dict[str, str] = {
     "contracts/authoring-construction/v1.3/contract.json": "fdb5d13e1e6d83da2aaadcd40211bcd33be9e550d178a85ad071b58ed99b6124",
@@ -44,13 +45,13 @@ IMMUTABLE_BYTES: dict[str, str] = {
     "contracts/authoring-construction/v1.3/resources/ledger.schema.json": "2153ab360266d9f54796bdcf45e47b85b02d45c7ee6d0a6d27e514fd159b3efa",
     "contracts/authoring-construction/v1.3/resources/rules.json": "bce1c686b98b695c28827a753560be084d60ca0ea8a07a84c297d24eb8bb52d7",
     "contracts/authoring-construction/v1.3/schema.json": "c774668f24fc032d6c313141619c3d4a58c1a0fbd2f819ff45a0376db45d08db",
-    "contracts/authoring-construction/v1.4/contract.json": "622246456a997a190b8a73a21fc900d5540a72f3c9732bf60739bd375b13d180",
+    "contracts/authoring-construction/v1.4/contract.json": "67710abefcf41b0783471794656ad94b2cc6912cf12974033fcd012676eeebcb",
     "contracts/authoring-construction/v1.4/resources/compatibility.json": "d1704ce5f4e2aded310ec1c185a2163d4b65c74ae5b3096b0af6225739f0ac78",
-    "contracts/authoring-construction/v1.4/resources/composition-bindings.json": "aaa526f06d2e09a3c0588c32f634c69622b28de03f8e91bb2bbbd4483f3e5c7a",
-    "contracts/authoring-construction/v1.4/resources/composition-bindings.schema.json": "2fdce81bee187492b75055b73f181bb0cc8dd574e72a933ebac6af28301d0690",
+    "contracts/authoring-construction/v1.4/resources/composition-bindings.json": "37ccf3912581db2646f2d67c207246b6dc87443571dc3d1ccc5ff005a3810c43",
+    "contracts/authoring-construction/v1.4/resources/composition-bindings.schema.json": "f2d750b1d28c07f42b0c1a2865d34f31ae6ac68ebb99c7eb0c89f30639ecc5f8",
     "contracts/authoring-construction/v1.4/resources/conformance.json": "d88b6ffeb72ce1d920722ab8d94180d21f8f083505967ceffa2d6887e4d04897",
     "contracts/authoring-construction/v1.4/resources/conformance.schema.json": "5bae637f9e788de9209b6670a417f15eb5ae4526acc37308407f0c2ed024ee68",
-    "contracts/authoring-construction/v1.4/resources/rules.json": "a1325c426d4b6a4db1f4cb16b45af04346bb6521a0eda5cbf8a540b27872f5d6",
+    "contracts/authoring-construction/v1.4/resources/rules.json": "d53ce672f2bfe70b4ef45e69870c727195d7c82f13c78ac9c6d765a1dbc904d7",
     "contracts/authoring-construction/v1.4/schema.json": "82bea8e0904f2637e184dce8c1cb787300d997cea5307bbc1c51ba43e56f394d",
 }
 
@@ -447,6 +448,7 @@ def test_all_cases_reviewed_by_exact_identity_without_fabricated_successor_rules
 @pytest.fixture
 def snapshot(monkeypatch: pytest.MonkeyPatch) -> dict[str, Any]:
     keys = {e["canonicalResourceKey"] for e in bundle()} | {
+        PREFIX + "contract",
         publication.AI + "contract",
         publication.BASE + "contract",
         "normalized-model/2.5/contract",
@@ -620,3 +622,107 @@ def test_installed_wheel_exact_discovery(tmp_path: Path) -> None:
     subprocess.run(
         [sys.executable, "-c", code], cwd=tmp_path, env=env, check=True, capture_output=True
     )
+
+
+def test_table_depends_on_its_actual_versioned_validator_not_inherited_AI_rules() -> None:
+    table = publication.read(ROOT, PREFIX + "composition-bindings")
+    schema = publication.read(ROOT, PREFIX + "composition-bindings.schema")
+    rules = publication.read(ROOT, PREFIX + "rules")
+    previous_schema = publication.read(ROOT, publication.BASE + "composition-bindings.schema")
+    assert Draft202012Validator(schema).is_valid(table)
+    assert not Draft202012Validator(previous_schema).is_valid(table)
+    assert PREFIX + "composition-bindings.schema" in table["semanticDependencies"]
+    assert publication.BASE + "composition-bindings.schema" not in table["semanticDependencies"]
+    assert schema["properties"]["semanticDependencies"]["const"] == table["semanticDependencies"]
+    definition = get_semantic_contract("authoring-construction", "1.4").to_wire()
+    publication.qualify_binding_schema_dependency(
+        table, schema, rules, definition["resourceManifest"]
+    )
+    # Actual inherited semantic authority is intentionally independent of the
+    # table's versioned validation schema and must still qualify unchanged.
+    row = table["rows"][0]
+    assert row == publication.read(ROOT, publication.BASE + "composition-bindings")["rows"][0]
+    assert row["ai_ownership_authority"]["version"] == "1.3"
+    assert (
+        row["ai_ownership_authority"]["canonical_resource_key"]
+        == publication.INHERITED_AI + "lifecycle-ownership"
+    )
+
+
+@pytest.mark.parametrize(
+    "fault", ["predecessor_only", "missing", "wrong_digest", "wrong_validator_version"]
+)
+def test_inconsistent_binding_schema_declarations_fail_independently(
+    snapshot: dict[str, Any], fault: str
+) -> None:
+    table = snapshot[PREFIX + "composition-bindings"]
+    schema = snapshot[PREFIX + "composition-bindings.schema"]
+    rules = snapshot[PREFIX + "rules"]
+    if fault == "predecessor_only":
+        table["semanticDependencies"] = [
+            (
+                publication.BASE + "composition-bindings.schema"
+                if item == PREFIX + "composition-bindings.schema"
+                else item
+            )
+            for item in table["semanticDependencies"]
+        ]
+    elif fault == "missing":
+        table["semanticDependencies"].remove(PREFIX + "composition-bindings.schema")
+    elif fault == "wrong_digest":
+        rules["composition"]["schema_authority"]["content_digest"] = "sha256:" + "0" * 64
+    else:
+        schema["properties"]["resource_version"] = {"const": "1.3"}
+    if fault in {"predecessor_only", "missing"}:
+        # A coherently altered closed expectation can pass JSON Schema while
+        # still claiming the wrong/missing governing validator. Independent
+        # publication qualification must reject it, not just compare templates.
+        schema["properties"]["semanticDependencies"]["const"] = copy.deepcopy(
+            table["semanticDependencies"]
+        )
+        assert Draft202012Validator(schema).is_valid(table)
+    with pytest.raises(ValueError, match="composition_schema_"):
+        publication.qualify()
+
+
+@pytest.mark.parametrize("fault", ["predecessor_only", "missing", "wrong_digest"])
+def test_recomputed_SCF_cannot_hide_an_incorrect_schema_manifest_edge(
+    snapshot: dict[str, Any], fault: str
+) -> None:
+    definition = snapshot[PREFIX + "contract"]
+    entry = next(
+        item
+        for item in definition["resourceManifest"]
+        if item["canonicalResourceKey"] == PREFIX + "composition-bindings"
+    )
+    edge = next(
+        item
+        for item in entry["dependencies"]
+        if item["canonicalResourceKey"] == PREFIX + "composition-bindings.schema"
+    )
+    if fault == "predecessor_only":
+        edge["canonicalResourceKey"] = publication.BASE + "composition-bindings.schema"
+        edge["contentDigest"] = publication.qualification(ROOT, edge["canonicalResourceKey"])[
+            "content_digest"
+        ]
+    elif fault == "missing":
+        entry["dependencies"].remove(edge)
+    else:
+        edge["contentDigest"] = "sha256:" + "0" * 64
+    definition["semanticContractFingerprint"] = calculate_semantic_contract_fingerprint(
+        definition
+    ).semantic_contract_fingerprint
+    # Rust also rejects conflicting dependency digests before closure replay;
+    # a correctly recalculated SCF does not make that manifest consistent.
+    assert verify_semantic_contract(definition).success is (fault != "wrong_digest")
+    with pytest.raises(ValueError, match="composition_schema_manifest_edge"):
+        publication.qualify_binding_schema_dependency(
+            snapshot[PREFIX + "composition-bindings"],
+            snapshot[PREFIX + "composition-bindings.schema"],
+            snapshot[PREFIX + "rules"],
+            definition["resourceManifest"],
+        )
+    with pytest.raises(
+        ValueError, match="composition_schema_manifest_edge|published_ACC_1_4_definition"
+    ):
+        publication.qualify()

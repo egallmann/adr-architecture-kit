@@ -263,6 +263,14 @@ def schema(root: Path) -> dict[str, Any]:
 def resources(root: Path) -> dict[str, Any]:
     table = read(root, BASE + "composition-bindings")
     table["resource_version"] = "1.4"
+    table["semanticDependencies"] = [
+        (
+            PREFIX + "composition-bindings.schema"
+            if key == BASE + "composition-bindings.schema"
+            else key
+        )
+        for key in table["semanticDependencies"]
+    ]
     # Every inherited row qualification stays byte-equivalent: notably the AI
     # disposition/ownership family/version/SCF, keys, digests and rule_id.
     table_schema = read(root, BASE + "composition-bindings.schema")
@@ -273,6 +281,9 @@ def resources(root: Path) -> dict[str, Any]:
     )
     table_schema["title"] = "ACC 1.4 composition binding table"
     table_schema["properties"]["resource_version"] = {"const": "1.4"}
+    table_schema["properties"]["semanticDependencies"] = {
+        "const": copy.deepcopy(table["semanticDependencies"])
+    }
     rules = read(root, BASE + "rules")
     rules["resource_version"] = "1.4"
     rules["compatibility"]["historical_contract"] = "authoring-construction/1.3"
@@ -611,7 +622,57 @@ def conformance(root: Path) -> dict[str, Any]:
     }
 
 
-def qualify(root: Path = ROOT) -> dict[str, Any]:
+def qualify_binding_schema_dependency(
+    table: dict[str, Any],
+    schema: dict[str, Any],
+    rules: dict[str, Any],
+    manifest: list[dict[str, Any]] | None = None,
+) -> None:
+    """Bind the actual versioned validator, independently of inherited AI rules."""
+    key = PREFIX + "composition-bindings.schema"
+    dependencies = table.get("semanticDependencies", [])
+    if not isinstance(dependencies, list) or not all(
+        isinstance(item, str) for item in dependencies
+    ):
+        raise ValueError("composition_schema_dependency")
+    schema_edges = [
+        item
+        for item in dependencies
+        if item.startswith("authoring-construction/")
+        and item.endswith("/composition-bindings.schema")
+    ]
+    if schema_edges != [key]:
+        raise ValueError("composition_schema_dependency")
+    if (
+        table.get("resource_version") != "1.4"
+        or schema.get("$id") != "https://adr-kit.dev/semantic-contract/resources/" + key + ".json"
+        or schema.get("properties", {}).get("resource_version") != {"const": "1.4"}
+        or schema["properties"].get("semanticDependencies") != {"const": dependencies}
+    ):
+        raise ValueError("composition_schema_version_or_closed_dependencies")
+    expected = {"canonical_resource_key": key, "content_digest": digest(schema)}
+    if rules["composition"]["schema_authority"] != expected:
+        raise ValueError("composition_schema_authority_digest")
+    if manifest is not None:
+        schemas = [entry for entry in manifest if entry["canonicalResourceKey"] == key]
+        tables = [
+            entry
+            for entry in manifest
+            if entry["canonicalResourceKey"] == PREFIX + "composition-bindings"
+        ]
+        if len(schemas) != 1 or len(tables) != 1 or schemas[0]["contentDigest"] != digest(schema):
+            raise ValueError("composition_schema_manifest_member")
+        edges = [
+            edge
+            for edge in tables[0]["dependencies"]
+            if edge["canonicalResourceKey"].startswith("authoring-construction/")
+            and edge["canonicalResourceKey"].endswith("/composition-bindings.schema")
+        ]
+        if edges != [{"canonicalResourceKey": key, "contentDigest": digest(schema)}]:
+            raise ValueError("composition_schema_manifest_edge")
+
+
+def qualify(root: Path = ROOT, *, published: bool = True) -> dict[str, Any]:
     """Independently qualify exact authority, reviewed delta, refs and schemas."""
     from adr_kit.semantic_contract import (
         validate_semantic_resource_closure,
@@ -639,9 +700,12 @@ def qualify(root: Path = ROOT) -> dict[str, Any]:
         ]
         if not validate_semantic_resource_closure(definition, bundle).closure_valid:
             raise ValueError("exact_authority_closure: " + family)
+    raw = {name: read(root, PREFIX + name) for name in NAMES}
+    qualify_binding_schema_dependency(
+        raw["composition-bindings"], raw["composition-bindings.schema"], raw["rules"]
+    )
     expected = resources(root)
     expected["conformance"] = conformance(root)
-    raw = {name: read(root, PREFIX + name) for name in NAMES}
     for name, value in expected.items():
         if raw[name] != value:
             raise ValueError("unqualified_publication_delta: " + name)
@@ -699,6 +763,29 @@ def qualify(root: Path = ROOT) -> dict[str, Any]:
                 raise ValueError("self_referential_ACC_fingerprint")
             if dep not in own_keys:
                 read(root, dep)
+    if published:
+        definition = read(root, PREFIX + "contract")
+        if (
+            definition["semanticContractFamily"] != "authoring-construction"
+            or definition["semanticContractVersion"] != "1.4"
+            or not verify_semantic_contract(definition).success
+        ):
+            raise ValueError("published_ACC_1_4_definition")
+        qualify_binding_schema_dependency(
+            raw["composition-bindings"],
+            raw["composition-bindings.schema"],
+            raw["rules"],
+            definition["resourceManifest"],
+        )
+        bundle = [
+            {
+                "canonicalResourceKey": entry["canonicalResourceKey"],
+                "content": read(root, entry["canonicalResourceKey"]),
+            }
+            for entry in definition["resourceManifest"]
+        ]
+        if not validate_semantic_resource_closure(definition, bundle).closure_valid:
+            raise ValueError("published_ACC_1_4_closure")
     return {
         "composition_bindings": 1,
         "inherited_cases_reviewed": 159,

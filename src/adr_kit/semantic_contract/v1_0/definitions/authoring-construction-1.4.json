@@ -2653,7 +2653,7 @@
     },
     {
       "canonicalResourceKey": "authoring-construction/1.4/composition-bindings",
-      "contentDigest": "sha256:a117e2d55538a518b6f03c89a0ab1496d839527ebe6f69ad647fe78737e03169",
+      "contentDigest": "sha256:f7e408fc4d450243390fae83ce83c046ea6b25625854e2818fb779366cfc8682",
       "role": "interpretation-rule",
       "dependencies": [
         {
@@ -2665,8 +2665,8 @@
           "contentDigest": "sha256:49c11df61cace7b46b61a1b3242a683709ff84b16c5940cff69051f2763c609e"
         },
         {
-          "canonicalResourceKey": "authoring-construction/1.3/composition-bindings.schema",
-          "contentDigest": "sha256:348e67ba3eb3e5524f02bfdc8171bd7dda197778541627415580561b2c332bee"
+          "canonicalResourceKey": "authoring-construction/1.4/composition-bindings.schema",
+          "contentDigest": "sha256:14b3c639b50364ed15e0c4107c279b21f85be58d47b566240bb590cb54931c2f"
         },
         {
           "canonicalResourceKey": "authoring-domain/1.1/contract",
@@ -2684,7 +2684,7 @@
     },
     {
       "canonicalResourceKey": "authoring-construction/1.4/composition-bindings.schema",
-      "contentDigest": "sha256:fc008d1b4992581b17efc62a5705af9104d72ea849a20e2a4adeee6b3d1353e7",
+      "contentDigest": "sha256:14b3c639b50364ed15e0c4107c279b21f85be58d47b566240bb590cb54931c2f",
       "role": "source-contract-schema",
       "dependencies": []
     },
@@ -2715,11 +2715,11 @@
         },
         {
           "canonicalResourceKey": "authoring-construction/1.4/composition-bindings",
-          "contentDigest": "sha256:a117e2d55538a518b6f03c89a0ab1496d839527ebe6f69ad647fe78737e03169"
+          "contentDigest": "sha256:f7e408fc4d450243390fae83ce83c046ea6b25625854e2818fb779366cfc8682"
         },
         {
           "canonicalResourceKey": "authoring-construction/1.4/composition-bindings.schema",
-          "contentDigest": "sha256:fc008d1b4992581b17efc62a5705af9104d72ea849a20e2a4adeee6b3d1353e7"
+          "contentDigest": "sha256:14b3c639b50364ed15e0c4107c279b21f85be58d47b566240bb590cb54931c2f"
         },
         {
           "canonicalResourceKey": "authoring-construction/1.4/conformance.schema",
@@ -2727,7 +2727,7 @@
         },
         {
           "canonicalResourceKey": "authoring-construction/1.4/rules",
-          "contentDigest": "sha256:f9ff50737602b65ffd047dd878a6b82c40987abfe99b3fd6ea304deda43c1991"
+          "contentDigest": "sha256:3b5330cc8ee1634c082f1cf9092e785cf838f7255e8fef4cb5e7363d6fa8b0db"
         },
         {
           "canonicalResourceKey": "authoring-construction/1.4/schema",
@@ -2743,7 +2743,7 @@
     },
     {
       "canonicalResourceKey": "authoring-construction/1.4/rules",
-      "contentDigest": "sha256:f9ff50737602b65ffd047dd878a6b82c40987abfe99b3fd6ea304deda43c1991",
+      "contentDigest": "sha256:3b5330cc8ee1634c082f1cf9092e785cf838f7255e8fef4cb5e7363d6fa8b0db",
       "role": "interpretation-rule",
       "dependencies": [
         {
@@ -2864,11 +2864,11 @@
         },
         {
           "canonicalResourceKey": "authoring-construction/1.4/composition-bindings",
-          "contentDigest": "sha256:a117e2d55538a518b6f03c89a0ab1496d839527ebe6f69ad647fe78737e03169"
+          "contentDigest": "sha256:f7e408fc4d450243390fae83ce83c046ea6b25625854e2818fb779366cfc8682"
         },
         {
           "canonicalResourceKey": "authoring-construction/1.4/composition-bindings.schema",
-          "contentDigest": "sha256:fc008d1b4992581b17efc62a5705af9104d72ea849a20e2a4adeee6b3d1353e7"
+          "contentDigest": "sha256:14b3c639b50364ed15e0c4107c279b21f85be58d47b566240bb590cb54931c2f"
         },
         {
           "canonicalResourceKey": "authoring-domain/1.1/contract",
@@ -3521,5 +3521,5 @@
   "frozenNormativeConformanceResources": [
     "authoring-construction/1.4/conformance"
   ],
-  "semanticContractFingerprint": "scf:v1:sha256:98bbdf394aa53ce20e1ebbc3e9835eecae1b89e0cd9568f3abee4d983c20b9f5"
+  "semanticContractFingerprint": "scf:v1:sha256:19e267c5c77477a594414168bde9f733b1b9e547c06fc6836ad09392a248ea6d"
 }

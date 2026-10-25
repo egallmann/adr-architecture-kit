@@ -3320,9 +3320,13 @@ def publish_authoring_construction_14() -> None:
     """Append ACC 1.4 only; no historical generation or selection side effects."""
     if str(ROOT) not in sys.path:
         sys.path.insert(0, str(ROOT))
-    from scripts.qualify_acc14_publication import AI, BASE, NAMES, PREFIX, qualify, read
+    from scripts.qualify_acc14_publication import (
+        AI, BASE, NAMES, PREFIX, qualify, qualify_binding_schema_dependency, read,
+    )
 
-    qualify(ROOT)
+    # Preflight canonical resources before replacing the previous unpublished
+    # definition; final definition/closure qualification follows assembly.
+    qualify(ROOT, published=False)
     own = {PREFIX + name: read(ROOT, PREFIX + name) for name in NAMES}
     roles = {AI + "contract": "normative-definition", BASE + "contract": "normative-definition"}
     for family, version in (("authoring-construction", "1.3"), ("architecture-interpretation", "1.4")):
@@ -3350,6 +3354,10 @@ def publish_authoring_construction_14() -> None:
                              for dep in sorted(discovered_dependencies(key, contents[key]))],
         })
     successor = definition("authoring-construction", manifest, [PREFIX + "conformance"], version="1.4")
+    qualify_binding_schema_dependency(
+        own[PREFIX + "composition-bindings"], own[PREFIX + "composition-bindings.schema"],
+        own[PREFIX + "rules"], successor["resourceManifest"],
+    )
     from adr_kit.semantic_contract import validate_semantic_resource_closure, verify_semantic_contract
 
     bundle = [{"canonicalResourceKey": key, "content": value} for key, value in contents.items()]

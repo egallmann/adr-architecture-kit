@@ -4,7 +4,7 @@ import { getSemanticContract, loadSemanticResource, verifySemanticContract, vali
 
 test("ACC 1.4 exact immutable publication qualifies its complete packaged authority", async () => {
   const definition = getSemanticContract("authoring-construction", "1.4");
-  assert.equal(definition.semanticContractFingerprint, "scf:v1:sha256:98bbdf394aa53ce20e1ebbc3e9835eecae1b89e0cd9568f3abee4d983c20b9f5");
+  assert.equal(definition.semanticContractFingerprint, "scf:v1:sha256:19e267c5c77477a594414168bde9f733b1b9e547c06fc6836ad09392a248ea6d");
   assert.equal(definition.resourceManifest.length, 108);
   assert.deepEqual(definition.frozenNormativeConformanceResources, ["authoring-construction/1.4/conformance"]);
   assert.equal((await verifySemanticContract(definition)).success, true);

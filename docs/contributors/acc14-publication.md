@@ -6,7 +6,7 @@ NM 2.5. Publication does not execute construction or interpretation.
 
 | Authority | Exact SCF | Resources |
 | --- | --- | --- |
-| ACC 1.4 | `scf:v1:sha256:98bbdf394aa53ce20e1ebbc3e9835eecae1b89e0cd9568f3abee4d983c20b9f5` | 108 |
+| ACC 1.4 | `scf:v1:sha256:19e267c5c77477a594414168bde9f733b1b9e547c06fc6836ad09392a248ea6d` | 108 |
 | AI 1.4 | `scf:v1:sha256:5c338d24961946d7f7d4350d5bfbbfb9e3882c56c8be09ba4d242169163acdd7` | 60 |
 | NM 2.5 | `scf:v1:sha256:bb48720502668e434d378445004aec7783346a0e74254c9e0d3cb01a8798d9d7` | 7 |
 | Historical ACC 1.3 | `scf:v1:sha256:5828fe0c3b1692240726152f57ca6de037a1e07f38bb8f9ecda223af105d1b49` | 94 |
@@ -50,6 +50,17 @@ actual AI 1.3 keys, digests, SCF and rule identities, including
 `declaring-lifecycle.adr-logical.decisions`. Enclosing request, interpretation and
 construction evidence independently qualify ACC 1.4 and AI 1.4. Rewriting an old
 receipt's version or fingerprint never qualifies successor execution.
+
+The table's governing validation schema is
+`authoring-construction/1.4/composition-bindings.schema`, not the predecessor
+validator, whose version constraint rejects a 1.4 table. The declaration,
+companion schema's closed dependency expectation, selected schema digest and
+table manifest edge must all agree. This versioned validation dependency is
+independent of the row's deliberately inherited AI 1.3 semantic-rule authority.
+Publication qualification verifies the schema edge independently of generated
+templates and SCF integrity; recomputing an SCF cannot conceal the wrong edge.
+Resource preflight precedes generation; the assembled manifest is checked before
+writing, and ordinary qualification verifies the published definition/closure.
 
 ## Required outputs and independent equality
 

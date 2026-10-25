@@ -378,11 +378,11 @@
   "composition": {
     "binding_authority": {
       "canonical_resource_key": "authoring-construction/1.4/composition-bindings",
-      "content_digest": "sha256:a117e2d55538a518b6f03c89a0ab1496d839527ebe6f69ad647fe78737e03169"
+      "content_digest": "sha256:f7e408fc4d450243390fae83ce83c046ea6b25625854e2818fb779366cfc8682"
     },
     "schema_authority": {
       "canonical_resource_key": "authoring-construction/1.4/composition-bindings.schema",
-      "content_digest": "sha256:fc008d1b4992581b17efc62a5705af9104d72ea849a20e2a4adeee6b3d1353e7"
+      "content_digest": "sha256:14b3c639b50364ed15e0c4107c279b21f85be58d47b566240bb590cb54931c2f"
     },
     "selection_sequence": [
       "verify_complete_exact_ACC_1.4_closure",

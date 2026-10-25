@@ -2381,3 +2381,7 @@ mod authoring_construction_v13;
 
 #[allow(dead_code)]
 mod architecture_interpretation_v13;
+
+// Static required-output authority only; no dispatch or capability registration.
+#[allow(dead_code)]
+mod architecture_interpretation_v14;

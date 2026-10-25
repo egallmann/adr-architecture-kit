@@ -707,6 +707,9 @@ def conformance(root: Path, recipe_data: dict[str, Any], data: dict[str, Any]) -
             {
                 B + "conformance",
                 P + "conformance.schema",
+                P + "rules",
+                P + "required-output-derivations",
+                P + "identity-representation-recipes",
                 *[t["source_schema"]["canonical_resource_key"] for t in data["types"]],
                 "normalized-model/2.5/schema/normalized-entity.schema",
             }

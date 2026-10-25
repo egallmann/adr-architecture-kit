@@ -26,7 +26,7 @@ from tests.test_architecture_interpretation_v14_publication import IMMUTABLE_SHA
 ROOT = Path(__file__).resolve().parents[1]
 P = publication.PREFIX
 B = publication.BASE
-SCF = "scf:v1:sha256:df882d927f5f74ba620ae0a2f705340e47792655bf6f44923c354aa8817c826d"
+SCF = "scf:v1:sha256:e3d52d9e863cfb6008f55bbff5c7ea4e676ac6a021d9eb52126284636d0329af"
 
 
 def resource(name: str) -> Any:
@@ -139,6 +139,7 @@ def test_every_inherited_declaration_and_type_is_preserved(semantic_type: str) -
         "forged_lineage",
         "inherited_identity",
         "missing_schema_edge",
+        "missing_conformance_rule_edge",
         "wrong_dependency",
         "URI_normalize",
         "missing_provider",
@@ -205,6 +206,8 @@ def test_independent_negative_mutations_fail_closed(snapshot: dict[str, Any], fa
         ] = (P + publication.CATALOG)
     elif fault == "missing_schema_edge":
         recipes["semanticDependencies"].remove(P + publication.RECIPES + ".schema")
+    elif fault == "missing_conformance_rule_edge":
+        snapshot[P + "conformance"]["semanticDependencies"].remove(P + publication.RECIPES)
     elif fault == "wrong_dependency":
         c["semanticDependencies"].append("architecture-interpretation/99.99/rules")
     elif fault == "URI_normalize":

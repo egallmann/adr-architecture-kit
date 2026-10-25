@@ -3,6 +3,9 @@
   "semanticDependencies": [
     "architecture-interpretation/1.4/conformance",
     "architecture-interpretation/1.5/conformance.schema",
+    "architecture-interpretation/1.5/identity-representation-recipes",
+    "architecture-interpretation/1.5/required-output-derivations",
+    "architecture-interpretation/1.5/rules",
     "authoring/1.7/schema/adr-common.schema",
     "authoring/1.7/schema/adr-logical.schema",
     "authoring/1.7/schema/adr-physical-component.schema",

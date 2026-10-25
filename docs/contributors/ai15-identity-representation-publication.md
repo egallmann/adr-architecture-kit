@@ -7,7 +7,7 @@ required-output accounting. It publishes authority, not instance execution.
 ## Exact inventory and closure
 
 The computed AI 1.5 SCF is
-`scf:v1:sha256:df882d927f5f74ba620ae0a2f705340e47792655bf6f44923c354aa8817c826d`.
+`scf:v1:sha256:e3d52d9e863cfb6008f55bbff5c7ea4e676ac6a021d9eb52126284636d0329af`.
 
 The sorted manifest has 69 resources: AI 1.4's exact 60-resource closure,
 the AI 1.4 definition, the NM 2.5 definition, and these seven successor keys

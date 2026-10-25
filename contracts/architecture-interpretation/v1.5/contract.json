@@ -1141,7 +1141,7 @@
     },
     {
       "canonicalResourceKey": "architecture-interpretation/1.5/conformance",
-      "contentDigest": "sha256:c9b78ee379991576967fa53f587cb7f1e3d41f25b5281132bf4933f5aad980ac",
+      "contentDigest": "sha256:bd0a6ba076b00cd9e4d18dda4124727f49d5d810ed020c208838dc72502edf04",
       "role": "interpretation-conformance",
       "dependencies": [
         {
@@ -1151,6 +1151,18 @@
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/conformance.schema",
           "contentDigest": "sha256:810e40d28c72c909a836207f2ed4a7e45d6f688614d509c380879d29ef520e0a"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes",
+          "contentDigest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations",
+          "contentDigest": "sha256:3553c50a455db9029ed066962d18be891dfc12986a85c8f54cba68e85a312162"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/rules",
+          "contentDigest": "sha256:4a8e03cdfb319d1adf1f23425bfcb74ba34005f005cfce8b64f6274183b4c7ed"
         },
         {
           "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
@@ -2029,5 +2041,5 @@
   "frozenNormativeConformanceResources": [
     "architecture-interpretation/1.5/conformance"
   ],
-  "semanticContractFingerprint": "scf:v1:sha256:df882d927f5f74ba620ae0a2f705340e47792655bf6f44923c354aa8817c826d"
+  "semanticContractFingerprint": "scf:v1:sha256:e3d52d9e863cfb6008f55bbff5c7ea4e676ac6a021d9eb52126284636d0329af"
 }

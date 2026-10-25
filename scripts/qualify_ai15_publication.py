@@ -1087,6 +1087,9 @@ def _qualify(root: Path, *, published: bool) -> dict[str, Any]:
         | {
             BASE + "conformance",
             PREFIX + "conformance.schema",
+            PREFIX + "rules",
+            PREFIX + CATALOG,
+            PREFIX + RECIPES,
             "normalized-model/2.5/schema/normalized-entity.schema",
         },
         "wrong_conformance_dependency",

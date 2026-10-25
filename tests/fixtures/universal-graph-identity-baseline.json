@@ -5,7 +5,7 @@
   "baseline_sha": "9bce83c",
   "architecture_graph": {
     "path": "adrs/index/architecture-graph.yaml",
-    "source_sha256": "1f75a144e3c341e48f47c2ad8c88d2ffde530b2ebff1b32b88d15f04c239983f",
+    "source_sha256": "4a8f257171fb830efe400395643150aef8c9d1873a8d40bdaef12521ccfecaf9",
     "node_count": 730,
     "edge_count": 1080,
     "node_semantic_sha256": "83630963c9b128b71b77bcf4300dd2623a21c8283358ab8184a70518597924e0",

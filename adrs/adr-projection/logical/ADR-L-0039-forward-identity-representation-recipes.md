@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: cd4a8ff50f919e83ade02b49242621ae57a7399df966b83251b8a31a53b209ba
-rendered_hash: 6051b87e52a862295da694a429e1851c547283f371f8d76e3bb312d0d11c0bf7
+source_hash: 705143d3a37d0a2ee71fc2b9c9a6f0f0d93bdd6aeac7a9adbae17894a2fb17f7
+rendered_hash: 0e579109bdebe1f409b1f40d1a26121882c7fd046c21372bbbcfa718315ffb4d
 -->
 
 # ADR-L-0039: Forward Identity Representation Recipes
@@ -14,7 +14,7 @@ rendered_hash: 6051b87e52a862295da694a429e1851c547283f371f8d76e3bb312d0d11c0bf7
 ## Identity / Status
 
 **Type:** logical<br>
-**Status:** proposed<br>
+**Status:** accepted<br>
 **Alias:** ADR-L-0039<br>
 **Authoring contract:** authoring v1.5<br>
 **Created:** 2026-10-25<br>
@@ -27,7 +27,7 @@ rendered_hash: 6051b87e52a862295da694a429e1851c547283f371f8d76e3bb312d0d11c0bf7
 | | |
 | --- | --- |
 | Logical authority | ADR-L-0039 |
-| Status | proposed |
+| Status | accepted |
 | Decisions | 6 |
 | Invariants | 6 |
 
@@ -41,7 +41,7 @@ destination entries; 54 concern alias_ref, uri and created_at on 18 entity branc
 ADR-L-0019 defines historical representation operations under Authoring 1.3/NM 2.0.
 ADR-L-0038 explicitly leaves forward recipes blocked until exact accepted authority
 and qualification. The same field spelling or a historical implementation cannot
-close that gap. This proposed bounded refinement reuses operations and selects
+close that gap. This accepted bounded refinement reuses operations and selects
 precise forward context/encoding/evidence without publishing or executing them.
 ## Architectural Decisions
 
@@ -255,7 +255,7 @@ entries (18 alias_ref_recipe, 18 uri_recipe, 18 created_at_encoding). Each row
 below maps its current exact source/destination schema selector and blocker to
 the alias, URI or time decision above respectively. Their potential removal
 requires accepted successor publication and independent instance qualification;
-this proposed ADR removes none. Other current blockers are not discharged.
+this ADR removes none. Other current blockers are not discharged.
 
 Regular custom entity/extension needs exact current CEC qualification and retains
 its independent custom lifecycle gap. Shared System identity must resolve to one
@@ -980,8 +980,10 @@ governed unresolved dependency. Retain independent diagnostics with precedence
 Rejected > Unavailable > Unresolved; fail atomically without partial materialization.
 
 Human acceptance, exact AI successor publication, exact ACC successor selection
-and bounded Rust instance execution are separate gates. This governance PR stays
-proposed and open for human review. No automatic acceptance or merge. No frozen
+and bounded Rust instance execution are separate gates. Human architectural
+acceptance is explicitly recorded for reviewed PR #184. No automatic acceptance or merge.
+Explicit human authorization permits this ADR acceptance and PR merge only
+after all required acceptance gates pass. No frozen
 authority, blocker entry, public protocol/API/capability, current SCS or WASM changes.
 Do not resolve fingerprint_preimage, source_envelope_recipe, completeness_recipe,
 custom_lifecycle, declaring_context, shared_identity, relationship_branch,
@@ -1124,6 +1126,13 @@ Require closed successor publication and independent instance verification
 
 
 
+## Governance / Bindings / Evidence
+
+### Governance
+
+**Approved by:** egallmann
+**Approved date:** 2026-10-25 20:24:36+00:00
+
 
 ## Lifecycle / Related Architecture
 
@@ -1152,11 +1161,24 @@ Require closed successor publication and independent instance verification
 
 ## Notes
 
-Proposed for explicit human architectural review. No acceptance metadata is asserted.
-Ignored Design Journal and allocation preparation are local convergence state.
-Historical ADRs and immutable authorities remain unchanged. Generated artifacts
-are repository-owned derived views, not independent authority. Keep this PR open.
-AI/ACC successor publication and all runtime work require separate qualification.
+Accepted following explicit human approval of the architecture reviewed at
+PR #184 head b43d7f1c14d4b89cb6c6836998514e89f1dd6c51, including
+DEC-9017–9022 and INV-0309–0314: literal alias_ref; opaque literal namespace/UUID
+entity URI; exact UUIDv7 millisecond encoding; Unavailable beyond the four-digit
+year range; qualified entity-branch applicability; independent representation
+verification. After the explicit approval precondition was requested, the human
+confirmed: "I approve the above. Proceed to with the task I previous gave you".
+That authorization covers ADR acceptance and merging PR #184 only after all
+required gates pass. Approval metadata records this authentic task instruction,
+not an invented independent hosted approval or steelman review.
+All canonical identities, architectural choices, recipe declarations and the
+complete 27-type audit are retained. Historical ADR sources and immutable
+authorities remain unchanged. The ignored Design Journal is local convergence
+state; repository-generated projections are derived evidence, not authority.
+AI 1.5 and ACC 1.5 remain unpublished; every frozen AI 1.4 BLOCKED entry remains.
+Successor publication and runtime recipe execution require separate work.
+No NM change, materialization, semantic_equivalent, Constructed, public protocol,
+WASM, SDK capability, current SCS, persistence, admission or promotion is enabled.
 
 
 ---

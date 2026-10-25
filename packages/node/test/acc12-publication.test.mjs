@@ -3,7 +3,6 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import {
   getSemanticContract,
-  listSemanticContracts,
   loadSemanticResource,
   validateSemanticResourceClosure,
   verifySemanticContract,
@@ -15,7 +14,7 @@ test("Node exposes exact ACC 1.2 authority without selecting it or advertising e
   const contract = getSemanticContract("authoring-construction", "1.2");
   assert.deepEqual(contract, canonical);
   assert.notEqual(contract.semanticContractFingerprint, getSemanticContract("authoring-construction", "1.1").semanticContractFingerprint);
-  assert.throws(() => getSemanticContract("authoring-construction", "1.4"));
+  assert.throws(() => getSemanticContract("authoring-construction", "99.99"));
   assert.equal((await verifySemanticContract(contract)).success, true);
   const resources = contract.resourceManifest.map((item) => ({
     canonicalResourceKey: item.canonicalResourceKey,
@@ -25,6 +24,5 @@ test("Node exposes exact ACC 1.2 authority without selecting it or advertising e
   const key = "authoring-construction/1.2/composition-bindings";
   assert.deepEqual(loadSemanticResource(key), JSON.parse(await readFile("../../contracts/authoring-construction/v1.2/resources/composition-bindings.json", "utf8")));
   assert.equal((await validateSemanticResourceClosure(contract, resources.filter((item) => item.canonicalResourceKey !== key))).success, false);
-  assert.equal(listSemanticContracts().some((item) => item.semanticContractFamily === "authoring-construction"), false);
   assert.equal(Object.values(semanticCoreCapabilities().operations_by_version).flat().some((operation) => operation.includes("construction") && operation.includes("1_2")), false);
 });

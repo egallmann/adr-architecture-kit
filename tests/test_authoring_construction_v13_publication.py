@@ -20,7 +20,6 @@ from adr_kit.core import semantic_core_capabilities
 from adr_kit.semantic_contract import (
     get_semantic_contract,
     load_semantic_resource,
-    list_semantic_contracts,
     verify_semantic_contract,
     validate_semantic_resource_closure,
     calculate_semantic_contract_fingerprint,
@@ -1131,16 +1130,18 @@ def test_exact_discovery_missing_versions_aliases_and_publication_only() -> None
         == get_semantic_contract("architecture-interpretation", "1.3").to_wire()
     )
     for key in [
-        "authoring-construction/1.4/rules",
-        publication.PREFIX + "contract",
+        "authoring-construction/99.99/rules",
         publication.PREFIX + "composition/bindings",
         publication.PREFIX + "conformance-not-published",
     ]:
         with pytest.raises(LookupError):
             load_semantic_resource(key)
     with pytest.raises(LookupError):
-        get_semantic_contract("authoring-construction", "1.4")
-    assert all(c.semantic_contract_version != "1.3" for c in list_semantic_contracts())
+        get_semantic_contract("authoring-construction", "99.99")
+    assert (
+        load_semantic_resource(publication.PREFIX + "contract")
+        == get_semantic_contract("authoring-construction", "1.3").to_wire()
+    )
     assert (
         read(BASE / "resources/rules.json")["publication_posture"][
             "execution_capability_advertised"

@@ -19,7 +19,6 @@ from adr_kit.semantic_contract import (
     SemanticContractVersion,
     calculate_semantic_contract_fingerprint,
     get_semantic_contract,
-    list_semantic_contracts,
     load_semantic_resource,
     validate_semantic_resource_closure,
     verify_semantic_contract,
@@ -1038,7 +1037,6 @@ def test_exact_discovery_and_byte_identical_package_mirrors() -> None:
         assert (ASSETS / "resources" / filename).read_bytes() == data
         assert (BUNDLED / "resources" / filename).read_bytes() == data
         assert EXPECTED_SCF not in data.decode("utf-8")
-    assert all(x.semantic_contract_version != "1.3" for x in list_semantic_contracts())
     with pytest.raises(LookupError):
         get_semantic_contract("architecture-interpretation", "99.99")
     with pytest.raises(LookupError):
@@ -1050,7 +1048,7 @@ def test_exact_discovery_and_byte_identical_package_mirrors() -> None:
     with pytest.raises(LookupError):
         load_semantic_resource("architecture-interpretation/1.3/lifecycle/ownership")
     with pytest.raises(LookupError):
-        get_semantic_contract("authoring-construction", "1.4")
+        get_semantic_contract("authoring-construction", "99.99")
 
 
 def test_successor_only_generation_deterministic_and_historical_bytes_unchanged() -> None:

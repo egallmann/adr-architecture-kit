@@ -3316,6 +3316,64 @@ def publish_architecture_interpretation_14() -> None:
         write_json(path, successor)
 
 
+def publish_authoring_construction_14() -> None:
+    """Append ACC 1.4 only; no historical generation or selection side effects."""
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from scripts.qualify_acc14_publication import (
+        AI, BASE, NAMES, PREFIX, qualify, qualify_binding_schema_dependency, read,
+    )
+
+    # Preflight canonical resources before replacing the previous unpublished
+    # definition; final definition/closure qualification follows assembly.
+    qualify(ROOT, published=False)
+    own = {PREFIX + name: read(ROOT, PREFIX + name) for name in NAMES}
+    roles = {AI + "contract": "normative-definition", BASE + "contract": "normative-definition"}
+    for family, version in (("authoring-construction", "1.3"), ("architecture-interpretation", "1.4")):
+        for entry in read_json(CANONICAL / f"definitions/{family}-{version}.json")["resourceManifest"]:
+            roles[entry["canonicalResourceKey"]] = entry["role"]
+    contents: dict[str, Any] = {}
+    pending = set(own)
+    while pending:
+        key = min(pending)
+        pending.remove(key)
+        value = own[key] if key in own else read(ROOT, key)
+        contents[key] = value
+        pending.update(discovered_dependencies(key, value) - contents.keys())
+    manifest = []
+    for key in sorted(contents):
+        name = key.removeprefix(PREFIX)
+        role = (
+            "interpretation-conformance" if name == "conformance" else
+            "source-contract-schema" if name == "schema" or name.endswith(".schema") else
+            "normative-definition" if name == "compatibility" else "interpretation-rule"
+        ) if key in own else roles[key]
+        manifest.append({
+            "canonicalResourceKey": key, "contentDigest": digest(contents[key]), "role": role,
+            "dependencies": [{"canonicalResourceKey": dep, "contentDigest": digest(contents[dep])}
+                             for dep in sorted(discovered_dependencies(key, contents[key]))],
+        })
+    successor = definition("authoring-construction", manifest, [PREFIX + "conformance"], version="1.4")
+    qualify_binding_schema_dependency(
+        own[PREFIX + "composition-bindings"], own[PREFIX + "composition-bindings.schema"],
+        own[PREFIX + "rules"], successor["resourceManifest"],
+    )
+    from adr_kit.semantic_contract import validate_semantic_resource_closure, verify_semantic_contract
+
+    bundle = [{"canonicalResourceKey": key, "content": value} for key, value in contents.items()]
+    if not verify_semantic_contract(successor).success or not validate_semantic_resource_closure(successor, bundle).closure_valid:
+        raise ValueError("ACC 1.4 exact authority closure failed; nothing published")
+    source = ROOT / "contracts/authoring-construction/v1.4"
+    for name in NAMES:
+        data = (source / ("schema.json" if name == "schema" else f"resources/{name}.json")).read_bytes()
+        filename = "authoring-construction-1.4-" + name + ".json"
+        (RESOURCES / filename).write_bytes(data)
+        (BUNDLED / "resources" / filename).write_bytes(data)
+    for path in (source / "contract.json", CANONICAL / "definitions/authoring-construction-1.4.json",
+                 BUNDLED / "definitions/authoring-construction-1.4.json", BUNDLED / "authoring-construction-1.4.json"):
+        write_json(path, successor)
+
+
 if __name__ == "__main__":
     if sys.argv[1:] == ["--publish-nm25-only"]:
         publish_normalized_model_25()
@@ -3325,6 +3383,8 @@ if __name__ == "__main__":
         publish_architecture_interpretation_14()
     elif sys.argv[1:] == ["--publish-acc13-only"]:
         publish_authoring_construction_13()
+    elif sys.argv[1:] == ["--publish-acc14-only"]:
+        publish_authoring_construction_14()
     elif sys.argv[1:]:
         raise SystemExit("Unsupported generator mode")
     else:

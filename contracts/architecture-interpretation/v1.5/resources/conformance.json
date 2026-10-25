@@ -1,0 +1,3546 @@
+{
+  "resource": "architecture-interpretation/1.5/conformance",
+  "semanticDependencies": [
+    "architecture-interpretation/1.4/conformance",
+    "architecture-interpretation/1.5/conformance.schema",
+    "authoring/1.7/schema/adr-common.schema",
+    "authoring/1.7/schema/adr-logical.schema",
+    "authoring/1.7/schema/adr-physical-component.schema",
+    "authoring/1.7/schema/adr-physical-system.schema",
+    "authoring/1.7/schema/types.schema",
+    "normalized-model/2.5/schema/normalized-entity.schema"
+  ],
+  "authority_only": true,
+  "runtime_execution_coverage": false,
+  "inherited_conformance": {
+    "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+    "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+    "schema_pointer": ""
+  },
+  "inherited_cases": [
+    {
+      "id": "AI14-001",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/0"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-002",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/1"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-003",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/2"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-004",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/3"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-005",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/4"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-006",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/5"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-007",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/6"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-008",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/7"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-009",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/8"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-010",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/9"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-011",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/10"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-012",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/11"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-013",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/12"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-014",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/13"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-015",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/14"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-016",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/15"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-017",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/16"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-018",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/17"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-019",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/18"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-020",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/19"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-021",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/20"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-022",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/21"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-023",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/22"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-024",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/23"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-025",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/24"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-026",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/25"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-027",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/26"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-028",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/27"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-029",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/28"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-030",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/29"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-031",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/30"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-032",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/31"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-033",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/32"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-034",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/33"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-035",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/34"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-036",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/35"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-037",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/36"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-038",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/37"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-039",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/38"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-040",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/39"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-041",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/40"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-042",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/41"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-043",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/42"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-044",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/43"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-045",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/44"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-046",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/45"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-047",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/46"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-048",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/47"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-049",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/48"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-050",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/49"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-051",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/50"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-052",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/51"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-053",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/52"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-054",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/53"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-055",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/54"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-056",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/55"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-057",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/56"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-058",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/57"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-059",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/58"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-060",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/59"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-061",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/60"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-062",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/61"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-063",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/62"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-064",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/63"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-065",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/64"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-066",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/65"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-067",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/66"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-068",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/67"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-069",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/68"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-070",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/69"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-071",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/70"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-072",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/71"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-073",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/72"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-074",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/73"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-075",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/74"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-076",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/75"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-077",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/76"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-078",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/77"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-079",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/78"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-080",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/79"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-081",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/80"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-082",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/81"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-083",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/82"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-084",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/83"
+      },
+      "scope": "unchanged_semantic_obligation_under_actual_inherited_authority"
+    },
+    {
+      "id": "AI14-085",
+      "qualification": {
+        "canonical_resource_key": "architecture-interpretation/1.4/conformance",
+        "content_digest": "sha256:54a7ec7287b984ca8949f124f317e38957f24d52fd3ed7f690792ac51bf80418",
+        "schema_pointer": "/cases/84"
+      },
+      "scope": "historical_publication_snapshot_not_successor_absence_requirement"
+    }
+  ],
+  "cases": [
+    {
+      "id": "AI15-001",
+      "category": "definition_qualification",
+      "semantic_type": "adr/logical",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+          "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+          "schema_pointer": ""
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-002",
+      "category": "definition_qualification",
+      "semantic_type": "adr/logical",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+          "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+          "schema_pointer": ""
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-003",
+      "category": "definition_qualification",
+      "semantic_type": "adr/logical",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+          "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+          "schema_pointer": ""
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-004",
+      "category": "definition_qualification",
+      "semantic_type": "adr/physical-component",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+          "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+          "schema_pointer": ""
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-005",
+      "category": "definition_qualification",
+      "semantic_type": "adr/physical-component",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+          "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+          "schema_pointer": ""
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-006",
+      "category": "definition_qualification",
+      "semantic_type": "adr/physical-component",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+          "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+          "schema_pointer": ""
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-007",
+      "category": "definition_qualification",
+      "semantic_type": "adr/physical-system",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": ""
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-008",
+      "category": "definition_qualification",
+      "semantic_type": "adr/physical-system",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": ""
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-009",
+      "category": "definition_qualification",
+      "semantic_type": "adr/physical-system",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": ""
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-010",
+      "category": "definition_qualification",
+      "semantic_type": "entity/boundary",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/boundary"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-011",
+      "category": "definition_qualification",
+      "semantic_type": "entity/boundary",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/boundary"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-012",
+      "category": "definition_qualification",
+      "semantic_type": "entity/boundary",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/boundary"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-013",
+      "category": "definition_qualification",
+      "semantic_type": "entity/capability",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/capability"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-014",
+      "category": "definition_qualification",
+      "semantic_type": "entity/capability",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/capability"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-015",
+      "category": "definition_qualification",
+      "semantic_type": "entity/capability",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/capability"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-016",
+      "category": "definition_qualification",
+      "semantic_type": "entity/component",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/component"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-017",
+      "category": "definition_qualification",
+      "semantic_type": "entity/component",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/component"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-018",
+      "category": "definition_qualification",
+      "semantic_type": "entity/component",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/component"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-019",
+      "category": "definition_qualification",
+      "semantic_type": "entity/contract",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/contract"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-020",
+      "category": "definition_qualification",
+      "semantic_type": "entity/contract",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/contract"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-021",
+      "category": "definition_qualification",
+      "semantic_type": "entity/contract",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/contract"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-022",
+      "category": "definition_qualification",
+      "semantic_type": "entity/data_flow",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/data_flow"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-023",
+      "category": "definition_qualification",
+      "semantic_type": "entity/data_flow",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/data_flow"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-024",
+      "category": "definition_qualification",
+      "semantic_type": "entity/data_flow",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/data_flow"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-025",
+      "category": "definition_qualification",
+      "semantic_type": "entity/decision",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/decision"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-026",
+      "category": "definition_qualification",
+      "semantic_type": "entity/decision",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/decision"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-027",
+      "category": "definition_qualification",
+      "semantic_type": "entity/decision",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/decision"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-028",
+      "category": "definition_qualification",
+      "semantic_type": "entity/evidence_expectation",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/evidence_expectation"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-029",
+      "category": "definition_qualification",
+      "semantic_type": "entity/evidence_expectation",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/evidence_expectation"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-030",
+      "category": "definition_qualification",
+      "semantic_type": "entity/evidence_expectation",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/evidence_expectation"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-031",
+      "category": "definition_qualification",
+      "semantic_type": "entity/extension",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/custom_entity"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-032",
+      "category": "definition_qualification",
+      "semantic_type": "entity/extension",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/custom_entity"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-033",
+      "category": "definition_qualification",
+      "semantic_type": "entity/extension",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/custom_entity"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-034",
+      "category": "definition_qualification",
+      "semantic_type": "entity/gap",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/gap"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-035",
+      "category": "definition_qualification",
+      "semantic_type": "entity/gap",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/gap"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-036",
+      "category": "definition_qualification",
+      "semantic_type": "entity/gap",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/gap"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-037",
+      "category": "definition_qualification",
+      "semantic_type": "entity/implementation_decision",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/implementation_decision"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-038",
+      "category": "definition_qualification",
+      "semantic_type": "entity/implementation_decision",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/implementation_decision"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-039",
+      "category": "definition_qualification",
+      "semantic_type": "entity/implementation_decision",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/implementation_decision"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-040",
+      "category": "definition_qualification",
+      "semantic_type": "entity/interface",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/interface"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-041",
+      "category": "definition_qualification",
+      "semantic_type": "entity/interface",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/interface"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-042",
+      "category": "definition_qualification",
+      "semantic_type": "entity/interface",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/interface"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-043",
+      "category": "definition_qualification",
+      "semantic_type": "entity/invariant",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/invariant"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-044",
+      "category": "definition_qualification",
+      "semantic_type": "entity/invariant",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/invariant"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-045",
+      "category": "definition_qualification",
+      "semantic_type": "entity/invariant",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/invariant"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-046",
+      "category": "definition_qualification",
+      "semantic_type": "entity/normative_proposition",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/normative_proposition"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/1/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-047",
+      "category": "definition_qualification",
+      "semantic_type": "entity/normative_proposition",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/normative_proposition"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/1/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-048",
+      "category": "definition_qualification",
+      "semantic_type": "entity/normative_proposition",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/normative_proposition"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/1/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-049",
+      "category": "definition_qualification",
+      "semantic_type": "entity/system",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/system"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-050",
+      "category": "definition_qualification",
+      "semantic_type": "entity/system",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/system"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-051",
+      "category": "definition_qualification",
+      "semantic_type": "entity/system",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/system"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-052",
+      "category": "definition_qualification",
+      "semantic_type": "entity/system_boundary",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/system_boundary"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/alias_ref"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-053",
+      "category": "definition_qualification",
+      "semantic_type": "entity/system_boundary",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/system_boundary"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/created_at"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-054",
+      "category": "definition_qualification",
+      "semantic_type": "entity/system_boundary",
+      "assertion": "Exact recipe definition qualifies only static authority; all source, identity, branch and contextual instance prerequisites remain independently required.",
+      "expected": "conforms",
+      "fixture": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/system_boundary"
+        },
+        "destination_schema": {
+          "canonical_resource_key": "normalized-model/2.5/schema/normalized-entity.schema",
+          "content_digest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+          "schema_pointer": "/oneOf/0/properties/uri"
+        },
+        "given": [
+          "instance_applicability_Unknown",
+          "no_instance_value",
+          "one_producer_definition",
+          "original_semantics_preserved_once"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-055",
+      "category": "excluded_branch",
+      "semantic_type": "relationship/calls",
+      "assertion": "Entity identity representation recipes do not create an entity envelope or independent root for this branch.",
+      "expected": "excludes",
+      "fixture": {
+        "given": [
+          "exact_selected_branch",
+          "no_entity_envelope"
+        ],
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/component_topology/properties/relationships/items"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-056",
+      "category": "excluded_branch",
+      "semantic_type": "relationship/depends_on",
+      "assertion": "Entity identity representation recipes do not create an entity envelope or independent root for this branch.",
+      "expected": "excludes",
+      "fixture": {
+        "given": [
+          "exact_selected_branch",
+          "no_entity_envelope"
+        ],
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/component_topology/properties/relationships/items"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-057",
+      "category": "excluded_branch",
+      "semantic_type": "relationship/extension",
+      "assertion": "Entity identity representation recipes do not create an entity envelope or independent root for this branch.",
+      "expected": "excludes",
+      "fixture": {
+        "given": [
+          "exact_selected_branch",
+          "no_entity_envelope"
+        ],
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/custom_relationship"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-058",
+      "category": "excluded_branch",
+      "semantic_type": "relationship/publishes_to",
+      "assertion": "Entity identity representation recipes do not create an entity envelope or independent root for this branch.",
+      "expected": "excludes",
+      "fixture": {
+        "given": [
+          "exact_selected_branch",
+          "no_entity_envelope"
+        ],
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/component_topology/properties/relationships/items"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-059",
+      "category": "excluded_branch",
+      "semantic_type": "relationship/reads_from",
+      "assertion": "Entity identity representation recipes do not create an entity envelope or independent root for this branch.",
+      "expected": "excludes",
+      "fixture": {
+        "given": [
+          "exact_selected_branch",
+          "no_entity_envelope"
+        ],
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/component_topology/properties/relationships/items"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-060",
+      "category": "excluded_branch",
+      "semantic_type": "relationship/subscribes_to",
+      "assertion": "Entity identity representation recipes do not create an entity envelope or independent root for this branch.",
+      "expected": "excludes",
+      "fixture": {
+        "given": [
+          "exact_selected_branch",
+          "no_entity_envelope"
+        ],
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/component_topology/properties/relationships/items"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-061",
+      "category": "excluded_branch",
+      "semantic_type": "relationship/writes_to",
+      "assertion": "Entity identity representation recipes do not create an entity envelope or independent root for this branch.",
+      "expected": "excludes",
+      "fixture": {
+        "given": [
+          "exact_selected_branch",
+          "no_entity_envelope"
+        ],
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/component_topology/properties/relationships/items"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-062",
+      "category": "excluded_branch",
+      "semantic_type": "value/normative_force",
+      "assertion": "Entity identity representation recipes do not create an entity envelope or independent root for this branch.",
+      "expected": "excludes",
+      "fixture": {
+        "given": [
+          "exact_selected_branch",
+          "no_entity_envelope"
+        ],
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/types.schema",
+          "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65",
+          "schema_pointer": "/definitions/normative_force"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-063",
+      "category": "excluded_branch",
+      "semantic_type": "value/topology_component",
+      "assertion": "Entity identity representation recipes do not create an entity envelope or independent root for this branch.",
+      "expected": "excludes",
+      "fixture": {
+        "given": [
+          "exact_selected_branch",
+          "no_entity_envelope"
+        ],
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/component_topology/properties/components/items"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-064",
+      "category": "timestamp_oracle",
+      "semantic_type": "catalog",
+      "assertion": "An established canonical UUIDv7's timestamp verifies this exact four-digit RFC3339 millisecond representation; this fixture is not qualified instance evidence.",
+      "expected": "conforms",
+      "fixture": {
+        "timestamp_ms": 0,
+        "expected_output": "1970-01-01T00:00:00.000Z",
+        "given": [
+          "established_source_bound_uuidv7",
+          "integer_time_no_clock"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-065",
+      "category": "timestamp_oracle",
+      "semantic_type": "catalog",
+      "assertion": "An established canonical UUIDv7's timestamp verifies this exact four-digit RFC3339 millisecond representation; this fixture is not qualified instance evidence.",
+      "expected": "conforms",
+      "fixture": {
+        "timestamp_ms": 1,
+        "expected_output": "1970-01-01T00:00:00.001Z",
+        "given": [
+          "established_source_bound_uuidv7",
+          "integer_time_no_clock"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-066",
+      "category": "timestamp_oracle",
+      "semantic_type": "catalog",
+      "assertion": "An established canonical UUIDv7's timestamp verifies this exact four-digit RFC3339 millisecond representation; this fixture is not qualified instance evidence.",
+      "expected": "conforms",
+      "fixture": {
+        "timestamp_ms": 999,
+        "expected_output": "1970-01-01T00:00:00.999Z",
+        "given": [
+          "established_source_bound_uuidv7",
+          "integer_time_no_clock"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-067",
+      "category": "timestamp_oracle",
+      "semantic_type": "catalog",
+      "assertion": "An established canonical UUIDv7's timestamp verifies this exact four-digit RFC3339 millisecond representation; this fixture is not qualified instance evidence.",
+      "expected": "conforms",
+      "fixture": {
+        "timestamp_ms": 1000,
+        "expected_output": "1970-01-01T00:00:01.000Z",
+        "given": [
+          "established_source_bound_uuidv7",
+          "integer_time_no_clock"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-068",
+      "category": "timestamp_oracle",
+      "semantic_type": "catalog",
+      "assertion": "An established canonical UUIDv7's timestamp verifies this exact four-digit RFC3339 millisecond representation; this fixture is not qualified instance evidence.",
+      "expected": "conforms",
+      "fixture": {
+        "timestamp_ms": 86400000,
+        "expected_output": "1970-01-02T00:00:00.000Z",
+        "given": [
+          "established_source_bound_uuidv7",
+          "integer_time_no_clock"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-069",
+      "category": "timestamp_oracle",
+      "semantic_type": "catalog",
+      "assertion": "An established canonical UUIDv7's timestamp verifies this exact four-digit RFC3339 millisecond representation; this fixture is not qualified instance evidence.",
+      "expected": "conforms",
+      "fixture": {
+        "timestamp_ms": 951782400000,
+        "expected_output": "2000-02-29T00:00:00.000Z",
+        "given": [
+          "established_source_bound_uuidv7",
+          "integer_time_no_clock"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-070",
+      "category": "timestamp_oracle",
+      "semantic_type": "catalog",
+      "assertion": "An established canonical UUIDv7's timestamp verifies this exact four-digit RFC3339 millisecond representation; this fixture is not qualified instance evidence.",
+      "expected": "conforms",
+      "fixture": {
+        "timestamp_ms": 1609459200000,
+        "expected_output": "2021-01-01T00:00:00.000Z",
+        "given": [
+          "established_source_bound_uuidv7",
+          "integer_time_no_clock"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-071",
+      "category": "timestamp_oracle",
+      "semantic_type": "catalog",
+      "assertion": "An established canonical UUIDv7's timestamp verifies this exact four-digit RFC3339 millisecond representation; this fixture is not qualified instance evidence.",
+      "expected": "conforms",
+      "fixture": {
+        "timestamp_ms": 253402300799999,
+        "expected_output": "9999-12-31T23:59:59.999Z",
+        "given": [
+          "established_source_bound_uuidv7",
+          "integer_time_no_clock"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-072",
+      "category": "timestamp_unavailable",
+      "semantic_type": "catalog",
+      "assertion": "A valid canonical UUIDv7 remains valid but cannot qualify the selected representation; do not truncate, remint or manufacture a string.",
+      "expected": "unavailable",
+      "fixture": {
+        "timestamp_ms": 253402300800000,
+        "given": [
+          "valid_canonical_uuidv7",
+          "no_identity_mutation"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-073",
+      "category": "timestamp_unavailable",
+      "semantic_type": "catalog",
+      "assertion": "A valid canonical UUIDv7 remains valid but cannot qualify the selected representation; do not truncate, remint or manufacture a string.",
+      "expected": "unavailable",
+      "fixture": {
+        "timestamp_ms": 281474976710655,
+        "given": [
+          "valid_canonical_uuidv7",
+          "no_identity_mutation"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-074",
+      "category": "alias_oracle",
+      "semantic_type": "catalog",
+      "assertion": "Qualified authored aliases retain exact contents; the derived recognition string owns no second semantic value.",
+      "expected": "conforms",
+      "fixture": {
+        "input_values": [
+          "DEC-0001",
+          "first-decision"
+        ],
+        "expected_output": "DEC-0001:first-decision",
+        "given": [
+          "exact_qualified_authored_aliases",
+          "no_normalization_or_lookup_authority"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-075",
+      "category": "alias_oracle",
+      "semantic_type": "catalog",
+      "assertion": "Qualified authored aliases retain exact contents; the derived recognition string owns no second semantic value.",
+      "expected": "conforms",
+      "fixture": {
+        "input_values": [
+          "ADR-L-0001",
+          "logical-root"
+        ],
+        "expected_output": "ADR-L-0001:logical-root",
+        "given": [
+          "exact_qualified_authored_aliases",
+          "no_normalization_or_lookup_authority"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-076",
+      "category": "uri_oracle",
+      "semantic_type": "catalog",
+      "assertion": "Given independently qualified provider context and identity, the resolver string is literal and opaque; fixtures do not create provider authority.",
+      "expected": "conforms",
+      "fixture": {
+        "input_values": [
+          "urn:adr-kit:detached-candidate:v1",
+          "00000000-0000-7000-8000-000000000001"
+        ],
+        "expected_output": "adr://urn:adr-kit:detached-candidate:v1/entities/00000000-0000-7000-8000-000000000001",
+        "given": [
+          "independently_qualified_provider_context",
+          "established_source_bound_uuidv7"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-077",
+      "category": "uri_oracle",
+      "semantic_type": "catalog",
+      "assertion": "Given independently qualified provider context and identity, the resolver string is literal and opaque; fixtures do not create provider authority.",
+      "expected": "conforms",
+      "fixture": {
+        "input_values": [
+          "provider-a",
+          "00000000-0000-7000-8000-000000000001"
+        ],
+        "expected_output": "adr://provider-a/entities/00000000-0000-7000-8000-000000000001",
+        "given": [
+          "independently_qualified_provider_context",
+          "established_source_bound_uuidv7"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-078",
+      "category": "uri_oracle",
+      "semantic_type": "catalog",
+      "assertion": "Given independently qualified provider context and identity, the resolver string is literal and opaque; fixtures do not create provider authority.",
+      "expected": "conforms",
+      "fixture": {
+        "input_values": [
+          "provider-b",
+          "00000000-0000-7000-8000-000000000001"
+        ],
+        "expected_output": "adr://provider-b/entities/00000000-0000-7000-8000-000000000001",
+        "given": [
+          "independently_qualified_provider_context",
+          "established_source_bound_uuidv7"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-079",
+      "category": "alias_input",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "missing_alias",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-080",
+      "category": "alias_input",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "wrong_alias_type",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-081",
+      "category": "alias_input",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "authored_alias_ref_authority",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-082",
+      "category": "alias_input",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "alias_case_folding",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-083",
+      "category": "alias_input",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "alias_trimming",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-084",
+      "category": "alias_input",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "alias_as_foreign_key",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-085",
+      "category": "namespace",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "unavailable",
+      "fixture": {
+        "mutation": "missing_provider",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-086",
+      "category": "namespace",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "unavailable",
+      "fixture": {
+        "mutation": "ambiguous_provider",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-087",
+      "category": "namespace",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "namespace_mismatch",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-088",
+      "category": "namespace",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "scope_root_substitution",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-089",
+      "category": "namespace",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "source_ref_substitution",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-090",
+      "category": "namespace",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "path_substitution",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-091",
+      "category": "namespace",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "URL_normalization",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-092",
+      "category": "namespace",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "percent_encoding",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-093",
+      "category": "namespace",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "Unicode_normalization",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-094",
+      "category": "namespace",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "wrong_inherited_context_rule",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-095",
+      "category": "identity",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "malformed_uuid",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-096",
+      "category": "identity",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "uppercase_uuid",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-097",
+      "category": "identity",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "wrong_uuid_version",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-098",
+      "category": "identity",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "duplicate_canonical_identity",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-099",
+      "category": "identity",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "duplicate_producer",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-100",
+      "category": "identity",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "identity_reminting",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-101",
+      "category": "identity",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "request_position_as_identity",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-102",
+      "category": "timestamp",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "wrong_fraction_precision",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-103",
+      "category": "timestamp",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "clock_fallback",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-104",
+      "category": "timestamp",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "authored_date_fallback",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-105",
+      "category": "timestamp",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "Git_time_fallback",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-106",
+      "category": "timestamp",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "float_rounding",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-107",
+      "category": "timestamp",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "expanded_year",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-108",
+      "category": "timestamp",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "wrong_timestamp_failure",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-109",
+      "category": "qualification",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "wrong_rule",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-110",
+      "category": "qualification",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "wrong_version",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-111",
+      "category": "qualification",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "wrong_SCF",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-112",
+      "category": "qualification",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "wrong_digest",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-113",
+      "category": "qualification",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "unavailable",
+      "fixture": {
+        "mutation": "missing_source_evidence",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-114",
+      "category": "qualification",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "unavailable",
+      "fixture": {
+        "mutation": "missing_context_evidence",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-115",
+      "category": "qualification",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "forged_receipt",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-116",
+      "category": "qualification",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "recomputed_unauthorized_SCF",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-117",
+      "category": "qualification",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "missing_nested_output",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-118",
+      "category": "qualification",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "missing_conditional_output",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-119",
+      "category": "qualification",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "competing_producer",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-120",
+      "category": "qualification",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "lost_authored_field",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-121",
+      "category": "qualification",
+      "semantic_type": "catalog",
+      "assertion": "Independently qualify exact authority, applicability, source/identity/context and complete representation. Known violations are Rejected; missing evidence is Unavailable; no fabricated Unresolved.",
+      "expected": "rejects",
+      "fixture": {
+        "mutation": "second_semantic_owner",
+        "given": [
+          "retain_independent_diagnostics",
+          "no_partial_instance_result"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-122",
+      "category": "preservation",
+      "semantic_type": "catalog",
+      "assertion": "Preserve governed semantic identity, branch and proof distinctions without new roots, owners or public execution capability.",
+      "expected": "preserves",
+      "fixture": {
+        "mutation": "same_uuid_different_providers",
+        "given": [
+          "authority_conformance_only",
+          "instance_applicability_Unknown",
+          "no_Constructed"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-123",
+      "category": "preservation",
+      "semantic_type": "catalog",
+      "assertion": "Preserve governed semantic identity, branch and proof distinctions without new roots, owners or public execution capability.",
+      "expected": "preserves",
+      "fixture": {
+        "mutation": "custom_CEC_selection_not_closure_only",
+        "given": [
+          "authority_conformance_only",
+          "instance_applicability_Unknown",
+          "no_Constructed"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-124",
+      "category": "preservation",
+      "semantic_type": "catalog",
+      "assertion": "Preserve governed semantic identity, branch and proof distinctions without new roots, owners or public execution capability.",
+      "expected": "preserves",
+      "fixture": {
+        "mutation": "shared_system_unique_producer",
+        "given": [
+          "authority_conformance_only",
+          "instance_applicability_Unknown",
+          "no_Constructed"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-125",
+      "category": "preservation",
+      "semantic_type": "catalog",
+      "assertion": "Preserve governed semantic identity, branch and proof distinctions without new roots, owners or public execution capability.",
+      "expected": "preserves",
+      "fixture": {
+        "mutation": "normative_proposition_lifecycle_freedom",
+        "given": [
+          "authority_conformance_only",
+          "instance_applicability_Unknown",
+          "no_Constructed"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-126",
+      "category": "preservation",
+      "semantic_type": "catalog",
+      "assertion": "Preserve governed semantic identity, branch and proof distinctions without new roots, owners or public execution capability.",
+      "expected": "preserves",
+      "fixture": {
+        "mutation": "native_standalone_no_synthetic_owner",
+        "given": [
+          "authority_conformance_only",
+          "instance_applicability_Unknown",
+          "no_Constructed"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-127",
+      "category": "preservation",
+      "semantic_type": "catalog",
+      "assertion": "Preserve governed semantic identity, branch and proof distinctions without new roots, owners or public execution capability.",
+      "expected": "preserves",
+      "fixture": {
+        "mutation": "resource_and_source_permutations",
+        "given": [
+          "authority_conformance_only",
+          "instance_applicability_Unknown",
+          "no_Constructed"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-128",
+      "category": "preservation",
+      "semantic_type": "catalog",
+      "assertion": "Preserve governed semantic identity, branch and proof distinctions without new roots, owners or public execution capability.",
+      "expected": "preserves",
+      "fixture": {
+        "mutation": "original_186_producers_and_26_labels",
+        "given": [
+          "authority_conformance_only",
+          "instance_applicability_Unknown",
+          "no_Constructed"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-129",
+      "category": "preservation",
+      "semantic_type": "catalog",
+      "assertion": "Preserve governed semantic identity, branch and proof distinctions without new roots, owners or public execution capability.",
+      "expected": "preserves",
+      "fixture": {
+        "mutation": "remaining_215_BLOCKED",
+        "given": [
+          "authority_conformance_only",
+          "instance_applicability_Unknown",
+          "no_Constructed"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-130",
+      "category": "preservation",
+      "semantic_type": "catalog",
+      "assertion": "Preserve governed semantic identity, branch and proof distinctions without new roots, owners or public execution capability.",
+      "expected": "preserves",
+      "fixture": {
+        "mutation": "representation_verification_not_semantic_equality",
+        "given": [
+          "authority_conformance_only",
+          "instance_applicability_Unknown",
+          "no_Constructed"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-131",
+      "category": "preservation",
+      "semantic_type": "catalog",
+      "assertion": "Preserve governed semantic identity, branch and proof distinctions without new roots, owners or public execution capability.",
+      "expected": "preserves",
+      "fixture": {
+        "mutation": "complete_interpretation_Unavailable",
+        "given": [
+          "authority_conformance_only",
+          "instance_applicability_Unknown",
+          "no_Constructed"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI15-132",
+      "category": "preservation",
+      "semantic_type": "catalog",
+      "assertion": "Preserve governed semantic identity, branch and proof distinctions without new roots, owners or public execution capability.",
+      "expected": "preserves",
+      "fixture": {
+        "mutation": "historical_integrity_and_future_selection",
+        "given": [
+          "authority_conformance_only",
+          "instance_applicability_Unknown",
+          "no_Constructed"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    }
+  ]
+}

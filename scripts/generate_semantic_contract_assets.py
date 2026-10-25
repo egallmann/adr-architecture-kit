@@ -3381,6 +3381,12 @@ if __name__ == "__main__":
         publish_architecture_interpretation_13()
     elif sys.argv[1:] == ["--publish-ai14-only"]:
         publish_architecture_interpretation_14()
+    elif sys.argv[1:] == ["--publish-ai15-only"]:
+        if str(ROOT) not in sys.path:
+            sys.path.insert(0, str(ROOT))
+        from scripts.generate_ai15_publication import publish
+
+        publish()
     elif sys.argv[1:] == ["--publish-acc13-only"]:
         publish_authoring_construction_13()
     elif sys.argv[1:] == ["--publish-acc14-only"]:

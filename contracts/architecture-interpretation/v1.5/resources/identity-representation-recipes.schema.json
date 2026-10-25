@@ -1,0 +1,429 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.ste.systems/contracts/architecture-interpretation/v1.5/resources/identity-representation-recipes.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "resource",
+    "source_contract",
+    "applicability",
+    "scope",
+    "semanticDependencies",
+    "destination_authority",
+    "context_authority",
+    "recipes"
+  ],
+  "properties": {
+    "resource": {
+      "const": "architecture-interpretation/1.5/identity-representation-recipes"
+    },
+    "source_contract": {
+      "const": "authoring@1.7"
+    },
+    "applicability": {
+      "const": {
+        "semantic_types": [
+          "adr/logical",
+          "adr/physical-component",
+          "adr/physical-system",
+          "entity/boundary",
+          "entity/capability",
+          "entity/component",
+          "entity/contract",
+          "entity/data_flow",
+          "entity/decision",
+          "entity/evidence_expectation",
+          "entity/extension",
+          "entity/gap",
+          "entity/implementation_decision",
+          "entity/interface",
+          "entity/invariant",
+          "entity/normative_proposition",
+          "entity/system",
+          "entity/system_boundary"
+        ],
+        "output_branches": [
+          "regular",
+          "normative-proposition"
+        ],
+        "instance_applicability": "Unknown",
+        "catalog_membership_grants_root_or_owner": false,
+        "custom_CEC_selection": "independently_required_not_registry_invention",
+        "shared_identity": "unique_unit_and_producer_before_applicability",
+        "normative_proposition_lifecycle": "prohibited"
+      }
+    },
+    "scope": {
+      "const": {
+        "authority_only": true,
+        "instance_values_produced": false,
+        "complete_interpretation": "Unavailable",
+        "runtime_capability_enabled": false
+      }
+    },
+    "semanticDependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "destination_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "definition",
+        "semantic_contract_fingerprint"
+      ],
+      "properties": {
+        "definition": {
+          "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+        },
+        "semantic_contract_fingerprint": {
+          "type": "string",
+          "pattern": "^scf:v1:sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "context_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "qualification",
+        "governing_family",
+        "governing_version",
+        "semantic_contract_fingerprint",
+        "namespace_selector",
+        "provider_kind_selector",
+        "verification"
+      ],
+      "properties": {
+        "qualification": {
+          "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+        },
+        "governing_family": {
+          "const": "architecture-interpretation"
+        },
+        "governing_version": {
+          "const": "1.3"
+        },
+        "semantic_contract_fingerprint": {
+          "const": "scf:v1:sha256:d4a60e843c3069cfd7eb869a4d924d3a70bf900079d3a2ad86ae28884c6ac167"
+        },
+        "namespace_selector": {
+          "const": "/architecture_namespace"
+        },
+        "provider_kind_selector": {
+          "const": "/provider_kind"
+        },
+        "verification": {
+          "const": "independently_rederive_selected_context_from_exact_sealed_basis_no_asserted_namespace_or_locator_substitution"
+        }
+      }
+    },
+    "recipes": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "specification",
+              "input_contract",
+              "classification",
+              "independent_semantic_owner",
+              "original_semantics",
+              "lineage",
+              "verification",
+              "failure_policy"
+            ],
+            "properties": {
+              "id": {
+                "const": "identity-representation.alias-ref"
+              },
+              "specification": {
+                "const": {
+                  "destination": "/alias_ref",
+                  "operation": "literal_alias_join",
+                  "inputs": [
+                    "/alias_id",
+                    "/alias_name"
+                  ],
+                  "separator": ":",
+                  "output_type": "string",
+                  "transformation": "none",
+                  "fallback": false,
+                  "independent_semantic_owner": false
+                }
+              },
+              "input_contract": {
+                "const": [
+                  {
+                    "role": "authored_alias_id",
+                    "type": "string",
+                    "source_property": "alias_id",
+                    "presence": "required_authored"
+                  },
+                  {
+                    "role": "authored_alias_name",
+                    "type": "string",
+                    "source_property": "alias_name",
+                    "presence": "required_authored"
+                  }
+                ]
+              },
+              "classification": {
+                "const": "representation_only"
+              },
+              "independent_semantic_owner": {
+                "const": false
+              },
+              "original_semantics": {
+                "const": "preserve_original_authored_aliases_canonical_identity_and_qualified_context_once"
+              },
+              "lineage": {
+                "const": {
+                  "adr_id": "01a17432-c52f-74c0-8485-97832c7671ed",
+                  "decision_id": "01a17432-c510-70a1-8a16-e5e65f5cbb7a",
+                  "decision_alias": "DEC-9018",
+                  "invariant_id": "01a17432-c52f-74c0-8485-977e188f9fc5",
+                  "invariant_alias": "INV-0310",
+                  "inherited_decisions": [
+                    {
+                      "alias": "DEC-0093",
+                      "id": "019fee89-e617-7faa-813b-d8e882418d4e"
+                    }
+                  ]
+                }
+              },
+              "verification": {
+                "const": [
+                  "independently_verified_sealed_source_basis",
+                  "original_request_and_established_identity_commitment_where_applicable",
+                  "exact_selected_source_and_destination_schema",
+                  "qualified_provider_context_where_required",
+                  "independent_complete_string_reconstruction",
+                  "complete_selected_NM_branch_validation",
+                  "semantic_equality_is_independent_not_a_replay_or_digest_comparison"
+                ]
+              },
+              "failure_policy": {
+                "const": {
+                  "independently_invalid_source_or_canonical_identity": "Rejected",
+                  "conflicting_canonical_identity_or_producer": "Rejected",
+                  "missing_authority_or_instance_evidence": "Unavailable",
+                  "missing_or_ambiguous_provider": "Unavailable",
+                  "valid_uuid_timestamp_outside_selected_representation": "Unavailable",
+                  "unresolved": "only_independently_established_governed_dependency"
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "specification",
+              "input_contract",
+              "classification",
+              "independent_semantic_owner",
+              "original_semantics",
+              "lineage",
+              "verification",
+              "failure_policy"
+            ],
+            "properties": {
+              "id": {
+                "const": "identity-representation.entity-uri"
+              },
+              "specification": {
+                "const": {
+                  "destination": "/uri",
+                  "operation": "literal_entity_uri",
+                  "inputs": [
+                    "qualified_context.architecture_namespace",
+                    "established_identity.id"
+                  ],
+                  "prefix": "adr://",
+                  "separator": "/entities/",
+                  "output_type": "string",
+                  "namespace_encoding": "exact_json_string_no_uri_normalization_or_percent_encoding",
+                  "fallback": false,
+                  "independent_semantic_owner": false
+                }
+              },
+              "input_contract": {
+                "const": [
+                  {
+                    "role": "qualified_architecture_namespace",
+                    "type": "string",
+                    "context_property": "architecture_namespace",
+                    "presence": "independently_qualified_context"
+                  },
+                  {
+                    "role": "established_uuidv7",
+                    "type": "string",
+                    "source_property": "id",
+                    "presence": "established_once_source_bound_lowercase_uuidv7"
+                  }
+                ]
+              },
+              "classification": {
+                "const": "representation_only"
+              },
+              "independent_semantic_owner": {
+                "const": false
+              },
+              "original_semantics": {
+                "const": "preserve_original_authored_aliases_canonical_identity_and_qualified_context_once"
+              },
+              "lineage": {
+                "const": {
+                  "adr_id": "01a17432-c52f-74c0-8485-97832c7671ed",
+                  "decision_id": "01a17432-c510-70a1-8a16-e5e7a9a7d39f",
+                  "decision_alias": "DEC-9019",
+                  "invariant_id": "01a17432-c52f-74c0-8485-977f488b0d5e",
+                  "invariant_alias": "INV-0311",
+                  "inherited_decisions": [
+                    {
+                      "alias": "DEC-0098",
+                      "id": "019fee89-e617-76fa-bb3e-5c088c73ebdf"
+                    },
+                    {
+                      "alias": "DEC-0107",
+                      "id": "019fee89-e617-7dd5-811d-5f16482f2c3a"
+                    }
+                  ]
+                }
+              },
+              "verification": {
+                "const": [
+                  "independently_verified_sealed_source_basis",
+                  "original_request_and_established_identity_commitment_where_applicable",
+                  "exact_selected_source_and_destination_schema",
+                  "qualified_provider_context_where_required",
+                  "independent_complete_string_reconstruction",
+                  "complete_selected_NM_branch_validation",
+                  "semantic_equality_is_independent_not_a_replay_or_digest_comparison"
+                ]
+              },
+              "failure_policy": {
+                "const": {
+                  "independently_invalid_source_or_canonical_identity": "Rejected",
+                  "conflicting_canonical_identity_or_producer": "Rejected",
+                  "missing_authority_or_instance_evidence": "Unavailable",
+                  "missing_or_ambiguous_provider": "Unavailable",
+                  "valid_uuid_timestamp_outside_selected_representation": "Unavailable",
+                  "unresolved": "only_independently_established_governed_dependency"
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "specification",
+              "input_contract",
+              "classification",
+              "independent_semantic_owner",
+              "original_semantics",
+              "lineage",
+              "verification",
+              "failure_policy"
+            ],
+            "properties": {
+              "id": {
+                "const": "identity-representation.uuidv7-created-at"
+              },
+              "specification": {
+                "const": {
+                  "destination": "/created_at",
+                  "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+                  "inputs": [
+                    "established_identity.id"
+                  ],
+                  "output_type": "string",
+                  "timestamp_bits": 48,
+                  "timestamp_unit": "unix_milliseconds",
+                  "output_format": "YYYY-MM-DDTHH:mm:ss.SSSZ",
+                  "fraction_digits": 3,
+                  "timezone": "UTC",
+                  "minimum_timestamp_ms": 0,
+                  "maximum_timestamp_ms": 253402300799999,
+                  "out_of_range": "Unavailable",
+                  "fallback": false,
+                  "independent_semantic_owner": false
+                }
+              },
+              "input_contract": {
+                "const": [
+                  {
+                    "role": "established_uuidv7",
+                    "type": "string",
+                    "source_property": "id",
+                    "presence": "established_once_source_bound_lowercase_uuidv7"
+                  }
+                ]
+              },
+              "classification": {
+                "const": "representation_only"
+              },
+              "independent_semantic_owner": {
+                "const": false
+              },
+              "original_semantics": {
+                "const": "preserve_original_authored_aliases_canonical_identity_and_qualified_context_once"
+              },
+              "lineage": {
+                "const": {
+                  "adr_id": "01a17432-c52f-74c0-8485-97832c7671ed",
+                  "decision_id": "01a17432-c510-70a1-8a16-e5e8378785e4",
+                  "decision_alias": "DEC-9020",
+                  "invariant_id": "01a17432-c52f-74c0-8485-9780ae7c39f8",
+                  "invariant_alias": "INV-0312",
+                  "inherited_decisions": [
+                    {
+                      "alias": "DEC-0099",
+                      "id": "019fee89-e617-75e2-a23c-f14b6602dbda"
+                    }
+                  ]
+                }
+              },
+              "verification": {
+                "const": [
+                  "independently_verified_sealed_source_basis",
+                  "original_request_and_established_identity_commitment_where_applicable",
+                  "exact_selected_source_and_destination_schema",
+                  "qualified_provider_context_where_required",
+                  "independent_complete_string_reconstruction",
+                  "complete_selected_NM_branch_validation",
+                  "semantic_equality_is_independent_not_a_replay_or_digest_comparison"
+                ]
+              },
+              "failure_policy": {
+                "const": {
+                  "independently_invalid_source_or_canonical_identity": "Rejected",
+                  "conflicting_canonical_identity_or_producer": "Rejected",
+                  "missing_authority_or_instance_evidence": "Unavailable",
+                  "missing_or_ambiguous_provider": "Unavailable",
+                  "valid_uuid_timestamp_outside_selected_representation": "Unavailable",
+                  "unresolved": "only_independently_established_governed_dependency"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "semanticDependencies": [
+    "architecture-interpretation/1.4/required-output-derivations.schema"
+  ]
+}

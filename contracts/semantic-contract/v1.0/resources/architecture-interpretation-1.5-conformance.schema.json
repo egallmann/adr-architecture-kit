@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.ste.systems/contracts/architecture-interpretation/v1.5/resources/conformance.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "resource",
+    "semanticDependencies",
+    "authority_only",
+    "runtime_execution_coverage",
+    "inherited_conformance",
+    "inherited_cases",
+    "cases"
+  ],
+  "properties": {
+    "resource": {
+      "const": "architecture-interpretation/1.5/conformance"
+    },
+    "semanticDependencies": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "authority_only": {
+      "const": true
+    },
+    "runtime_execution_coverage": {
+      "const": false
+    },
+    "inherited_conformance": {
+      "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+    },
+    "inherited_cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "qualification",
+          "scope"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^AI14-[0-9]{3}$"
+          },
+          "qualification": {
+            "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+          },
+          "scope": {
+            "enum": [
+              "historical_publication_snapshot_not_successor_absence_requirement",
+              "unchanged_semantic_obligation_under_actual_inherited_authority"
+            ]
+          }
+        }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "category",
+          "semantic_type",
+          "assertion",
+          "expected",
+          "fixture",
+          "coverage"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^AI15-[0-9]{3}$"
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1
+          },
+          "semantic_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "assertion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected": {
+            "enum": [
+              "conforms",
+              "excludes",
+              "unavailable",
+              "rejects",
+              "preserves"
+            ]
+          },
+          "fixture": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "given"
+            ],
+            "properties": {
+              "given": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "destination": {
+                "enum": [
+                  "/alias_ref",
+                  "/uri",
+                  "/created_at"
+                ]
+              },
+              "operation": {
+                "enum": [
+                  "literal_alias_join",
+                  "literal_entity_uri",
+                  "uuidv7_unix_milliseconds_to_rfc3339_utc"
+                ]
+              },
+              "source_schema": {
+                "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+              },
+              "destination_schema": {
+                "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+              },
+              "timestamp_ms": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 281474976710655
+              },
+              "expected_output": {
+                "type": "string"
+              },
+              "input_values": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "integer",
+                    "boolean",
+                    "null"
+                  ]
+                }
+              },
+              "mutation": {
+                "type": "string"
+              }
+            }
+          },
+          "coverage": {
+            "const": "authority_only_not_runtime_execution"
+          }
+        }
+      }
+    }
+  },
+  "semanticDependencies": [
+    "architecture-interpretation/1.4/required-output-derivations.schema"
+  ]
+}

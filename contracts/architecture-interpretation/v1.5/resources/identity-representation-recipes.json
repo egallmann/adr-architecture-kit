@@ -1,0 +1,268 @@
+{
+  "resource": "architecture-interpretation/1.5/identity-representation-recipes",
+  "semanticDependencies": [
+    "architecture-interpretation/1.3/detached-context",
+    "architecture-interpretation/1.5/identity-representation-recipes.schema",
+    "authoring/1.7/schema/adr-common.schema",
+    "authoring/1.7/schema/adr-logical.schema",
+    "authoring/1.7/schema/adr-physical-component.schema",
+    "authoring/1.7/schema/adr-physical-system.schema",
+    "authoring/1.7/schema/types.schema",
+    "normalized-model/2.5/contract",
+    "normalized-model/2.5/schema/normalized-entity.schema"
+  ],
+  "source_contract": "authoring@1.7",
+  "destination_authority": {
+    "definition": {
+      "canonical_resource_key": "normalized-model/2.5/contract",
+      "content_digest": "sha256:5e23c8b20c0a34f7904fe6aa58af3252cf837bcca12aed97731b5a729bc61349",
+      "schema_pointer": ""
+    },
+    "semantic_contract_fingerprint": "scf:v1:sha256:bb48720502668e434d378445004aec7783346a0e74254c9e0d3cb01a8798d9d7"
+  },
+  "applicability": {
+    "semantic_types": [
+      "adr/logical",
+      "adr/physical-component",
+      "adr/physical-system",
+      "entity/boundary",
+      "entity/capability",
+      "entity/component",
+      "entity/contract",
+      "entity/data_flow",
+      "entity/decision",
+      "entity/evidence_expectation",
+      "entity/extension",
+      "entity/gap",
+      "entity/implementation_decision",
+      "entity/interface",
+      "entity/invariant",
+      "entity/normative_proposition",
+      "entity/system",
+      "entity/system_boundary"
+    ],
+    "output_branches": [
+      "regular",
+      "normative-proposition"
+    ],
+    "instance_applicability": "Unknown",
+    "catalog_membership_grants_root_or_owner": false,
+    "custom_CEC_selection": "independently_required_not_registry_invention",
+    "shared_identity": "unique_unit_and_producer_before_applicability",
+    "normative_proposition_lifecycle": "prohibited"
+  },
+  "context_authority": {
+    "qualification": {
+      "canonical_resource_key": "architecture-interpretation/1.3/detached-context",
+      "content_digest": "sha256:64d17109dc8c1c9805eb64acfab117c8235b836ca6588713379a9bbb41c7e527",
+      "schema_pointer": ""
+    },
+    "governing_family": "architecture-interpretation",
+    "governing_version": "1.3",
+    "semantic_contract_fingerprint": "scf:v1:sha256:d4a60e843c3069cfd7eb869a4d924d3a70bf900079d3a2ad86ae28884c6ac167",
+    "namespace_selector": "/architecture_namespace",
+    "provider_kind_selector": "/provider_kind",
+    "verification": "independently_rederive_selected_context_from_exact_sealed_basis_no_asserted_namespace_or_locator_substitution"
+  },
+  "recipes": [
+    {
+      "id": "identity-representation.alias-ref",
+      "specification": {
+        "destination": "/alias_ref",
+        "operation": "literal_alias_join",
+        "inputs": [
+          "/alias_id",
+          "/alias_name"
+        ],
+        "separator": ":",
+        "output_type": "string",
+        "transformation": "none",
+        "fallback": false,
+        "independent_semantic_owner": false
+      },
+      "input_contract": [
+        {
+          "role": "authored_alias_id",
+          "type": "string",
+          "source_property": "alias_id",
+          "presence": "required_authored"
+        },
+        {
+          "role": "authored_alias_name",
+          "type": "string",
+          "source_property": "alias_name",
+          "presence": "required_authored"
+        }
+      ],
+      "classification": "representation_only",
+      "independent_semantic_owner": false,
+      "original_semantics": "preserve_original_authored_aliases_canonical_identity_and_qualified_context_once",
+      "lineage": {
+        "adr_id": "01a17432-c52f-74c0-8485-97832c7671ed",
+        "decision_id": "01a17432-c510-70a1-8a16-e5e65f5cbb7a",
+        "decision_alias": "DEC-9018",
+        "invariant_id": "01a17432-c52f-74c0-8485-977e188f9fc5",
+        "invariant_alias": "INV-0310",
+        "inherited_decisions": [
+          {
+            "alias": "DEC-0093",
+            "id": "019fee89-e617-7faa-813b-d8e882418d4e"
+          }
+        ]
+      },
+      "verification": [
+        "independently_verified_sealed_source_basis",
+        "original_request_and_established_identity_commitment_where_applicable",
+        "exact_selected_source_and_destination_schema",
+        "qualified_provider_context_where_required",
+        "independent_complete_string_reconstruction",
+        "complete_selected_NM_branch_validation",
+        "semantic_equality_is_independent_not_a_replay_or_digest_comparison"
+      ],
+      "failure_policy": {
+        "independently_invalid_source_or_canonical_identity": "Rejected",
+        "conflicting_canonical_identity_or_producer": "Rejected",
+        "missing_authority_or_instance_evidence": "Unavailable",
+        "missing_or_ambiguous_provider": "Unavailable",
+        "valid_uuid_timestamp_outside_selected_representation": "Unavailable",
+        "unresolved": "only_independently_established_governed_dependency"
+      }
+    },
+    {
+      "id": "identity-representation.entity-uri",
+      "specification": {
+        "destination": "/uri",
+        "operation": "literal_entity_uri",
+        "inputs": [
+          "qualified_context.architecture_namespace",
+          "established_identity.id"
+        ],
+        "prefix": "adr://",
+        "separator": "/entities/",
+        "output_type": "string",
+        "namespace_encoding": "exact_json_string_no_uri_normalization_or_percent_encoding",
+        "fallback": false,
+        "independent_semantic_owner": false
+      },
+      "input_contract": [
+        {
+          "role": "qualified_architecture_namespace",
+          "type": "string",
+          "context_property": "architecture_namespace",
+          "presence": "independently_qualified_context"
+        },
+        {
+          "role": "established_uuidv7",
+          "type": "string",
+          "source_property": "id",
+          "presence": "established_once_source_bound_lowercase_uuidv7"
+        }
+      ],
+      "classification": "representation_only",
+      "independent_semantic_owner": false,
+      "original_semantics": "preserve_original_authored_aliases_canonical_identity_and_qualified_context_once",
+      "lineage": {
+        "adr_id": "01a17432-c52f-74c0-8485-97832c7671ed",
+        "decision_id": "01a17432-c510-70a1-8a16-e5e7a9a7d39f",
+        "decision_alias": "DEC-9019",
+        "invariant_id": "01a17432-c52f-74c0-8485-977f488b0d5e",
+        "invariant_alias": "INV-0311",
+        "inherited_decisions": [
+          {
+            "alias": "DEC-0098",
+            "id": "019fee89-e617-76fa-bb3e-5c088c73ebdf"
+          },
+          {
+            "alias": "DEC-0107",
+            "id": "019fee89-e617-7dd5-811d-5f16482f2c3a"
+          }
+        ]
+      },
+      "verification": [
+        "independently_verified_sealed_source_basis",
+        "original_request_and_established_identity_commitment_where_applicable",
+        "exact_selected_source_and_destination_schema",
+        "qualified_provider_context_where_required",
+        "independent_complete_string_reconstruction",
+        "complete_selected_NM_branch_validation",
+        "semantic_equality_is_independent_not_a_replay_or_digest_comparison"
+      ],
+      "failure_policy": {
+        "independently_invalid_source_or_canonical_identity": "Rejected",
+        "conflicting_canonical_identity_or_producer": "Rejected",
+        "missing_authority_or_instance_evidence": "Unavailable",
+        "missing_or_ambiguous_provider": "Unavailable",
+        "valid_uuid_timestamp_outside_selected_representation": "Unavailable",
+        "unresolved": "only_independently_established_governed_dependency"
+      }
+    },
+    {
+      "id": "identity-representation.uuidv7-created-at",
+      "specification": {
+        "destination": "/created_at",
+        "operation": "uuidv7_unix_milliseconds_to_rfc3339_utc",
+        "inputs": [
+          "established_identity.id"
+        ],
+        "output_type": "string",
+        "timestamp_bits": 48,
+        "timestamp_unit": "unix_milliseconds",
+        "output_format": "YYYY-MM-DDTHH:mm:ss.SSSZ",
+        "fraction_digits": 3,
+        "timezone": "UTC",
+        "minimum_timestamp_ms": 0,
+        "maximum_timestamp_ms": 253402300799999,
+        "out_of_range": "Unavailable",
+        "fallback": false,
+        "independent_semantic_owner": false
+      },
+      "input_contract": [
+        {
+          "role": "established_uuidv7",
+          "type": "string",
+          "source_property": "id",
+          "presence": "established_once_source_bound_lowercase_uuidv7"
+        }
+      ],
+      "classification": "representation_only",
+      "independent_semantic_owner": false,
+      "original_semantics": "preserve_original_authored_aliases_canonical_identity_and_qualified_context_once",
+      "lineage": {
+        "adr_id": "01a17432-c52f-74c0-8485-97832c7671ed",
+        "decision_id": "01a17432-c510-70a1-8a16-e5e8378785e4",
+        "decision_alias": "DEC-9020",
+        "invariant_id": "01a17432-c52f-74c0-8485-9780ae7c39f8",
+        "invariant_alias": "INV-0312",
+        "inherited_decisions": [
+          {
+            "alias": "DEC-0099",
+            "id": "019fee89-e617-75e2-a23c-f14b6602dbda"
+          }
+        ]
+      },
+      "verification": [
+        "independently_verified_sealed_source_basis",
+        "original_request_and_established_identity_commitment_where_applicable",
+        "exact_selected_source_and_destination_schema",
+        "qualified_provider_context_where_required",
+        "independent_complete_string_reconstruction",
+        "complete_selected_NM_branch_validation",
+        "semantic_equality_is_independent_not_a_replay_or_digest_comparison"
+      ],
+      "failure_policy": {
+        "independently_invalid_source_or_canonical_identity": "Rejected",
+        "conflicting_canonical_identity_or_producer": "Rejected",
+        "missing_authority_or_instance_evidence": "Unavailable",
+        "missing_or_ambiguous_provider": "Unavailable",
+        "valid_uuid_timestamp_outside_selected_representation": "Unavailable",
+        "unresolved": "only_independently_established_governed_dependency"
+      }
+    }
+  ],
+  "scope": {
+    "authority_only": true,
+    "instance_values_produced": false,
+    "complete_interpretation": "Unavailable",
+    "runtime_capability_enabled": false
+  }
+}

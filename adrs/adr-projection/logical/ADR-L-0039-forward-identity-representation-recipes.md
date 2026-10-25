@@ -1,0 +1,1186 @@
+<!--
+integrity_schema_version: 1
+generated: deterministic_projection_v1
+artifact_kind: rendered_adr_markdown
+generator_id: adr-projection-markdown
+generator_version: 3
+hash_algorithm: sha256
+source_hash: 705143d3a37d0a2ee71fc2b9c9a6f0f0d93bdd6aeac7a9adbae17894a2fb17f7
+rendered_hash: 0e579109bdebe1f409b1f40d1a26121882c7fd046c21372bbbcfa718315ffb4d
+-->
+
+# ADR-L-0039: Forward Identity Representation Recipes
+
+## Identity / Status
+
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0039<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-10-25<br>
+**Authors:** erik.gallmann<br>
+**Domains:** architecture, semantic-authority, authoring, conformance<br>
+**Tags:** required-output-coverage, identity-representation, normalized-model-2.5, v0.13<br>
+
+## Architecture at a Glance
+
+| | |
+| --- | --- |
+| Logical authority | ADR-L-0039 |
+| Status | accepted |
+| Decisions | 6 |
+| Invariants | 6 |
+
+
+## Context
+
+At develop ccee29494425a59aa0963d9ca43013c0c120ae13, PR #183 privately qualifies
+AI 1.4 static output authority but does not materialize entities. Exact AI 1.4
+(60 resources), ACC 1.4 (108) and NM 2.5 (7) qualify. AI 1.4 has 269 BLOCKED
+destination entries; 54 concern alias_ref, uri and created_at on 18 entity branches.
+ADR-L-0019 defines historical representation operations under Authoring 1.3/NM 2.0.
+ADR-L-0038 explicitly leaves forward recipes blocked until exact accepted authority
+and qualification. The same field spelling or a historical implementation cannot
+close that gap. This accepted bounded refinement reuses operations and selects
+precise forward context/encoding/evidence without publishing or executing them.
+## Architectural Decisions
+
+| Decision | Choice | Traceability |
+| --- | --- | --- |
+| DEC-9017 | Select three inherited representation operations explicitly under exact successor authority | Refines Keep alias_ref derived and non-authoritative (DEC-0093), V1.3 derives required normalized URI `adr://<architecture_namespace>/entities/<uuid>` as a stable logical entity-resolution key (DEC-0098), UUIDv7 mint time begins the v1.3 identity record and is decoded at millisecond precision into derived RFC 3339 UTC `created_at` when needed (DEC-0099), Select AI 1.4 and ACC 1.4 with unchanged NM 2.5 after human acceptance (DEC-9015) |
+| DEC-9018 | Derive alias_ref from exactly the qualified authored aliases | Refines Keep alias_ref derived and non-authoritative (DEC-0093), Bind each output producer to exact branch, selectors, operation and evidence (DEC-9012), Keep independent representation verification separate from semantic equality (DEC-9013) |
+| DEC-9019 | Derive the opaque entity resolver key from exact namespace and UUID | Refines V1.3 derives required normalized URI `adr://<architecture_namespace>/entities/<uuid>` as a stable logical entity-resolution key (DEC-0098), architecture_namespace is stable provider authority; workspace keys are local routing only (DEC-0107), Bind each output producer to exact branch, selectors, operation and evidence (DEC-9012) |
+| DEC-9020 | Encode UUIDv7 identity time as a qualified RFC 3339 millisecond string | Refines UUIDv7 mint time begins the v1.3 identity record and is decoded at millisecond precision into derived RFC 3339 UTC `created_at` when needed (DEC-0099), Bind each output producer to exact branch, selectors, operation and evidence (DEC-9012) |
+| DEC-9021 | Account for all 27 types while selecting only applicable entity destinations | Refines Account for every required destination across entity, relationship and value branches (DEC-9014), Bind each output producer to exact branch, selectors, operation and evidence (DEC-9012) |
+| DEC-9022 | Require closed successor publication and independent instance verification | Refines Bind each output producer to exact branch, selectors, operation and evidence (DEC-9012), Keep independent representation verification separate from semantic equality (DEC-9013), Require publication conformance, explicit blockers and separate human acceptance (DEC-9016) |
+
+### DEC-9017 — Select three inherited representation operations explicitly under exact successor authority
+
+**Rationale**
+
+ADR-L-0019 is accepted: DEC-0093 and INV-0084 select alias_ref concatenation;
+DEC-0098, DEC-0107 and INV-0062 select a provider-qualified logical URI;
+DEC-0099 and INV-0086, INV-0087 and INV-0089 select UUIDv7 identity time. Its stated
+Authoring 1.3 / NM 2.0 scope and historical implementations do not independently
+qualify these producers for Authoring 1.7 -> AI 1.4 -> NM 2.5. ADR-L-0038
+DEC-9012/9014/9015 requires exact output recipes; published AI 1.4 and ACC 1.4
+explicitly retain alias_ref_recipe, uri_recipe and created_at_encoding blockers.
+
+Classification B: reuse alias_ref's accepted operation, adding explicit forward
+selection/evidence. URI and created_at reuse accepted operations (B) and require
+the narrow encoding/context/representability refinements (C) below. No existing
+accepted authority is changed, declared wrong or retroactively reinterpreted.
+Only these three representation recipes are selected. Do not import ADR-L-0019's
+historical type admission list, migration, fingerprint preimage or lookup shims.
+Current exact ADC/CEC/AI identity eligibility and ownership still govern each unit.
+
+After human acceptance, publish the smallest independent AI 1.5 successor
+selecting these closed recipes and exact per-type output applicability, followed
+by ACC 1.5 selecting its exact AI definition/closure and unchanged NM 2.5.
+Reuse Authoring 1.7, ADC 1.1, applicable CEC 1.0 and unchanged resources by actual
+identity/digest. These are proposed version identities, not published contracts.
+No current SCS or implicit successor selection changes. Refine only the successor
+AI/ACC selection clauses of DEC-9015 and INV-0307 after exact publication;
+all unrelated ADR-L-0034/0037/0038 semantics remain. DEC-0271 is retained.
+Frozen AI 1.4/ACC 1.4 remain BLOCKED; acceptance alone does not upgrade receipts.
+No NM successor is needed: NM 2.5 selects strings at these destinations.
+
+**Alternatives Considered**
+
+| Alternative | Rejected because |
+| --- | --- |
+| Treat historical helpers as forward authority | Helpers show intent but cannot override exact immutable AI 1.4 blockers. |
+| Patch AI 1.4 or weaken NM 2.5 | Published authority is immutable; required strings are compatible with explicit successor recipes. |
+| Resolve every representation blocker together | Fingerprint, source envelope, completeness and semantic ownership require separate bounded authority. |
+
+**Traceability**
+- Refines: Keep alias_ref derived and non-authoritative (DEC-0093)
+- Refines: V1.3 derives required normalized URI `adr://<architecture_namespace>/entities/<uuid>` as a stable logical entity-resolution key (DEC-0098)
+- Refines: UUIDv7 mint time begins the v1.3 identity record and is decoded at millisecond precision into derived RFC 3339 UTC `created_at` when needed (DEC-0099)
+- Refines: Select AI 1.4 and ACC 1.4 with unchanged NM 2.5 after human acceptance (DEC-9015)
+
+### DEC-9018 — Derive alias_ref from exactly the qualified authored aliases
+
+**Rationale**
+
+For an applicable entity or lifecycle-free proposition, bind the exact Authoring
+1.7 source occurrence and its required alias_id/alias_name strings to the already
+established canonical UUIDv7. Preserve complete authored values and their original
+semantic destinations. Derive the recognition-only output by one literal operation:
+
+```yaml
+destination: /alias_ref
+operation: literal_alias_join
+inputs: [/alias_id, /alias_name]
+separator: ':'
+output_type: string
+transformation: none
+fallback: false
+independent_semantic_owner: false
+```
+
+Output is alias_id + ":" + alias_name, including exact case/content permitted by
+the selected source schemas. No trimming, case folding, escaping, delimiter parsing,
+fallback or independent authored alias_ref. Validate both inputs under the selected
+source branch; missing/invalid strings cannot be repaired. Independent verification
+reconstructs from sealed authored aliases bound to this unit, not an asserted alias
+replay. Equal aliases across providers or distinct UUIDs do not merge identities.
+An authorized alias change changes only derived recognition output; immutable UUIDs
+and canonical references remain governed independently. alias_ref is never canonical
+identity, foreign-key authority, relationship identity, lookup authority or another
+semantic field owner. Verify representation independently of whole-ledger equality.
+
+**Traceability**
+- Refines: Keep alias_ref derived and non-authoritative (DEC-0093)
+- Refines: Bind each output producer to exact branch, selectors, operation and evidence (DEC-9012)
+- Refines: Keep independent representation verification separate from semantic equality (DEC-9013)
+
+### DEC-9019 — Derive the opaque entity resolver key from exact namespace and UUID
+
+**Rationale**
+
+Select the independently qualified interpretation provider context's exact
+architecture_namespace and the unit's established lowercase RFC 9562 UUIDv7.
+The namespace must be nonempty and qualify under the exact selected context
+authority. A caller string, provider display name, workspace registration key,
+request key, path, source_ref, filename, source pointer or artifact locator is
+not namespace authority. Missing/ambiguous provider qualification is Unavailable.
+
+```yaml
+destination: /uri
+operation: literal_entity_uri
+inputs: [qualified_context.architecture_namespace, established_identity.id]
+prefix: adr://
+separator: /entities/
+output_type: string
+namespace_encoding: exact_json_string_no_uri_normalization_or_percent_encoding
+fallback: false
+independent_semantic_owner: false
+```
+
+Output is "adr://" + architecture_namespace + "/entities/" + id, exactly.
+This explicitly selects literal opaque resolver-string encoding, not URL host
+parsing, case folding, trimming, Unicode normalization, percent encoding/decoding
+or path normalization. It imposes no new namespace grammar and authorizes no
+namespace fabrication. NM 2.5 requires a string, not a network URL. Future
+consumers must compare this governed resolver key literally rather than applying
+browser URL canonicalization. It is not storage, transport, fetch, persistence,
+admission, repository placement or promotion authority.
+
+For exact detached interpretation, reuse the ACTUAL selected
+architecture-interpretation/1.3/detached-context resource and digest, inherited
+through AI 1.4 where selected: namespace urn:adr-kit:detached-candidate:v1 and
+provider_kind adr-kit-detached-candidate. Reverify its sealed-basis/context
+derivation independently. Do not substitute scope_root, root artifact locator
+or source_ref for architecture_namespace; do not relabel the inherited rule as
+a successor rule. Thus the detached entity URI begins
+adr://urn:adr-kit:detached-candidate:v1/entities/ and ends with its UUID.
+
+Canonical identity remains the exact provider namespace plus UUID. A URI never
+establishes either input or authorizes reference resolution. Distinct providers
+with identical UUIDs remain distinct; wrong-provider evidence fails qualification.
+Distinct units claiming one canonical identity are Rejected; no automatic keeper,
+reminting or alias-based repair. Fixed-length canonical UUID suffix plus literal
+separator yields an unambiguous resolver string for each qualified input pair,
+even if namespace text contains separators. Shared-identity producer competition
+remains a separate BLOCKED prerequisite. Independently reconstruct and compare
+the entire output and provider qualification; a syntactically valid URI is no proof.
+
+**Traceability**
+- Refines: V1.3 derives required normalized URI `adr://<architecture_namespace>/entities/<uuid>` as a stable logical entity-resolution key (DEC-0098)
+- Refines: architecture_namespace is stable provider authority; workspace keys are local routing only (DEC-0107)
+- Refines: Bind each output producer to exact branch, selectors, operation and evidence (DEC-9012)
+
+### DEC-9020 — Encode UUIDv7 identity time as a qualified RFC 3339 millisecond string
+
+**Rationale**
+
+The sole input is the already established, source-bound canonical UUIDv7; do
+not mint or replace it to derive representation. Decode its first 48 bits as
+an unsigned integer Unix timestamp in milliseconds. Use integer quotient and
+remainder for seconds and milliseconds, proleptic Gregorian UTC calendar
+conversion, and the RFC 3339 four-digit-year form below. This is identity-record
+mint time, never historical architecture creation, approval or deployment time.
+
+```yaml
+destination: /created_at
+operation: uuidv7_unix_milliseconds_to_rfc3339_utc
+inputs: [established_identity.id]
+output_type: string
+timestamp_bits: 48
+timestamp_unit: unix_milliseconds
+output_format: YYYY-MM-DDTHH:mm:ss.SSSZ
+fraction_digits: 3
+timezone: UTC
+minimum_timestamp_ms: 0
+maximum_timestamp_ms: 253402300799999
+out_of_range: Unavailable
+fallback: false
+independent_semantic_owner: false
+```
+
+Use uppercase T/Z, zero-padded calendar/time fields and exactly three decimal
+fraction digits, including .000Z. No rounding, float-dependent loss, leap-second
+invention, timezone offsets, dropped fractional digits or expanded signed years.
+The representable interval ends at 9999-12-31T23:59:59.999Z. RFC 9562's 48-bit
+domain extends beyond four-digit RFC 3339 years: a valid UUID beyond that boundary
+remains a valid identity but cannot qualify this output and is Unavailable. Do
+not truncate, wrap, remint, reject the UUID solely for that range, or manufacture
+a schema-valid alternative. Malformed/noncanonical identities are independently
+Rejected under identity authority. This representability boundary is a new
+explicit refinement, not a retroactive assertion about historical helpers.
+
+Do not use ADR created_date/modified_date, an authored child date, separate
+timestamp, wall clock, Git history, traversal order or source-location time.
+Independent verification decodes the original established UUID and compares
+the complete exact string plus selected authority, not an asserted created_at.
+Preserving UUID across replay preserves identity time; neither lifecycle nor
+declaring-ADR ownership is inferred from time. No canonical updated_at rule.
+Standards: RFC 9562 section 5.7 (https://www.rfc-editor.org/rfc/rfc9562.html#section-5.7)
+defines the timestamp domain; RFC 3339 section 5.6
+(https://www.rfc-editor.org/rfc/rfc3339#section-5.6) defines the four-digit
+year grammar. These constrain encoding, not architectural lifecycle meaning.
+
+**Traceability**
+- Refines: UUIDv7 mint time begins the v1.3 identity record and is decoded at millisecond precision into derived RFC 3339 UTC `created_at` when needed (DEC-0099)
+- Refines: Bind each output producer to exact branch, selectors, operation and evidence (DEC-9012)
+
+### DEC-9021 — Account for all 27 types while selecting only applicable entity destinations
+
+**Rationale**
+
+The exact AI 1.4 catalog contains 17 regular entity types and one lifecycle-free
+normative proposition with all three required destinations: 54 static BLOCKED
+entries (18 alias_ref_recipe, 18 uri_recipe, 18 created_at_encoding). Each row
+below maps its current exact source/destination schema selector and blocker to
+the alias, URI or time decision above respectively. Their potential removal
+requires accepted successor publication and independent instance qualification;
+this ADR removes none. Other current blockers are not discharged.
+
+Regular custom entity/extension needs exact current CEC qualification and retains
+its independent custom lifecycle gap. Shared System identity must resolve to one
+unit/producer before recipe applicability; no second system descriptor is created.
+Normative propositions may receive these three common representation fields but
+retain their separate declaration/source requirements and MUST NOT gain lifecycle,
+independent approval, applicability or admission. The seven relationship types
+and two value types have no applicable destinations for these ENTITY recipes.
+Do not add them or reuse these recipes for relationship envelopes/IDs. Values
+remain proposition-owned or owner-local, not synthetic independently minted roots.
+
+Static qualified authority, BLOCKED authority, instance applicability Unknown,
+proven applicability and proven inapplicability are distinct. Catalog inclusion,
+absent fixture fields, references or recipe availability do not prove a root,
+identity, owner or complete output. Native standalone artifacts remain native;
+missing declaring lifecycle provenance remains Unavailable. Qualify each source
+occurrence and the exact branch/conditional/nested requirements independently.
+
+Complete 27-type impact audit (not an executable catalog or new binding table):
+
+```yaml
+- semantic_type: adr/logical
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-logical.schema
+    content_digest: sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731
+    schema_pointer: ''
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  root_permission: not_granted_by_recipe
+- semantic_type: adr/physical-component
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-physical-component.schema
+    content_digest: sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7
+    schema_pointer: ''
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  root_permission: not_granted_by_recipe
+- semantic_type: adr/physical-system
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-physical-system.schema
+    content_digest: sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be
+    schema_pointer: ''
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  root_permission: not_granted_by_recipe
+- semantic_type: entity/boundary
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-common.schema
+    content_digest: sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660
+    schema_pointer: /definitions/boundary
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  - declaring_lifecycle_context_where_required_remains_independent
+  root_permission: not_granted_by_recipe
+- semantic_type: entity/capability
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-common.schema
+    content_digest: sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660
+    schema_pointer: /definitions/capability
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  - declaring_lifecycle_context_where_required_remains_independent
+  root_permission: not_granted_by_recipe
+- semantic_type: entity/component
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-common.schema
+    content_digest: sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660
+    schema_pointer: /definitions/component
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  - declaring_lifecycle_context_where_required_remains_independent
+  root_permission: not_granted_by_recipe
+- semantic_type: entity/contract
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-common.schema
+    content_digest: sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660
+    schema_pointer: /definitions/contract
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  - declaring_lifecycle_context_where_required_remains_independent
+  root_permission: not_granted_by_recipe
+- semantic_type: entity/data_flow
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-common.schema
+    content_digest: sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660
+    schema_pointer: /definitions/data_flow
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  - declaring_lifecycle_context_where_required_remains_independent
+  root_permission: not_granted_by_recipe
+- semantic_type: entity/decision
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-common.schema
+    content_digest: sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660
+    schema_pointer: /definitions/decision
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  - declaring_lifecycle_context_where_required_remains_independent
+  root_permission: not_granted_by_recipe
+- semantic_type: entity/evidence_expectation
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-common.schema
+    content_digest: sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660
+    schema_pointer: /definitions/evidence_expectation
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  - declaring_lifecycle_context_where_required_remains_independent
+  root_permission: not_granted_by_recipe
+- semantic_type: entity/extension
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-common.schema
+    content_digest: sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660
+    schema_pointer: /definitions/custom_entity
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  - exact_CEC_selection_not_registry_invention
+  - custom_lifecycle_remains_BLOCKED
+  root_permission: not_granted_by_recipe
+- semantic_type: entity/gap
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-common.schema
+    content_digest: sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660
+    schema_pointer: /definitions/gap
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  - declaring_lifecycle_context_where_required_remains_independent
+  root_permission: not_granted_by_recipe
+- semantic_type: entity/implementation_decision
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-common.schema
+    content_digest: sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660
+    schema_pointer: /definitions/implementation_decision
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  - declaring_lifecycle_context_where_required_remains_independent
+  root_permission: not_granted_by_recipe
+- semantic_type: entity/interface
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-common.schema
+    content_digest: sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660
+    schema_pointer: /definitions/interface
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  - declaring_lifecycle_context_where_required_remains_independent
+  root_permission: not_granted_by_recipe
+- semantic_type: entity/invariant
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-common.schema
+    content_digest: sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660
+    schema_pointer: /definitions/invariant
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  - declaring_lifecycle_context_where_required_remains_independent
+  root_permission: not_granted_by_recipe
+- semantic_type: entity/normative_proposition
+  output_branch: normative-proposition
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-common.schema
+    content_digest: sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660
+    schema_pointer: /definitions/normative_proposition
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/1/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/1/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/1/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  - qualified_declaring_context_and_proposition_envelope
+  - lifecycle_prohibited
+  root_permission: not_granted_by_recipe
+- semantic_type: entity/system
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-common.schema
+    content_digest: sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660
+    schema_pointer: /definitions/system
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  - shared_identity_producer_competition_remains_BLOCKED
+  - declaring_lifecycle_context_where_required_remains_independent
+  root_permission: not_granted_by_recipe
+- semantic_type: entity/system_boundary
+  output_branch: regular
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-common.schema
+    content_digest: sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660
+    schema_pointer: /definitions/system_boundary
+  affected_destinations:
+  - destination: /alias_ref
+    blocked_code: alias_ref_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/alias_ref
+  - destination: /created_at
+    blocked_code: created_at_encoding
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/created_at
+  - destination: /uri
+    blocked_code: uri_recipe
+    destination_schema:
+      canonical_resource_key: normalized-model/2.5/schema/normalized-entity.schema
+      content_digest: sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff
+      schema_pointer: /oneOf/0/properties/uri
+  instance_prerequisites:
+  - sealed_source_and_exact_source_schema
+  - established_canonical_uuidv7
+  - unique_unit_and_producer_applicability
+  - qualified_interpretation_provider_context
+  - declaring_lifecycle_context_where_required_remains_independent
+  root_permission: not_granted_by_recipe
+- semantic_type: relationship/calls
+  output_branch: compatibility-relationship
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-physical-system.schema
+    content_digest: sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be
+    schema_pointer: /properties/component_topology/properties/relationships/items
+  affected_destinations: []
+  instance_prerequisites: []
+  root_permission: not_granted_by_recipe
+- semantic_type: relationship/depends_on
+  output_branch: compatibility-relationship
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-physical-system.schema
+    content_digest: sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be
+    schema_pointer: /properties/component_topology/properties/relationships/items
+  affected_destinations: []
+  instance_prerequisites: []
+  root_permission: not_granted_by_recipe
+- semantic_type: relationship/extension
+  output_branch: canonical-relationship
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-common.schema
+    content_digest: sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660
+    schema_pointer: /definitions/custom_relationship
+  affected_destinations: []
+  instance_prerequisites: []
+  root_permission: not_granted_by_recipe
+- semantic_type: relationship/publishes_to
+  output_branch: compatibility-relationship
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-physical-system.schema
+    content_digest: sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be
+    schema_pointer: /properties/component_topology/properties/relationships/items
+  affected_destinations: []
+  instance_prerequisites: []
+  root_permission: not_granted_by_recipe
+- semantic_type: relationship/reads_from
+  output_branch: compatibility-relationship
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-physical-system.schema
+    content_digest: sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be
+    schema_pointer: /properties/component_topology/properties/relationships/items
+  affected_destinations: []
+  instance_prerequisites: []
+  root_permission: not_granted_by_recipe
+- semantic_type: relationship/subscribes_to
+  output_branch: compatibility-relationship
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-physical-system.schema
+    content_digest: sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be
+    schema_pointer: /properties/component_topology/properties/relationships/items
+  affected_destinations: []
+  instance_prerequisites: []
+  root_permission: not_granted_by_recipe
+- semantic_type: relationship/writes_to
+  output_branch: compatibility-relationship
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-physical-system.schema
+    content_digest: sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be
+    schema_pointer: /properties/component_topology/properties/relationships/items
+  affected_destinations: []
+  instance_prerequisites: []
+  root_permission: not_granted_by_recipe
+- semantic_type: value/normative_force
+  output_branch: proposition-owned-value
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/types.schema
+    content_digest: sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65
+    schema_pointer: /definitions/normative_force
+  affected_destinations: []
+  instance_prerequisites: []
+  root_permission: not_granted_by_recipe
+- semantic_type: value/topology_component
+  output_branch: owner-local-value
+  source_schema:
+    canonical_resource_key: authoring/1.7/schema/adr-physical-system.schema
+    content_digest: sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be
+    schema_pointer: /properties/component_topology/properties/components/items
+  affected_destinations: []
+  instance_prerequisites: []
+  root_permission: not_granted_by_recipe
+```
+
+**Traceability**
+- Refines: Account for every required destination across entity, relationship and value branches (DEC-9014)
+- Refines: Bind each output producer to exact branch, selectors, operation and evidence (DEC-9012)
+
+### DEC-9022 — Require closed successor publication and independent instance verification
+
+**Rationale**
+
+Future AI recipe authority must bind exact rule ID/resource/digest, actual inherited
+decision/rule lineage, source/destination family/version/SCF and schema selectors,
+resolved references and complete branch conditions. Bind each instance to the
+verified sealed source basis, original request where applicable, established
+canonical identity, authored aliases and independently qualified provider context.
+No source pointer, filename, request order, position or content digest becomes
+semantic identity. Proof receipts, asserted namespace and recalculated digests
+cannot replace independent reconstruction. No new identity allocation is permitted
+inside these recipes. Exactly one qualified producer per applicable destination;
+no competing inherited/successor producers or ignored conditional requirements.
+
+All three are representation-only derivations with no independent semantic owner.
+Authored alias fields, canonical identity, qualified provider context and source
+semantics remain significant once under existing exact authority. Changes to a
+derived output with unchanged inputs fail representation verification; matching
+representations do not prove whole-ledger equality. Preserve five authored-field
+dispositions, literal lifecycle and declaring ownership, minimal roots, source
+bytes, relationships, ordering/multiplicity and all unrelated authority.
+
+Future authority conformance must include every applicable type/branch, exact
+alias joining, invalid/missing aliases, no normalization, namespace/provider
+substitution, detached locator substitution, same UUID in different namespaces,
+duplicate identity/producer, qualified shared identity, CEC and proposition
+prerequisites, RFC3339 .000/.001/.999, second/day/year/leap-day boundaries,
+epoch, final four-digit date and next millisecond, maximal UUID timestamp,
+malformed UUID, ADR/Git/clock fallback rejection, wrong schema/rule/digest/SCF,
+forged replay, full output mutation, request/source/resource permutations and
+independent semantic equality. Publication conformance is not runtime execution.
+
+Established invalid source/identity, semantic or structural violations are
+Rejected. Missing authority/capability, unresolved applicability qualification
+or representability is Unavailable. Unresolved requires an actually established
+governed unresolved dependency. Retain independent diagnostics with precedence
+Rejected > Unavailable > Unresolved; fail atomically without partial materialization.
+
+Human acceptance, exact AI successor publication, exact ACC successor selection
+and bounded Rust instance execution are separate gates. Human architectural
+acceptance is explicitly recorded for reviewed PR #184. No automatic acceptance or merge.
+Explicit human authorization permits this ADR acceptance and PR merge only
+after all required acceptance gates pass. No frozen
+authority, blocker entry, public protocol/API/capability, current SCS or WASM changes.
+Do not resolve fingerprint_preimage, source_envelope_recipe, completeness_recipe,
+custom_lifecycle, declaring_context, shared_identity, relationship_branch,
+relationship_envelope, nonselected_output, owner_local_context or custom_qualification.
+These 11 static categories and every unresolved instance prerequisite remain.
+No NM model, materialization, migration, semantic_equivalent or Constructed,
+persistence, admission, binding or promotion is enabled. The full 27-type v0.13
+objective remains; these are prerequisites, not permanent exclusions.
+
+**Traceability**
+- Refines: Bind each output producer to exact branch, selectors, operation and evidence (DEC-9012)
+- Refines: Keep independent representation verification separate from semantic equality (DEC-9013)
+- Refines: Require publication conformance, explicit blockers and separate human acceptance (DEC-9016)
+
+
+
+
+
+## Invariants
+
+| Invariant | Requirement | Enforcement | Verification |
+| --- | --- | --- | --- |
+| INV-0309 | Forward identity representation MUST select the exact accepted successor recipe authority; historical helpers and… | MUST / design | automated |
+| INV-0310 | alias_ref MUST concatenate the exact qualified alias_id, colon and alias_name; it MUST NOT become canonical… | MUST / design | automated |
+| INV-0311 | uri MUST use literal qualified architecture_namespace and established UUIDv7 with the governed template; source… | MUST / design | automated |
+| INV-0312 | created_at MUST decode established UUIDv7 integer milliseconds to YYYY-MM-DDTHH:mm:ss.SSSZ; a timestamp beyond… | MUST / design | automated |
+| INV-0313 | Recipe applicability MUST independently qualify source, identity, exact branch and context; relationship/value types… | MUST / design | automated |
+| INV-0314 | Recipe outputs MUST be independently reconstructed without duplicate semantic ownership; their availability MUST NOT… | MUST / design | automated |
+
+### INV-0309
+
+**Statement**
+
+Forward identity representation MUST select the exact accepted successor recipe authority; historical helpers and unchanged field names MUST NOT upgrade frozen AI 1.4 or ACC 1.4 evidence.
+
+**Scope:** semantic-authority
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
+Select three inherited representation operations explicitly under exact successor authority
+
+**Upheld by decisions**
+- Select three inherited representation operations explicitly under exact successor authority (DEC-9017)
+
+### INV-0310
+
+**Statement**
+
+alias_ref MUST concatenate the exact qualified alias_id, colon and alias_name; it MUST NOT become canonical identity, a semantic owner or relationship/foreign-key authority.
+
+**Scope:** semantic-authority
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
+Derive alias_ref from exactly the qualified authored aliases
+
+**Upheld by decisions**
+- Derive alias_ref from exactly the qualified authored aliases (DEC-9018)
+
+### INV-0311
+
+**Statement**
+
+uri MUST use literal qualified architecture_namespace and established UUIDv7 with the governed template; source locators, paths, workspace keys and URI normalization MUST NOT replace those inputs.
+
+**Scope:** semantic-authority
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
+Derive the opaque entity resolver key from exact namespace and UUID
+
+**Upheld by decisions**
+- Derive the opaque entity resolver key from exact namespace and UUID (DEC-9019)
+
+### INV-0312
+
+**Statement**
+
+created_at MUST decode established UUIDv7 integer milliseconds to YYYY-MM-DDTHH:mm:ss.SSSZ; a timestamp beyond 9999-12-31T23:59:59.999Z MUST remain Unavailable without reminting or fallback.
+
+**Scope:** semantic-authority
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
+Encode UUIDv7 identity time as a qualified RFC 3339 millisecond string
+
+**Upheld by decisions**
+- Encode UUIDv7 identity time as a qualified RFC 3339 millisecond string (DEC-9020)
+
+### INV-0313
+
+**Statement**
+
+Recipe applicability MUST independently qualify source, identity, exact branch and context; relationship/value types MUST NOT receive an entity envelope, and propositions MUST remain lifecycle-free.
+
+**Scope:** semantic-authority
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
+Account for all 27 types while selecting only applicable entity destinations
+
+**Upheld by decisions**
+- Account for all 27 types while selecting only applicable entity destinations (DEC-9021)
+
+### INV-0314
+
+**Statement**
+
+Recipe outputs MUST be independently reconstructed without duplicate semantic ownership; their availability MUST NOT discharge other blockers, whole-ledger equality or complete construction requirements.
+
+**Scope:** semantic-authority
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
+Require closed successor publication and independent instance verification
+
+**Upheld by decisions**
+- Require closed successor publication and independent instance verification (DEC-9022)
+
+
+
+
+
+
+## Governance / Bindings / Evidence
+
+### Governance
+
+**Approved by:** egallmann
+**Approved date:** 2026-10-25 20:24:36+00:00
+
+
+## Lifecycle / Related Architecture
+
+**Related ADRs**
+- [ADR-L-0019](ADR-L-0019-canonical-entity-identity.md)
+- [ADR-L-0034](ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.md)
+- [ADR-L-0037](ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.md)
+- [ADR-L-0038](ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.md)
+
+**References**
+- [ADR-L-0019](ADR-L-0019-canonical-entity-identity.md)
+- [ADR-L-0034](ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.md)
+- [ADR-L-0037](ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.md)
+- [ADR-L-0038](ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.md)
+
+
+## Architecture Relationships
+
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-L-0019 — Canonical Entity Identity](ADR-L-0019-canonical-entity-identity.md) | refines | `DEC-9017 -[:refines]-> DEC-0099` |
+| [ADR-L-0038 — Explicit Required-Output Authority Across the AI Catalog](ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.md) | refines | `DEC-9017 -[:refines]-> DEC-9015` |
+
+
+
+
+## Notes
+
+Accepted following explicit human approval of the architecture reviewed at
+PR #184 head b43d7f1c14d4b89cb6c6836998514e89f1dd6c51, including
+DEC-9017–9022 and INV-0309–0314: literal alias_ref; opaque literal namespace/UUID
+entity URI; exact UUIDv7 millisecond encoding; Unavailable beyond the four-digit
+year range; qualified entity-branch applicability; independent representation
+verification. After the explicit approval precondition was requested, the human
+confirmed: "I approve the above. Proceed to with the task I previous gave you".
+That authorization covers ADR acceptance and merging PR #184 only after all
+required gates pass. Approval metadata records this authentic task instruction,
+not an invented independent hosted approval or steelman review.
+All canonical identities, architectural choices, recipe declarations and the
+complete 27-type audit are retained. Historical ADR sources and immutable
+authorities remain unchanged. The ignored Design Journal is local convergence
+state; repository-generated projections are derived evidence, not authority.
+AI 1.5 and ACC 1.5 remain unpublished; every frozen AI 1.4 BLOCKED entry remains.
+Successor publication and runtime recipe execution require separate work.
+No NM change, materialization, semantic_equivalent, Constructed, public protocol,
+WASM, SDK capability, current SCS, persistence, admission or promotion is enabled.
+
+
+---
+
+*Generated from ADR-L-0039 by ADR Architecture Kit (projection v3)*

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: f75bc8cfd50ad8a3bf471ae1c0b2d7d28ab96615710a00c95e22ec6006db7045
-rendered_hash: 06ec602e80e829d71d94a798b4edb3f248f3e2d6376dd1574a836b19be85366b
+source_hash: 66fc93c102a2ad26832852614aec1cd02ad034dae30ae23ce8fe056d6b76df0a
+rendered_hash: 6ff954a51f915463013cb94505b6761da6fd34e1de245dba5d6e7ecf7002ed82
 -->
 
 # ADR-L-0038: Explicit Required-Output Authority Across the AI Catalog
@@ -712,6 +712,7 @@ Require publication conformance, explicit blockers and separate human acceptance
 - [ADR-L-0034](ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.md)
 - [ADR-L-0035](ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.md)
 - [ADR-L-0037](ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.md)
+- [ADR-L-0039](ADR-L-0039-forward-identity-representation-recipes.md)
 
 
 ## Architecture Relationships
@@ -720,6 +721,7 @@ Require publication conformance, explicit blockers and separate human acceptance
 | --- | --- | --- |
 | [ADR-L-0034 — Detached Normalized Semantic Equivalence for Authoring Construction](ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.md) | refines | `DEC-9009 -[:refines]-> DEC-0269` |
 | [ADR-L-0037 — Lossless Authored Lifecycle and Declaring-ADR Provenance](ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.md) | refines | `DEC-9013 -[:refines]-> DEC-9005` |
+| [ADR-L-0039 — Forward Identity Representation Recipes](ADR-L-0039-forward-identity-representation-recipes.md) | refines | `DEC-9017 -[:refines]-> DEC-9015` |
 
 
 

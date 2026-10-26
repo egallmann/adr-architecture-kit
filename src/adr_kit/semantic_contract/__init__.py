@@ -476,12 +476,15 @@ def load_semantic_resource(key: str) -> Any:
     ai15 = len(parts) >= 3 and parts[:2] == ["architecture-interpretation", "1.5"]
     acc13 = len(parts) >= 3 and parts[:2] == ["authoring-construction", "1.3"]
     acc14 = len(parts) >= 3 and parts[:2] == ["authoring-construction", "1.4"]
+    acc15 = len(parts) >= 3 and parts[:2] == ["authoring-construction", "1.5"]
     if key in {
         "architecture-interpretation/1.3/contract",
         "architecture-interpretation/1.4/contract",
         "architecture-interpretation/1.5/contract",
         "normalized-model/2.5/contract",
         "authoring-construction/1.3/contract",
+        "authoring-construction/1.4/contract",
+        "authoring-construction/1.5/contract",
     }:
         return get_semantic_contract(parts[0], parts[1]).to_wire()
     if len(parts) == 4 and parts[:3] == ["authoring", "1.7", "schema"]:
@@ -491,18 +494,18 @@ def load_semantic_resource(key: str) -> Any:
             return json.loads(resource.read_text(encoding="utf-8"))
         raise LookupError(f"Bundled semantic resource is missing: {key}")
     if len(parts) < 3 or (
-        not (ai13 or ai14 or ai15 or acc13 or acc14)
+        not (ai13 or ai14 or ai15 or acc13 or acc14 or acc15)
         and parts[1] not in {"1.0", "1.1", "1.2", "1.5", "1.6", "2.3", "2.4", "2.5"}
     ):
         raise LookupError(f"Unsupported semantic resource: {key}")
-    if (ai13 or ai14 or ai15 or acc13 or acc14) and key not in {
+    if (ai13 or ai14 or ai15 or acc13 or acc14 or acc15) and key not in {
         entry.canonical_resource_key
         for entry in get_semantic_contract(parts[0], parts[1]).resource_manifest
     }:
         raise LookupError(f"Bundled semantic resource is missing: {key}")
     package = resources.files("adr_kit.semantic_contract.v1_0.resources")
     candidates = [f"{key.replace('/', '-')}.json"]
-    if len(parts) == 3 and not (ai13 or ai14 or ai15 or acc13 or acc14):
+    if len(parts) == 3 and not (ai13 or ai14 or ai15 or acc13 or acc14 or acc15):
         candidates.append(f"{parts[0]}-{parts[2]}.json")
     for name in candidates:
         resource = package.joinpath(name)

@@ -1,0 +1,350 @@
+schema_version: '1.5'
+adr_type: logical
+id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+alias_name: semantic-contract-candidate-and-promotion-lifecycle
+title: Enforceable Semantic Contract Candidate and Promotion Lifecycle
+status: proposed
+created_date: '2026-10-26'
+authors:
+- erik.gallmann
+domains:
+- architecture
+- governance
+- release-engineering
+tags:
+- semantic-contract-lifecycle
+- candidate-authority
+- release-promotion
+- v0.13
+related_adrs:
+- 01a083dd-22b5-726d-8e49-01851bde3ba5
+- 01a0b75d-8a02-70e6-b59c-63dd6133c637
+- 01a10888-daba-75bc-a071-d33f43ab8a8b
+- 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+- 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+- 01a16bb0-e682-730f-93a9-54ddf776af32
+- 01a17432-c52f-74c0-8485-97832c7671ed
+context: |-
+  Development merged several unreleased AI and ACC authorities while treating each
+  merge and content fingerprint as a permanent compatibility boundary. That policy
+  creates maintenance obligations without a released consumer. Git history and SCF
+  content identity remain essential, but neither alone establishes release promotion.
+  The desired current candidates are AI 1.5, ACC 1.5 and NM 2.5. We correct when
+  immutability begins, without renumbering, weakening exact qualification, changing
+  semantic meaning, rewriting history or withdrawing actually released authority.
+
+  Hash-verified PyPI and npm artifacts, release tags and embedded WASM establish the
+  release baseline in the companion classification. ACC 1.0, ADC 1.1 and CEC 1.0
+  were embedded in released WASM; absence of standalone discovery is not absence of
+  release. An unrelated local retained bundle is not published-release evidence.
+  Earlier human publication approvals remain preserved, authentic historical records.
+  A new explicit human architectural acceptance is required for this one-time policy
+  correction; this proposed ADR cannot activate any replacement.
+decisions:
+- id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+  alias_name: separate-content-identity-from-release-compatibility
+  summary: Freeze exact snapshots; promote compatibility explicitly
+  rationale: |-
+    A contract receives its intended family/version during development. CANDIDATE
+    revisions may change schemas, resources, rules, conformance and implementation
+    within that version through governed review. Each revision MUST qualify its exact
+    SCF v1, complete resource closure and Git source commit. The SCF identifies exact
+    content; no SCF, schema or closure verification is weakened or omitted. A changed
+    candidate receives a changed SCF; old receipts cannot qualify the new revision.
+    RELEASE CANDIDATE fixes one source revision for full qualification; a correction
+    requires fresh qualification but not automatically a version increment.
+
+    Explicit independent authority promotion or public release freezes family,
+    version, exact SCF (where that family has SCF authority), full resource closure,
+    normative conformance and packaged bytes. Post-promotion authoritative changes
+    require a successor version; same-version replacement MUST fail even if a caller
+    relabels it candidate. Superseded/retired promoted identities retain the established
+    compatibility and historical recovery policy. Existing resource-qualified authorities
+    without SCFs remain qualified by their real identities and digests; invent no SCF.
+    Package version, readiness, implementation completeness, current SCS and public
+    capability advertisements are separately governed. A candidate can be discoverable
+    in development without being a released compatibility identity.
+
+    Released classifications require positive artifact evidence. The companion
+    classification records released, explicitly promoted, unreleased candidate,
+    historical development and unknown evidence separately. Past human approvals of
+    unreleased AI/ACC publications are preserved as exact approved content snapshots;
+    acceptance of THIS ADR explicitly corrects their ongoing compatibility effect only
+    within the mapped candidate scope. It neither denies those approvals nor authorizes
+    changing released artifacts. Unknown external/persisted obligations require evidence
+    before removal. Do not infer release from main/develop, a version number or a tag
+    alone. Immutable source history and content snapshots remain reproducible.
+  alias_id: DEC-9023
+  alternatives_considered:
+  - name: Keep every merged development version immutable forever
+    rejected_because: Merge/content identity is not positive release evidence; this perpetuates unnecessary
+      compatibility machinery.
+  - name: Remove versioning or weaken SCF verification
+    rejected_because: Exact content identity and qualified dependencies remain mandatory for candidates
+      and releases.
+  - name: Treat all unreleased approvals as nonexistent
+    rejected_because: Preserve genuine review records and exact snapshots; explicit new human correction
+      is required.
+- id: 01a178e3-6103-76ba-a5b3-4f3c6998ebaf
+  alias_name: apply-only-authenticated-clause-precedence
+  summary: Resolve mapped policy clauses without retiring semantic authority
+  rationale: |-
+    The selected closed precedence map is the exclusive replacement mechanism for
+    this lifecycle correction. On authenticated acceptance, each mapped exact original
+    clause is replaced ONLY for its declared policy topic and enumerated unreleased
+    family/version applicability by the identified decision requirement of this ADR.
+    The original MUST no longer imposes conflicting version-finality, distribution or
+    successor-only obligations in that domain. Outside that scope it remains in force.
+    A refines relationship alone is insufficient. No whole predecessor decision or
+    invariant is retired. Released compatibility obligations cannot be mapped away.
+
+    The checker MUST establish original ADR/member canonical UUIDs, aliases as integrity
+    cross-checks, field names, structurally unique exact text anchors and UTF-8 digests,
+    replacement UUIDs and named requirement identity, closed applicability, and absence
+    of overlapping replacement scopes or cycles. It reports all unmapped obligations;
+    it does not resolve natural-language contradictions outside the declared map.
+    The map covers governance lifecycle/selection only, never canonical identity,
+    source ownership, field dispositions, literal lifecycle, representation operations,
+    composition, exact dependency qualification, whole-ledger equality, outcomes or
+    fail-closed requirements. DEC-0271 remains unchanged. Earlier approved source and
+    approval records are never edited or erased.
+
+    Proposed status is INACTIVE. Accepted metadata alone cannot activate the map.
+    Activation requires independently retrieved, appropriately authorized human evidence
+    bound to the exact reviewed Git revision containing this ADR, map, classification
+    and specification. Verify actor against PROJECT required_approvers, human account,
+    approval state, repository, reviewed commit and unchanged reviewed policy. Only
+    status plus paired approved_by/approved_date may differ for acceptance; changes to
+    notes, rationale, map or evidence require a new review. Self-declared verified flags,
+    assistant proxy comments and synthetic accepted fixtures are not acceptance proof.
+    A GitHub APPROVED review must explicitly authorize ADR-L-0040 lifecycle governance
+    and activation; a dismissed review is invalid. A separately implemented qualified
+    protected human gate may supply equivalent evidence in a future checkpoint.
+    The current repository owner cannot approve their own PR through an ordinary PR
+    review. If no qualifying approval mechanism exists, acceptance remains blocked;
+    that does not prevent reviewing this proposed design. Never fabricate evidence.
+  alias_id: DEC-9024
+  alternatives_considered:
+  - name: Use a refines edge or newest ADR wins
+    rejected_because: This leaves conflicting MUST clauses or silently discards unmapped semantics; use
+      exact scoped replacements.
+- id: 01a178e3-6103-76ba-a5b3-4f3d93d86adf
+  alias_name: qualify-actual-retained-authority-cohort
+  summary: Inventory before bundle finalization; attest externally afterwards
+  rationale: |-
+    Extend existing build-once, main-push release qualification without rebuilding at
+    publication. Source S produces exact package payloads P. Before finalization,
+    derive deterministic inventory I of ALL semantic authorities actually included in
+    P, including embedded WASM authorities, transitive resources, schema-only and
+    resource-qualified authorities without SCFs. Inventory records exact authority
+    identity, SCF where applicable, complete resource keys/digests, actual package
+    placements and evidence. Conflicting identities, unknown payloads or unaccounted
+    authorities fail closed. Repeated placements are recorded without inventing a
+    second authority. Sort identities, resources and placements deterministically.
+    The qualified retained bundle A contains P, I and their qualification manifest.
+    All released authorities retain their supported discovery and compatibility.
+
+    After A is finalized, an external companion promotion attestation B MUST approve
+    precisely I, including the disposition of every already released or independently
+    promoted member and explicit approval of each candidate being promoted. Bind B to
+    S, main-push qualification workflow/run and conclusion, retained bundle identity,
+    manifest/inventory/package hashes and authentic authorized human approval. B is
+    outside P, A and S. No artifact includes its own digest, no source commit includes
+    an attestation that hashes itself, and no later evidence-recording commit replaces
+    S or triggers a rebuild. I may hash P; manifest may hash I/P; B may hash finalized
+    A/manifest/I/P. Neither I nor manifest contains A's enclosing hash or B.
+
+    An omitted, extra, unapproved or differently qualified authority makes promotion
+    Unavailable. An unapproved authority MUST NOT be stripped retrospectively from a
+    finalized bundle, nor may its manifest or inventory be edited. Qualify a fresh
+    source/configuration and newly retained bundle instead. Promotion publishes only
+    identical retained P. Preserve existing main-push qualification, bundle retention,
+    tag/source checks and promotion-only publication. No ordinary tag-time rebuild.
+    The closed schemas and focused validators here specify this boundary only; actual
+    wheel/npm/WASM inventory discovery and end-to-end publisher enforcement belong to
+    the subsequent release-controls checkpoint. Do not claim operational gating yet.
+  alias_id: DEC-9025
+  alternatives_considered:
+  - name: Embed final approval inside the hashed retained bundle
+    rejected_because: This creates artifact/Git self-reference or forces rebuilding approved payloads.
+  - name: Strip an unapproved authority from a finalized bundle
+    rejected_because: This changes retained qualified bytes; require a fresh source and bundle instead.
+- id: 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+  alias_name: consolidate-only-qualified-current-candidates
+  summary: Consolidate governed candidate semantics in independently green checkpoints
+  rationale: |-
+    After explicit acceptance, use AI 1.5, ACC 1.5 and NM 2.5 as current development
+    candidates, not AI/ACC 1.6 merely for corrections before promotion. Keep released
+    AI 1.0/1.1, ACC 1.0, NM 2.3/2.4 and all other classified released dependencies.
+    Absorb development-only predecessor semantics by direct qualified candidate
+    resources where sufficient, rather than maintaining chains only because a PR was
+    merged. Preserve actual independently promoted/external obligations until this
+    explicit correction and evidence classification permit otherwise. Git retains all
+    old revisions; do not rewrite tags, released artifacts or historical approvals.
+    An old SCF always identifies its old exact content, not whatever the version now
+    resolves to. Dependencies between candidate revisions MUST select exact content;
+    recompute downstream closure/SCF and reject stale cross-revision evidence.
+
+    Do not blindly rewrite version strings or inherited rule identities. Preserve every
+    accepted substantive semantic rule. AI 1.5 retains 27 types, six output branches,
+    240 qualified definitions, 215 BLOCKED entries, 26 literal-copy rules, 54 identity
+    representation definitions and three exact operations; counts do not prove meaning.
+    BLOCKED never becomes a producer. ACC 1.5 retains the existing single binding,
+    proof chain and bounded construction semantics. No missing producer may be invented.
+    Unshipped protocol 1.4/1.5 prototype operations can be retired in that separately
+    reviewed consolidation while preserving released protocol 1.0-1.3; no such change
+    occurs here. Current SCS and public capabilities do not change implicitly.
+
+    Reuse PR #186 source at 6ddc8c2b6d66531ff3ecefb0bba7b15616ac4f0c and its validation
+    as migration input, not accepted release proof. This PR neither modifies nor closes
+    it. First independently qualify release-controls inventory/attestation enforcement.
+    Then consolidate the co-dependent authority cohort, loaders, mirrors and conformance
+    atomically in a bounded PR/checkpoint, updating PR #186 with explicit retained-work
+    traceability only after approval. Keep each checkpoint independently green; never
+    expose transient unqualified authority as a public capability. A separate bounded
+    Rust reusable-qualification checkpoint is permitted if genuinely needed. Preserve
+    meaning and trust boundaries while removing development-only version maintenance.
+  alias_id: DEC-9026
+  alternatives_considered:
+  - name: One unbounded consolidation PR
+    rejected_because: Independent release-control qualification and an atomic candidate cohort are safer
+      to review; a further bounded Rust PR is allowed.
+- id: 01a178e3-6103-76ba-a5b3-4f3f1494e457
+  alias_name: verify-lifecycle-adversarially
+  summary: Separate authority, representation, semantic and promotion proofs
+  rationale: |-
+    Qualification MUST prove released identities byte-exact and discoverable where
+    compatibility requires; same-version candidate correction changes SCF and requalifies
+    complete dependency closure; old revisions reproduce from recorded Git commits;
+    stale resources/receipts and validly rehashed unauthorized semantics fail; exact
+    promotion prevents later same-version substitution even under a candidate label.
+    Test competing/missing producers, source and contextual ownership independently of
+    content hashing. Preserve semantic and representation verification separately.
+
+    Precedence tests cover wrong/missing/ambiguous anchors, UUID substitution, digest
+    changes, scope expansion, duplicate replacements, unmapped obligations, proposed
+    inactivity and forged/unauthorized/stale approval. Synthetic accepted fixtures may
+    test pure resolution but MUST NOT activate canonical repository governance.
+    Attestation tests cover complete cohort equality, embedded/no-SCF authorities,
+    missing/extra/duplicate authority, package/inventory mismatch, self-reference,
+    non-main/non-push qualification, source/run mismatch and edits of retained bundles.
+    These are specification tests until operational release enforcement is qualified.
+
+    Rust/Python/Node/WASM, governance, deterministic generation, current semantic
+    conformance and released SDK compatibility remain required as applicable. No test
+    may pin all future work to this PR base, require candidates to stay unselected
+    forever, or interpret a successor's existence as runtime capability. No public
+    construction, complete interpretation, semantic_equivalent or Constructed follows
+    from authority publication or this governance decision.
+  alias_id: DEC-9027
+- id: 01a178e3-6103-76ba-a5b3-4f400c793547
+  alias_name: require-separate-human-acceptance-and-release-qualification
+  summary: Keep proposed governance and future promotion independently gated
+  rationale: |-
+    PR A contains only this proposed ADR, exact precedence/classification evidence,
+    external attestation/inventory specification, bounded governance qualification,
+    focused permanent tests and owned derived projections. It publishes no successor
+    contract, modifies no candidate resource or SCF, and implements no runtime/publisher.
+    Human acceptance must explicitly approve the lifecycle correction and its map at
+    an exact reviewed revision. No auto-acceptance, fabricated metadata or auto-merge.
+
+    After authentic acceptance: release-controls enforcement checkpoint; qualified
+    candidate consolidation using PR #186; optional bounded Rust cleanup; then resume
+    actual interpretation/construction against exact current candidate authority.
+    Before release, independently qualify the fixed candidate revision and exact
+    packaged authority cohort, obtain external human promotion approval, and publish
+    retained artifacts only. Promotion and current SCS/capability selection remain
+    separate approvals. Until every qualification is satisfied, missing capability is
+    Unavailable, known invalidity Rejected and Unresolved requires a governed dependency;
+    preserve Rejected > Unavailable > Unresolved. No ledger/equality shortcut, synthetic
+    lifecycle, persistence, admission or promotion capability is introduced here.
+
+    Qualified companion content (exact UTF-8 SHA-256; no enclosing ADR hash cycle):
+    adrs/migrations/semantic-contract-lifecycle-precedence.yaml sha256:b3506f6b3d0ce3481f8499eeed239f3849e560a79c76024df4897e6b1e52edd5
+    adrs/migrations/semantic-contract-lifecycle-classification.json sha256:835f83676f3fc2023e7f057661d9e8717b1d432f1b04a77d2ea81558e9921f86
+    docs/contributors/semantic-contract-lifecycle.md sha256:4f455d00dfd0f276cdd72cef73adcd3b96f9e299aa63115d6556645ed1f5b62c
+    scripts/schemas/authority-promotion-attestation.schema.json sha256:d9624d2f07e464809c2a079dd950410608c69f5867a31affa1ccc49acd7dec3b
+    scripts/schemas/lifecycle-precedence.schema.json sha256:f116fe585d44c895b4133813a07cd7674f28117cbed0554d6ca9b0b04c019da2
+    scripts/schemas/packaged-authority-inventory.schema.json sha256:0b502d74d3b4c1b5f4481842531502bee1b09f0934c69484639c83b02a2c7cb2
+  alias_id: DEC-9028
+invariants:
+- id: 01a178e3-6103-76ba-a5b3-4f417b151669
+  alias_name: separate-content-identity-from-release-compatibility
+  statement: Only explicit release or independent authority promotion freezes ongoing same-version compatibility;
+    every candidate revision MUST retain exact SCF, closure and Git reproducibility.
+  scope: governance
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Freeze exact snapshots; promote compatibility explicitly
+  upheld_by_decisions:
+  - 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+  alias_id: INV-0315
+- id: 01a178e3-6103-76ba-a5b3-4f42efacc580
+  alias_name: apply-only-authenticated-clause-precedence
+  statement: Only authenticated acceptance and exact mapped clause applicability may replace lifecycle
+    obligations; all unmapped and substantive semantic obligations MUST remain in force.
+  scope: governance
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Resolve mapped policy clauses without retiring semantic authority
+  upheld_by_decisions:
+  - 01a178e3-6103-76ba-a5b3-4f3c6998ebaf
+  alias_id: INV-0316
+- id: 01a178e3-6104-7299-8ae7-bcad1adb5d5c
+  alias_name: qualify-actual-retained-authority-cohort
+  statement: The attestation MUST approve exactly all authorities actually packaged in the finalized qualified
+    bundle; mismatch requires a new qualification and MUST NOT mutate retained artifacts.
+  scope: governance
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Inventory before bundle finalization; attest externally afterwards
+  upheld_by_decisions:
+  - 01a178e3-6103-76ba-a5b3-4f3d93d86adf
+  alias_id: INV-0317
+- id: 01a178e3-6104-7299-8ae7-bcae4cc94c59
+  alias_name: consolidate-only-qualified-current-candidates
+  statement: Candidate consolidation MUST preserve released compatibility, exact dependency selection
+    and accepted semantics without inventing producers or transient public capabilities.
+  scope: governance
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Consolidate governed candidate semantics in independently green checkpoints
+  upheld_by_decisions:
+  - 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+  alias_id: INV-0318
+- id: 01a178e3-6104-7299-8ae7-bcaf6ef9425c
+  alias_name: verify-lifecycle-adversarially
+  statement: Independent qualification MUST distinguish content identity, authority, instance evidence,
+    representation verification and semantic equality; none substitutes for another.
+  scope: governance
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Separate authority, representation, semantic and promotion proofs
+  upheld_by_decisions:
+  - 01a178e3-6103-76ba-a5b3-4f3f1494e457
+  alias_id: INV-0319
+- id: 01a178e3-6104-7299-8ae7-bcb0462bba55
+  alias_name: require-separate-human-acceptance-and-release-qualification
+  statement: Proposed governance, synthetic fixtures and self-declared approval MUST NOT activate canonical
+    policy or publisher gating; authentic reviewed human evidence is required.
+  scope: governance
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Keep proposed governance and future promotion independently gated
+  upheld_by_decisions:
+  - 01a178e3-6103-76ba-a5b3-4f400c793547
+  alias_id: INV-0320
+notes: |-
+  Proposed for explicit human architectural review only. No acceptance metadata.
+  The exact precedence map and released-compatibility classification are normative
+  companions selected below by content digest. Generated projections are derived.
+  PR #186 remains open and untouched; its reviewed source and validation evidence
+  are useful candidate input, not an immutable release or approval of this policy.
+  No operational publisher enforcement, consolidation or runtime work occurs here.
+alias_id: ADR-L-0040

@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: adc6305471721dbca04f75a60b992a9c024be14aa28920edf1402582b5e6069a
-rendered_hash: cf42de4f6bff7255b31b84ceb91bddbddb97deef7dca939744170884b19ae5aa
+rendered_hash: 22d116e8ece3e006a1d7d6f53be037c45ca2691bb89f9e74e197ddc9dc5281d6
 -->
 
 # ADR-L-0031: Non-Recursive Semantic Contract Conformance Binding
@@ -366,6 +366,7 @@ flowchart LR
 - [ADR-L-0033](ADR-L-0033-governed-candidate-binding-for-authoring-construction.md)
 - [ADR-L-0034](ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.md)
 - [ADR-L-0035](ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.md)
+- [ADR-L-0040](ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.md)
 
 
 

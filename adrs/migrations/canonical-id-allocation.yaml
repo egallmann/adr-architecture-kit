@@ -5,10 +5,10 @@ high_water_marks:
   CAP: 9002
   COMP: 23
   CONTRACT: 5
-  DEC: 9022
+  DEC: 9028
   IFACE: 36
   IMPL: 29
-  INV: 314
+  INV: 320
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -2308,6 +2308,42 @@ allocations:
   source_pointer: /decisions/5/alias_id
   state: active
   adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+- id: DEC-9023
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_pointer: /decisions/0/alias_id
+  state: active
+  adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+- id: DEC-9024
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_pointer: /decisions/1/alias_id
+  state: active
+  adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+- id: DEC-9025
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_pointer: /decisions/2/alias_id
+  state: active
+  adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+- id: DEC-9026
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_pointer: /decisions/3/alias_id
+  state: active
+  adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+- id: DEC-9027
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_pointer: /decisions/4/alias_id
+  state: active
+  adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+- id: DEC-9028
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_pointer: /decisions/5/alias_id
+  state: active
+  adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
 - id: IFACE-0001
   entity_type: interface
   adr_id: ADR-P-0001
@@ -4384,3 +4420,39 @@ allocations:
   source_pointer: /invariants/5/alias_id
   state: active
   adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+- id: INV-0315
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_pointer: /invariants/0/alias_id
+  state: active
+  adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+- id: INV-0316
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_pointer: /invariants/1/alias_id
+  state: active
+  adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+- id: INV-0317
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_pointer: /invariants/2/alias_id
+  state: active
+  adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+- id: INV-0318
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_pointer: /invariants/3/alias_id
+  state: active
+  adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+- id: INV-0319
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_pointer: /invariants/4/alias_id
+  state: active
+  adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+- id: INV-0320
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_pointer: /invariants/5/alias_id
+  state: active
+  adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9

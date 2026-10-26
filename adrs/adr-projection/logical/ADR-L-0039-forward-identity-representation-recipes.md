@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 705143d3a37d0a2ee71fc2b9c9a6f0f0d93bdd6aeac7a9adbae17894a2fb17f7
-rendered_hash: 0e579109bdebe1f409b1f40d1a26121882c7fd046c21372bbbcfa718315ffb4d
+rendered_hash: fe3a709593451b9c306fc4223c9e5ccb5423db9611a6acd854ca2964d89b6c74
 -->
 
 # ADR-L-0039: Forward Identity Representation Recipes
@@ -1147,6 +1147,7 @@ Require closed successor publication and independent instance verification
 - [ADR-L-0034](ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.md)
 - [ADR-L-0037](ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.md)
 - [ADR-L-0038](ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.md)
+- [ADR-L-0040](ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.md)
 
 
 ## Architecture Relationships

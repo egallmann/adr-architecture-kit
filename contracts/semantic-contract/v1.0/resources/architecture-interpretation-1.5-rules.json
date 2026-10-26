@@ -1,0 +1,125 @@
+{
+  "resource": "architecture-interpretation/1.5/rules",
+  "semanticDependencies": [
+    "architecture-interpretation/1.0/source-decoding-1.5",
+    "architecture-interpretation/1.0/source-decoding-1.6",
+    "architecture-interpretation/1.0/source-mapping-1.5-to-2.3",
+    "architecture-interpretation/1.0/source-mapping-1.6-to-2.3",
+    "architecture-interpretation/1.2/legacy-compatibility",
+    "architecture-interpretation/1.2/source-decoding-1.7",
+    "architecture-interpretation/1.3/conformance",
+    "architecture-interpretation/1.3/conformance.schema",
+    "architecture-interpretation/1.3/contextual-facts",
+    "architecture-interpretation/1.3/contextual-facts.schema",
+    "architecture-interpretation/1.3/contract",
+    "architecture-interpretation/1.3/detached-context",
+    "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5",
+    "architecture-interpretation/1.3/field-dispositions.schema",
+    "architecture-interpretation/1.3/lifecycle-ownership",
+    "architecture-interpretation/1.3/lifecycle-ownership.schema",
+    "architecture-interpretation/1.3/lifecycle-provenance.schema",
+    "architecture-interpretation/1.3/rules",
+    "architecture-interpretation/1.3/source-mapping-1.7-to-2.5",
+    "architecture-interpretation/1.4/conformance",
+    "architecture-interpretation/1.4/conformance.schema",
+    "architecture-interpretation/1.4/contract",
+    "architecture-interpretation/1.4/required-output-derivations",
+    "architecture-interpretation/1.4/required-output-derivations.schema",
+    "architecture-interpretation/1.4/rules",
+    "architecture-interpretation/1.5/identity-representation-recipes",
+    "architecture-interpretation/1.5/required-output-derivations",
+    "authoring-domain/1.1/contract",
+    "authoring-domain/1.1/schema",
+    "authoring/1.5/schema/adr-common.schema",
+    "authoring/1.5/schema/adr-logical.schema",
+    "authoring/1.5/schema/adr-physical-base.schema",
+    "authoring/1.5/schema/adr-physical-component.schema",
+    "authoring/1.5/schema/adr-physical-system.schema",
+    "authoring/1.5/schema/types.schema",
+    "authoring/1.6/schema/adr-common.schema",
+    "authoring/1.6/schema/adr-logical.schema",
+    "authoring/1.6/schema/adr-physical-base.schema",
+    "authoring/1.6/schema/adr-physical-component.schema",
+    "authoring/1.6/schema/adr-physical-system.schema",
+    "authoring/1.6/schema/types.schema",
+    "authoring/1.7/schema/adr-common.schema",
+    "authoring/1.7/schema/adr-logical.schema",
+    "authoring/1.7/schema/adr-physical-base.schema",
+    "authoring/1.7/schema/adr-physical-component.schema",
+    "authoring/1.7/schema/adr-physical-system.schema",
+    "authoring/1.7/schema/types.schema",
+    "custom-entity/1.0/conformance",
+    "custom-entity/1.0/contract",
+    "custom-entity/1.0/schema",
+    "normalized-model/2.3/schema/normalized-architecture-model.schema",
+    "normalized-model/2.3/schema/normalized-entity-registry.schema",
+    "normalized-model/2.3/schema/normalized-entity.schema",
+    "normalized-model/2.3/schema/relationship-record.schema",
+    "normalized-model/2.3/schema/relationship-registry.schema",
+    "normalized-model/2.3/schema/unresolved-registry.schema",
+    "normalized-model/2.5/conformance",
+    "normalized-model/2.5/contract",
+    "normalized-model/2.5/schema/normalized-architecture-model.schema",
+    "normalized-model/2.5/schema/normalized-entity-registry.schema",
+    "normalized-model/2.5/schema/normalized-entity.schema",
+    "normalized-model/2.5/schema/relationship-record.schema",
+    "normalized-model/2.5/schema/relationship-registry.schema",
+    "normalized-model/2.5/schema/unresolved-registry.schema"
+  ],
+  "inherits": {
+    "definition": {
+      "canonical_resource_key": "architecture-interpretation/1.4/contract",
+      "content_digest": "sha256:75fa089d1c85278bff4972cdbc5235f3ecb59ae7b71168b12d42a0c036801703",
+      "schema_pointer": ""
+    },
+    "semantic_contract_fingerprint": "scf:v1:sha256:5c338d24961946d7f7d4350d5bfbbfb9e3882c56c8be09ba4d242169163acdd7",
+    "overrides": [
+      "identity_representation_required_output_definitions",
+      "representation_only_identity_recipes"
+    ]
+  },
+  "destination_authority": {
+    "definition": {
+      "canonical_resource_key": "normalized-model/2.5/contract",
+      "content_digest": "sha256:5e23c8b20c0a34f7904fe6aa58af3252cf837bcca12aed97731b5a729bc61349",
+      "schema_pointer": ""
+    },
+    "semantic_contract_fingerprint": "scf:v1:sha256:bb48720502668e434d378445004aec7783346a0e74254c9e0d3cb01a8798d9d7"
+  },
+  "required_output_catalog": {
+    "canonical_resource_key": "architecture-interpretation/1.5/required-output-derivations",
+    "content_digest": "sha256:3553c50a455db9029ed066962d18be891dfc12986a85c8f54cba68e85a312162",
+    "schema_pointer": ""
+  },
+  "recipe_authority": {
+    "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
+    "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+    "schema_pointer": ""
+  },
+  "required_output_coverage": {
+    "required": "exactly_one_applicable_qualified_producer_per_destination_after_identity_accounting",
+    "BLOCKED": "missing_prerequisite_not_a_producer_or_coverage",
+    "conditions": "evaluate_all_exact_schema_branches_and_context_prerequisites_before_materialization",
+    "unknown_or_competing": "fail_closed",
+    "complete_interpretation": "Unavailable",
+    "catalog_membership_is_root_authority": false,
+    "conditional_producer": "A qualified rule is not an instance result; any missing applicability, identity or context prerequisite makes that destination BLOCKED and contributes no producer."
+  },
+  "inherited_authority": "actual_AI_1_3_and_AI_1_4_resource_keys_digests_SCFs_and_rule_identities_retained_no_version_rewriting",
+  "representation_verification": "independent_complete_reconstruction_from_sealed_source_established_identity_exact_rule_and_context_not_asserted_flags_or_replay",
+  "semantic_equality": "original_semantic_values_identity_context_order_and_multiplicity_once_not_generated_representation_ownership",
+  "instance_applicability": "Unknown",
+  "outcome_precedence": [
+    "Rejected",
+    "Unavailable",
+    "Unresolved"
+  ],
+  "public_boundary": {
+    "enabled_by_publication": false,
+    "runtime_execution_coverage": false,
+    "complete_interpretation": "Unavailable",
+    "semantic_equivalent": false,
+    "Constructed": false,
+    "publication_changes_current_selection": false
+  }
+}

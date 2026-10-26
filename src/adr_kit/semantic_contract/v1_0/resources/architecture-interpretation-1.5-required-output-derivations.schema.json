@@ -1,0 +1,310 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.ste.systems/contracts/architecture-interpretation/v1.5/resources/required-output-derivations.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "source_contract",
+    "output_contract",
+    "field_dispositions",
+    "operation",
+    "coverage",
+    "branches",
+    "status_scope",
+    "resource",
+    "semanticDependencies",
+    "blockers",
+    "identity_representation_recipes",
+    "inherited_output_authority",
+    "types"
+  ],
+  "properties": {
+    "source_contract": {
+      "$ref": "../1.4/required-output-derivations.schema.json#/properties/source_contract"
+    },
+    "output_contract": {
+      "$ref": "../1.4/required-output-derivations.schema.json#/properties/output_contract"
+    },
+    "field_dispositions": {
+      "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+    },
+    "operation": {
+      "$ref": "../1.4/required-output-derivations.schema.json#/properties/operation"
+    },
+    "coverage": {
+      "$ref": "../1.4/required-output-derivations.schema.json#/properties/coverage"
+    },
+    "branches": {
+      "$ref": "../1.4/required-output-derivations.schema.json#/properties/branches"
+    },
+    "status_scope": {
+      "$ref": "../1.4/required-output-derivations.schema.json#/properties/status_scope"
+    },
+    "resource": {
+      "const": "architecture-interpretation/1.5/required-output-derivations"
+    },
+    "semanticDependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "blockers": {
+      "const": {
+        "fingerprint_preimage": "Exact entity_fingerprint canonical preimage and exclusion domain require qualified authority; historical hashes do not select it.",
+        "source_envelope_recipe": "Source facts are governed, but this complete NM envelope field has no uniquely selected representation recipe.",
+        "completeness_recipe": "Entity-specific completeness representation/criteria need an exact qualified recipe, not model-complete assertion.",
+        "custom_lifecycle": "No accepted custom-entity lifecycle owner/value rule exists; existence_state is not lifecycle_stage.",
+        "declaring_context": "Native standalone representation does not supply unique declaring ADR lifecycle provenance.",
+        "shared_identity": "Coalesced shared system identity cannot activate competing producers; exact applicability must resolve first.",
+        "relationship_branch": "Entity-named inherited placement does not by itself qualify the canonical-relationship output branch.",
+        "relationship_envelope": "Complete relationship record/envelope or generated identifier recipe is not selected by forward authority.",
+        "nonselected_output": "No qualified producer for this conditional destination under this type/source branch.",
+        "owner_local_context": "Governed owner identity, topology key and multiplicity must be independently qualified; no independent root.",
+        "custom_qualification": "Exact selected CEC registry/custom contract and properties must qualify; CEC closure is not registry selection."
+      }
+    },
+    "identity_representation_recipes": {
+      "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+    },
+    "inherited_output_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "catalog",
+        "semantic_contract_fingerprint",
+        "local_rule_bindings"
+      ],
+      "properties": {
+        "catalog": {
+          "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+        },
+        "semantic_contract_fingerprint": {
+          "const": "scf:v1:sha256:5c338d24961946d7f7d4350d5bfbbfb9e3882c56c8be09ba4d242169163acdd7"
+        },
+        "local_rule_bindings": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "literal_string_copy"
+          ],
+          "properties": {
+            "literal_string_copy": {
+              "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+            }
+          }
+        }
+      }
+    },
+    "types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "semantic_type",
+          "output_branch",
+          "source_schema",
+          "identity_policy",
+          "root_permission",
+          "context_dependencies",
+          "outputs"
+        ],
+        "properties": {
+          "semantic_type": {
+            "$ref": "../1.4/required-output-derivations.schema.json#/properties/types/items/properties/semantic_type"
+          },
+          "output_branch": {
+            "$ref": "../1.4/required-output-derivations.schema.json#/properties/types/items/properties/output_branch"
+          },
+          "source_schema": {
+            "$ref": "../1.4/required-output-derivations.schema.json#/properties/types/items/properties/source_schema"
+          },
+          "identity_policy": {
+            "$ref": "../1.4/required-output-derivations.schema.json#/properties/types/items/properties/identity_policy"
+          },
+          "root_permission": {
+            "$ref": "../1.4/required-output-derivations.schema.json#/properties/types/items/properties/root_permission"
+          },
+          "context_dependencies": {
+            "$ref": "../1.4/required-output-derivations.schema.json#/properties/types/items/properties/context_dependencies"
+          },
+          "outputs": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "../1.4/required-output-derivations.schema.json#/properties/types/items/properties/outputs/items"
+                },
+                {
+                  "$ref": "#/$defs/identity_output"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "identity_output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "destination",
+        "applicability",
+        "status",
+        "classification",
+        "authorities",
+        "semantic_equality",
+        "verification",
+        "prerequisites",
+        "destination_schema",
+        "required_subdestinations",
+        "producer"
+      ],
+      "properties": {
+        "destination": {
+          "$ref": "../1.4/required-output-derivations.schema.json#/properties/types/items/properties/outputs/items/properties/destination"
+        },
+        "applicability": {
+          "$ref": "../1.4/required-output-derivations.schema.json#/properties/types/items/properties/outputs/items/properties/applicability"
+        },
+        "status": {
+          "const": "QUALIFIED"
+        },
+        "classification": {
+          "const": "representation_only"
+        },
+        "authorities": {
+          "$ref": "../1.4/required-output-derivations.schema.json#/properties/types/items/properties/outputs/items/properties/authorities"
+        },
+        "semantic_equality": {
+          "const": "original_inputs_once_not_generated_representation"
+        },
+        "verification": {
+          "$ref": "../1.4/required-output-derivations.schema.json#/properties/types/items/properties/outputs/items/properties/verification"
+        },
+        "prerequisites": {
+          "$ref": "../1.4/required-output-derivations.schema.json#/properties/types/items/properties/outputs/items/properties/prerequisites"
+        },
+        "destination_schema": {
+          "$ref": "../1.4/required-output-derivations.schema.json#/properties/types/items/properties/outputs/items/properties/destination_schema"
+        },
+        "required_subdestinations": {
+          "$ref": "../1.4/required-output-derivations.schema.json#/properties/types/items/properties/outputs/items/properties/required_subdestinations"
+        },
+        "producer": {
+          "$ref": "#/$defs/identity_producer"
+        }
+      }
+    },
+    "identity_producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "rule_id",
+        "rule",
+        "inputs",
+        "source_field"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "literal_alias_join",
+            "literal_entity_uri",
+            "uuidv7_unix_milliseconds_to_rfc3339_utc"
+          ]
+        },
+        "rule_id": {
+          "enum": [
+            "identity-representation.alias-ref",
+            "identity-representation.entity-uri",
+            "identity-representation.uuidv7-created-at"
+          ]
+        },
+        "rule": {
+          "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+        },
+        "inputs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 2,
+          "items": {
+            "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+          }
+        },
+        "source_field": {
+          "const": ""
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "literal_alias_join"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "rule_id": {
+                "const": "identity-representation.alias-ref"
+              },
+              "inputs": {
+                "minItems": 2,
+                "maxItems": 2
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "literal_entity_uri"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "rule_id": {
+                "const": "identity-representation.entity-uri"
+              },
+              "inputs": {
+                "minItems": 2,
+                "maxItems": 2
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "uuidv7_unix_milliseconds_to_rfc3339_utc"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "rule_id": {
+                "const": "identity-representation.uuidv7-created-at"
+              },
+              "inputs": {
+                "minItems": 1,
+                "maxItems": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "semanticDependencies": [
+    "architecture-interpretation/1.4/required-output-derivations.schema"
+  ]
+}

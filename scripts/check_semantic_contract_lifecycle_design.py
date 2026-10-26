@@ -381,39 +381,19 @@ def _git(root: Path, revision: str, path: str) -> bytes:
     return subprocess.check_output(["git", "show", f"{revision}:{path}"], cwd=root)
 
 
-def verify_live_acceptance(root: Path, revision: str, review_url: str) -> dict[str, Any]:
-    """Retrieve actual GitHub review; no local evidence file or fixture flag accepted."""
-    match = re.fullmatch(
-        r"https://github.com/egallmann/adr-architecture-kit/pull/(\d+)#pullrequestreview-(\d+)",
-        review_url,
-    )
-    require(match is not None, "exact GitHub review URL required")
-    assert match is not None
-    pr, review = match.groups()
-    record = json.loads(
+def _github_api(root: Path, *arguments: str) -> Any:
+    """Authenticated fixed-host read-only API retrieval, never local proof flags."""
+    return read_json(
         subprocess.check_output(
-            [
-                "gh",
-                "api",
-                "--hostname",
-                "github.com",
-                f"repos/{REPOSITORY}/pulls/{pr}/reviews/{review}",
-            ],
-            cwd=root,
+            ["gh", "api", "--hostname", "github.com", *arguments], cwd=root, timeout=30
         )
     )
-    request = json.loads(
-        subprocess.check_output(
-            ["gh", "api", "--hostname", "github.com", f"repos/{REPOSITORY}/pulls/{pr}"], cwd=root
-        )
-    )
-    require(record.get("html_url") == review_url, "review origin")
-    require(
-        record.get("state") == "APPROVED" and record.get("commit_id") == revision,
-        "review state/revision",
-    )
-    require(record.get("user", {}).get("type") == "User", "human review required")
-    actor = record["user"]["login"]
+
+
+def _verify_acceptance_content(
+    root: Path, revision: str, actor: str, approved_at: str, request: dict[str, Any]
+) -> None:
+    """Shared exact authorization/content checks for either real evidence source."""
     reviewed_project = yaml.safe_load(_git(root, revision, "PROJECT.yaml"))
     current_project = read(root / "PROJECT.yaml")
     require(reviewed_project == current_project, "authorization policy changed since review")
@@ -421,14 +401,9 @@ def verify_live_acceptance(root: Path, revision: str, review_url: str) -> dict[s
     require(current_project == base_policy, "unadmitted authorization policy")
     authorized = current_project["integrations"]["scm"]["required_approvers"]
     require("@" + actor in authorized, "unauthorized reviewer")
-    require(request["user"]["login"] != actor, "self-review is not independent approval")
     require(
         request["base"]["repo"]["full_name"] == REPOSITORY and request["base"]["ref"] == "develop",
         "review repository/base",
-    )
-    require(
-        "Approve ADR-L-0040 lifecycle governance and activation." in record.get("body", ""),
-        "explicit lifecycle approval missing",
     )
     reviewed = yaml.safe_load(_git(root, revision, ADR_PATH))
     current = read(root / ADR_PATH)
@@ -446,7 +421,7 @@ def verify_live_acceptance(root: Path, revision: str, review_url: str) -> dict[s
 
     require(
         datetime.fromisoformat(metadata["approved_date"].replace("Z", "+00:00"))
-        == datetime.fromisoformat(record["submitted_at"].replace("Z", "+00:00")),
+        == datetime.fromisoformat(approved_at.replace("Z", "+00:00")),
         "approval date mismatch",
     )
     current = copy.deepcopy(current)
@@ -455,17 +430,181 @@ def verify_live_acceptance(root: Path, revision: str, review_url: str) -> dict[s
     require(current == reviewed, "reviewed architecture changed")
     for path in COMPANIONS:
         require(_git(root, revision, path) == (root / path).read_bytes(), "reviewed policy changed")
-    return {"actor": actor, "reviewed_revision": revision, "review_url": review_url}
 
 
-def acceptance_reference(root: Path, governing_id: str) -> tuple[str, str]:
-    """An external review locator is a pointer, NEVER self-certified approval."""
+def verify_live_acceptance(root: Path, revision: str, review_url: str) -> dict[str, Any]:
+    """Retain the independent APPROVED-review path, with its original constraints."""
+    require(bool(re.fullmatch(r"[0-9a-f]{40}", revision)), "exact reviewed Git revision required")
+    match = re.fullmatch(
+        r"https://github.com/egallmann/adr-architecture-kit/pull/(\d+)#pullrequestreview-(\d+)",
+        review_url,
+    )
+    require(match is not None, "exact GitHub review URL required")
+    assert match is not None
+    pr, review = match.groups()
+    record = _github_api(root, f"repos/{REPOSITORY}/pulls/{pr}/reviews/{review}")
+    request = _github_api(root, f"repos/{REPOSITORY}/pulls/{pr}")
+    require(record.get("html_url") == review_url, "review origin")
+    require(
+        record.get("state") == "APPROVED" and record.get("commit_id") == revision,
+        "review state/revision",
+    )
+    require(record.get("user", {}).get("type") == "User", "human review required")
+    actor = record["user"]["login"]
+    require(request["user"]["login"] != actor, "self-review is not independent approval")
+    require(
+        "Approve ADR-L-0040 lifecycle governance and activation." in record.get("body", ""),
+        "explicit lifecycle approval missing",
+    )
+    _verify_acceptance_content(root, revision, actor, record["submitted_at"], request)
+    return {
+        "actor": actor,
+        "reviewed_revision": revision,
+        "review_url": review_url,
+        "evidence_kind": "approved_review",
+        "github_approved_review": True,
+    }
+
+
+def verify_live_owner_comment(root: Path, revision: str, comment: dict[str, Any]) -> dict[str, Any]:
+    """Architectural authorization only; cannot establish a GitHub code-review approval.
+
+    The actual human must post this comment. This code only reads it, and never
+    creates evidence. REST and GraphQL must agree, including an unedited history.
+    """
+    require(bool(re.fullmatch(r"[0-9a-f]{40}", revision)), "exact reviewed Git revision required")
+    validate_shape(
+        {
+            "schema_version": "1.0",
+            "kind": "canonical-governance-acceptance-reference",
+            "governing_adr_id": read(root / ADR_PATH)["id"],
+            "reviewed_revision": revision,
+            "owner_comment": comment,
+        },
+        "governance-acceptance-reference",
+    )
+    url = comment["source_url"]
+    match = re.fullmatch(
+        r"https://github.com/egallmann/adr-architecture-kit/pull/(\d+)#issuecomment-(\d+)", url
+    )
+    require(match is not None, "exact GitHub PR comment URL required")
+    assert match is not None
+    pr, comment_id = match.groups()
+    require(pr == "187", "governing comment PR")
+    require(type(comment["id"]) is int and str(comment["id"]) == comment_id, "comment identity")
+    record = _github_api(root, f"repos/{REPOSITORY}/issues/comments/{comment_id}")
+    request = _github_api(root, f"repos/{REPOSITORY}/pulls/{pr}")
+    pages = _github_api(
+        root, "--paginate", "--slurp", f"repos/{REPOSITORY}/pulls/{pr}/commits?per_page=100"
+    )
+    require(
+        isinstance(pages, list) and all(isinstance(page, list) for page in pages),
+        "comment PR commit proof unavailable",
+    )
+    require(
+        any(
+            isinstance(commit, dict) and commit.get("sha") == revision
+            for page in pages
+            for commit in page
+        ),
+        "reviewed commit absent from governing PR",
+    )
+    require(
+        record.get("id") == comment["id"] and record.get("html_url") == url,
+        "comment identity/origin",
+    )
+    require(
+        record.get("url")
+        == f"https://api.github.com/repos/{REPOSITORY}/issues/comments/{comment_id}",
+        "comment API origin",
+    )
+    require(
+        record.get("issue_url") == f"https://api.github.com/repos/{REPOSITORY}/issues/{pr}",
+        "comment PR association",
+    )
+    require(
+        str(request.get("number")) == pr
+        and request.get("html_url") == f"https://github.com/{REPOSITORY}/pull/{pr}",
+        "comment PR origin",
+    )
+    require(
+        record.get("user", {}).get("type") == "User"
+        and record.get("performed_via_github_app") is None,
+        "human comment required",
+    )
+    actor = record["user"]["login"]
+    require(actor == comment["author_login"], "comment author mismatch")
+    require(
+        record.get("created_at") == comment["created_at"]
+        and record.get("updated_at") == comment["created_at"],
+        "edited or retimed comment",
+    )
+    body = record.get("body")
+    expected = (
+        f"I approve ADR-L-0040 lifecycle governance and activation at reviewed commit {revision}."
+    )
+    require(
+        isinstance(body, str) and body.strip() == expected,
+        "explicit exact-revision comment approval missing",
+    )
+    require(digest(body.encode("utf-8")) == comment["body_digest"], "comment body digest")
+    require(
+        isinstance(record.get("node_id"), str) and bool(record["node_id"]), "comment node identity"
+    )
+    query = """query($id:ID!){node(id:$id){__typename ... on IssueComment {
+      id fullDatabaseId url createdAt updatedAt lastEditedAt isMinimized body
+      author {login __typename} editor {login}
+    }}}"""
+    response = _github_api(root, "graphql", "-f", f"query={query}", "-f", f"id={record['node_id']}")
+    require(not response.get("errors"), "comment edit-history proof unavailable")
+    node = response.get("data", {}).get("node")
+    require(
+        isinstance(node, dict) and node.get("__typename") == "IssueComment",
+        "comment edit-history proof unavailable",
+    )
+    require(
+        node.get("id") == record["node_id"]
+        and str(node.get("fullDatabaseId")) == comment_id
+        and node.get("url") == url,
+        "comment cross-API identity",
+    )
+    require(
+        "lastEditedAt" in node
+        and node["lastEditedAt"] is None
+        and "editor" in node
+        and node["editor"] is None
+        and node.get("isMinimized") is False,
+        "edited or unavailable comment",
+    )
+    require(
+        node.get("createdAt") == comment["created_at"] == node.get("updatedAt"),
+        "comment cross-API timestamp",
+    )
+    require(
+        node.get("author") == {"login": actor, "__typename": "User"} and node.get("body") == body,
+        "comment cross-API author/body",
+    )
+    _verify_acceptance_content(root, revision, actor, comment["created_at"], request)
+    return {
+        "actor": actor,
+        "reviewed_revision": revision,
+        "evidence_kind": "authorized_pr_comment",
+        "comment_id": comment["id"],
+        "approved_at": comment["created_at"],
+        "source_url": url,
+        "body_digest": comment["body_digest"],
+        "github_approved_review": False,
+    }
+
+
+def acceptance_reference(root: Path, governing_id: str) -> dict[str, Any]:
+    """An external evidence locator is a pointer, NEVER self-certified approval."""
     path = root / ACCEPTANCE_PATH
     require(path.is_file(), "independent acceptance reference required")
     reference = read_json(path.read_bytes())
     validate_shape(reference, "governance-acceptance-reference")
     require(reference["governing_adr_id"] == governing_id, "acceptance ADR identity")
-    return str(reference["reviewed_revision"]), str(reference["approval_review_url"])
+    return dict(reference)
 
 
 def qualify_repository(
@@ -486,13 +625,23 @@ def qualify_repository(
         require(revision is None and review is None, "proposed ADR cannot activate")
     elif document["status"] == "accepted":
         if revision is None and review is None:
-            revision, review = acceptance_reference(root, document["id"])
-        require(
-            revision is not None and review is not None,
-            "complete independent acceptance evidence required",
-        )
-        assert revision is not None and review is not None
-        result["acceptance"] = verify_live_acceptance(root, revision, review)
+            reference = acceptance_reference(root, document["id"])
+            revision = reference["reviewed_revision"]
+            if "owner_comment" in reference:
+                result["acceptance"] = verify_live_owner_comment(
+                    root, revision, reference["owner_comment"]
+                )
+            else:
+                result["acceptance"] = verify_live_acceptance(
+                    root, revision, reference["approval_review_url"]
+                )
+        else:
+            require(
+                revision is not None and review is not None,
+                "complete independent acceptance evidence required",
+            )
+            assert revision is not None and review is not None
+            result["acceptance"] = verify_live_acceptance(root, revision, review)
         result["activation"] = "verified_exact_mapped_scope_only"
         result["effective_replacements"] = mapping["rules"]
     else:

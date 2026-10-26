@@ -71,32 +71,59 @@ preimage/canonicalization are unchanged.
 design only. It returns zero effective replacements. Proposed acceptance metadata
 is rejected. Accepted status without independent evidence is rejected.
 
-For live acceptance the supported evidence is an actual GitHub APPROVED review
-retrieved via authenticated `gh api`, with a non-bot, non-author reviewer from
-PROJECT.yaml's required approvers, exact commit and explicit statement:
-`Approve ADR-L-0040 lifecycle governance and activation.`
+Two authenticated architectural-authorization paths are supported:
 
-The reviewer must review the exact ADR, map, classification, specification and
-schema bytes. An acceptance commit may alter only status and paired approval
-actor/date, with date matching the actual review. Any architecture/policy change
-requires another review. No local verified flag, environment override or synthetic
-fixture can authorize activation. The read-only checker accepts exact
-`--reviewed-revision` and `--approval-review-url`; it writes no acceptance evidence.
-A future acceptance commit must also add the closed external-reference file
-`adrs/migrations/semantic-contract-lifecycle-acceptance.json`, naming only this ADR's
-UUID, exact reviewed revision and real approval-review URL. That locator is not
-proof: permanent PR Feedback independently retrieves and verifies the actual review.
-An accepted canonical ADR without valid live evidence fails CI; synthetic accepted
-fixtures remain restricted to tests. PR Feedback has read-only API permissions for
-this verification. Preserve access to the exact reviewed Git object. No acceptance
-reference is fabricated or required for proposed status.
+- An independent GitHub **APPROVED review**, retrieved through `gh api`, from a
+  non-bot authorized required approver who is not the PR author. The existing
+  statement is `Approve ADR-L-0040 lifecycle governance and activation.`; GitHub's
+  review `commit_id` must identify the exact 40-character reviewed revision.
+- An actual authorized human's **new, unedited ordinary PR comment on #187**.
+  The owner may author this comment on their own PR. It must contain exactly this
+  statement (replace the placeholder with the complete lowercase commit SHA):
 
-The currently configured sole approver is the repository owner, who cannot approve
-their own PR by ordinary GitHub review. A real independent-author PR/review or a
-separately qualified authorized human protection gate is therefore an explicit
-acceptance prerequisite. The latter provider is specified but not implemented here.
-Existing historical task approvals remain intact; they are not new ADR activation
-proof. Synthetic accepted documents exercise only the pure design resolver.
+  ```text
+  I approve ADR-L-0040 lifecycle governance and activation at reviewed commit <40-character-reviewed-commit>.
+  ```
+
+The owner must post that authorization themselves. Codex or another automated
+agent must not manufacture it, impersonate the owner, or post a proxy approval.
+The comment author must be a human account in PROJECT.yaml's admitted
+`required_approvers` policy. Comment identity, repository, PR #187 association and
+membership of the reviewed commit in that PR are independently checked. REST and
+GraphQL retrieval must agree on identity, author, body and creation timestamp.
+`lastEditedAt` and `editor` must be null; changed timestamps, minimized comments,
+known GitHub-app/bot origins or unavailable edit-history proof fail closed.
+This also rejects same-second edits that `updated_at` alone cannot establish.
+
+Both paths independently compare the entire reviewed ADR, precedence map,
+classification, specification and schema bytes. An acceptance commit may alter
+only status and paired approval actor/date, with date matching the actual evidence
+event. Any normative change requires fresh human authorization. No trusted local
+flag, environment override or synthetic fixture can authorize activation.
+
+The read-only checker preserves `--reviewed-revision` / `--approval-review-url`
+for independent reviews. A future canonical acceptance must add the closed file
+`adrs/migrations/semantic-contract-lifecycle-acceptance.json`, with this ADR's UUID,
+the exact reviewed revision, and exactly one evidence branch:
+
+- `approval_review_url` for the existing independent APPROVED review; or
+- `owner_comment` with actual integer `id`, `author_login`, exact `created_at`,
+  `source_url` and SHA-256 `body_digest` over the exact UTF-8 API comment body.
+
+The reference is a locator and commitment, never self-certified approval. No such
+file or approval is created during this cleanup. Every canonical accepted governance
+qualification retrieves provider evidence again. Missing, forged, edited, stale or
+unsupported evidence fails CI. Synthetic accepted fixtures remain tests and never
+activate canonical governance. Preserve access to the exact reviewed Git object.
+Proposed status remains inactive regardless of any supplied reference.
+
+An owner comment qualifies architectural authorization only. It is **not** a
+GitHub APPROVED code review, does not increase formal approval counts, does not
+satisfy independently required reviews, and cannot bypass branch protection,
+mandatory checks or separate merge authorization. The checker reports the evidence
+kind and `github_approved_review: false` for this path. The independent review path
+retains its actual APPROVED state and non-author constraint. Existing historical
+approval records remain intact.
 
 ## External promotion attestation specification
 

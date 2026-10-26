@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 0bee6cc6e59050825d38f6dcdd5f8d846e7d570cb305414e39e1b53185f1b62a
-rendered_hash: 7f851f27c1f6d2d6781d9f32f222b6a00a49fa67e65747020be697a4e4756a49
+source_hash: 9c14c73e088b61b40c66b791fcc297bbe0030630e4c4752ae356c5f9dfd86dee
+rendered_hash: 51345542f1bfc84dd87ea95dec752003c6d8a589ba4d6d238afc5dd62c4262d8
 -->
 
 # ADR-L-0040: Enforceable Semantic Contract Candidate and Promotion Lifecycle
@@ -134,18 +134,41 @@ approval state, repository, reviewed commit and unchanged reviewed policy. Only
 status plus paired approved_by/approved_date may differ for acceptance; changes to
 notes, rationale, map or evidence require a new review. Self-declared verified flags,
 assistant proxy comments and synthetic accepted fixtures are not acceptance proof.
-A GitHub APPROVED review must explicitly authorize ADR-L-0040 lifecycle governance
-and activation; a dismissed review is invalid. A future acceptance commit records
-only an external review locator and reviewed Git revision in the closed
-adrs/migrations/semantic-contract-lifecycle-acceptance.json reference. The pointer
-is not approval proof. Permanent PR Feedback MUST independently retrieve and verify
-live evidence for a canonical accepted ADR; it MUST fail for a missing, forged or
-unqualified reference. Tests MUST NOT substitute an expected rejection of invalid
-accepted metadata for successful verification of real canonical acceptance. A separately implemented qualified
-protected human gate may supply equivalent evidence in a future checkpoint.
-The current repository owner cannot approve their own PR through an ordinary PR
-review. If no qualifying approval mechanism exists, acceptance remains blocked;
-that does not prevent reviewing this proposed design. Never fabricate evidence.
+Architectural authorization may use either an independent GitHub APPROVED review
+from an authorized human non-author, or an authorized human's actual unedited
+ordinary PR comment on PR #187. Retain the independent review's APPROVED state,
+exact commit_id, explicit lifecycle statement and non-author checks. For the owner
+comment require the exact statement: I approve ADR-L-0040 lifecycle governance and
+activation at reviewed commit <complete lowercase 40-character Git SHA>.
+The owner MUST post their own real authorization; Codex or another automated agent
+MUST NOT manufacture it or assert a proxy approval. The comment author may be the
+PR author but MUST be a human account in the admitted required_approvers policy.
+
+Retrieve the real comment through authenticated GitHub REST and GraphQL APIs on
+every canonical accepted qualification. Bind its exact repository and PR #187,
+actual comment identity, creation timestamp, author, source URL, exact UTF-8 body
+digest and explicit reviewed revision; verify that revision belongs to the PR.
+Reject bots, known app-origin comments, unauthorized actors, unsupported locations,
+missing provider proof, mismatched/stale content, forged references and edited
+comments, including same-second edits. Require unedited GraphQL history as well
+as consistent REST/GraphQL identity, body and timestamps. Compare reviewed ADR,
+map, classification, specification and schema content independently; only the
+status and paired approval metadata transition is permitted without new approval.
+
+A future acceptance commit records an external locator in the closed
+adrs/migrations/semantic-contract-lifecycle-acceptance.json reference: either the
+existing approval_review_url branch or owner_comment with actual id, author_login,
+created_at, source_url and body_digest. The pointer is not proof. Permanent PR
+Feedback MUST verify live evidence successfully for a canonical accepted ADR and
+fail for missing, forged or unqualified evidence; an expected rejection is not
+successful verification of canonical acceptance. Synthetic fixtures never activate
+real repository governance. Proposed status remains inactive.
+
+An owner comment establishes architectural authorization only. It MUST NOT be
+represented as a GitHub APPROVED review or satisfy independent branch-protection
+review requirements. Report the evidence kind separately; all required checks,
+formal code reviews where independently required, and merge authorization remain
+separate gates. No acceptance evidence is created in this proposed cleanup.
 
 **Alternatives Considered**
 
@@ -291,9 +314,9 @@ lifecycle, persistence, admission or promotion capability is introduced here.
 Qualified companion content (exact UTF-8 SHA-256; no enclosing ADR hash cycle):
 adrs/migrations/semantic-contract-lifecycle-precedence.yaml sha256:b3506f6b3d0ce3481f8499eeed239f3849e560a79c76024df4897e6b1e52edd5
 adrs/migrations/semantic-contract-lifecycle-classification.json sha256:835f83676f3fc2023e7f057661d9e8717b1d432f1b04a77d2ea81558e9921f86
-docs/contributors/semantic-contract-lifecycle.md sha256:56b8c445569cf674a7103e7bf29a028f3d6d7064ec5d09b4bc05610f98e54f2d
+docs/contributors/semantic-contract-lifecycle.md sha256:d7a1c4b98a60d6b771c3f32af78d41cb565c426f2ec260f441e7f4f1e38e6612
 scripts/schemas/authority-promotion-attestation.schema.json sha256:d9624d2f07e464809c2a079dd950410608c69f5867a31affa1ccc49acd7dec3b
-scripts/schemas/governance-acceptance-reference.schema.json sha256:8d399428af56cf87a11972b90f05ba9192e1ae2bd78be4e99e02d86760e8bdef
+scripts/schemas/governance-acceptance-reference.schema.json sha256:d3eab0b1893be0162c222f280b8f4c84b9bcc88795e07b9c0c88790093639891
 scripts/schemas/lifecycle-precedence.schema.json sha256:f116fe585d44c895b4133813a07cd7674f28117cbed0554d6ca9b0b04c019da2
 scripts/schemas/packaged-authority-inventory.schema.json sha256:0b502d74d3b4c1b5f4481842531502bee1b09f0934c69484639c83b02a2c7cb2
 

@@ -668,3 +668,286 @@ def test_acceptance_reference_is_not_self_certified(tmp_path, mutation):
         path.write_bytes(content.encode())
     with pytest.raises(design.DesignError):
         design.acceptance_reference(tmp_path, proposed()["id"])
+
+
+def owner_comment_fixture(monkeypatch, tmp_path):
+    """Synthetic transport responses only; no real comment or acceptance is written."""
+    revision, _, _, request, accepted, before = review_fixture(monkeypatch, tmp_path)
+    request["user"]["login"] = "fixture-human"  # owner/PR author can authorize architecture
+    request["number"] = 187
+    request["html_url"] = f"https://github.com/{design.REPOSITORY}/pull/187"
+    comment_id = 6406500216  # exercise GitHub's 64-bit fullDatabaseId, not databaseId
+    url = request["html_url"] + f"#issuecomment-{comment_id}"
+    body = (
+        f"I approve ADR-L-0040 lifecycle governance and activation at reviewed commit {revision}."
+    )
+    comment = {
+        "id": comment_id,
+        "author_login": "fixture-human",
+        "created_at": "2026-10-26T00:00:00Z",
+        "source_url": url,
+        "body_digest": design.digest(body.encode()),
+    }
+    record = {
+        "id": comment_id,
+        "node_id": "IC_fixture",
+        "html_url": url,
+        "url": f"https://api.github.com/repos/{design.REPOSITORY}/issues/comments/{comment_id}",
+        "issue_url": f"https://api.github.com/repos/{design.REPOSITORY}/issues/187",
+        "user": {"login": "fixture-human", "type": "User"},
+        "performed_via_github_app": None,
+        "body": body,
+        "created_at": comment["created_at"],
+        "updated_at": comment["created_at"],
+    }
+    node = {
+        "__typename": "IssueComment",
+        "id": "IC_fixture",
+        "fullDatabaseId": str(comment_id),
+        "url": url,
+        "createdAt": comment["created_at"],
+        "updatedAt": comment["created_at"],
+        "lastEditedAt": None,
+        "editor": None,
+        "isMinimized": False,
+        "body": body,
+        "author": {"login": "fixture-human", "__typename": "User"},
+    }
+    calls = []
+    commits = [[{"sha": revision}]]
+
+    def api(args, **kwargs):
+        assert args[:4] == ["gh", "api", "--hostname", "github.com"]
+        calls.append(list(args))
+        if "graphql" in args:
+            assert any(a.startswith("query=query(") and "lastEditedAt" in a for a in args)
+            return json.dumps({"data": {"node": node}}).encode()
+        if "/commits?" in args[-1]:
+            return json.dumps(commits).encode()
+        if "/issues/comments/" in args[-1]:
+            return json.dumps(record).encode()
+        return json.dumps(request).encode()
+
+    monkeypatch.setattr(design.subprocess, "check_output", api)
+    return {
+        "revision": revision,
+        "comment": comment,
+        "record": record,
+        "node": node,
+        "request": request,
+        "accepted": accepted,
+        "before": before,
+        "calls": calls,
+        "commits": commits,
+    }
+
+
+def test_authenticated_owner_comment_is_architectural_not_github_review_approval(
+    monkeypatch, tmp_path
+):
+    fixture = owner_comment_fixture(monkeypatch, tmp_path)
+    proof = design.verify_live_owner_comment(ROOT, fixture["revision"], fixture["comment"])
+    assert proof["actor"] == fixture["request"]["user"]["login"]
+    assert proof["evidence_kind"] == "authorized_pr_comment"
+    assert proof["github_approved_review"] is False
+    assert proof["comment_id"] == fixture["record"]["id"]
+    assert proof["approved_at"] == fixture["record"]["created_at"]
+    assert proof["source_url"] == fixture["record"]["html_url"]
+    assert len(fixture["calls"]) == 4
+    # Every qualification retrieves actual provider evidence again, never a cached flag.
+    assert design.verify_live_owner_comment(ROOT, fixture["revision"], fixture["comment"]) == proof
+    assert len(fixture["calls"]) == 8
+    with pytest.raises(design.DesignError, match="exact GitHub review URL"):
+        design.verify_live_acceptance(ROOT, fixture["revision"], fixture["comment"]["source_url"])
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "bot",
+        "app",
+        "unauthorized",
+        "wrong_author",
+        "wrong_commit",
+        "short_commit",
+        "nonhex_commit",
+        "wrong_repository",
+        "wrong_pr",
+        "absent_pr_commit",
+        "wrong_api_origin",
+        "wrong_comment_id",
+        "wrong_html_url",
+        "edited_rest",
+        "edited_same_second",
+        "missing_edit_proof",
+        "wrong_graphql_type",
+        "wrong_graphql_id",
+        "wrong_graphql_body",
+        "wrong_graphql_author",
+        "wrong_graphql_time",
+        "minimized",
+        "wrong_digest",
+        "retimed_reference",
+        "proxy_statement",
+        "wrong_scope",
+        "semantic_change",
+        "metadata",
+        "date",
+    ],
+)
+def test_owner_comment_forgery_edits_and_stale_content_fail(monkeypatch, tmp_path, mutation):
+    f = owner_comment_fixture(monkeypatch, tmp_path)
+    revision = f["revision"]
+    c, r, n = f["comment"], f["record"], f["node"]
+    if mutation == "bot":
+        r["user"]["type"] = "Bot"
+    elif mutation == "app":
+        r["performed_via_github_app"] = {"slug": "automated-agent"}
+    elif mutation == "unauthorized":
+        r["user"]["login"] = c["author_login"] = "intruder"
+        n["author"]["login"] = "intruder"
+    elif mutation == "wrong_author":
+        c["author_login"] = "different-owner"
+    elif mutation == "wrong_commit":
+        revision = "b" * 40
+    elif mutation == "short_commit":
+        revision = "a" * 39
+    elif mutation == "nonhex_commit":
+        revision = "x" * 40
+    elif mutation == "wrong_repository":
+        c["source_url"] = c["source_url"].replace("adr-architecture-kit", "other-repo")
+    elif mutation == "wrong_pr":
+        r["issue_url"] = r["issue_url"].replace("/187", "/188")
+    elif mutation == "absent_pr_commit":
+        f["commits"][0][0]["sha"] = "b" * 40
+    elif mutation == "wrong_api_origin":
+        r["url"] = "https://api.github.com/repos/other/repo/issues/comments/1"
+    elif mutation == "wrong_comment_id":
+        r["id"] += 1
+    elif mutation == "wrong_html_url":
+        r["html_url"] = r["html_url"].replace("/187", "/188")
+    elif mutation == "edited_rest":
+        r["updated_at"] = "2026-10-26T00:00:01Z"
+    elif mutation == "edited_same_second":
+        n["lastEditedAt"] = r["created_at"]
+        n["editor"] = {"login": "fixture-human"}
+    elif mutation == "missing_edit_proof":
+        n.pop("lastEditedAt")
+    elif mutation == "wrong_graphql_type":
+        n["__typename"] = "PullRequestReview"
+    elif mutation == "wrong_graphql_id":
+        n["fullDatabaseId"] = "123"
+    elif mutation == "wrong_graphql_body":
+        n["body"] += "changed"
+    elif mutation == "wrong_graphql_author":
+        n["author"]["login"] = "different-human"
+    elif mutation == "wrong_graphql_time":
+        n["createdAt"] = "2026-10-26T00:00:01Z"
+    elif mutation == "minimized":
+        n["isMinimized"] = True
+    elif mutation == "wrong_digest":
+        c["body_digest"] = "sha256:" + "0" * 64
+    elif mutation == "retimed_reference":
+        c["created_at"] = "2026-10-26T00:00:01Z"
+    elif mutation == "proxy_statement":
+        r["body"] = "Codex approves on behalf of the owner. " + r["body"]
+    elif mutation == "wrong_scope":
+        f["request"]["base"]["repo"]["full_name"] = "other/repository"
+    elif mutation == "semantic_change":
+        f["accepted"]["decisions"][0]["rationale"] += "Unreviewed policy."
+    elif mutation == "metadata":
+        f["accepted"]["governance"]["approved_by"] = "assistant"
+    elif mutation == "date":
+        f["accepted"]["governance"]["approved_date"] = "2026-10-26T00:00:01Z"
+    with pytest.raises(design.DesignError):
+        design.verify_live_owner_comment(ROOT, revision, c)
+
+
+def test_synthetic_unretrievable_comment_cannot_become_approval(monkeypatch, tmp_path):
+    f = owner_comment_fixture(monkeypatch, tmp_path)
+
+    def absent(*args, **kwargs):
+        raise subprocess.CalledProcessError(1, args[0], stderr=b"HTTP 404")
+
+    monkeypatch.setattr(design.subprocess, "check_output", absent)
+    with pytest.raises(subprocess.CalledProcessError):
+        design.verify_live_owner_comment(ROOT, f["revision"], f["comment"])
+
+
+def test_owner_comment_cannot_cover_changed_companion_bytes(monkeypatch, tmp_path):
+    f = owner_comment_fixture(monkeypatch, tmp_path)
+    before = (ROOT / design.MAP_PATH).read_bytes()
+    original_git = design._git
+    read_bytes = Path.read_bytes
+
+    def git(root, revision, path):
+        return before if path == design.MAP_PATH else original_git(root, revision, path)
+
+    def changed(path):
+        return (
+            before + b"# changed after authorization\n"
+            if path == ROOT / design.MAP_PATH
+            else read_bytes(path)
+        )
+
+    monkeypatch.setattr(design, "_git", git)
+    monkeypatch.setattr(Path, "read_bytes", changed)
+    with pytest.raises(design.DesignError, match="reviewed policy changed"):
+        design.verify_live_owner_comment(ROOT, f["revision"], f["comment"])
+
+
+def test_closed_comment_reference_records_provider_identity_without_local_trust(tmp_path):
+    comment = {
+        "id": 6406500216,
+        "author_login": "fixture-human",
+        "created_at": "2026-10-26T00:00:00Z",
+        "source_url": f"https://github.com/{design.REPOSITORY}/pull/187#issuecomment-6406500216",
+        "body_digest": "sha256:" + "0" * 64,
+    }
+    reference = {
+        "schema_version": "1.0",
+        "kind": "canonical-governance-acceptance-reference",
+        "governing_adr_id": proposed()["id"],
+        "reviewed_revision": "a" * 40,
+        "owner_comment": comment,
+    }
+    path = tmp_path / design.ACCEPTANCE_PATH
+    path.parent.mkdir(parents=True)
+    path.write_bytes(json.dumps(reference).encode())
+    assert design.acceptance_reference(tmp_path, proposed()["id"]) == reference
+    # The reference cannot combine code-review and architectural-comment evidence.
+    reference["approval_review_url"] = (
+        f"https://github.com/{design.REPOSITORY}/pull/187#pullrequestreview-123"
+    )
+    path.write_bytes(json.dumps(reference).encode())
+    with pytest.raises(design.DesignError):
+        design.acceptance_reference(tmp_path, proposed()["id"])
+    reference.pop("approval_review_url")
+    reference["owner_comment"]["verified"] = True
+    path.write_bytes(json.dumps(reference).encode())
+    with pytest.raises(design.DesignError):
+        design.acceptance_reference(tmp_path, proposed()["id"])
+
+
+@pytest.mark.parametrize("evidence_kind", ["review", "owner_comment"])
+def test_canonical_dispatch_retrieves_either_real_provider_path_in_transport_fixture(
+    monkeypatch, tmp_path, evidence_kind
+):
+    # Simulated provider only. The actual canonical ADR is never modified/accepted.
+    if evidence_kind == "owner_comment":
+        f = owner_comment_fixture(monkeypatch, tmp_path)
+        reference = {"reviewed_revision": f["revision"], "owner_comment": f["comment"]}
+    else:
+        revision, url, *_ = review_fixture(monkeypatch, tmp_path)
+        reference = {"reviewed_revision": revision, "approval_review_url": url}
+    monkeypatch.setattr(design, "acceptance_reference", lambda *args: reference)
+    result = design.qualify_repository()
+    proof = result["acceptance"]
+    assert proof["evidence_kind"] == (
+        "authorized_pr_comment" if evidence_kind == "owner_comment" else "approved_review"
+    )
+    assert proof["github_approved_review"] is (evidence_kind == "review")
+    # A simulated result does not change canonical governance or persist a receipt.
+    canonical = yaml.safe_load((ROOT / design.ADR_PATH).read_text(encoding="utf-8"))
+    if canonical["status"] == "proposed":
+        assert "governance" not in canonical

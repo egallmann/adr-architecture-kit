@@ -29,6 +29,7 @@ SCHEMA_NAMES = (
     "lifecycle-precedence",
     "packaged-authority-inventory",
     "authority-promotion-attestation",
+    "governance-acceptance-reference",
 )
 COMPANIONS = (
     MAP_PATH,
@@ -36,6 +37,7 @@ COMPANIONS = (
     SPEC_PATH,
     *(f"scripts/schemas/{name}.schema.json" for name in SCHEMA_NAMES),
 )
+ACCEPTANCE_PATH = "adrs/migrations/semantic-contract-lifecycle-acceptance.json"
 REPOSITORY = "egallmann/adr-architecture-kit"
 SCOPE = {
     "architecture-interpretation": {"1.2", "1.3", "1.4", "1.5"},
@@ -82,7 +84,10 @@ def qualify_precedence(
     require(mapping["governing_adr_id"] == document["id"], "governing ADR identity")
     require(document["alias_id"] == "ADR-L-0040", "governing alias")
     members: dict[str, tuple[dict[str, Any], dict[str, Any]]] = {}
+    adr_ids: set[str] = set()
     for adr in documents:
+        require(adr["id"] not in adr_ids, "ambiguous canonical ADR")
+        adr_ids.add(adr["id"])
         for field in ("decisions", "invariants"):
             for member in adr.get(field, []):
                 require(member["id"] not in members, "ambiguous canonical member")
@@ -453,6 +458,16 @@ def verify_live_acceptance(root: Path, revision: str, review_url: str) -> dict[s
     return {"actor": actor, "reviewed_revision": revision, "review_url": review_url}
 
 
+def acceptance_reference(root: Path, governing_id: str) -> tuple[str, str]:
+    """An external review locator is a pointer, NEVER self-certified approval."""
+    path = root / ACCEPTANCE_PATH
+    require(path.is_file(), "independent acceptance reference required")
+    reference = read_json(path.read_bytes())
+    validate_shape(reference, "governance-acceptance-reference")
+    require(reference["governing_adr_id"] == governing_id, "acceptance ADR identity")
+    return str(reference["reviewed_revision"]), str(reference["approval_review_url"])
+
+
 def qualify_repository(
     root: Path = ROOT, revision: str | None = None, review: str | None = None
 ) -> dict[str, Any]:
@@ -470,8 +485,11 @@ def qualify_repository(
         require("governance" not in document, "fabricated proposed acceptance metadata")
         require(revision is None and review is None, "proposed ADR cannot activate")
     elif document["status"] == "accepted":
+        if revision is None and review is None:
+            revision, review = acceptance_reference(root, document["id"])
         require(
-            revision is not None and review is not None, "independent acceptance evidence required"
+            revision is not None and review is not None,
+            "complete independent acceptance evidence required",
         )
         assert revision is not None and review is not None
         result["acceptance"] = verify_live_acceptance(root, revision, review)

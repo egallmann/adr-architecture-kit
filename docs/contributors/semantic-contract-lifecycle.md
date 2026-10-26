@@ -82,6 +82,14 @@ actor/date, with date matching the actual review. Any architecture/policy change
 requires another review. No local verified flag, environment override or synthetic
 fixture can authorize activation. The read-only checker accepts exact
 `--reviewed-revision` and `--approval-review-url`; it writes no acceptance evidence.
+A future acceptance commit must also add the closed external-reference file
+`adrs/migrations/semantic-contract-lifecycle-acceptance.json`, naming only this ADR's
+UUID, exact reviewed revision and real approval-review URL. That locator is not
+proof: permanent PR Feedback independently retrieves and verifies the actual review.
+An accepted canonical ADR without valid live evidence fails CI; synthetic accepted
+fixtures remain restricted to tests. PR Feedback has read-only API permissions for
+this verification. Preserve access to the exact reviewed Git object. No acceptance
+reference is fabricated or required for proposed status.
 
 The currently configured sole approver is the repository owner, who cannot approve
 their own PR by ordinary GitHub review. A real independent-author PR/review or a

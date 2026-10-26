@@ -36,15 +36,17 @@ def mapping():
 
 def test_repository_design_is_bound_and_authenticates_before_activation():
     document = proposed()
+    # Real canonical acceptance must actually verify, not merely demonstrate that
+    # an invalid accepted state would raise an error. No synthetic proof bypass.
+    canonical_result = design.qualify_repository()
     if document["status"] == "proposed":
-        result = design.qualify_repository()
+        result = canonical_result
         assert result["activation"] == "inactive_without_independent_human_evidence"
         assert result["effective_replacements"] == []
         assert "governance" not in document
     else:
-        # Later genuine acceptance is permitted; local metadata alone never proves it.
-        with pytest.raises(design.DesignError, match="independent acceptance"):
-            design.qualify_repository()
+        assert canonical_result["activation"] == "verified_exact_mapped_scope_only"
+        assert canonical_result["acceptance"]["reviewed_revision"]
     result = design.qualify_precedence(document, mapping(), documents())
     assert result["mapped_clauses"] == 29
     assert result["mapped_members"] == 17
@@ -620,3 +622,49 @@ def test_only_explicit_scope_matches_and_released_context_is_not_replaced():
         design.matching_design_clauses(
             *args, "architecture-interpretation", "1.5", "natural-language-override"
         )
+
+
+def test_canonical_accepted_state_requires_reference_and_live_proof(monkeypatch):
+    before = proposed()
+    synthetic = copy.deepcopy(before)
+    synthetic["status"] = "accepted"
+    synthetic["governance"] = {
+        "approved_by": "fixture-human",
+        "approved_date": "2026-10-26T00:00:00Z",
+    }
+    original_read = design.read
+
+    def read(path):
+        return synthetic if path == ROOT / design.ADR_PATH else original_read(path)
+
+    def missing(*args):
+        raise design.DesignError("independent acceptance reference required")
+
+    monkeypatch.setattr(design, "read", read)
+    monkeypatch.setattr(design, "acceptance_reference", missing)
+    with pytest.raises(design.DesignError, match="independent acceptance reference"):
+        design.qualify_repository()
+
+
+@pytest.mark.parametrize("mutation", ["missing", "self_verified", "wrong_adr", "duplicate_member"])
+def test_acceptance_reference_is_not_self_certified(tmp_path, mutation):
+    path = tmp_path / design.ACCEPTANCE_PATH
+    reference = {
+        "schema_version": "1.0",
+        "kind": "canonical-governance-acceptance-reference",
+        "governing_adr_id": proposed()["id"],
+        "reviewed_revision": "a" * 40,
+        "approval_review_url": f"https://github.com/{design.REPOSITORY}/pull/999#pullrequestreview-123",
+    }
+    if mutation != "missing":
+        path.parent.mkdir(parents=True)
+        if mutation == "self_verified":
+            reference["verified"] = True
+        if mutation == "wrong_adr":
+            reference["governing_adr_id"] = proposed()["decisions"][0]["id"]
+        content = json.dumps(reference)
+        if mutation == "duplicate_member":
+            content = content[:-1] + ', "reviewed_revision": "' + "b" * 40 + '"}'
+        path.write_bytes(content.encode())
+    with pytest.raises(design.DesignError):
+        design.acceptance_reference(tmp_path, proposed()["id"])

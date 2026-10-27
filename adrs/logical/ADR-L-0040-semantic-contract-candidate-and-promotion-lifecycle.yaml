@@ -3,7 +3,7 @@ adr_type: logical
 id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
 alias_name: semantic-contract-candidate-and-promotion-lifecycle
 title: Enforceable Semantic Contract Candidate and Promotion Lifecycle
-status: proposed
+status: accepted
 created_date: '2026-10-26'
 authors:
 - erik.gallmann
@@ -108,6 +108,21 @@ decisions:
     composition, exact dependency qualification, whole-ledger equality, outcomes or
     fail-closed requirements. DEC-0271 remains unchanged. Earlier approved source and
     approval records are never edited or erased.
+
+    Initial-adoption transition: this ADR's own acceptance uses the preceding
+    conversational ADR acceptance procedure, not the new evidence gate it introduces.
+    The human explicitly approved reviewed commit
+    b3c6c7ffcf9ccf9e2992a35d6b3ff8b2b7f9e78d and then directed continuation after
+    the circular requirement was identified. Record those actual messages and their
+    source identities in semantic-contract-lifecycle-bootstrap.json; do not fabricate
+    a GitHub comment or APPROVED review. This single historical adoption is qualified
+    against the exact approved architecture, unchanged map/classification/schemas and
+    only the explicit transition/lifecycle edits. It is not externally authenticated
+    GitHub evidence, a general metadata bypass, authority promotion, or a waiver for
+    later decisions, substantive amendments or release gates. The review/comment paths
+    below remain prospective requirements; they cannot retroactively govern their own
+    first adoption. Every later qualification of this initial accepted record must
+    verify the same bounded historical authorization and exact approved content.
 
     Proposed status is INACTIVE. Accepted metadata alone cannot activate the map.
     Activation requires independently retrieved, appropriately authorized human evidence
@@ -291,7 +306,7 @@ decisions:
     Qualified companion content (exact UTF-8 SHA-256; no enclosing ADR hash cycle):
     adrs/migrations/semantic-contract-lifecycle-precedence.yaml sha256:b3506f6b3d0ce3481f8499eeed239f3849e560a79c76024df4897e6b1e52edd5
     adrs/migrations/semantic-contract-lifecycle-classification.json sha256:835f83676f3fc2023e7f057661d9e8717b1d432f1b04a77d2ea81558e9921f86
-    docs/contributors/semantic-contract-lifecycle.md sha256:d7a1c4b98a60d6b771c3f32af78d41cb565c426f2ec260f441e7f4f1e38e6612
+    docs/contributors/semantic-contract-lifecycle.md sha256:19d7d6701aadf06df18af2544f4d01bcbe4560590f844d18efd3b127975ccea4
     scripts/schemas/authority-promotion-attestation.schema.json sha256:d9624d2f07e464809c2a079dd950410608c69f5867a31affa1ccc49acd7dec3b
     scripts/schemas/governance-acceptance-reference.schema.json sha256:d3eab0b1893be0162c222f280b8f4c84b9bcc88795e07b9c0c88790093639891
     scripts/schemas/lifecycle-precedence.schema.json sha256:f116fe585d44c895b4133813a07cd7674f28117cbed0554d6ca9b0b04c019da2
@@ -371,10 +386,12 @@ invariants:
   - 01a178e3-6103-76ba-a5b3-4f400c793547
   alias_id: INV-0320
 notes: |-
-  Proposed for explicit human architectural review only. No acceptance metadata.
-  The exact precedence map and released-compatibility classification are normative
-  companions selected below by content digest. Generated projections are derived.
-  PR #186 remains open and untouched; its reviewed source and validation evidence
-  are useful candidate input, not an immutable release or approval of this policy.
-  No operational publisher enforcement, consolidation or runtime work occurs here.
+  Accepted under the preceding ADR acceptance procedure following explicit human approval of b3c6c7ffcf9ccf9e2992a35d6b3ff8b2b7f9e78d.
+  Human approval: I approve ADR-L-0040 lifecycle governance and activation at reviewed commit b3c6c7ffcf9ccf9e2992a35d6b3ff8b2b7f9e78d.
+  Human continuation: I provided the approval. Resume
+  Source: codex://threads/01a122c8-8fd6-7d92-a345-a62bc081a181; approval message 01a17992-0666-75d3-9095-f0d9c4ea7730; continuation message 01a179a9-8427-7700-8c0d-568af9705917.
+  This is authentic conversation authorization recorded under the prior procedure, not a GitHub APPROVED review, owner comment or claim of external-provider verification. The one-time bootstrap correction preserves all six decisions, six invariants, identities, the 29-clause map, compatibility classification and promotion-attestation design. No contract consolidation, runtime capability or operational publisher gate is enabled. PR #186 and historical human approval records remain unchanged.
 alias_id: ADR-L-0040
+governance:
+  approved_by: egallmann
+  approved_date: '2026-10-26T18:56:15Z'

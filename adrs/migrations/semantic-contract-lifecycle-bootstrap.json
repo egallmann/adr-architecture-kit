@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "kind": "adr-l0040-initial-acceptance-existing-procedure",
+  "governing_adr_id": "01a178e3-6104-7299-8ae7-bcb172f45ff9",
+  "reviewed_revision": "b3c6c7ffcf9ccf9e2992a35d6b3ff8b2b7f9e78d",
+  "approved_by": "egallmann",
+  "approved_date": "2026-10-26T18:56:15Z",
+  "procedure": "preexisting_conversational_adr_acceptance_initial_adoption_only",
+  "source_thread": "codex://threads/01a122c8-8fd6-7d92-a345-a62bc081a181",
+  "approval": {
+    "turn_id": "01a17992-05e6-7070-8412-ba13d2fb04d7",
+    "message_id": "01a17992-0666-75d3-9095-f0d9c4ea7730",
+    "turn_started_at": 1793040975,
+    "text": "I approve ADR-L-0040 lifecycle governance and activation at reviewed commit b3c6c7ffcf9ccf9e2992a35d6b3ff8b2b7f9e78d."
+  },
+  "resume": {
+    "turn_id": "01a179a9-83c0-7193-bde0-83ce6c980397",
+    "message_id": "01a179a9-8427-7700-8c0d-568af9705917",
+    "turn_started_at": 1793042514,
+    "text_excerpt": "I provided the approval. Resume"
+  },
+  "github_approved_review": false,
+  "github_comment_created": false,
+  "external_provider_verification_claimed": false
+}

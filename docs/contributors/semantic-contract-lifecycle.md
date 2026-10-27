@@ -1,7 +1,7 @@
 # Semantic contract candidate and promotion lifecycle
 
-This is the specification proposed by **ADR-L-0040**. Its replacement policy is
-inactive until independently verified human acceptance. The checker validates the
+This is the specification accepted by **ADR-L-0040**. Initial adoption follows
+the preceding procedure recorded below; subsequent evidence rules are prospective. The checker validates the
 declared map and evidence; it does not discover or resolve arbitrary prose conflicts.
 
 ## Release evidence and compatibility classification
@@ -70,6 +70,23 @@ preimage/canonicalization are unchanged.
 `python scripts/check_semantic_contract_lifecycle_design.py` validates proposed
 design only. It returns zero effective replacements. Proposed acceptance metadata
 is rejected. Accepted status without independent evidence is rejected.
+
+### Initial adoption under the preceding procedure
+
+Initial-adoption transition: this ADR's own acceptance uses the preceding
+conversational ADR acceptance procedure, not the new evidence gate it introduces.
+The human explicitly approved reviewed commit
+b3c6c7ffcf9ccf9e2992a35d6b3ff8b2b7f9e78d and then directed continuation after
+the circular requirement was identified. Record those actual messages and their
+source identities in semantic-contract-lifecycle-bootstrap.json; do not fabricate
+a GitHub comment or APPROVED review. This single historical adoption is qualified
+against the exact approved architecture, unchanged map/classification/schemas and
+only the explicit transition/lifecycle edits. It is not externally authenticated
+GitHub evidence, a general metadata bypass, authority promotion, or a waiver for
+later decisions, substantive amendments or release gates. The review/comment paths
+below remain prospective requirements; they cannot retroactively govern their own
+first adoption. Every later qualification of this initial accepted record must
+verify the same bounded historical authorization and exact approved content.
 
 Two authenticated architectural-authorization paths are supported:
 

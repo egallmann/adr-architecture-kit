@@ -45,7 +45,10 @@ def test_repository_design_is_bound_and_authenticates_before_activation():
         assert result["effective_replacements"] == []
         assert "governance" not in document
     else:
-        assert canonical_result["activation"] == "verified_exact_mapped_scope_only"
+        assert canonical_result["activation"] in {
+            "verified_exact_mapped_scope_only",
+            "accepted_initial_adoption_exact_mapped_scope_only",
+        }
         assert canonical_result["acceptance"]["reviewed_revision"]
     result = design.qualify_precedence(document, mapping(), documents())
     assert result["mapped_clauses"] == 29
@@ -143,6 +146,7 @@ def test_synthetic_accepted_fixture_cannot_activate_real_governance():
 
 def review_fixture(monkeypatch, tmp_path):
     """Mock transport only; never writes canonical accepted content or approval."""
+    monkeypatch.setattr(design, "BOOTSTRAP_PATH", str(tmp_path / "absent-initial-acceptance.json"))
     revision = "a" * 40
     url = f"https://github.com/{design.REPOSITORY}/pull/999#pullrequestreview-123"
     before = proposed()
@@ -624,7 +628,8 @@ def test_only_explicit_scope_matches_and_released_context_is_not_replaced():
         )
 
 
-def test_canonical_accepted_state_requires_reference_and_live_proof(monkeypatch):
+def test_canonical_accepted_state_requires_reference_and_live_proof(monkeypatch, tmp_path):
+    monkeypatch.setattr(design, "BOOTSTRAP_PATH", str(tmp_path / "absent-initial-acceptance.json"))
     before = proposed()
     synthetic = copy.deepcopy(before)
     synthetic["status"] = "accepted"
@@ -951,3 +956,84 @@ def test_canonical_dispatch_retrieves_either_real_provider_path_in_transport_fix
     canonical = yaml.safe_load((ROOT / design.ADR_PATH).read_text(encoding="utf-8"))
     if canonical["status"] == "proposed":
         assert "governance" not in canonical
+
+
+def test_initial_adoption_records_actual_prior_procedure_without_claiming_github_proof():
+    proof = design.verify_initial_acceptance(ROOT, proposed())
+    assert proof["actor"] == "egallmann"
+    assert proof["reviewed_revision"] == "b3c6c7ffcf9ccf9e2992a35d6b3ff8b2b7f9e78d"
+    assert proof["evidence_kind"] == "initial_acceptance_preexisting_procedure"
+    assert proof["external_provider_verified"] is False
+    assert proof["github_approved_review"] is False
+    assert proof["github_comment_created"] is False
+
+
+@pytest.mark.parametrize(
+    "field", ["approved_by", "reviewed_revision", "governing_adr_id", "approval", "source_thread"]
+)
+def test_initial_adoption_is_not_a_general_receipt_or_revision_bypass(tmp_path, monkeypatch, field):
+    original = design.read_json((ROOT / design.BOOTSTRAP_PATH).read_bytes())
+    record = copy.deepcopy(original)
+    record[field] = "forged arbitrary authority"
+    path = tmp_path / "changed-initial-record.json"
+    path.write_bytes(json.dumps(record).encode())
+    monkeypatch.setattr(design, "BOOTSTRAP_PATH", str(path))
+    with pytest.raises(design.DesignError, match="initial acceptance record changed"):
+        design.verify_initial_acceptance(ROOT, proposed())
+
+
+@pytest.mark.parametrize(
+    "mutation", ["identity", "decision", "invariant", "metadata", "transition", "notes"]
+)
+def test_initial_adoption_cannot_change_approved_architecture(mutation):
+    document = proposed()
+    if mutation == "identity":
+        document["id"] = document["decisions"][0]["id"]
+    elif mutation == "decision":
+        document["decisions"][0]["rationale"] += "Unapproved semantics."
+    elif mutation == "invariant":
+        document["invariants"][0]["statement"] += "Weakened rule."
+    elif mutation == "metadata":
+        document["governance"]["approved_by"] = "untrusted-actor"
+    elif mutation == "transition":
+        document["decisions"][1]["rationale"] = document["decisions"][1]["rationale"].replace(
+            design.BOOTSTRAP_TRANSITION, ""
+        )
+    elif mutation == "notes":
+        document["notes"] += "Fabricated approval."
+    with pytest.raises(design.DesignError):
+        design.verify_initial_acceptance(ROOT, document)
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        design.MAP_PATH,
+        design.CLASS_PATH,
+        design.SPEC_PATH,
+        "scripts/schemas/governance-acceptance-reference.schema.json",
+    ],
+)
+def test_initial_adoption_preserves_qualified_companion_bytes(monkeypatch, path):
+    original = Path.read_bytes
+
+    def changed(p):
+        data = original(p)
+        return data + b"unapproved change" if p == ROOT / path else data
+
+    monkeypatch.setattr(Path, "read_bytes", changed)
+    with pytest.raises(design.DesignError):
+        design.verify_initial_acceptance(ROOT, proposed())
+
+
+def test_proposed_state_still_cannot_activate_with_an_initial_acceptance_record(monkeypatch):
+    candidate = proposed()
+    candidate["status"] = "proposed"
+    candidate.pop("governance", None)
+    original = design.read
+    monkeypatch.setattr(
+        design, "read", lambda p: candidate if p == ROOT / design.ADR_PATH else original(p)
+    )
+    result = design.qualify_repository()
+    assert result["effective_replacements"] == []
+    assert result["activation"] == "inactive_without_independent_human_evidence"

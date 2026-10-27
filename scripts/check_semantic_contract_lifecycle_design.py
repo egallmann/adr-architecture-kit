@@ -38,6 +38,58 @@ COMPANIONS = (
     *(f"scripts/schemas/{name}.schema.json" for name in SCHEMA_NAMES),
 )
 ACCEPTANCE_PATH = "adrs/migrations/semantic-contract-lifecycle-acceptance.json"
+BOOTSTRAP_PATH = "adrs/migrations/semantic-contract-lifecycle-bootstrap.json"
+BOOTSTRAP_REVIEWED = "b3c6c7ffcf9ccf9e2992a35d6b3ff8b2b7f9e78d"
+BOOTSTRAP_ADR_ID = "01a178e3-6104-7299-8ae7-bcb172f45ff9"
+BOOTSTRAP_RECORD_DIGEST = "sha256:6f4e53e923c3a4a1e49d3f3393fba34916e83ff571fa1023f18922a5a1d24a1d"
+BOOTSTRAP_TRANSITION = """Initial-adoption transition: this ADR's own acceptance uses the preceding
+conversational ADR acceptance procedure, not the new evidence gate it introduces.
+The human explicitly approved reviewed commit
+b3c6c7ffcf9ccf9e2992a35d6b3ff8b2b7f9e78d and then directed continuation after
+the circular requirement was identified. Record those actual messages and their
+source identities in semantic-contract-lifecycle-bootstrap.json; do not fabricate
+a GitHub comment or APPROVED review. This single historical adoption is qualified
+against the exact approved architecture, unchanged map/classification/schemas and
+only the explicit transition/lifecycle edits. It is not externally authenticated
+GitHub evidence, a general metadata bypass, authority promotion, or a waiver for
+later decisions, substantive amendments or release gates. The review/comment paths
+below remain prospective requirements; they cannot retroactively govern their own
+first adoption. Every later qualification of this initial accepted record must
+verify the same bounded historical authorization and exact approved content."""
+BOOTSTRAP_SPEC_BLOCK = (
+    "### Initial adoption under the preceding procedure\n\n" + BOOTSTRAP_TRANSITION + "\n\n"
+)
+BOOTSTRAP_OLD_POSTURE = "This is the specification proposed by **ADR-L-0040**. Its replacement policy is\ninactive until independently verified human acceptance."
+BOOTSTRAP_NEW_POSTURE = "This is the specification accepted by **ADR-L-0040**. Initial adoption follows\nthe preceding procedure recorded below; subsequent evidence rules are prospective."
+
+
+def bootstrap_notes(record: dict[str, Any]) -> str:
+    return str(
+        "Accepted under the preceding ADR acceptance procedure following explicit human approval of "
+        + record["reviewed_revision"]
+        + ".\n"
+        + "Human approval: "
+        + record["approval"]["text"]
+        + "\n"
+        + "Human continuation: "
+        + record["resume"]["text_excerpt"]
+        + "\n"
+        + "Source: "
+        + record["source_thread"]
+        + "; approval message "
+        + record["approval"]["message_id"]
+        + "; continuation message "
+        + record["resume"]["message_id"]
+        + ".\n"
+        + "This is authentic conversation authorization recorded under the prior procedure, not a "
+        + "GitHub APPROVED review, owner comment or claim of external-provider verification. "
+        + "The one-time bootstrap correction preserves all six decisions, six invariants, identities, "
+        + "the 29-clause map, compatibility classification and promotion-attestation design. "
+        + "No contract consolidation, runtime capability or operational publisher gate is enabled. "
+        + "PR #186 and historical human approval records remain unchanged."
+    )
+
+
 REPOSITORY = "egallmann/adr-architecture-kit"
 SCOPE = {
     "architecture-interpretation": {"1.2", "1.3", "1.4", "1.5"},
@@ -607,6 +659,88 @@ def acceptance_reference(root: Path, governing_id: str) -> dict[str, Any]:
     return dict(reference)
 
 
+def verify_initial_acceptance(root: Path, document: dict[str, Any]) -> dict[str, Any]:
+    """Historical adoption under the preceding procedure, NOT new live-provider proof.
+
+    The immutable record contains the actual human messages retrieved in this task.
+    Its exact hash, ADR UUID and reviewed commit bind one already authorized event;
+    it cannot authorize a different decision, revision or substantive amendment.
+    """
+    raw = (root / BOOTSTRAP_PATH).read_bytes()
+    require(digest(raw) == BOOTSTRAP_RECORD_DIGEST, "initial acceptance record changed")
+    record = read_json(raw)
+    require(
+        document["id"] == record["governing_adr_id"] == BOOTSTRAP_ADR_ID,
+        "initial acceptance ADR scope",
+    )
+    require(record["reviewed_revision"] == BOOTSTRAP_REVIEWED, "initial acceptance reviewed scope")
+    require(document["status"] == "accepted", "initial acceptance status")
+    require(
+        document.get("governance")
+        == {"approved_by": record["approved_by"], "approved_date": record["approved_date"]},
+        "initial acceptance metadata",
+    )
+    project = read(root / "PROJECT.yaml")
+    require(
+        project == yaml.safe_load(_git(root, BOOTSTRAP_REVIEWED, "PROJECT.yaml")),
+        "initial acceptance authorizer policy changed",
+    )
+    require(
+        "@" + record["approved_by"] in project["integrations"]["scm"]["required_approvers"],
+        "initial acceptance actor",
+    )
+    reviewed = yaml.safe_load(_git(root, BOOTSTRAP_REVIEWED, ADR_PATH))
+    require(
+        reviewed["status"] == "proposed" and "governance" not in reviewed,
+        "initial reviewed proposal",
+    )
+    require(document["notes"] == bootstrap_notes(record), "initial acceptance source notes")
+    current = copy.deepcopy(document)
+    current["status"] = "proposed"
+    current.pop("governance")
+    current["notes"] = reviewed["notes"]
+    rationale = current["decisions"][1]["rationale"]
+    require(
+        rationale.count(BOOTSTRAP_TRANSITION + "\n\n") == 1, "initial adoption transition scope"
+    )
+    current["decisions"][1]["rationale"] = rationale.replace(BOOTSTRAP_TRANSITION + "\n\n", "", 1)
+    before_spec = _git(root, BOOTSTRAP_REVIEWED, SPEC_PATH)
+    after_spec = (root / SPEC_PATH).read_bytes()
+    text = after_spec.decode("utf-8")
+    require(
+        text.count(BOOTSTRAP_SPEC_BLOCK) == 1 and text.count(BOOTSTRAP_NEW_POSTURE) == 1,
+        "initial specification transition scope",
+    )
+    restored = (
+        text.replace(BOOTSTRAP_SPEC_BLOCK, "", 1)
+        .replace(BOOTSTRAP_NEW_POSTURE, BOOTSTRAP_OLD_POSTURE, 1)
+        .encode("utf-8")
+    )
+    require(restored == before_spec, "initial acceptance specification changed")
+    actual_binding = f"{SPEC_PATH} {digest(after_spec)}"
+    original_binding = f"{SPEC_PATH} {digest(before_spec)}"
+    bindings = current["decisions"][5]["rationale"]
+    require(bindings.count(actual_binding) == 1, "initial specification digest binding")
+    current["decisions"][5]["rationale"] = bindings.replace(actual_binding, original_binding, 1)
+    require(current == reviewed, "initial approved architecture changed")
+    for path in COMPANIONS:
+        if path != SPEC_PATH:
+            require(
+                (root / path).read_bytes() == _git(root, BOOTSTRAP_REVIEWED, path),
+                "initial approved companion changed",
+            )
+    return {
+        "actor": record["approved_by"],
+        "reviewed_revision": BOOTSTRAP_REVIEWED,
+        "evidence_kind": "initial_acceptance_preexisting_procedure",
+        "source_thread": record["source_thread"],
+        "approval_message": record["approval"]["message_id"],
+        "external_provider_verified": False,
+        "github_approved_review": False,
+        "github_comment_created": False,
+    }
+
+
 def qualify_repository(
     root: Path = ROOT, revision: str | None = None, review: str | None = None
 ) -> dict[str, Any]:
@@ -624,7 +758,9 @@ def qualify_repository(
         require("governance" not in document, "fabricated proposed acceptance metadata")
         require(revision is None and review is None, "proposed ADR cannot activate")
     elif document["status"] == "accepted":
-        if revision is None and review is None:
+        if revision is None and review is None and (root / BOOTSTRAP_PATH).is_file():
+            result["acceptance"] = verify_initial_acceptance(root, document)
+        elif revision is None and review is None:
             reference = acceptance_reference(root, document["id"])
             revision = reference["reviewed_revision"]
             if "owner_comment" in reference:
@@ -642,7 +778,11 @@ def qualify_repository(
             )
             assert revision is not None and review is not None
             result["acceptance"] = verify_live_acceptance(root, revision, review)
-        result["activation"] = "verified_exact_mapped_scope_only"
+        result["activation"] = (
+            "accepted_initial_adoption_exact_mapped_scope_only"
+            if result["acceptance"]["evidence_kind"] == "initial_acceptance_preexisting_procedure"
+            else "verified_exact_mapped_scope_only"
+        )
         result["effective_replacements"] = mapping["rules"]
     else:
         raise DesignError("unsupported governance lifecycle")

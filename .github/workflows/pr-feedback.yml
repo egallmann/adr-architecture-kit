@@ -18,6 +18,10 @@ jobs:
 
   python-semantic:
     name: Python semantic/source contracts
+    permissions:
+      contents: read
+      pull-requests: read
+      actions: read
     needs: rust-semantic-core
     runs-on: ubuntu-latest
     steps:
@@ -47,6 +51,8 @@ jobs:
       - name: Run the developer/TDD fast suite
         run: python -m pytest -m fast --durations=10
       - name: Run explicit semantic/source test collection
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: python scripts/run_pr_feedback.py
       - name: Exercise portable source/SDK compatibility harness
         run: python scripts/run_source_compat.py

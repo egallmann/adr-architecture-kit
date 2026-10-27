@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 626c27ecbbfa2106b7bb52650865aadcdbc4b9f9df521fce9b3b7a6fc1c5da87
-rendered_hash: 54dc12f9431dae7bdb62c2052094104c32728bf23b051ef1cda9cd03e6e729b1
+rendered_hash: c30511009e17f73088f1f8f353873ee7f53bdfb13c64f12b1b28e6bf977e27d5
 -->
 
 # ADR-L-0028: Normative Semantic Authority and Exact Materialization Foundation
@@ -494,6 +494,7 @@ The sequencing exception preserves repository ownership and prevents an accepted
 - [ADR-L-0030](ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.md)
 - [ADR-L-0031](ADR-L-0031-non-recursive-semantic-contract-conformance-binding.md)
 - [ADR-L-0035](ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.md)
+- [ADR-L-0040](ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.md)
 
 
 

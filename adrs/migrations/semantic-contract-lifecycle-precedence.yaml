@@ -1,0 +1,1084 @@
+schema_version: '1.0'
+kind: semantic-contract-lifecycle-precedence
+governing_adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+activation: authenticated_acceptance_only
+rules:
+- id: LC40-01
+  original:
+    adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    member_id: 01a0b75d-8a02-70e6-b59c-63de2c0d119a
+    member_alias: DEC-0240
+    field: rationale
+    anchor: |-
+      over the immutable semantic-contract
+      definition.
+    anchor_digest: sha256:995a6ba0d5b7853a116d0639e9e6208bef34369276a1179043b4ed171b34f649
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: snapshot_identity
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-02
+  original:
+    adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    member_id: 01a0b75d-8a02-70e6-b59c-63de2c0d119a
+    member_alias: DEC-0240
+    field: rationale
+    anchor: |-
+      frozen normative conformance membership remain semantic
+      identity inputs.
+    anchor_digest: sha256:8427575a134a496c53b3e121e511d5ca6f7b555f702934eeedd3f3de076d1667
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: snapshot_identity
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-03
+  original:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    member_id: 01a10888-daba-75bc-a071-d34018be0d8e
+    member_alias: DEC-0268
+    field: rationale
+    anchor: |-
+      governed by immutable Authoring
+      Construction 1.1
+    anchor_digest: sha256:21b457e5fdee6b6243b4edad941caf8770dcae84bdb4d1ef8b0759c14ccba9c5
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: candidate_version_finality
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-04
+  original:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    member_id: 01a10888-daba-75bc-a071-d3416d58355d
+    member_alias: DEC-0269
+    field: rationale
+    anchor: |-
+      MUST use the immutable Architecture Interpretation 1.2
+      successor to AI 1.1.
+    anchor_digest: sha256:4ae97f98eb145422b7541331a0a4f5aaedab3b598f42a56d3cd2881d07e34815
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+    requirement: DEC-9026
+  applicability:
+    topic: candidate_selection
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-05
+  original:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    member_id: 01a10888-daba-75bc-a071-d3416d58355d
+    member_alias: DEC-0269
+    field: rationale
+    anchor: |-
+      Authoring Construction 1.1 is the immutable successor to ACC 1.0 for
+      complete whole-result qualification.
+    anchor_digest: sha256:e92d2bde867aacb93b1d42fe1bb846f68e04c5391e76385f431ee79f90905066
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: candidate_version_finality
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-06
+  original:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    member_id: 01a1514b-805c-75ff-a7ee-e98d9d102cff
+    member_alias: DEC-0274
+    field: rationale
+    anchor: immutable ACC 1.1 precedence
+    anchor_digest: sha256:e70cdb14468c8d6ea922e85ae06a19de0db0da25e40b91a7ab0a3cee5eb2a356
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: snapshot_identity
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-07
+  original:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    member_id: 01a1514b-805c-75ff-a7ee-e98d9d102cff
+    member_alias: DEC-0274
+    field: rationale
+    anchor: |-
+      ACC 1.1 composition-bearing requests remain Unavailable under the frozen
+      ACC 1.1 gate, including authoring_construction.composition.evidence_unavailable.
+    anchor_digest: sha256:f006bbb4514b39d579853a51eea49d327f064097db7e0c8679f1aef7aa2f57c6
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: snapshot_identity
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-08
+  original:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    member_id: 01a1514b-805c-75ff-a7ee-e9913dbcd63e
+    member_alias: DEC-0278
+    field: rationale
+    anchor: under the frozen fail-closed gate
+    anchor_digest: sha256:9574a0358453a3681e408b7ea5731ee81b6edf201c86d75a60c70226e83808d3
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: snapshot_identity
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-09
+  original:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    member_id: 01a1514b-805c-75ff-a7ee-e9913dbcd63e
+    member_alias: DEC-0278
+    field: rationale
+    anchor: |-
+      ACC 1.1
+      non-composition sealed bases and ACC 1.1 composition Unavailable;
+      protocol 1.5 composition_resolution false;
+    anchor_digest: sha256:d6a3a5a5ff40e02ab7d51b100f6c728b5698ad5ae0486d5fc2c7f650eb9b57d6
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+    requirement: DEC-9026
+  applicability:
+    topic: prototype_retention
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-10
+  original:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    member_id: 01a151af-ee18-75c7-a457-6a99e97be6be
+    member_alias: DEC-0279
+    field: rationale
+    anchor: |-
+      ACC 1.0
+      and ACC 1.1 remain unchanged immutable publications.
+    anchor_digest: sha256:44caa0ab47b1e52f985090872cc635a4b61add15d9dcdb1fcedadfdac9249cb8
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: candidate_version_finality
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-11
+  original:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    member_id: 01a151af-ee18-75c7-a457-6a99e97be6be
+    member_alias: DEC-0279
+    field: rationale
+    anchor: ACC 1.0 and ACC 1.1 SCFs are unchanged;
+    anchor_digest: sha256:fb766231826b575a940e81f19cd2113a7119771aec65a35c762c84e1303b6e89
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: snapshot_identity
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-12
+  original:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    member_id: 01a151af-ee18-75c7-a457-6a99e97be6be
+    member_alias: DEC-0279
+    field: rationale
+    anchor: |-
+      a successor ACC version publishes a new table resource whose digest
+      changes the SCF; rows inside a published version NEVER change;
+    anchor_digest: sha256:ae8ca666e83f6ad87fa6bbac86ddc4c3b3e1621ed24a1415bef2a93390b68876
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: candidate_version_finality
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-13
+  original:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    member_id: 01a1514b-805d-762f-9733-a65a91055d91
+    member_alias: INV-0289
+    field: statement
+    anchor: MUST NOT amend ACC 1.0, ACC 1.1, ADC 1.1, AI 1.2, Authoring 1.7, NM 2.4, CEC 1.0, ACC 1.0
+      conformance markers including C01-C42, or semantic-core protocol 1.5.
+    anchor_digest: sha256:883f5becc8e1dd4e0b1972e769feed16a51b0a3d0ed0e44cb61219d5d1e309ea
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: snapshot_identity
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-14
+  original:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    member_id: 01a16457-a08c-76a2-8c85-0c290f9e5899
+    member_alias: DEC-9006
+    field: rationale
+    anchor: ACC 1.3 must have its own frozen conformance namespace, not rebind ACC 1.2's.
+    anchor_digest: sha256:ca3c98e5e41ef244aeea54449de637e49ae431885d8184a68cc63f1e01ad6c0f
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: snapshot_identity
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-15
+  original:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    member_id: 01a16457-a08c-76a2-8c85-0c290f9e5899
+    member_alias: DEC-9006
+    field: rationale
+    anchor: Old authority remains valid for its exact versions.
+    anchor_digest: sha256:0baa48fe9822de371ed3e188a05d66f8a9bf27b963ab8c8038c7399f6b30475e
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: candidate_version_finality
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-16
+  original:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    member_id: 01a16457-a08c-76a2-8c85-0c290f9e5899
+    member_alias: DEC-9006
+    field: rationale
+    anchor: Current SCS selection and protocol 1.5 are unchanged;
+    anchor_digest: sha256:9e2a3e2634424a991c9a95db5779a4cae54b04601fbbd7fa790ca50d48cf7e7b
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+    requirement: DEC-9026
+  applicability:
+    topic: prototype_retention
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-17
+  original:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    member_id: 01a16457-a08c-76a2-8c85-0c2a155783cf
+    member_alias: DEC-9007
+    field: rationale
+    anchor: Do not edit frozen bytes, change old
+    anchor_digest: sha256:20fda520b9c46f64d0ecdbb8273b4abc3a03c24a12d7e91806f3efa3a54b8cc4
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: snapshot_identity
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-18
+  original:
+    adr_id: 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    member_id: 01a16457-a08c-76a2-8c85-0c2bc45c95f7
+    member_alias: DEC-9008
+    field: rationale
+    anchor: Preserve ADC 1.1, CEC 1.0 and all existing frozen resources.
+    anchor_digest: sha256:770d3e185024f83616d0e0536e9c4e991a7b73287852ab01bb5a550d2b160143
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: snapshot_identity
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-19
+  original:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    member_id: 01a16bb0-e681-73eb-819e-b30d98e60963
+    member_alias: DEC-9009
+    field: rationale
+    anchor: Reuse unchanged immutable field dispositions, ownership semantics and pure
+    anchor_digest: sha256:696084ee41f519278dfafac729de4d95ad11fd91d02514e7f5e8bc41270dece4
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: snapshot_identity
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-20
+  original:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    member_id: 01a16bb0-e681-73eb-819e-b313463dcf5c
+    member_alias: DEC-9015
+    field: rationale
+    anchor: |-
+      independent immutable AI 1.4 publication/qualification; independent ACC 1.4
+      publication selecting exact AI 1.4 and unchanged NM 2.5;
+    anchor_digest: sha256:e83cb1567d878a61a8939f2d70a8366bce17df51d561d542a47d8f8aedc22976
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+    requirement: DEC-9026
+  applicability:
+    topic: candidate_selection
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-21
+  original:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    member_id: 01a16bb0-e681-73eb-819e-b313463dcf5c
+    member_alias: DEC-9015
+    field: rationale
+    anchor: AI 1.4's new closed catalog/schema and frozen conformance
+    anchor_digest: sha256:1c38d0c15b2c208b7232ab1d692b7a4c0e8bb2010750106625b57199cbb1869e
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: snapshot_identity
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-22
+  original:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    member_id: 01a16bb0-e681-73eb-819e-b313463dcf5c
+    member_alias: DEC-9015
+    field: rationale
+    anchor: |-
+      Preserve all historical authorities, SCFs,
+      frozen conformance acceptance, current SCS/catalog/policy, public APIs,
+      protocol 1.5 and capability flags.
+    anchor_digest: sha256:2997acd2c4e4cad260ff9aa7811a4cd679e8d15486fdee634f71197e6374aad1
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+    requirement: DEC-9026
+  applicability:
+    topic: prototype_retention
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-23
+  original:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    member_id: 01a16bb0-e681-73eb-819e-b314b593642f
+    member_alias: DEC-9016
+    field: rationale
+    anchor: |-
+      Require historical fingerprint/selection preservation and
+      deterministic resource generation.
+    anchor_digest: sha256:0b44e4e01e0f4b27c58d00d6aace17a5309650c01c38f15b51a02eb094680c24
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: snapshot_identity
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-24
+  original:
+    adr_id: 01a16bb0-e682-730f-93a9-54ddf776af32
+    member_id: 01a16bb0-e682-730f-93a9-54db5e0405d6
+    member_alias: INV-0307
+    field: statement
+    anchor: MUST select exact AI 1.4 and ACC 1.4 after publication, reuse unchanged NM 2.5, and MUST NOT
+      mutate historical resources or current selection.
+    anchor_digest: sha256:482cb0cf2318491469c022384dc6fb7da6b073decff208c4ee9f40628c1caa85
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+    requirement: DEC-9026
+  applicability:
+    topic: candidate_selection
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-25
+  original:
+    adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+    member_id: 01a17432-c510-70a1-8a16-e5e519a009d4
+    member_alias: DEC-9017
+    field: rationale
+    anchor: |-
+      publish the smallest independent AI 1.5 successor
+      selecting these closed recipes and exact per-type output applicability, followed
+      by ACC 1.5 selecting its exact AI definition/closure and unchanged NM 2.5.
+    anchor_digest: sha256:a6ae29dbc220daa3d9390f1cbb2f2212a8d75ce2b68e6ecd22d35db90d3c79d3
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+    requirement: DEC-9026
+  applicability:
+    topic: candidate_selection
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-26
+  original:
+    adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+    member_id: 01a17432-c510-70a1-8a16-e5e519a009d4
+    member_alias: DEC-9017
+    field: rationale
+    anchor: Frozen AI 1.4/ACC 1.4 remain BLOCKED; acceptance alone does not upgrade receipts.
+    anchor_digest: sha256:3e5dc7ee404eefe4a048f702ff010b66a149dc3f78a5ab56049a41679519edc1
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: snapshot_identity
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-27
+  original:
+    adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+    member_id: 01a17432-c52f-74c0-8485-977d48a1714c
+    member_alias: INV-0309
+    field: statement
+    anchor: MUST NOT upgrade frozen AI 1.4 or ACC 1.4 evidence.
+    anchor_digest: sha256:ae3e92d9aa8e927d2f3c5179c65ed1ca6ed35eac810311624025f9a60a2c802f
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: snapshot_identity
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-28
+  original:
+    adr_id: 01a17432-c52f-74c0-8485-97832c7671ed
+    member_id: 01a17432-c52f-74c0-8485-977c2f4218e9
+    member_alias: DEC-9022
+    field: rationale
+    anchor: |-
+      No frozen
+      authority, blocker entry, public protocol/API/capability, current SCS or WASM changes.
+    anchor_digest: sha256:f6877ad3a4325098fdb07b6565f6e96320c5f8f143404f3bf78a23735e3d14ae
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+    requirement: DEC-9026
+  applicability:
+    topic: prototype_retention
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.
+- id: LC40-29
+  original:
+    adr_id: 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    member_id: 01a1514b-805c-75ff-a7ee-e98d9d102cff
+    member_alias: DEC-0274
+    field: rationale
+    anchor: |-
+      requires a successor ACC version whose table resource digest changes the
+      SCF.
+    anchor_digest: sha256:eceaf051e757230fb1a7fbc0c3118485a986b3b6ff3a6888baef917415aa8a91
+  replacement:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    member_id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    requirement: DEC-9023
+  applicability:
+    topic: candidate_version_finality
+    authority_scope:
+    - family: architecture-interpretation
+      versions:
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: authoring-construction
+      versions:
+      - '1.1'
+      - '1.2'
+      - '1.3'
+      - '1.4'
+      - '1.5'
+    - family: normalized-model
+      versions:
+      - '2.5'
+    promotion_state: unreleased_after_explicit_correction
+    excludes_released: true
+  effect: replace_mapped_policy_only
+  retained: Exact old content remains reproducible; all unmapped semantics, approvals, released compatibility
+    and current SCS governance remain in force.

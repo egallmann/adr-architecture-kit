@@ -49107,3 +49107,877 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
+- id: 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+  alias_id: DEC-9023
+  alias_name: separate-content-identity-from-release-compatibility
+  alias_ref: DEC-9023:separate-content-identity-from-release-compatibility
+  entity_type: decision
+  name: Freeze exact snapshots; promote compatibility explicitly
+  summary: A contract receives its intended family/version during development. CANDIDATE
+    revisions may change schemas, resources, rules, conformance and implementation
+    within that version through governed review. Each revision MUST
+  uri: adr://adr-architecture-kit/entities/01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+  created_at: '2026-10-26T15:45:29.859Z'
+  entity_fingerprint: sha256:50e62eda80467947bab2b8808c6e40b01824ac04ef5f6b88859fba1b71068cd0
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    artifact_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    adr_alias_id: ADR-L-0040
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: separate-content-identity-from-release-compatibility
+    alias_id: DEC-9023
+  relationships:
+    declared_in:
+    - 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a178e3-6103-76ba-a5b3-4f3c6998ebaf
+  alias_id: DEC-9024
+  alias_name: apply-only-authenticated-clause-precedence
+  alias_ref: DEC-9024:apply-only-authenticated-clause-precedence
+  entity_type: decision
+  name: Resolve mapped policy clauses without retiring semantic authority
+  summary: The selected closed precedence map is the exclusive replacement mechanism
+    for this lifecycle correction. On authenticated acceptance, each mapped exact
+    original clause is replaced ONLY for its declared policy topic and e
+  uri: adr://adr-architecture-kit/entities/01a178e3-6103-76ba-a5b3-4f3c6998ebaf
+  created_at: '2026-10-26T15:45:29.859Z'
+  entity_fingerprint: sha256:54af7e520e77978f9baaa22a5314ae8b3a3cab3f6f1ea570d0deafa4de7e16c4
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6103-76ba-a5b3-4f3c6998ebaf
+    artifact_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    adr_alias_id: ADR-L-0040
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: apply-only-authenticated-clause-precedence
+    alias_id: DEC-9024
+  relationships:
+    declared_in:
+    - 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6103-76ba-a5b3-4f3c6998ebaf
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a178e3-6103-76ba-a5b3-4f3d93d86adf
+  alias_id: DEC-9025
+  alias_name: qualify-actual-retained-authority-cohort
+  alias_ref: DEC-9025:qualify-actual-retained-authority-cohort
+  entity_type: decision
+  name: Inventory before bundle finalization; attest externally afterwards
+  summary: Extend existing build-once, main-push release qualification without rebuilding
+    at publication. Source S produces exact package payloads P. Before finalization,
+    derive deterministic inventory I of ALL semantic authorities
+  uri: adr://adr-architecture-kit/entities/01a178e3-6103-76ba-a5b3-4f3d93d86adf
+  created_at: '2026-10-26T15:45:29.859Z'
+  entity_fingerprint: sha256:4942e22185d2c3d941574500f5f1fc3a2e2bc219a1da500ddbc3ad4d30273f6e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6103-76ba-a5b3-4f3d93d86adf
+    artifact_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    adr_alias_id: ADR-L-0040
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: qualify-actual-retained-authority-cohort
+    alias_id: DEC-9025
+  relationships:
+    declared_in:
+    - 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6103-76ba-a5b3-4f3d93d86adf
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+  alias_id: DEC-9026
+  alias_name: consolidate-only-qualified-current-candidates
+  alias_ref: DEC-9026:consolidate-only-qualified-current-candidates
+  entity_type: decision
+  name: Consolidate governed candidate semantics in independently green checkpoints
+  summary: 'After explicit acceptance, use AI 1.5, ACC 1.5 and NM 2.5 as current development
+    candidates, not AI/ACC 1.6 merely for corrections before promotion. Keep released
+    AI 1.0/1.1, ACC 1.0, NM 2.3/2.4 and all other classified '
+  uri: adr://adr-architecture-kit/entities/01a178e3-6103-76ba-a5b3-4f3e648d69ad
+  created_at: '2026-10-26T15:45:29.859Z'
+  entity_fingerprint: sha256:a236e2223af403e240b035bc447066c8662d75633e5ae484efd05b0102c20865
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6103-76ba-a5b3-4f3e648d69ad
+    artifact_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    adr_alias_id: ADR-L-0040
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: consolidate-only-qualified-current-candidates
+    alias_id: DEC-9026
+  relationships:
+    declared_in:
+    - 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6103-76ba-a5b3-4f3e648d69ad
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a178e3-6103-76ba-a5b3-4f3f1494e457
+  alias_id: DEC-9027
+  alias_name: verify-lifecycle-adversarially
+  alias_ref: DEC-9027:verify-lifecycle-adversarially
+  entity_type: decision
+  name: Separate authority, representation, semantic and promotion proofs
+  summary: Qualification MUST prove released identities byte-exact and discoverable
+    where compatibility requires; same-version candidate correction changes SCF and
+    requalifies complete dependency closure; old revisions reproduce fr
+  uri: adr://adr-architecture-kit/entities/01a178e3-6103-76ba-a5b3-4f3f1494e457
+  created_at: '2026-10-26T15:45:29.859Z'
+  entity_fingerprint: sha256:c8c8c4673ba01b44ca05643ffdfdb7102a2cb1e9815f1c95392ca6e04bb6a32f
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6103-76ba-a5b3-4f3f1494e457
+    artifact_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    adr_alias_id: ADR-L-0040
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: verify-lifecycle-adversarially
+    alias_id: DEC-9027
+  relationships:
+    declared_in:
+    - 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6103-76ba-a5b3-4f3f1494e457
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a178e3-6103-76ba-a5b3-4f400c793547
+  alias_id: DEC-9028
+  alias_name: require-separate-human-acceptance-and-release-qualification
+  alias_ref: DEC-9028:require-separate-human-acceptance-and-release-qualification
+  entity_type: decision
+  name: Keep proposed governance and future promotion independently gated
+  summary: PR A contains only this proposed ADR, exact precedence/classification evidence,
+    external attestation/inventory specification, bounded governance qualification,
+    focused permanent tests and owned derived projections. It pu
+  uri: adr://adr-architecture-kit/entities/01a178e3-6103-76ba-a5b3-4f400c793547
+  created_at: '2026-10-26T15:45:29.859Z'
+  entity_fingerprint: sha256:427449c56814518411bd1be2962896697ec01a349d41c0276fd3c018ca109c72
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6103-76ba-a5b3-4f400c793547
+    artifact_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    adr_alias_id: ADR-L-0040
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: require-separate-human-acceptance-and-release-qualification
+    alias_id: DEC-9028
+  relationships:
+    declared_in:
+    - 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6103-76ba-a5b3-4f400c793547
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a178e3-6103-76ba-a5b3-4f417b151669
+  alias_id: INV-0315
+  alias_name: separate-content-identity-from-release-compatibility
+  alias_ref: INV-0315:separate-content-identity-from-release-compatibility
+  entity_type: invariant
+  name: INV-0315
+  summary: Only explicit release or independent authority promotion freezes ongoing
+    same-version compatibility; every candidate revision MUST retain exact SCF, closure
+    and Git reproducibility.
+  uri: adr://adr-architecture-kit/entities/01a178e3-6103-76ba-a5b3-4f417b151669
+  created_at: '2026-10-26T15:45:29.859Z'
+  entity_fingerprint: sha256:a935fcb2ba23975450c45535b238cd873b1967498293004d98eb07ebbe632cc7
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6103-76ba-a5b3-4f417b151669
+    artifact_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    adr_alias_id: ADR-L-0040
+    scope: governance
+    statement: Only explicit release or independent authority promotion freezes ongoing
+      same-version compatibility; every candidate revision MUST retain exact SCF,
+      closure and Git reproducibility.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    supersedes: []
+    alias_id: INV-0315
+    alias_name: separate-content-identity-from-release-compatibility
+  relationships:
+    declared_in:
+    - 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6103-76ba-a5b3-4f417b151669
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a178e3-6103-76ba-a5b3-4f42efacc580
+  alias_id: INV-0316
+  alias_name: apply-only-authenticated-clause-precedence
+  alias_ref: INV-0316:apply-only-authenticated-clause-precedence
+  entity_type: invariant
+  name: INV-0316
+  summary: Only authenticated acceptance and exact mapped clause applicability may
+    replace lifecycle obligations; all unmapped and substantive semantic obligations
+    MUST remain in force.
+  uri: adr://adr-architecture-kit/entities/01a178e3-6103-76ba-a5b3-4f42efacc580
+  created_at: '2026-10-26T15:45:29.859Z'
+  entity_fingerprint: sha256:c77bcacdca4fe818b8d4c495cd1c913e668650cbc3432b682d34ec87d526db9a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6103-76ba-a5b3-4f42efacc580
+    artifact_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    adr_alias_id: ADR-L-0040
+    scope: governance
+    statement: Only authenticated acceptance and exact mapped clause applicability
+      may replace lifecycle obligations; all unmapped and substantive semantic obligations
+      MUST remain in force.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a178e3-6103-76ba-a5b3-4f3c6998ebaf
+    supersedes: []
+    alias_id: INV-0316
+    alias_name: apply-only-authenticated-clause-precedence
+  relationships:
+    declared_in:
+    - 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6103-76ba-a5b3-4f42efacc580
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a178e3-6104-7299-8ae7-bcad1adb5d5c
+  alias_id: INV-0317
+  alias_name: qualify-actual-retained-authority-cohort
+  alias_ref: INV-0317:qualify-actual-retained-authority-cohort
+  entity_type: invariant
+  name: INV-0317
+  summary: The attestation MUST approve exactly all authorities actually packaged
+    in the finalized qualified bundle; mismatch requires a new qualification and MUST
+    NOT mutate retained artifacts.
+  uri: adr://adr-architecture-kit/entities/01a178e3-6104-7299-8ae7-bcad1adb5d5c
+  created_at: '2026-10-26T15:45:29.860Z'
+  entity_fingerprint: sha256:588109d460ab544f6a01d7a4d0bf5528984e1e587a07890d9b10f34a721a6e3c
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6104-7299-8ae7-bcad1adb5d5c
+    artifact_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    adr_alias_id: ADR-L-0040
+    scope: governance
+    statement: The attestation MUST approve exactly all authorities actually packaged
+      in the finalized qualified bundle; mismatch requires a new qualification and
+      MUST NOT mutate retained artifacts.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a178e3-6103-76ba-a5b3-4f3d93d86adf
+    supersedes: []
+    alias_id: INV-0317
+    alias_name: qualify-actual-retained-authority-cohort
+  relationships:
+    declared_in:
+    - 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6104-7299-8ae7-bcad1adb5d5c
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a178e3-6104-7299-8ae7-bcae4cc94c59
+  alias_id: INV-0318
+  alias_name: consolidate-only-qualified-current-candidates
+  alias_ref: INV-0318:consolidate-only-qualified-current-candidates
+  entity_type: invariant
+  name: INV-0318
+  summary: Candidate consolidation MUST preserve released compatibility, exact dependency
+    selection and accepted semantics without inventing producers or transient public
+    capabilities.
+  uri: adr://adr-architecture-kit/entities/01a178e3-6104-7299-8ae7-bcae4cc94c59
+  created_at: '2026-10-26T15:45:29.860Z'
+  entity_fingerprint: sha256:a713e9a3e42cf04f3d586f9706f7c793599f65c1b1f6ae73a304570905c2b024
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6104-7299-8ae7-bcae4cc94c59
+    artifact_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    adr_alias_id: ADR-L-0040
+    scope: governance
+    statement: Candidate consolidation MUST preserve released compatibility, exact
+      dependency selection and accepted semantics without inventing producers or transient
+      public capabilities.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+    supersedes: []
+    alias_id: INV-0318
+    alias_name: consolidate-only-qualified-current-candidates
+  relationships:
+    declared_in:
+    - 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6104-7299-8ae7-bcae4cc94c59
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a178e3-6104-7299-8ae7-bcaf6ef9425c
+  alias_id: INV-0319
+  alias_name: verify-lifecycle-adversarially
+  alias_ref: INV-0319:verify-lifecycle-adversarially
+  entity_type: invariant
+  name: INV-0319
+  summary: Independent qualification MUST distinguish content identity, authority,
+    instance evidence, representation verification and semantic equality; none substitutes
+    for another.
+  uri: adr://adr-architecture-kit/entities/01a178e3-6104-7299-8ae7-bcaf6ef9425c
+  created_at: '2026-10-26T15:45:29.860Z'
+  entity_fingerprint: sha256:96d1df6f7439250645d3001d33fbb5014e34270a7d2619d9408f17b8031af775
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6104-7299-8ae7-bcaf6ef9425c
+    artifact_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    adr_alias_id: ADR-L-0040
+    scope: governance
+    statement: Independent qualification MUST distinguish content identity, authority,
+      instance evidence, representation verification and semantic equality; none substitutes
+      for another.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a178e3-6103-76ba-a5b3-4f3f1494e457
+    supersedes: []
+    alias_id: INV-0319
+    alias_name: verify-lifecycle-adversarially
+  relationships:
+    declared_in:
+    - 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6104-7299-8ae7-bcaf6ef9425c
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a178e3-6104-7299-8ae7-bcb0462bba55
+  alias_id: INV-0320
+  alias_name: require-separate-human-acceptance-and-release-qualification
+  alias_ref: INV-0320:require-separate-human-acceptance-and-release-qualification
+  entity_type: invariant
+  name: INV-0320
+  summary: Proposed governance, synthetic fixtures and self-declared approval MUST
+    NOT activate canonical policy or publisher gating; authentic reviewed human evidence
+    is required.
+  uri: adr://adr-architecture-kit/entities/01a178e3-6104-7299-8ae7-bcb0462bba55
+  created_at: '2026-10-26T15:45:29.860Z'
+  entity_fingerprint: sha256:7e9a2a71934b01c74d0e0c0cc697ec79477ee5355805d8510c126b2810dd84e7
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6104-7299-8ae7-bcb0462bba55
+    artifact_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    adr_alias_id: ADR-L-0040
+    scope: governance
+    statement: Proposed governance, synthetic fixtures and self-declared approval
+      MUST NOT activate canonical policy or publisher gating; authentic reviewed human
+      evidence is required.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a178e3-6103-76ba-a5b3-4f400c793547
+    supersedes: []
+    alias_id: INV-0320
+    alias_name: require-separate-human-acceptance-and-release-qualification
+  relationships:
+    declared_in:
+    - 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9#01a178e3-6104-7299-8ae7-bcb0462bba55
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+  alias_id: ADR-L-0040
+  alias_name: semantic-contract-candidate-and-promotion-lifecycle
+  alias_ref: ADR-L-0040:semantic-contract-candidate-and-promotion-lifecycle
+  entity_type: adr
+  name: Enforceable Semantic Contract Candidate and Promotion Lifecycle
+  summary: Development merged several unreleased AI and ACC authorities while treating
+    each merge and content fingerprint as a permanent compatibility boundary. That
+    policy creates maintenance obligations without a released consume
+  uri: adr://adr-architecture-kit/entities/01a178e3-6104-7299-8ae7-bcb172f45ff9
+  created_at: '2026-10-26T15:45:29.860Z'
+  entity_fingerprint: sha256:eab5e5993e9b3c20f8e3bbb1e5ec5e979809f813198cad121acc5d4914810657
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    artifact_path: adrs/logical/ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.yaml
+  source_refs: []
+  metadata:
+    status: accepted
+    domains:
+    - architecture
+    - governance
+    - release-engineering
+    tags:
+    - semantic-contract-lifecycle
+    - candidate-authority
+    - release-promotion
+    - v0.13
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
+    alias_name: semantic-contract-candidate-and-promotion-lifecycle
+    alias_id: ADR-L-0040
+  relationships:
+    declared_in: []
+    references:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    - 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    - 01a1514b-805c-75ff-a7ee-e98ccfcf73e7
+    - 01a16457-a08c-76a2-8c85-0c34a56ce5f2
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    - 01a17432-c52f-74c0-8485-97832c7671ed
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index

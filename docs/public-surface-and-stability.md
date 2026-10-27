@@ -140,3 +140,12 @@ explicit non-release sentinel `0+unknown`.
 
 See [authority-boundary.md](authority-boundary.md) for repository ownership and
 the compatibility contracts for exact symbol, diagnostic, and artifact shapes.
+
+## Candidate lifecycle proposal
+
+ADR-L-0040 proposes separating exact development content identity from immutable
+release compatibility. Its policy is inactive while proposed; existing promises
+and human approval records remain in force. See
+[the lifecycle specification](contributors/semantic-contract-lifecycle.md) for
+positive release evidence, exact precedence and the independent acceptance gate.
+No candidate discovery or authority publication advertises execution capability.

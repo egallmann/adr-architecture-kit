@@ -19,6 +19,9 @@ jobs:
     name: Build and validate the retained release bundle once
     needs: integration
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     steps:
       - uses: actions/checkout@v4
         with:
@@ -123,6 +126,11 @@ jobs:
               raise SystemExit("packaged Python and Node semantic-core WASM differ")
           print(f"byte-identical packaged WASM: {len(python_wasm)} bytes")
           PY
+      - name: Discover and qualify the actual packaged authority cohort
+        env:
+          PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/src
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/release_manifest.py inventory --bundle . --source-commit "$GITHUB_SHA"
       - uses: actions/upload-artifact@v4
         with:
           name: release-bundle
@@ -130,6 +138,8 @@ jobs:
             python-dist/
             node-dist/
             release-manifest.json
+            authority-inventory.json
+            authority-manifest.json
           if-no-files-found: error
 
   wheel-smoke:

@@ -277,11 +277,10 @@ def test_publish_workflow_is_promotion_only_and_scopes_oidc() -> None:
         assert "3.14" in text
         assert "Record interpreter" in text
         assert "python --version" in text
-        assert "release_manifest.py" in text
-        assert "verify" in text
-        assert "expected-source-commit" in text
-        assert "expected-version" in text
-        assert "expected-tag" in text
+        assert "release_authority_promotion.py verify" in text
+        assert "release_authority_promotion.py download" in text
+        assert '--source "$SOURCE"' in text
+        assert '--certification-run "$CERTIFICATION"' in text
         assert "pip install .[dev]" not in text
         assert "python -m build" not in text
         assert '-m", "build"' not in text and '("-m", "build")' not in text
@@ -289,8 +288,8 @@ def test_publish_workflow_is_promotion_only_and_scopes_oidc() -> None:
         assert "governance-checks" not in text
         assert "pip_audit" not in text
     assert "resolve_qualified_release_bundle.py" in resolve_text
-    assert "download-artifact" in resolve_text
-    assert "download-artifact" in publish_text
+    assert "attestation_digest" in resolve_text
+    assert "--expected-attestation-digest" in publish_text
     assert "gh-action-pypi-publish" in publish_text
     assert "os-portability" not in yaml.dump(workflow)
     assert "os-wheel-smoke" not in yaml.dump(workflow)
@@ -308,7 +307,7 @@ def test_npm_publish_workflow_is_promotion_only_and_uses_trusted_publishing_runt
     assert isinstance(trigger, dict)
     assert trigger["push"]["tags"] == ["v*"]
     assert resolve["permissions"] == {"contents": "read", "actions": "read"}
-    assert publish["permissions"] == {"contents": "read", "id-token": "write"}
+    assert publish["permissions"] == {"contents": "read", "actions": "read", "id-token": "write"}
     assert publish["environment"]["name"] == "npm"
     assert publish["needs"] == ["resolve-bundle"]
 
@@ -317,7 +316,9 @@ def test_npm_publish_workflow_is_promotion_only_and_uses_trusted_publishing_runt
     assert "npm@11.15.0" in publish_text
     assert "npm publish" in publish_text
     assert "--provenance" in publish_text
-    assert "download-artifact" in publish_text
+    assert "release_authority_promotion.py download" in publish_text
+    assert "release_authority_promotion.py verify" in publish_text
+    assert "--expected-attestation-digest" in publish_text
     assert "check_npm_publication.py" in publish_text
     assert "publication_status" in publish_text
     assert "noop" in publish_text

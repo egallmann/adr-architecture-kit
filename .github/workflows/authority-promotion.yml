@@ -1,0 +1,65 @@
+name: Qualify external authority promotion attestation
+
+on:
+  workflow_dispatch:
+    inputs:
+      certification_run:
+        description: Successful Release Certification main-push run on the exact current main source
+        type: string
+        required: true
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/src
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_REPOSITORY: ${{ github.repository }}
+
+jobs:
+  subject:
+    name: Display the exact qualified promotion subject
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - run: python -m pip install pydantic PyYAML jsonschema jinja2 click rfc8785 wasmtime
+      - name: Verify retained artifacts and print exact human approval statement
+        env:
+          CERTIFICATION: ${{ inputs.certification_run }}
+        run: |
+          python scripts/release_authority_promotion.py download --bundle release-bundle --source "$GITHUB_SHA" --certification-run "$CERTIFICATION"
+          python scripts/release_authority_promotion.py prepare --bundle release-bundle --source "$GITHUB_SHA" --certification-run "$CERTIFICATION" | tee -a "$GITHUB_STEP_SUMMARY"
+
+  attest:
+    name: Independently qualify actual human environment approval
+    needs: subject
+    runs-on: ubuntu-latest
+    environment:
+      name: semantic-authority-promotion
+      url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - run: python -m pip install pydantic PyYAML jsonschema jinja2 click rfc8785 wasmtime
+      - name: Reverify the cohort and retrieve authorized human approval independently
+        env:
+          CERTIFICATION: ${{ inputs.certification_run }}
+        run: |
+          python scripts/release_authority_promotion.py download --bundle release-bundle --source "$GITHUB_SHA" --certification-run "$CERTIFICATION"
+          python scripts/release_authority_promotion.py attest --bundle release-bundle --source "$GITHUB_SHA" --certification-run "$CERTIFICATION" --promotion-run "$GITHUB_RUN_ID" --output promotion-attestation.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: external-authority-promotion-attestation
+          path: promotion-attestation.json
+          if-no-files-found: error

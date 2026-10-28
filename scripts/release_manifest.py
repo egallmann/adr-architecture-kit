@@ -166,6 +166,9 @@ def _parser() -> argparse.ArgumentParser:
     verify.add_argument("--expected-source-commit")
     verify.add_argument("--expected-version")
     verify.add_argument("--expected-tag")
+    inventory = subparsers.add_parser("inventory")
+    inventory.add_argument("--bundle", type=Path, required=True)
+    inventory.add_argument("--source-commit", required=True)
     return parser
 
 
@@ -180,6 +183,13 @@ def main(argv: Sequence[str] | None = None) -> int:
         elif arguments.command == "normalize-sdist":
             normalize_sdist(arguments.sdist, arguments.source_date_epoch)
             print(arguments.sdist)
+        elif arguments.command == "inventory":
+            from scripts.release_authority_inventory import create_cohort
+            from scripts.release_authority_promotion import verify_source
+
+            verify_source(arguments.source_commit, Path(__file__).resolve().parents[1])
+            create_cohort(arguments.bundle, arguments.source_commit)
+            print("complete packaged authority cohort inventoried")
         else:
             verify_manifest(
                 arguments.dist_dir,

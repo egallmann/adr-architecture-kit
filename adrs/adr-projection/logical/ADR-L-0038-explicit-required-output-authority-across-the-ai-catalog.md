@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 66fc93c102a2ad26832852614aec1cd02ad034dae30ae23ce8fe056d6b76df0a
-rendered_hash: 6ff954a51f915463013cb94505b6761da6fd34e1de245dba5d6e7ecf7002ed82
+rendered_hash: 900132bccf1ceb1f1eccf69fe9ad364ba82decb6a1c280d12d37197045926487
 -->
 
 # ADR-L-0038: Explicit Required-Output Authority Across the AI Catalog
@@ -713,6 +713,7 @@ Require publication conformance, explicit blockers and separate human acceptance
 - [ADR-L-0035](ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.md)
 - [ADR-L-0037](ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.md)
 - [ADR-L-0039](ADR-L-0039-forward-identity-representation-recipes.md)
+- [ADR-L-0040](ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.md)
 
 
 ## Architecture Relationships

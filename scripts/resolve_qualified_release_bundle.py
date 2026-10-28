@@ -80,6 +80,8 @@ def _paginate(url: str, token: str, collection_key: str) -> list[dict[str, Any]]
     items: list[dict[str, Any]] = []
     next_url: str | None = url
     while next_url:
+        if not next_url.startswith(f"{_api_base()}/repos/{_repository()}/"):
+            raise ResolverError("foreign release-evidence pagination")
         payload, headers = _request_json(next_url, token)
         if not isinstance(payload, dict):
             raise ResolverError(f"expected object payload from {next_url}")
@@ -145,6 +147,21 @@ def _require_unique_artifact(
         raise ResolverError(f"expired artifact {artifact_name!r} on run {run_id}")
 
 
+def resolve_release_certification(sha: str) -> tuple[int, str]:
+    """Publisher selection is fixed; approval/cohort admission is a separate gate.
+
+    This result alone never authorizes publication. Both publishers independently
+    invoke release_authority_promotion.verify_promotion on the retained bytes.
+    """
+    return resolve_run_id(
+        sha=sha,
+        workflow="release-certification.yml",
+        branch="main",
+        event="push",
+        artifact_name="release-bundle",
+    )
+
+
 def resolve_run_id(
     *,
     sha: str,
@@ -194,13 +211,21 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         if arguments.command != "resolve":
             raise ResolverError(f"unsupported command {arguments.command}")
-        run_id, html_url = resolve_run_id(
-            sha=arguments.sha,
-            workflow=arguments.workflow,
-            branch=arguments.branch,
-            event=arguments.event,
-            artifact_name=arguments.artifact_name,
-        )
+        if (arguments.workflow, arguments.branch, arguments.event, arguments.artifact_name) == (
+            "release-certification.yml",
+            "main",
+            "push",
+            "release-bundle",
+        ):
+            run_id, html_url = resolve_release_certification(arguments.sha)
+        else:
+            run_id, html_url = resolve_run_id(
+                sha=arguments.sha,
+                workflow=arguments.workflow,
+                branch=arguments.branch,
+                event=arguments.event,
+                artifact_name=arguments.artifact_name,
+            )
     except ResolverError as exc:
         print(str(exc), file=sys.stderr)
         return 1

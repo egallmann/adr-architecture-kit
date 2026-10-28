@@ -31,3 +31,18 @@ adr governance-checks
 The pre-push bundle is a fast local subset. Develop and release assurance remain
 authoritative for the full Python suite, coverage, platform qualification,
 retained artifacts, and publication gates.
+
+## Authority-cohort promotion enforcement
+
+Accepted ADR-L-0040 requires a deterministic inventory of every authority actually packaged,
+including embedded WASM and resource-qualified dependencies, followed by an external
+human promotion attestation for precisely that finalized cohort. A mismatch requires
+a newly qualified source/bundle; retained artifacts cannot be stripped or edited.
+The proposal preserves main-push qualification and build-once promotion-only
+publication. See [the specification](semantic-contract-lifecycle.md).
+
+PR A supplied the closed specification. The operational checkpoint now scans the
+actual package/WASM payloads and independently enforces the exact retained cohort
+and external human promotion evidence in both publishers. See the
+[approval, durable-evidence and publisher procedure](authority-promotion-enforcement.md).
+This implementation does not itself approve or promote any authority.

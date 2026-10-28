@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 4abdbf238dcb7ecc2e31c013bf42a55892fb67a4d6b6146b3304dacf47f1d99e
-rendered_hash: a81441dc26d349976d69b5c30cfe487b77e9312c4658eb810a646c7751d2b65e
+rendered_hash: 504fbe3a9475a19676f61ce98b47771d8ed1ea92831a870deb624a8a2f7243fe
 -->
 
 # ADR-L-0037: Lossless Authored Lifecycle and Declaring-ADR Provenance
@@ -575,6 +575,7 @@ flowchart LR
 - [ADR-L-0035](ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.md)
 - [ADR-L-0038](ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.md)
 - [ADR-L-0039](ADR-L-0039-forward-identity-representation-recipes.md)
+- [ADR-L-0040](ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.md)
 
 
 ## Architecture Relationships

@@ -20,6 +20,18 @@ from scripts.generate_semantic_contract_assets import (
 )
 
 
+def _load(path: Path) -> Any:
+    def unique(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+        result: dict[str, Any] = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError(f"duplicate canonical JSON member: {key}")
+            result[key] = value
+        return result
+
+    return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique)
+
+
 def canonical_resource(root: Path, key: str) -> Any:
     parts = key.split("/")
     if (
@@ -47,11 +59,20 @@ def canonical_resource(root: Path, key: str) -> Any:
     # not a predecessor-version or packaged-resource fallback.
     flat = root / "contracts/semantic-contract/v1.0/resources"
     paths.append(flat / (key.replace("/", "-") + ".json"))
-    if len(parts) == 3:
-        paths.append(flat / f"{family}-{name}.json")
     for path in paths:
         if path.is_file():
-            return json.loads(path.read_text(encoding="utf-8"))
+            return _load(path)
+    if len(parts) == 3:
+        legacy = flat / f"{family}-{name}.json"
+        if legacy.is_file():
+            value = _load(legacy)
+            # Released versionless filenames identify their exact version in
+            # their content. They must never satisfy a different requested key.
+            if (value.get("semanticContractFamily"), value.get("semanticContractVersion")) == (
+                family,
+                version,
+            ):
+                return value
     raise ValueError(f"missing exact canonical resource: {key}")
 
 
@@ -60,18 +81,17 @@ def assemble(root: Path, family: str) -> tuple[dict[str, Any], dict[str, Any]]:
         raise ValueError("unsupported current candidate")
     prefix = f"{family}/1.5/"
     source = root / "contracts" / family / "v1.5"
-    draft = json.loads((source / "contract.json").read_text(encoding="utf-8"))
+    draft = _load(source / "contract.json")
     if (draft["semanticContractFamily"], draft["semanticContractVersion"]) != (family, "1.5"):
         raise ValueError("wrong candidate source identity")
     # Manifest roles are authored authority, not guessed from names. Digests,
     # dependency edges and the enclosing SCF are derived from actual references.
     roles = {m["canonicalResourceKey"]: m["role"] for m in draft["resourceManifest"]}
-    own = {
-        prefix + p.stem: json.loads(p.read_text(encoding="utf-8"))
-        for p in sorted((source / "resources").glob("*.json"))
-    }
+    if len(roles) != len(draft["resourceManifest"]):
+        raise ValueError("duplicate authored resource role")
+    own = {prefix + p.stem: _load(p) for p in sorted((source / "resources").glob("*.json"))}
     if (source / "schema.json").is_file():
-        own[prefix + "schema"] = json.loads((source / "schema.json").read_text(encoding="utf-8"))
+        own[prefix + "schema"] = _load(source / "schema.json")
     if not own or draft["frozenNormativeConformanceResources"] != [prefix + "conformance"]:
         raise ValueError("missing or ambiguous candidate conformance selection")
     contents: dict[str, Any] = {}

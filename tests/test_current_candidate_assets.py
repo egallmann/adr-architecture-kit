@@ -84,7 +84,14 @@ def test_candidate_resources_are_inputs_not_reconstructed_outputs(candidate: Pat
     ).read_bytes() == raw
 
 
-@pytest.mark.parametrize("mutation", ["self-reference", "missing-role"])
+def test_duplicate_source_json_is_not_silently_canonicalized(candidate: Path) -> None:
+    path = candidate / "contracts/architecture-interpretation/v1.5/resources/rules.json"
+    path.write_text('{"resource":"a","resource":"b"}', encoding="utf-8")
+    with pytest.raises(ValueError, match="duplicate canonical JSON member"):
+        assets.assemble(candidate, "architecture-interpretation")
+
+
+@pytest.mark.parametrize("mutation", ["self-reference", "missing-role", "duplicate-role"])
 def test_incomplete_or_self_referential_candidate_is_not_distributed(
     candidate: Path, mutation: str
 ) -> None:
@@ -97,13 +104,19 @@ def test_incomplete_or_self_referential_candidate_is_not_distributed(
     else:
         path = base / "contract.json"
         value = json.loads(path.read_text())
-        value["resourceManifest"] = [
-            m
-            for m in value["resourceManifest"]
-            if m["canonicalResourceKey"] != "architecture-interpretation/1.5/rules"
-        ]
+        if mutation == "duplicate-role":
+            value["resourceManifest"].append(dict(value["resourceManifest"][0]))
+        else:
+            value["resourceManifest"] = [
+                m
+                for m in value["resourceManifest"]
+                if m["canonicalResourceKey"] != "architecture-interpretation/1.5/rules"
+            ]
         path.write_text(json.dumps(value), encoding="utf-8")
-    with pytest.raises(ValueError, match="self-referential|missing authored resource role"):
+    with pytest.raises(
+        ValueError,
+        match="self-referential|missing authored resource role|duplicate authored resource role",
+    ):
         assets.assemble(candidate, "architecture-interpretation")
     assert not (candidate / "src").exists()
 
@@ -120,3 +133,20 @@ def test_incomplete_or_self_referential_candidate_is_not_distributed(
 def test_malformed_or_ambient_resource_selection_is_rejected(key: str) -> None:
     with pytest.raises(ValueError, match="invalid canonical resource key"):
         assets.canonical_resource(ROOT, key)
+
+
+def test_versionless_released_filename_is_not_a_predecessor_fallback(tmp_path: Path) -> None:
+    if os.name == "nt" and not str(tmp_path).startswith("\\\\?\\"):
+        tmp_path = Path("\\\\?\\" + str(tmp_path.resolve()))
+    folder = tmp_path / "contracts/semantic-contract/v1.0/resources"
+    folder.mkdir(parents=True)
+    value = {
+        "semanticContractFamily": "architecture-interpretation",
+        "semanticContractVersion": "1.0",
+    }
+    (folder / "architecture-interpretation-shared.json").write_text(
+        json.dumps(value), encoding="utf-8"
+    )
+    assert assets.canonical_resource(tmp_path, "architecture-interpretation/1.0/shared") == value
+    with pytest.raises(ValueError, match="missing exact canonical resource"):
+        assets.canonical_resource(tmp_path, "architecture-interpretation/1.5/shared")

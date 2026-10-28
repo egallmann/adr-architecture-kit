@@ -640,6 +640,65 @@ def test_authentically_accepted_governance_is_required(
         promotion.bundle_evidence(admitted["bundle"], admitted["source"], 88)
 
 
+@pytest.mark.parametrize(
+    "member",
+    [
+        "contracts/example/v1.5/rules.json",
+        "src/adr_kit/core/semantic-core.wasm",
+        "src/adr_kit/schema/member.json",
+        "src/adr_kit/compatibility/member.json",
+    ],
+)
+@pytest.mark.parametrize("mutation", ["tracked", "untracked", "ignored"])
+def test_source_commit_excludes_changed_or_uncommitted_authority(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, member: str, mutation: str
+) -> None:
+    # Real temporary Git commits bind source bytes. This fixture does not activate
+    # repository governance or substitute for authentic human acceptance.
+    root = tmp_path / "source"
+    root.mkdir()
+
+    def git(*args: str) -> str:
+        return subprocess.check_output(
+            ["git", *args], cwd=root, text=True, stderr=subprocess.STDOUT
+        ).strip()
+
+    git("init")
+    path = root / member
+    path.parent.mkdir(parents=True)
+    path.write_bytes(b"original")
+    (root / ".gitignore").write_text("*.pyc\nignored/\n", encoding="utf-8")
+    git("add", ".")
+    git(
+        "-c",
+        "user.name=Test Fixture",
+        "-c",
+        "user.email=fixture@example.invalid",
+        "commit",
+        "-m",
+        "Source byte fixture",
+    )
+    source = git("rev-parse", "HEAD")
+    monkeypatch.setattr(
+        promotion,
+        "qualify_repository",
+        lambda _: {"effective_replacements": ["fixture"], "activation": "fixture"},
+    )
+    # Ordinary interpreter cache files must not invalidate a clean source.
+    (path.parent / "module.pyc").write_bytes(b"cache")
+    promotion.verify_source(source, root)
+    if mutation == "tracked":
+        path.write_bytes(b"changed")
+    elif mutation == "untracked":
+        path.with_name("extra" + path.suffix).write_bytes(b"uncommitted authority")
+    else:
+        hidden = path.parent / "ignored"
+        hidden.mkdir()
+        (hidden / path.name).write_bytes(b"ignored authority")
+    with pytest.raises((ValueError, RuntimeError), match="source authority"):
+        promotion.verify_source(source, root)
+
+
 def test_released_schema_only_and_protocol_authorities_remain_protected(
     qualified_index: scanner.AuthorityIndex,
 ) -> None:

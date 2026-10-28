@@ -159,6 +159,19 @@ def verify_source(source: str, root: Path) -> None:
         and governance["activation"] != "inactive_without_independent_human_evidence",
         "ADR-L-0040 governance is not authentically active",
     )
+    protected = (
+        "contracts",
+        "schema",
+        "PROJECT.yaml",
+        "pyproject.toml",
+        "packages/node/package.json",
+        "src/adr_kit/core",
+        "src/adr_kit/schema",
+        "src/adr_kit/compatibility",
+        "src/adr_kit/semantic_contract",
+        "src/adr_kit/promotion/rules",
+        "adrs/migrations/semantic-contract-lifecycle-classification.json",
+    )
     require(
         subprocess.run(
             [
@@ -167,20 +180,26 @@ def verify_source(source: str, root: Path) -> None:
                 "--quiet",
                 "HEAD",
                 "--",
-                "contracts",
-                "schema",
-                "PROJECT.yaml",
-                "pyproject.toml",
-                "packages/node/package.json",
-                "src/adr_kit/semantic_contract",
-                "src/adr_kit/promotion/rules",
-                "adrs/migrations/semantic-contract-lifecycle-classification.json",
+                *protected,
             ],
             cwd=root,
             check=False,
         ).returncode
         == 0,
         "changed source authority",
+    )
+    untracked = (
+        subprocess.check_output(["git", "ls-files", "--others", "-z", "--", *protected], cwd=root)
+        .decode("utf-8")
+        .split("\0")
+    )
+    require(
+        not any(
+            Path(name).suffix.lower() in {".json", ".yaml", ".yml", ".toml", ".wasm"}
+            for name in untracked
+            if name
+        ),
+        "uncommitted source authority",
     )
 
 

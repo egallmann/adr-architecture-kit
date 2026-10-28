@@ -1333,8 +1333,18 @@ def qualify_conformance_schema(value: dict[str, Any]) -> None:
     )
 
 
-def qualify(root: Path = ROOT, *, published: bool = True) -> dict[str, Any]:
-    token = _snapshot.set({})
+def qualify(
+    root: Path = ROOT,
+    *,
+    published: bool = True,
+    candidate_definition: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    # Proposed metadata receives the same complete independent qualification.
+    token = _snapshot.set(
+        {PREFIX + "contract": copy.deepcopy(candidate_definition)}
+        if candidate_definition is not None
+        else {}
+    )
     digest_token = _digests.set({})
     try:
         return _qualify(root, published=published)

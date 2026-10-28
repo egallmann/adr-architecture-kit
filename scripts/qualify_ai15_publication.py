@@ -943,8 +943,18 @@ def qualify_oracles(root: Path, value: dict[str, Any], catalog: dict[str, Any]) 
     )
 
 
-def qualify(root: Path = ROOT, *, published: bool = True) -> dict[str, Any]:
-    token = _snapshot.set({})
+def qualify(
+    root: Path = ROOT,
+    *,
+    published: bool = True,
+    candidate_definition: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    # Validate proposed derived metadata before any distribution files are written.
+    token = _snapshot.set(
+        {(root, PREFIX + "contract"): copy.deepcopy(candidate_definition)}
+        if candidate_definition is not None
+        else {}
+    )
     try:
         return _qualify(root, published=published)
     except (

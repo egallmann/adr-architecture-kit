@@ -1,7 +1,27 @@
-# ACC 1.5 authority publication
+# ACC 1.5 current candidate consolidation
 
 ACC 1.5 selects exact AI 1.5 under accepted ADR-L-0039, retaining ADR-L-0037/0038
-and inherited construction meaning. It publishes authority, not execution.
+and inherited construction meaning. Accepted ADR-L-0040 classifies AI 1.5,
+ACC 1.5 and NM 2.5 as candidates until explicit promotion. A new Git revision may
+change candidate content and its exact SCF without incrementing these versions.
+No execution or compatibility promotion follows from generation or merge.
+
+The inventory below records the original PR #186 revision
+`6ddc8c2b6d66531ff3ecefb0bba7b15616ac4f0c`, retained as migration evidence.
+It is not a perpetual compatibility pin for later candidate revisions.
+
+## Maintained inputs and integration checkpoints
+
+AI/ACC 1.5 resources are maintained canonical inputs. Their generators now derive
+exact reference closures, commitments and package mirrors without reconstructing
+rules from predecessor builders. Complete independent semantic qualification of
+the proposed definition precedes distribution. This first checkpoint reproduces
+the original definitions exactly; no authority resource bytes changed.
+
+The subsequent atomic checkpoint must qualify an explicit selector migration and
+remove development-only lineage/byte obligations. It must preserve actual released
+authority, all accepted semantic rules and independently necessary conformance.
+Until that work and co-dependent consumers are qualified, consolidation is incomplete.
 
 | Authority | Exact SCF | Resources |
 | --- | --- | --- |
@@ -22,8 +42,10 @@ packaging includes the exact published data. No current selection changes.
 The 125-member closure is discovered from actual dependencies: complete ACC 1.4
 and AI 1.5 closures, their exact definitions, and seven own resources. The
 qualifier independently checks membership, roles, digests and every edge.
-Only `authoring-construction/1.5/conformance` is frozen normative ACC 1.5
-conformance. The enclosing ACC 1.5 SCF never appears inside its own closure.
+Only `authoring-construction/1.5/conformance` is selected normative ACC 1.5
+conformance. The definition's `frozenNormativeConformanceResources` field selects
+exact content for a candidate revision; ADR-L-0040 governs when promotion freezes
+compatibility. The enclosing ACC 1.5 SCF never appears inside its own closure.
 
 ## Construction and required-output authority
 

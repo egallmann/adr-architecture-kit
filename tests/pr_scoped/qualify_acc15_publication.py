@@ -1,4 +1,4 @@
-"""ACC 1.5 PR-only preservation gate. Explicit revisions, no permanent base."""
+"""Current-candidate PR-only preservation gate. Explicit revisions, no permanent base."""
 
 from __future__ import annotations
 
@@ -18,12 +18,16 @@ NAMES = (
     "conformance.schema",
 )
 EXISTING = {
+    "scripts/generate_ai15_publication.py",
+    "scripts/qualify_ai15_publication.py",
     "scripts/generate_semantic_contract_assets.py",
     "scripts/run_pr_feedback.py",
     "src/adr_kit/semantic_contract/__init__.py",
     "packages/node/src/node/semantic-contract.ts",
 }
 ALLOWED = EXISTING | {
+    "scripts/candidate_contract_assets.py",
+    "tests/test_current_candidate_assets.py",
     "scripts/generate_acc15_publication.py",
     "scripts/qualify_acc15_publication.py",
     "tests/pr_scoped/qualify_acc15_publication.py",
@@ -59,7 +63,7 @@ def qualify(base: str, head: str) -> dict[str, object]:
     subprocess.run(["git", "merge-base", "--is-ancestor", base, head], cwd=ROOT, check=True)
     changed = git("diff", "--name-only", base, head).splitlines()
     if bad := set(changed) - ALLOWED:
-        raise ValueError("Outside ACC 1.5 publication inventory: " + repr(sorted(bad)))
+        raise ValueError("Outside current candidate checkpoint inventory: " + repr(sorted(bad)))
     before = {
         line.split("\t", 1)[1]: line.split()[2] for line in git("ls-tree", "-r", base).splitlines()
     }

@@ -408,12 +408,14 @@ class AuthorityIndex:
             if declared is not None:
                 declarations.setdefault(declared, set()).add(identity)
         self.released_digests: set[str] = set()
+        self.released_values: dict[str, set[str]] = {}
 
-        def visit(value: Any) -> None:
+        def visit(value: Any, required: set[str]) -> None:
             identity = json_identity(value)
             if identity in self.control_values:
                 return
             if identity in self.values:
+                required.add(identity)
                 self.released_digests.update(entry[3] for entry in self.values[identity])
                 if isinstance(value, dict) and "semanticContractFamily" in value:
                     self.released.add(
@@ -428,23 +430,24 @@ class AuthorityIndex:
                         f"changed or missing released resource: {declared}",
                     )
                 for child in value.values():
-                    visit(child)
+                    visit(child, required)
             elif isinstance(value, list):
                 for child in value:
-                    visit(child)
+                    visit(child, required)
 
         for payload in released_payloads(classification, root):
             wheel = payload[:2] == b"PK"
+            required = self.released_values.setdefault("wheel" if wheel else "npm", set())
             for name, data in archive_members(payload, wheel).items():
                 if name.endswith(".json"):
-                    visit(read_json(data))
+                    visit(read_json(data), required)
                 elif name.endswith((".js", ".mjs")):
                     for _, value in json_objects(data.decode("utf-8")):
-                        visit(value)
+                        visit(value, required)
                 elif name.endswith(".wasm"):
                     for _, raw in wasm_data(data):
                         for _, value in json_objects(raw.decode("utf-8", errors="surrogateescape")):
-                            visit(value)
+                            visit(value, required)
 
     def _source_member(self, value: Any, family: str, version: str, source_path: str) -> None:
         published = {
@@ -746,6 +749,12 @@ def discover_inventory(bundle: Path, source: str, root: Path = ROOT) -> dict[str
         require(wasm_count > 0, f"package missing embedded WASM: {artifact}")
     require(package_kinds == {"wheel", "sdist", "npm"}, "incomplete distribution cohort")
     require(len(wasm_hashes) == 1, "missing or inconsistent packaged WASM")
+    for artifact, values in contents_seen.items():
+        released_kind = "npm" if artifact.endswith(".tgz") else "wheel"
+        require(
+            index.released_values[released_kind] <= values,
+            f"missing released packaged authority in {artifact}",
+        )
     for artifact, identity in definitions_seen:
         for entry in index.required[identity]:
             require(

@@ -15,8 +15,11 @@ SCF resource closures and missing schema-reference dependencies. Test/example da
 in an sdist is not an independently discoverable runtime authority.
 
 Every discovered value must match exact canonical source authority on the certified
-source revision. Definition fingerprints and closures are verified by the existing
-Rust semantic-contract implementation. Resource-qualified/schema-only authority is
+source revision. Tracked authority, packaged schema/compatibility mirrors and WASM
+must match that commit; untracked or ignored authority files cannot supplement it.
+Ordinary interpreter cache files are not authority. Definition fingerprints and
+closures are verified by the existing Rust semantic-contract implementation.
+Resource-qualified/schema-only authority is
 included without an invented SCF. Source-qualified released identities and resources
 remain protected by the accepted positive release evidence. Package placement and
 duplicate placements are evidence, not additional semantic ownership.
@@ -28,6 +31,12 @@ than treating a non-SCF authority as a candidate merely because it lacks an SCF.
 Mutable catalog, policy, current-pointer and host-capability metadata remains
 source/package integrity evidence; it is not promoted into immutable semantic
 meaning by its physical presence.
+
+Each Python distribution must retain the authority values from the recorded released
+wheel; npm must retain those from the recorded released npm artifact. This is checked
+even when an entire old definition is absent, not only when a present definition has
+an incomplete closure. Equivalent package locations may change; released meaning
+cannot disappear. Unreleased candidate revisions do not establish this obligation.
 
 The resulting `authority-inventory.json` and `authority-manifest.json` use the shared
 Rust canonical JSON implementation. Arrays have deterministic authority/resource/

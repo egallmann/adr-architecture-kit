@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import base64
 import copy
+import hashlib
 import io
 import json
 import os
@@ -70,8 +71,7 @@ def cohort_template(
     ]
     files = {
         p.relative_to(ROOT / "src").as_posix(): p.read_bytes()
-        for directory in ("semantic_contract", "schema", "compatibility")
-        for p in (ROOT / "src/adr_kit" / directory).rglob("*.json")
+        for p in (ROOT / "src/adr_kit").rglob("*.json")
     }
     files["adr_kit/core/semantic-core.wasm"] = (
         ROOT / "src/adr_kit/core/semantic-core.wasm"
@@ -360,6 +360,64 @@ def test_changed_resource_with_recalculated_package_digests_is_not_authority(
     files[name] = json.dumps(value).encode()
     wheel.write_bytes(zip_payload(files))
     with pytest.raises((ValueError, RuntimeError), match="unknown or changed"):
+        scanner.create_cohort(bundle, admitted["source"])
+
+
+@pytest.mark.parametrize("kind", ["wheel", "sdist", "npm"])
+def test_entire_released_authority_cannot_disappear_from_a_distribution(
+    admitted: dict[str, Any],
+    qualified_index: scanner.AuthorityIndex,
+    monkeypatch: pytest.MonkeyPatch,
+    kind: str,
+) -> None:
+    bundle = admitted["bundle"]
+    pattern = {
+        "wheel": "python-dist/*.whl",
+        "sdist": "python-dist/*.tar.gz",
+        "npm": "node-dist/*.tgz",
+    }[kind]
+    artifact = next(bundle.glob(pattern))
+    files = scanner.archive_members(artifact.read_bytes(), kind == "wheel")
+    wasm = (ROOT / "src/adr_kit/core/semantic-core.wasm").read_bytes()
+    embedded = {
+        value for _, value in qualified_index.observations["wasm", hashlib.sha256(wasm).hexdigest()]
+    }
+    manifest_keys = {e["key"] for entries in qualified_index.required.values() for e in entries}
+    baseline = qualified_index.released_values["npm" if kind == "npm" else "wheel"]
+    candidates = {}
+    for name, data in files.items():
+        if not name.endswith(".json"):
+            continue
+        value = scanner.json_identity(json.loads(data))
+        if (
+            value in baseline
+            and value not in embedded
+            and not any(entry[2] in manifest_keys for entry in qualified_index.values[value])
+            and not any(
+                value in targets
+                for owner, targets in qualified_index.schema_dependencies.items()
+                if owner != value
+            )
+        ):
+            candidates.setdefault(value, []).append(name)
+    if not candidates:
+        pytest.skip(
+            "No released JSON-only leaf; released meaning is retained by other representations"
+        )
+    selected = sorted(candidates)[0]
+    for name in candidates[selected]:
+        del files[name]
+    artifact.write_bytes(zip_payload(files) if kind == "wheel" else tar_payload(files))
+    # Isolate the whole-authority requirement: all other source/closure checks
+    # still qualify. This does not create an approval or a publisher receipt.
+    with monkeypatch.context() as patch:
+        patch.setattr(
+            qualified_index,
+            "released_values",
+            {k: values - {selected} for k, values in qualified_index.released_values.items()},
+        )
+        scanner.discover_inventory(bundle, admitted["source"])
+    with pytest.raises((ValueError, RuntimeError), match="missing released packaged authority"):
         scanner.create_cohort(bundle, admitted["source"])
 
 

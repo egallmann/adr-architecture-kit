@@ -692,13 +692,28 @@ def test_valid_recomputed_SCF_and_closure_cannot_authorize_a_bad_rule(
         rules["schema_authority"]["content_digest"] = digest(
             snapshot[P + "composition-bindings.schema"]
         )
+    original = snapshot[P + "contract"]["resourceManifest"]
+    historical = get_semantic_contract("authoring-construction", "1.4").to_wire()[
+        "resourceManifest"
+    ]
+    roles = {m["canonicalResourceKey"]: m["role"] for m in [*historical, *original]}
+    # An attacker must actually supply the substituted schema and its closure.
+    # It is no longer implicitly present through a predecessor manifest import.
+    selected = publication.dependency_closure(
+        ROOT,
+        {
+            m["canonicalResourceKey"]: publication.read(ROOT, m["canonicalResourceKey"])
+            for m in original
+        },
+        publication.read,
+    )
     manifest = []
-    for m in snapshot[P + "contract"]["resourceManifest"]:
-        key = m["canonicalResourceKey"]
+    for key in sorted(selected):
         value = publication.read(ROOT, key)
         manifest.append(
             {
-                **m,
+                "canonicalResourceKey": key,
+                "role": roles[key],
                 "contentDigest": digest(value),
                 "dependencies": [
                     {"canonicalResourceKey": k, "contentDigest": digest(publication.read(ROOT, k))}

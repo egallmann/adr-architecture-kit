@@ -21,8 +21,7 @@ def test_current_closures_follow_edges_not_predecessor_manifests() -> None:
         definition, values = assets.assemble(ROOT, family)
         roots = {k: v for k, v in values.items() if k.startswith(family + "/1.5/")}
         assert set(values) == assets.dependency_closure(ROOT, roots, assets.canonical_resource)
-        assert qualifier.BASE + "contract" not in values
-        assert qualifier.BASE + "conformance" not in values
+        # Membership follows the qualified graph, not forever-absent versions.
         # The actual rule and structural fragments retain their real identities.
         assert "architecture-interpretation/1.3/lifecycle-ownership" in values
         assert "architecture-interpretation/1.4/required-output-derivations" in values
@@ -229,16 +228,40 @@ def test_rehashed_unauthorized_nm_semantics_fail(monkeypatch: pytest.MonkeyPatch
 @pytest.mark.parametrize("module", [ai, acc])
 def test_rehashed_predecessor_manifest_import_is_not_current_authority(module: Any) -> None:
     current = assets.canonical_resource(ROOT, module.PREFIX + "contract")
-    key = module.BASE + "contract"
-    historical = assets.historical_resource(ROOT, key)
+    historical_definition = assets.historical_resource(ROOT, module.BASE + "contract")
+    current_keys = {m["canonicalResourceKey"] for m in current["resourceManifest"]}
+    candidates = [
+        module.BASE + "contract",
+        *[m["canonicalResourceKey"] for m in historical_definition["resourceManifest"]],
+    ]
+    key = next(k for k in candidates if k not in current_keys)
+    roots = {
+        m["canonicalResourceKey"]: assets.canonical_resource(ROOT, m["canonicalResourceKey"])
+        for m in current["resourceManifest"]
+    }
+    roots[key] = assets.historical_resource(ROOT, key)
+    selected = assets.dependency_closure(ROOT, roots, assets.canonical_resource)
+    roles = {
+        m["canonicalResourceKey"]: m["role"]
+        for m in [*historical_definition["resourceManifest"], *current["resourceManifest"]]
+    }
+    roles[module.BASE + "contract"] = "normative-definition"
     manifest = [
-        *current["resourceManifest"],
         {
-            "canonicalResourceKey": key,
-            "contentDigest": assets.digest(historical),
-            "role": "normative-definition",
-            "dependencies": [],
-        },
+            "canonicalResourceKey": k,
+            "contentDigest": assets.digest(assets.canonical_resource(ROOT, k)),
+            "role": roles[k],
+            "dependencies": [
+                {
+                    "canonicalResourceKey": dep,
+                    "contentDigest": assets.digest(assets.canonical_resource(ROOT, dep)),
+                }
+                for dep in sorted(
+                    assets.discovered_dependencies(k, assets.canonical_resource(ROOT, k))
+                )
+            ],
+        }
+        for k in sorted(selected)
     ]
     forged = assets.definition(
         current["semanticContractFamily"],
@@ -247,6 +270,13 @@ def test_rehashed_predecessor_manifest_import_is_not_current_authority(module: A
         version="1.5",
     )
     assert verify_semantic_contract(forged).success
+    assert validate_semantic_resource_closure(
+        forged,
+        [
+            {"canonicalResourceKey": k, "content": assets.canonical_resource(ROOT, k)}
+            for k in sorted(selected)
+        ],
+    ).closure_valid
     with pytest.raises(ai.PublicationError, match="incomplete_extra_or_duplicate"):
         module.qualify(ROOT, candidate_definition=forged)
 

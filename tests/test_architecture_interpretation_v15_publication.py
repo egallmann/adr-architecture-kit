@@ -130,6 +130,7 @@ def test_every_inherited_declaration_and_type_is_preserved(semantic_type: str) -
         "wrong_input_type",
         "wrong_manifest_role",
         "wrong_source_selector",
+        "malformed_qualification",
         "wrong_destination_branch",
         "missing_producer",
         "competing_producer",
@@ -186,6 +187,8 @@ def test_independent_negative_mutations_fail_closed(snapshot: dict[str, Any], fa
         snapshot[P + "contract"]["resourceManifest"][0]["role"] = "interpretation-rule"
     elif fault == "wrong_source_selector":
         entry["producer"]["inputs"][1]["schema_pointer"] = "/properties/title"
+    elif fault == "malformed_qualification":
+        c["field_dispositions"]["canonical_resource_key"] = {}
     elif fault == "wrong_destination_branch":
         c["types"][0]["output_branch"] = "canonical-relationship"
     elif fault == "missing_producer":
@@ -288,7 +291,9 @@ def test_independent_negative_mutations_fail_closed(snapshot: dict[str, Any], fa
     elif fault == "missing_remaining_blocker":
         c["blockers"].pop("fingerprint_preimage")
     elif fault == "wrong_rule_selection":
-        snapshot[P + "rules"]["inherits"]["semantic_contract_fingerprint"] = publication.NM25_SCF
+        snapshot[P + "rules"]["inherits"]["semantic_contract_fingerprint"] = (
+            publication.selected_nm_fingerprint(ROOT)
+        )
     elif fault == "wrong_definition_SCF":
         snapshot[P + "contract"]["semanticContractFingerprint"] = "scf:v1:sha256:" + "0" * 64
     elif fault == "wrong_definition_version":
@@ -391,10 +396,9 @@ def test_deterministic_version_isolated_generation() -> None:
 
 def test_exact_discovery_rejects_missing_versions_keys_and_resources() -> None:
     assert load_semantic_resource(P + "contract")["semanticContractFingerprint"] == SCF
-    assert (
-        load_semantic_resource("normalized-model/2.5/contract")["semanticContractFingerprint"]
-        == publication.NM25_SCF
-    )
+    assert load_semantic_resource("normalized-model/2.5/contract")[
+        "semanticContractFingerprint"
+    ] == publication.selected_nm_fingerprint(ROOT)
     with pytest.raises(LookupError):
         get_semantic_contract("architecture-interpretation", "99.99")
     for key in (

@@ -77,7 +77,7 @@
       ],
       "properties": {
         "definition": {
-          "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+          "$ref": "required-output-derivations.schema.json#/$defs/qualified_resource"
         },
         "semantic_contract_fingerprint": {
           "type": "string",
@@ -99,7 +99,7 @@
       ],
       "properties": {
         "qualification": {
-          "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+          "$ref": "required-output-derivations.schema.json#/$defs/qualified_resource"
         },
         "governing_family": {
           "const": "architecture-interpretation"
@@ -424,6 +424,6 @@
     }
   },
   "semanticDependencies": [
-    "architecture-interpretation/1.4/required-output-derivations.schema"
+    "architecture-interpretation/1.5/required-output-derivations.schema"
   ]
 }

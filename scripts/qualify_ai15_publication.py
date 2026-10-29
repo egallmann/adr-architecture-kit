@@ -28,6 +28,7 @@ from scripts.generate_semantic_contract_assets import (
 )
 from scripts.qualify_ai13_publication import PublicationError, pointer
 from scripts import qualify_ai14_publication as historical
+from scripts.candidate_contract_assets import canonical_resource
 
 ROOT = Path(__file__).resolve().parents[1]
 PREFIX = "architecture-interpretation/1.5/"
@@ -46,7 +47,18 @@ NAMES = (
 NM = "normalized-model/2.5/contract"
 CONTEXT = "architecture-interpretation/1.3/detached-context"
 AI14_SCF = "scf:v1:sha256:5c338d24961946d7f7d4350d5bfbbfb9e3882c56c8be09ba4d242169163acdd7"
-NM25_SCF = "scf:v1:sha256:bb48720502668e434d378445004aec7783346a0e74254c9e0d3cb01a8798d9d7"
+# Only actually selected validation fragments are maintained by the candidate.
+# Original semantic rule identities and the inherited contract are not renamed.
+SCHEMA_FRAGMENTS = {
+    "coverage_source_contract": "/properties/source_contract",
+    "coverage_output_contract": "/properties/output_contract",
+    "qualified_resource": "/properties/field_dispositions",
+    "coverage_operation": "/properties/operation",
+    "coverage_policy": "/properties/coverage",
+    "coverage_branches": "/properties/branches",
+    "coverage_status_scope": "/properties/status_scope",
+    "coverage_output_type": "/properties/types/items",
+}
 CODES = {
     "/alias_ref": "alias_ref_recipe",
     "/uri": "uri_recipe",
@@ -70,6 +82,45 @@ _snapshot: ContextVar[dict[tuple[Path, str], Any] | None] = ContextVar(
 def require(condition: bool, code: str) -> None:
     if not condition:
         raise PublicationError(code)
+
+
+def selected_nm_fingerprint(root: Path = ROOT) -> str:
+    """Current source expectation, not proof of authority by itself."""
+    return str(canonical_resource(root, NM)["semanticContractFingerprint"])
+
+
+def qualify_current_nm25(root: Path) -> dict[str, Any]:
+    from adr_kit.semantic_contract import (
+        verify_semantic_contract,
+        validate_semantic_resource_closure,
+    )
+
+    expected: dict[str, Any] = canonical_resource(root, NM)
+    require(read(root, NM) == expected, "inconsistent_current_NM_definition")
+    require(
+        expected["semanticContractFamily"] == "normalized-model"
+        and expected["semanticContractVersion"] == "2.5"
+        and expected["frozenNormativeConformanceResources"] == ["normalized-model/2.5/conformance"],
+        "wrong_current_NM_identity",
+    )
+    supplied = []
+    for member in expected["resourceManifest"]:
+        key = member["canonicalResourceKey"]
+        content = canonical_resource(root, key)
+        require(read(root, key) == content, "inconsistent_current_NM_resource")
+        require(member["contentDigest"] == digest(content), "current_NM_resource_digest")
+        dependencies = [
+            {"canonicalResourceKey": dep, "contentDigest": digest(canonical_resource(root, dep))}
+            for dep in sorted(discovered_dependencies(key, content))
+        ]
+        require(member["dependencies"] == dependencies, "current_NM_dependency_selection")
+        supplied.append({"canonicalResourceKey": key, "content": content})
+    require(
+        verify_semantic_contract(expected).success is True
+        and validate_semantic_resource_closure(expected, supplied).closure_valid is True,
+        "unqualified_current_NM_closure",
+    )
+    return expected
 
 
 def read(root: Path, key: str) -> Any:
@@ -118,7 +169,10 @@ def qualified_references(root: Path, value: Any, allowed: set[str]) -> set[str]:
 
     def visit(node: Any) -> None:
         if isinstance(node, dict):
-            if {"canonical_resource_key", "content_digest", "schema_pointer"} <= node.keys():
+            if (
+                isinstance(node.get("canonical_resource_key"), str)
+                and {"content_digest", "schema_pointer"} <= node.keys()
+            ):
                 key = node["canonical_resource_key"]
                 require(key in allowed, "unselected_resource_has_no_authority")
                 require(
@@ -145,7 +199,9 @@ def exact_history(root: Path) -> dict[str, Any]:
     result = historical.qualify(root)
     ai = read(root, BASE + "contract")
     require(ai["semanticContractFingerprint"] == AI14_SCF, "wrong_inherited_AI_selection")
-    for d, expected in ((ai, AI14_SCF), (read(root, NM), NM25_SCF)):
+    # The inherited definition's exact snapshot is historical evidence. Current
+    # NM selection is qualified separately against maintained canonical inputs.
+    for d, expected in ((ai, AI14_SCF),):
         require(
             d["semanticContractFingerprint"] == expected and verify_semantic_contract(d).success,
             "unqualified_exact_definition",
@@ -171,8 +227,7 @@ def schema_registry(root: Path, raw: dict[str, Any]) -> tuple[dict[str, Any], Re
     selects each target first. Only evaluation views get internal absolute IDs;
     immutable schema bytes and their published $ids are not rewritten.
     """
-    documents = {BASE + CATALOG + ".schema": read(root, BASE + CATALOG + ".schema")}
-    documents.update({PREFIX + n: v for n, v in raw.items() if n.endswith(".schema")})
+    documents = {PREFIX + n: v for n, v in raw.items() if n.endswith(".schema")}
 
     def uri(key: str) -> str:
         return "https://sealed.adr-kit.invalid/" + key
@@ -233,7 +288,8 @@ def qualify_schemas(root: Path, raw: dict[str, Any]) -> dict[str, Draft202012Val
             "wrong_companion_identity",
         )
         require(
-            companion.get("semanticDependencies") == [BASE + CATALOG + ".schema"],
+            companion.get("semanticDependencies")
+            == ([] if name == CATALOG else [PREFIX + CATALOG + ".schema"]),
             "incorrect_companion_dependency",
         )
         closed_schema(companion)
@@ -255,6 +311,15 @@ def qualify_schemas(root: Path, raw: dict[str, Any]) -> dict[str, Draft202012Val
     old_schema = read(root, BASE + CATALOG + ".schema")
     schema = raw[CATALOG + ".schema"]
     require(
+        set(schema["$defs"]) == set(SCHEMA_FRAGMENTS) | {"identity_producer", "identity_output"},
+        "missing_or_unqualified_local_fragment",
+    )
+    for name, selector in SCHEMA_FRAGMENTS.items():
+        require(
+            schema["$defs"][name] == pointer(old_schema, selector),
+            "changed_validation_fragment_" + name,
+        )
+    require(
         set(schema["required"])
         == set(old_schema["required"])
         | {"identity_representation_recipes", "inherited_output_authority"},
@@ -262,7 +327,13 @@ def qualify_schemas(root: Path, raw: dict[str, Any]) -> dict[str, Draft202012Val
     )
 
     def reference(pointer: str) -> dict[str, str]:
-        return {"$ref": "../1.4/required-output-derivations.schema.json#" + pointer}
+        source = next(
+            p
+            for p in sorted(SCHEMA_FRAGMENTS.values(), key=len, reverse=True)
+            if pointer == p or pointer.startswith(p + "/")
+        )
+        name = next(n for n, p in SCHEMA_FRAGMENTS.items() if p == source)
+        return {"$ref": "#/$defs/" + name + pointer[len(source) :]}
 
     for key in old_schema["properties"].keys() - {
         "resource",
@@ -393,7 +464,10 @@ def qualify_recipes(root: Path, value: dict[str, Any], old: dict[str, Any]) -> N
     require(value["source_contract"] == "authoring@1.7", "wrong_source_authority")
     require(
         value["destination_authority"]
-        == {"definition": qualification(root, NM), "semantic_contract_fingerprint": NM25_SCF},
+        == {
+            "definition": qualification(root, NM),
+            "semantic_contract_fingerprint": selected_nm_fingerprint(root),
+        },
         "wrong_destination_authority",
     )
     require(
@@ -977,6 +1051,7 @@ def qualify(
 
 def _qualify(root: Path, *, published: bool) -> dict[str, Any]:
     exact_history(root)
+    qualify_current_nm25(root)
     old = read(root, BASE + CATALOG)
     raw = {name: read(root, PREFIX + name) for name in NAMES}
     allowed = (
@@ -1043,7 +1118,10 @@ def _qualify(root: Path, *, published: bool) -> dict[str, Any]:
     )
     require(
         rules["destination_authority"]
-        == {"definition": qualification(root, NM), "semantic_contract_fingerprint": NM25_SCF}
+        == {
+            "definition": qualification(root, NM),
+            "semantic_contract_fingerprint": selected_nm_fingerprint(root),
+        }
         and rules["required_output_catalog"] == qualification(root, PREFIX + CATALOG)
         and rules["recipe_authority"] == qualification(root, PREFIX + RECIPES),
         "unqualified_successor_selection",

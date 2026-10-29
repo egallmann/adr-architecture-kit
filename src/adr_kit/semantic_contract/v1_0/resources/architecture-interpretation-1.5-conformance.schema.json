@@ -30,7 +30,7 @@
       "const": false
     },
     "inherited_conformance": {
-      "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+      "$ref": "required-output-derivations.schema.json#/$defs/qualified_resource"
     },
     "inherited_cases": {
       "type": "array",
@@ -48,7 +48,7 @@
             "pattern": "^AI14-[0-9]{3}$"
           },
           "qualification": {
-            "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+            "$ref": "required-output-derivations.schema.json#/$defs/qualified_resource"
           },
           "scope": {
             "enum": [
@@ -128,10 +128,10 @@
                 ]
               },
               "source_schema": {
-                "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+                "$ref": "required-output-derivations.schema.json#/$defs/qualified_resource"
               },
               "destination_schema": {
-                "$ref": "../1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+                "$ref": "required-output-derivations.schema.json#/$defs/qualified_resource"
               },
               "timestamp_ms": {
                 "type": "integer",
@@ -165,6 +165,6 @@
     }
   },
   "semanticDependencies": [
-    "architecture-interpretation/1.4/required-output-derivations.schema"
+    "architecture-interpretation/1.5/required-output-derivations.schema"
   ]
 }

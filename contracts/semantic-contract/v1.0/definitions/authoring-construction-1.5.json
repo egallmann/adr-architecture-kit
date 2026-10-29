@@ -1471,7 +1471,7 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/conformance.schema",
-          "contentDigest": "sha256:810e40d28c72c909a836207f2ed4a7e45d6f688614d509c380879d29ef520e0a"
+          "contentDigest": "sha256:b13289ba626de5db74efebd573d3a70eb9578886bfc72b0868a5e32eed3a691d"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes",
@@ -1513,18 +1513,18 @@
     },
     {
       "canonicalResourceKey": "architecture-interpretation/1.5/conformance.schema",
-      "contentDigest": "sha256:810e40d28c72c909a836207f2ed4a7e45d6f688614d509c380879d29ef520e0a",
+      "contentDigest": "sha256:b13289ba626de5db74efebd573d3a70eb9578886bfc72b0868a5e32eed3a691d",
       "role": "source-contract-schema",
       "dependencies": [
         {
-          "canonicalResourceKey": "architecture-interpretation/1.4/required-output-derivations.schema",
-          "contentDigest": "sha256:2cb0ff9c6632e18aeeb91f1b41ce083faa01ba283dae32a4a9eb00bce2f041c5"
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations.schema",
+          "contentDigest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794"
         }
       ]
     },
     {
       "canonicalResourceKey": "architecture-interpretation/1.5/contract",
-      "contentDigest": "sha256:21dab9dc6691c7bae5d65db6e7bfb8f25ed7c02c59c3567422e4d327464e5278",
+      "contentDigest": "sha256:d73b56dd85fe752b5ae32b2515e0e66c0d3f93d61c96962b3a734f7fd0a903c9",
       "role": "normative-definition",
       "dependencies": []
     },
@@ -1539,7 +1539,7 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes.schema",
-          "contentDigest": "sha256:a24a7f4a2acc0b0595ec2e1243e298f4eea49ddc2b6e01423c95efad444e6d86"
+          "contentDigest": "sha256:716e3fdc02feda104a36538eb642ea8e3cbfe18d8382d6ed7cb6aa1c74fbe7f7"
         },
         {
           "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
@@ -1573,12 +1573,12 @@
     },
     {
       "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes.schema",
-      "contentDigest": "sha256:a24a7f4a2acc0b0595ec2e1243e298f4eea49ddc2b6e01423c95efad444e6d86",
+      "contentDigest": "sha256:716e3fdc02feda104a36538eb642ea8e3cbfe18d8382d6ed7cb6aa1c74fbe7f7",
       "role": "source-contract-schema",
       "dependencies": [
         {
-          "canonicalResourceKey": "architecture-interpretation/1.4/required-output-derivations.schema",
-          "contentDigest": "sha256:2cb0ff9c6632e18aeeb91f1b41ce083faa01ba283dae32a4a9eb00bce2f041c5"
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations.schema",
+          "contentDigest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794"
         }
       ]
     },
@@ -1629,7 +1629,7 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations.schema",
-          "contentDigest": "sha256:79e2237d6068258fe8d30d38c670908364acb6d92ff89f9c05957d64b1331588"
+          "contentDigest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794"
         },
         {
           "canonicalResourceKey": "authoring-domain/1.1/contract",
@@ -1671,14 +1671,9 @@
     },
     {
       "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations.schema",
-      "contentDigest": "sha256:79e2237d6068258fe8d30d38c670908364acb6d92ff89f9c05957d64b1331588",
+      "contentDigest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794",
       "role": "source-contract-schema",
-      "dependencies": [
-        {
-          "canonicalResourceKey": "architecture-interpretation/1.4/required-output-derivations.schema",
-          "contentDigest": "sha256:2cb0ff9c6632e18aeeb91f1b41ce083faa01ba283dae32a4a9eb00bce2f041c5"
-        }
-      ]
+      "dependencies": []
     },
     {
       "canonicalResourceKey": "architecture-interpretation/1.5/rules",
@@ -3671,7 +3666,7 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/contract",
-          "contentDigest": "sha256:21dab9dc6691c7bae5d65db6e7bfb8f25ed7c02c59c3567422e4d327464e5278"
+          "contentDigest": "sha256:d73b56dd85fe752b5ae32b2515e0e66c0d3f93d61c96962b3a734f7fd0a903c9"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes",
@@ -4047,12 +4042,12 @@
     },
     {
       "canonicalResourceKey": "authoring-construction/1.5/conformance",
-      "contentDigest": "sha256:06505b453ee8e44d6534f38a73619d76d237dba4d503a13402b8906a121bda2d",
+      "contentDigest": "sha256:b126fb47505f47867bdef95ef44232c2898e7a6f7a0253f62ce4069005127646",
       "role": "interpretation-conformance",
       "dependencies": [
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/contract",
-          "contentDigest": "sha256:21dab9dc6691c7bae5d65db6e7bfb8f25ed7c02c59c3567422e4d327464e5278"
+          "contentDigest": "sha256:d73b56dd85fe752b5ae32b2515e0e66c0d3f93d61c96962b3a734f7fd0a903c9"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes",
@@ -4084,15 +4079,15 @@
         },
         {
           "canonicalResourceKey": "authoring-construction/1.5/conformance.schema",
-          "contentDigest": "sha256:7f0c90d54dc558373778a1665a2f017fc68747228c8a4984a03c88feea5ddb9c"
+          "contentDigest": "sha256:d4b558693b6d7f80e3803f0be4a3b5c2c9a6a41db5f077e64c00901f4de99d60"
         },
         {
           "canonicalResourceKey": "authoring-construction/1.5/rules",
-          "contentDigest": "sha256:af0993a47929bb38366e4753f1da42b14cdb91b71e9600e885e9e23919823913"
+          "contentDigest": "sha256:281a8e33c4add2f2d4477da3c51bc6c6e47d8f96933ba70909e4d9eac56d6466"
         },
         {
           "canonicalResourceKey": "authoring-construction/1.5/schema",
-          "contentDigest": "sha256:904b70e9970be617ff263f002459a9d2e84c868d20f8ceda4e46b030d0845d47"
+          "contentDigest": "sha256:dc777b92c3d712c99048a78eb89a8bbdfa3d53401d1b9864ea649a389bd33050"
         },
         {
           "canonicalResourceKey": "normalized-model/2.5/contract",
@@ -4102,12 +4097,12 @@
     },
     {
       "canonicalResourceKey": "authoring-construction/1.5/conformance.schema",
-      "contentDigest": "sha256:7f0c90d54dc558373778a1665a2f017fc68747228c8a4984a03c88feea5ddb9c",
+      "contentDigest": "sha256:d4b558693b6d7f80e3803f0be4a3b5c2c9a6a41db5f077e64c00901f4de99d60",
       "role": "source-contract-schema",
       "dependencies": [
         {
-          "canonicalResourceKey": "architecture-interpretation/1.4/required-output-derivations.schema",
-          "contentDigest": "sha256:2cb0ff9c6632e18aeeb91f1b41ce083faa01ba283dae32a4a9eb00bce2f041c5"
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations.schema",
+          "contentDigest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794"
         },
         {
           "canonicalResourceKey": "authoring-construction/1.4/conformance.schema",
@@ -4117,7 +4112,7 @@
     },
     {
       "canonicalResourceKey": "authoring-construction/1.5/rules",
-      "contentDigest": "sha256:af0993a47929bb38366e4753f1da42b14cdb91b71e9600e885e9e23919823913",
+      "contentDigest": "sha256:281a8e33c4add2f2d4477da3c51bc6c6e47d8f96933ba70909e4d9eac56d6466",
       "role": "interpretation-rule",
       "dependencies": [
         {
@@ -4226,11 +4221,11 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/conformance.schema",
-          "contentDigest": "sha256:810e40d28c72c909a836207f2ed4a7e45d6f688614d509c380879d29ef520e0a"
+          "contentDigest": "sha256:b13289ba626de5db74efebd573d3a70eb9578886bfc72b0868a5e32eed3a691d"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/contract",
-          "contentDigest": "sha256:21dab9dc6691c7bae5d65db6e7bfb8f25ed7c02c59c3567422e4d327464e5278"
+          "contentDigest": "sha256:d73b56dd85fe752b5ae32b2515e0e66c0d3f93d61c96962b3a734f7fd0a903c9"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes",
@@ -4238,7 +4233,7 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes.schema",
-          "contentDigest": "sha256:a24a7f4a2acc0b0595ec2e1243e298f4eea49ddc2b6e01423c95efad444e6d86"
+          "contentDigest": "sha256:716e3fdc02feda104a36538eb642ea8e3cbfe18d8382d6ed7cb6aa1c74fbe7f7"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations",
@@ -4246,7 +4241,7 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations.schema",
-          "contentDigest": "sha256:79e2237d6068258fe8d30d38c670908364acb6d92ff89f9c05957d64b1331588"
+          "contentDigest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/rules",
@@ -4440,7 +4435,7 @@
     },
     {
       "canonicalResourceKey": "authoring-construction/1.5/schema",
-      "contentDigest": "sha256:904b70e9970be617ff263f002459a9d2e84c868d20f8ceda4e46b030d0845d47",
+      "contentDigest": "sha256:dc777b92c3d712c99048a78eb89a8bbdfa3d53401d1b9864ea649a389bd33050",
       "role": "source-contract-schema",
       "dependencies": [
         {
@@ -4549,11 +4544,11 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/conformance.schema",
-          "contentDigest": "sha256:810e40d28c72c909a836207f2ed4a7e45d6f688614d509c380879d29ef520e0a"
+          "contentDigest": "sha256:b13289ba626de5db74efebd573d3a70eb9578886bfc72b0868a5e32eed3a691d"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/contract",
-          "contentDigest": "sha256:21dab9dc6691c7bae5d65db6e7bfb8f25ed7c02c59c3567422e4d327464e5278"
+          "contentDigest": "sha256:d73b56dd85fe752b5ae32b2515e0e66c0d3f93d61c96962b3a734f7fd0a903c9"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes",
@@ -4561,7 +4556,7 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes.schema",
-          "contentDigest": "sha256:a24a7f4a2acc0b0595ec2e1243e298f4eea49ddc2b6e01423c95efad444e6d86"
+          "contentDigest": "sha256:716e3fdc02feda104a36538eb642ea8e3cbfe18d8382d6ed7cb6aa1c74fbe7f7"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations",
@@ -4569,7 +4564,7 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations.schema",
-          "contentDigest": "sha256:79e2237d6068258fe8d30d38c670908364acb6d92ff89f9c05957d64b1331588"
+          "contentDigest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/rules",
@@ -5229,5 +5224,5 @@
   "frozenNormativeConformanceResources": [
     "authoring-construction/1.5/conformance"
   ],
-  "semanticContractFingerprint": "scf:v1:sha256:4bfbffb564c8c7c8bda8b07b663a238f7396f53164e9561cd94f23473e974d19"
+  "semanticContractFingerprint": "scf:v1:sha256:5f058d9fada1110ab9db43f15e8104afaf33a3e39b9cef507468c4c4363eea29"
 }

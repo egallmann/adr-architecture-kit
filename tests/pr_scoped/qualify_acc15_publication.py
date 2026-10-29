@@ -27,8 +27,24 @@ EXISTING = {
     "scripts/run_pr_feedback.py",
     "src/adr_kit/semantic_contract/__init__.py",
     "packages/node/src/node/semantic-contract.ts",
+    "contracts/architecture-interpretation/v1.5/contract.json",
+    "contracts/semantic-contract/v1.0/definitions/architecture-interpretation-1.5.json",
+    "src/adr_kit/semantic_contract/v1_0/definitions/architecture-interpretation-1.5.json",
+    "src/adr_kit/semantic_contract/v1_0/architecture-interpretation-1.5.json",
 }
+for schema in (
+    "required-output-derivations.schema",
+    "identity-representation-recipes.schema",
+    "conformance.schema",
+):
+    EXISTING.add("contracts/architecture-interpretation/v1.5/resources/" + schema + ".json")
+    for directory in (
+        "contracts/semantic-contract/v1.0/resources",
+        "src/adr_kit/semantic_contract/v1_0/resources",
+    ):
+        EXISTING.add(directory + "/architecture-interpretation-1.5-" + schema + ".json")
 ALLOWED = EXISTING | {
+    "tests/test_candidate_schema_selectors.py",
     "scripts/candidate_contract_assets.py",
     "tests/test_current_candidate_assets.py",
     "scripts/generate_acc15_publication.py",

@@ -27,6 +27,7 @@ from scripts.generate_semantic_contract_assets import (
 from scripts.qualify_acc14_publication import read as historical_read
 from scripts.qualify_ai13_publication import PublicationError, pointer
 from scripts.qualify_ai15_publication import qualify as qualify_ai15
+from scripts.qualify_ai15_publication import selected_nm_fingerprint
 from scripts.candidate_contract_assets import canonical_resource
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -53,7 +54,6 @@ CHECKS = (
     "complete_output",
 )
 ACC14_SCF = "scf:v1:sha256:19e267c5c77477a594414168bde9f733b1b9e547c06fc6836ad09392a248ea6d"
-NM_SCF = "scf:v1:sha256:bb48720502668e434d378445004aec7783346a0e74254c9e0d3cb01a8798d9d7"
 _snapshot: ContextVar[dict[str, Any] | None] = ContextVar("acc15_snapshot", default=None)
 _digests: ContextVar[dict[str, str] | None] = ContextVar("acc15_snapshot_digests", default=None)
 
@@ -130,7 +130,7 @@ def qualified_history(root: Path) -> dict[str, Any]:
     pins = (
         (AI + "contract", selected_ai_fingerprint(root)),
         (BASE + "contract", ACC14_SCF),
-        ("normalized-model/2.5/contract", NM_SCF),
+        ("normalized-model/2.5/contract", selected_nm_fingerprint(root)),
         (
             "architecture-interpretation/1.4/contract",
             "scf:v1:sha256:5c338d24961946d7f7d4350d5bfbbfb9e3882c56c8be09ba4d242169163acdd7",
@@ -1070,7 +1070,7 @@ def qualify_conformance(root: Path, value: dict[str, Any]) -> Counter[str]:
             else:
                 assertions = {
                     "version": "2.5",
-                    "SCF": NM_SCF,
+                    "SCF": selected_nm_fingerprint(root),
                     "complete_actual_model_required": True,
                 }
                 claim = "Require the actual complete schema-valid NM 2.5 result, not a local partial model or schema-valid assertion alone."
@@ -1306,7 +1306,7 @@ def qualify_conformance_schema(value: dict[str, Any]) -> None:
         "$ref": "../1.4/conformance.schema.json#/properties/cases/items/properties/assertions"
     }
     reference = {
-        "$ref": "../../architecture-interpretation/1.4/required-output-derivations.schema.json#/properties/field_dispositions"
+        "$ref": "../../architecture-interpretation/1.5/required-output-derivations.schema.json#/$defs/qualified_resource"
     }
     require(cp["assertions"] == assertion, "weakened_assertion_schema")
     closed(cp["fixture"], {"kind", "input"})
@@ -1457,7 +1457,7 @@ def _qualify(root: Path, *, published: bool) -> dict[str, Any]:
         | (own - {PREFIX + "conformance"}),
         "conformance.schema": {
             BASE + "conformance.schema",
-            "architecture-interpretation/1.4/required-output-derivations.schema",
+            "architecture-interpretation/1.5/required-output-derivations.schema",
         },
     }
     for name, expected in expected_deps.items():

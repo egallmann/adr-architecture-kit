@@ -122,7 +122,7 @@
     "architecture_interpretation": {
       "family": "architecture-interpretation",
       "version": "1.5",
-      "fingerprint": "scf:v1:sha256:e3d52d9e863cfb6008f55bbff5c7ea4e676ac6a021d9eb52126284636d0329af",
+      "fingerprint": "scf:v1:sha256:deabae39d62f87a890c511969ab796a21a0db2a88fe45ef7487d04aee94722f3",
       "closure_source": "architecture-interpretation/1.5/contract",
       "required_resource_set": "exact manifest closure of that definition"
     },
@@ -572,7 +572,7 @@
     },
     "schema": {
       "canonical_resource_key": "architecture-interpretation/1.5/required-output-derivations.schema",
-      "content_digest": "sha256:79e2237d6068258fe8d30d38c670908364acb6d92ff89f9c05957d64b1331588",
+      "content_digest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794",
       "schema_pointer": ""
     },
     "policy": {
@@ -621,7 +621,7 @@
     },
     "recipe_schema": {
       "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes.schema",
-      "content_digest": "sha256:a24a7f4a2acc0b0595ec2e1243e298f4eea49ddc2b6e01423c95efad444e6d86",
+      "content_digest": "sha256:716e3fdc02feda104a36538eb642ea8e3cbfe18d8382d6ed7cb6aa1c74fbe7f7",
       "schema_pointer": ""
     },
     "inherited_output_authority": {

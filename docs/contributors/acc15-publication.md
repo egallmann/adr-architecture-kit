@@ -23,6 +23,64 @@ remove development-only lineage/byte obligations. It must preserve actual releas
 authority, all accepted semantic rules and independently necessary conformance.
 Until that work and co-dependent consumers are qualified, consolidation is incomplete.
 
+### Implemented validation-selector checkpoint
+
+AI 1.5 now maintains only the validation fragments actually referenced by its
+companion schemas. All eight roots move from
+`architecture-interpretation/1.4/required-output-derivations.schema` into
+`architecture-interpretation/1.5/required-output-derivations.schema`:
+
+| Original selector | Current selector |
+| --- | --- |
+| `/properties/source_contract` | `/$defs/coverage_source_contract` |
+| `/properties/output_contract` | `/$defs/coverage_output_contract` |
+| `/properties/field_dispositions` | `/$defs/qualified_resource` |
+| `/properties/operation` | `/$defs/coverage_operation` |
+| `/properties/coverage` | `/$defs/coverage_policy` |
+| `/properties/branches` | `/$defs/coverage_branches` |
+| `/properties/status_scope` | `/$defs/coverage_status_scope` |
+| `/properties/types/items` | `/$defs/coverage_output_type` |
+
+All 35 migrated references preserve their complete selected constraint body.
+Nested selectors retain their suffix under the mapped root. Consumers are the
+AI 1.5 catalog, recipe and conformance companion schemas, plus ACC 1.5's
+conformance companion schema. ACC's three qualified-record references now use
+the current `qualified_resource` fragment. The catalog companion uses local
+references; the other AI companions explicitly depend on that current schema.
+The reference counts are 26 in the catalog companion, two in the recipe
+companion, four in the AI conformance companion and three in ACC conformance.
+No whole predecessor schema, rule identity or new producer is copied into the
+candidate. The independent qualifier compares every selected constraint body
+with the original and excludes predecessor schemas from its own evaluation
+registry. Behavior tests exercise valid/invalid records and all 27 type branches;
+a consistently rehashed weakened constraint still fails qualification.
+
+The AI SCF is now
+`scf:v1:sha256:deabae39d62f87a890c511969ab796a21a0db2a88fe45ef7487d04aee94722f3`
+(69 resources); ACC is
+`scf:v1:sha256:5f058d9fada1110ab9db43f15e8104afaf33a3e39b9cef507468c4c4363eea29`
+(125 resources). These describe this revision, not permanent candidate pins.
+All dependent ACC closure members, qualification digests and selected-AI
+fingerprints are regenerated together. Membership does not shrink in this slice:
+the enclosing historical definitions still require their original resources.
+
+Current NM 2.5 selection is derived from its maintained definition and qualified
+against the exact canonical schemas, dependency graph and complete closure.
+Stale distributed definitions, wrong-version resources and missing canonical
+inputs cannot qualify. A test-only same-version schema annotation produces a
+different qualified NM SCF; no maintained NM byte changes. This current selection
+is distinct from the exact NM snapshot still required by inherited AI 1.3/1.4
+authority. Removing that enclosing-definition coupling is the next migration
+target; this checkpoint does not claim that an entire mixed historical/current
+cohort can select two different contents under the same canonical key.
+
+Actual AI 1.3 field-disposition, lifecycle/ownership and detached-context keys,
+digests, rule IDs and SCFs remain normative dependencies. The one composition
+row, five evidence checks and whole-ledger obligations are unchanged. The generic
+Rust SCF/closure implementation and Python/Node exact loaders already support
+the migrated keys; no Rust or public API change is needed. Their new-bundle
+verification and package parity are exercised through the existing WASM boundary.
+
 | Authority | Exact SCF | Resources |
 | --- | --- | --- |
 | ACC 1.5 | `scf:v1:sha256:4bfbffb564c8c7c8bda8b07b663a238f7396f53164e9561cd94f23473e974d19` | 125 |
@@ -153,9 +211,10 @@ flattened outputs.
 
 The separate PR-scoped tool takes explicit base/head and protects files outside
 the declared change inventory. This is not a permanent comparison with that base.
-Selector/closure migration remains incomplete at this checkpoint: predecessor
-rule qualifications and qualifier history checks are still present. Removing
-candidate byte snapshots does not establish their semantic replacements.
+Whole-predecessor-lineage migration remains incomplete: the validation selector
+migration above is implemented, while actual predecessor rule qualifications and
+enclosing-definition history checks remain. Removing candidate byte snapshots
+alone does not establish semantic replacements for those remaining dependencies.
 
 ## Remaining boundary
 

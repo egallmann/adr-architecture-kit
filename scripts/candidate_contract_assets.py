@@ -46,6 +46,11 @@ def canonical_resource(root: Path, key: str) -> Any:
     family, version = parts[:2]
     name = "/".join(parts[2:])
     base = root / "contracts" / family / f"v{version}"
+    current_candidate = (family, version) in {
+        ("architecture-interpretation", "1.5"),
+        ("authoring-construction", "1.5"),
+        ("normalized-model", "2.5"),
+    }
     if name == "contract":
         paths = [
             base / "contract.json",
@@ -53,16 +58,24 @@ def canonical_resource(root: Path, key: str) -> Any:
         ]
     elif parts[2] == "schema" and len(parts) == 4:
         paths = [root / "schema" / family / f"v{version}" / f"{parts[3]}.json"]
+    elif key == "normalized-model/2.5/conformance":
+        # NM's maintained conformance input already lives here; unlike an AI/ACC
+        # flattened mirror this file is not generated from another current input.
+        paths = [
+            root
+            / "contracts/semantic-contract/v1.0/resources/normalized-model-2.5-conformance.json"
+        ]
     else:
         paths = [base / ("schema.json" if name == "schema" else f"resources/{name}.json")]
     # Exact canonical immutable dependency resources remain valid inputs. This is
     # not a predecessor-version or packaged-resource fallback.
     flat = root / "contracts/semantic-contract/v1.0/resources"
-    paths.append(flat / (key.replace("/", "-") + ".json"))
+    if not current_candidate:
+        paths.append(flat / (key.replace("/", "-") + ".json"))
     for path in paths:
         if path.is_file():
             return _load(path)
-    if len(parts) == 3:
+    if not current_candidate and len(parts) == 3:
         legacy = flat / f"{family}-{name}.json"
         if legacy.is_file():
             value = _load(legacy)

@@ -3,11 +3,9 @@ import test from "node:test";
 import { getSemanticContract, loadSemanticResource, verifySemanticContract, validateSemanticResourceClosure } from "../dist/node/semantic-contract.js";
 
 const p = "authoring-construction/1.5/";
-const scf = "scf:v1:sha256:4bfbffb564c8c7c8bda8b07b663a238f7396f53164e9561cd94f23473e974d19";
 
 test("ACC 1.5 exact packaged authority preserves actual inherited rules and unavailable execution", async () => {
   const contract = getSemanticContract("authoring-construction", "1.5");
-  assert.equal(contract.semanticContractFingerprint, scf);
   assert.equal(contract.resourceManifest.length, 125);
   assert.deepEqual(contract.frozenNormativeConformanceResources, [p + "conformance"]);
   assert.equal((await verifySemanticContract(contract)).success, true);
@@ -16,7 +14,7 @@ test("ACC 1.5 exact packaged authority preserves actual inherited rules and unav
   assert.equal((await validateSemanticResourceClosure(contract, [...bundle].reverse())).closure_valid, true);
   const rules = loadSemanticResource(p + "rules");
   assert.equal(rules.authority.architecture_interpretation.version, "1.5");
-  assert.equal(rules.authority.architecture_interpretation.fingerprint, "scf:v1:sha256:e3d52d9e863cfb6008f55bbff5c7ea4e676ac6a021d9eb52126284636d0329af");
+  assert.equal(rules.authority.architecture_interpretation.fingerprint, getSemanticContract("architecture-interpretation", "1.5").semanticContractFingerprint);
   assert.deepEqual(rules.required_output.catalog_counts, { semantic_types: 27, output_branches: 6, qualified_producer_definitions: 240, BLOCKED_destination_entries: 215, literal_copy_label_rules: 26, identity_representation_definitions: 54 });
   assert.deepEqual(rules.required_output.identity_recipe_operations, ["literal_alias_join", "literal_entity_uri", "uuidv7_unix_milliseconds_to_rfc3339_utc"]);
   assert.equal(rules.required_output.schema_valid_is_instance_proof, false);

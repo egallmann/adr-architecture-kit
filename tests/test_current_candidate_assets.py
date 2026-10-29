@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
+import copy
+import io
 import json
 import os
 import shutil
+import subprocess
+import tarfile
 from pathlib import Path
 
 import pytest
@@ -12,7 +16,11 @@ import pytest
 from scripts import candidate_contract_assets as assets
 from scripts import qualify_ai15_publication as ai
 from scripts import qualify_acc15_publication as acc
-from adr_kit.semantic_contract import verify_semantic_contract
+from adr_kit.semantic_contract import (
+    get_semantic_contract,
+    validate_semantic_resource_closure,
+    verify_semantic_contract,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -46,8 +54,16 @@ def test_rehashed_proposed_definition_does_not_authorize_wrong_roles(family, qua
 @pytest.mark.parametrize("family", ["architecture-interpretation", "authoring-construction"])
 def test_current_canonical_inputs_reproduce_their_qualified_definition(family: str) -> None:
     result, _ = assets.assemble(ROOT, family)
-    expected = json.loads((ROOT / f"contracts/{family}/v1.5/contract.json").read_text())
+    source = ROOT / f"contracts/{family}/v1.5/contract.json"
+    expected = json.loads(source.read_text())
     assert result == expected
+    assert get_semantic_contract(family, "1.5").to_wire() == expected
+    for mirror in (
+        f"contracts/semantic-contract/v1.0/definitions/{family}-1.5.json",
+        f"src/adr_kit/semantic_contract/v1_0/definitions/{family}-1.5.json",
+        f"src/adr_kit/semantic_contract/v1_0/{family}-1.5.json",
+    ):
+        assert (ROOT / mirror).read_bytes() == source.read_bytes()
 
 
 @pytest.fixture
@@ -82,6 +98,30 @@ def test_candidate_resources_are_inputs_not_reconstructed_outputs(candidate: Pat
         candidate
         / "src/adr_kit/semantic_contract/v1_0/resources/architecture-interpretation-1.5-rules.json"
     ).read_bytes() == raw
+
+
+def test_same_version_candidate_revision_gets_a_new_qualified_commitment(
+    candidate: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    previous, _ = assets.assemble(candidate, "architecture-interpretation")
+    path = (
+        candidate / "contracts/architecture-interpretation/v1.5/resources/conformance.schema.json"
+    )
+    schema = json.loads(path.read_text())
+    # A schema annotation changes the exact authoritative bytes without changing
+    # its permitted instances. This is a candidate revision, not a successor.
+    schema["description"] = "Authority conformance; no instance execution is enabled."
+    path.write_text(json.dumps(schema), encoding="utf-8")
+    revised, contents = assets.assemble(candidate, "architecture-interpretation")
+    assert revised["semanticContractVersion"] == previous["semanticContractVersion"] == "1.5"
+    assert revised["semanticContractFingerprint"] != previous["semanticContractFingerprint"]
+    original_read = ai.read
+    monkeypatch.setattr(
+        ai, "read", lambda root, key: contents[key] if key in contents else original_read(root, key)
+    )
+    report = ai.qualify(ROOT, candidate_definition=revised)
+    assert report["output_accounting"] == {"QUALIFIED": 240, "BLOCKED": 215}
+    assert report["complete_interpretation"] == "Unavailable"
 
 
 def test_duplicate_source_json_is_not_silently_canonicalized(candidate: Path) -> None:
@@ -150,3 +190,67 @@ def test_versionless_released_filename_is_not_a_predecessor_fallback(tmp_path: P
     assert assets.canonical_resource(tmp_path, "architecture-interpretation/1.0/shared") == value
     with pytest.raises(ValueError, match="missing exact canonical resource"):
         assets.canonical_resource(tmp_path, "architecture-interpretation/1.5/shared")
+
+
+def test_flattened_candidate_output_cannot_replace_missing_canonical_input(tmp_path: Path) -> None:
+    if os.name == "nt" and not str(tmp_path).startswith("\\\\?\\"):
+        tmp_path = Path("\\\\?\\" + str(tmp_path.resolve()))
+    folder = tmp_path / "contracts/semantic-contract/v1.0/resources"
+    folder.mkdir(parents=True)
+    (folder / "architecture-interpretation-1.5-rules.json").write_text(
+        json.dumps({"resource": "architecture-interpretation/1.5/rules"}), encoding="utf-8"
+    )
+    with pytest.raises(ValueError, match="missing exact canonical resource"):
+        assets.canonical_resource(tmp_path, "architecture-interpretation/1.5/rules")
+
+
+def test_original_candidate_revision_is_reproducible_without_freezing_current_bytes() -> None:
+    # This revision is historical evidence, not an expected HEAD/base or an
+    # obligation to keep resolving its content from the current candidate.
+    revision = "6ddc8c2b6d66531ff3ecefb0bba7b15616ac4f0c"
+    archived = subprocess.check_output(
+        ["git", "archive", revision, "contracts/semantic-contract/v1.0"], cwd=ROOT
+    )
+    with tarfile.open(fileobj=io.BytesIO(archived)) as archive:
+        documents = {
+            member.name: json.load(archive.extractfile(member))
+            for member in archive.getmembers()
+            if member.isfile() and member.name.endswith(".json")
+        }
+    base = "contracts/semantic-contract/v1.0/"
+    for family in ("architecture-interpretation", "authoring-construction"):
+        historical = documents[base + f"definitions/{family}-1.5.json"]
+        supplied = []
+        for member in historical["resourceManifest"]:
+            key = member["canonicalResourceKey"]
+            prefix, version, name = key.split("/", 2)
+            paths = [base + "resources/" + key.replace("/", "-") + ".json"]
+            if name == "contract":
+                paths += [base + f"definitions/{prefix}-{version}.json"]
+            paths += [base + f"resources/{prefix}-{name}.json"]
+            selected = next(path for path in paths if path in documents)
+            supplied.append({"canonicalResourceKey": key, "content": documents[selected]})
+        assert verify_semantic_contract(historical).success
+        assert validate_semantic_resource_closure(historical, supplied).closure_valid
+
+
+def test_acc_rejects_a_differently_qualified_current_AI_definition(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    proposed = copy.deepcopy(assets.canonical_resource(ROOT, acc.AI + "contract"))
+    proposed["resourceManifest"][0]["role"] = "normative-definition"
+    forged = assets.definition(
+        "architecture-interpretation",
+        proposed["resourceManifest"],
+        proposed["frozenNormativeConformanceResources"],
+        version="1.5",
+    )
+    assert verify_semantic_contract(forged).success
+    original = acc.canonical_resource
+    monkeypatch.setattr(
+        acc,
+        "canonical_resource",
+        lambda root, key: forged if key == acc.AI + "contract" else original(root, key),
+    )
+    with pytest.raises(acc.PublicationError, match="inconsistent_current_AI_definition"):
+        acc.qualify(ROOT)

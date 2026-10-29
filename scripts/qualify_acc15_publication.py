@@ -27,6 +27,7 @@ from scripts.generate_semantic_contract_assets import (
 from scripts.qualify_acc14_publication import read as historical_read
 from scripts.qualify_ai13_publication import PublicationError, pointer
 from scripts.qualify_ai15_publication import qualify as qualify_ai15
+from scripts.candidate_contract_assets import canonical_resource
 
 ROOT = Path(__file__).resolve().parents[1]
 PREFIX = "authoring-construction/1.5/"
@@ -51,11 +52,15 @@ CHECKS = (
     "exact_operation",
     "complete_output",
 )
-AI_SCF = "scf:v1:sha256:e3d52d9e863cfb6008f55bbff5c7ea4e676ac6a021d9eb52126284636d0329af"
 ACC14_SCF = "scf:v1:sha256:19e267c5c77477a594414168bde9f733b1b9e547c06fc6836ad09392a248ea6d"
 NM_SCF = "scf:v1:sha256:bb48720502668e434d378445004aec7783346a0e74254c9e0d3cb01a8798d9d7"
 _snapshot: ContextVar[dict[str, Any] | None] = ContextVar("acc15_snapshot", default=None)
 _digests: ContextVar[dict[str, str] | None] = ContextVar("acc15_snapshot_digests", default=None)
+
+
+def selected_ai_fingerprint(root: Path = ROOT) -> str:
+    """Expected current source selection; qualification below establishes trust."""
+    return str(canonical_resource(root, AI + "contract")["semanticContractFingerprint"])
 
 
 def require(condition: bool, code: str) -> None:
@@ -113,13 +118,17 @@ def qualified_history(root: Path) -> dict[str, Any]:
     # The unchanged AI 1.5 independent audit proves the actual 54-transition
     # delta and source/branch/recipe semantics, not just aggregate totals.
     report = qualify_ai15(root)
+    require(
+        read(root, AI + "contract") == canonical_resource(root, AI + "contract"),
+        "inconsistent_current_AI_definition",
+    )
     from adr_kit.semantic_contract import (
         verify_semantic_contract,
         validate_semantic_resource_closure,
     )
 
     pins = (
-        (AI + "contract", AI_SCF),
+        (AI + "contract", selected_ai_fingerprint(root)),
         (BASE + "contract", ACC14_SCF),
         ("normalized-model/2.5/contract", NM_SCF),
         (
@@ -165,7 +174,7 @@ def ai_schema(root: Path, value: dict[str, Any]) -> None:
     )
     require(
         props["version"] == {"const": "1.5"}
-        and props["semantic_contract_fingerprint"] == {"const": AI_SCF}
+        and props["semantic_contract_fingerprint"] == {"const": selected_ai_fingerprint(root)}
         and props["authority_closure"] == {"$ref": "#/$defs/exact_ai15_closure"},
         "wrong_enclosing_AI_selection",
     )
@@ -458,7 +467,11 @@ def qualify_schema(root: Path, raw: dict[str, Any]) -> dict[str, int]:
     same_except(cqprops, prior, "authority", "interpretation", "comparison")
     require(cqprops["authority"] == authority, "construction_authority_inconsistent")
     for name, field, expected in (
-        ("interpretation", "architecture_interpretation_fingerprint", AI_SCF),
+        (
+            "interpretation",
+            "architecture_interpretation_fingerprint",
+            selected_ai_fingerprint(root),
+        ),
         ("comparison", "algorithm", PREFIX + "complete-semantic-ledger-equality"),
     ):
         same_except(cqprops[name], prior[name], "properties")
@@ -600,7 +613,7 @@ def qualify_rules(root: Path, raw: dict[str, Any]) -> None:
     )
     require(
         ai["version"] == "1.5"
-        and ai["fingerprint"] == AI_SCF
+        and ai["fingerprint"] == selected_ai_fingerprint(root)
         and ai["closure_source"] == AI + "contract",
         "wrong_exact_enclosing_AI_authority",
     )
@@ -1050,7 +1063,7 @@ def qualify_conformance(root: Path, value: dict[str, Any]) -> Counter[str]:
                 assertions = {
                     "family": "architecture-interpretation",
                     "version": "1.5",
-                    "SCF": AI_SCF,
+                    "SCF": selected_ai_fingerprint(root),
                     "resource_count": len(read(root, target)["resourceManifest"]),
                 }
                 claim = "Independently qualify the exact AI 1.5 definition and complete immutable closure; inherited resource identities are not enclosing interpretation substitutes."

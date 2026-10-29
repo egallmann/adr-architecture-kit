@@ -136,11 +136,26 @@ their original assertions. Historical enclosing selections and the old 269
 BLOCKED entries remain historical facts; they are not relabeled successor
 requests or runtime success. No frozen case claims executing construction.
 
-Permanent tests pin immutable bytes, SCFs, closure, package parity, deterministic
-generation and mutation rejection, including validly recomputed unauthorized
-SCFs. They allow later legitimate successors and current selections. The separate
-PR-scoped tool takes explicit base/head and protects historical authority,
-selection, runtime, protocol and WASM files for this publication only.
+Permanent candidate tests independently qualify the current definition, exact
+closure, canonical/package byte parity, deterministic regeneration and mutation
+rejection, including validly recomputed unauthorized SCFs. They do not freeze a
+candidate's SCF or bytes at a previous development merge. The original
+`6ddc8c2b6d66531ff3ecefb0bba7b15616ac4f0c` AI/ACC definitions and complete
+closures are separately reproduced from Git. Released compatibility is checked
+against the actual retained wheel/npm evidence by release-authority admission.
+
+ACC selects the current maintained AI definition and requires it to match the
+independently qualified definition. Its expected fingerprint is derived from
+that source revision, rather than a permanent candidate compatibility constant.
+A source definition, its distributed views and the selected dependency cannot
+silently disagree. Missing canonical AI/ACC inputs cannot be replaced by stale
+flattened outputs.
+
+The separate PR-scoped tool takes explicit base/head and protects files outside
+the declared change inventory. This is not a permanent comparison with that base.
+Selector/closure migration remains incomplete at this checkpoint: predecessor
+rule qualifications and qualifier history checks are still present. Removing
+candidate byte snapshots does not establish their semantic replacements.
 
 ## Remaining boundary
 

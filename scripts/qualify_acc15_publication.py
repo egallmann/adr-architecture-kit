@@ -24,11 +24,15 @@ from scripts.generate_semantic_contract_assets import (
     discovered_dependencies,
     relative_resource_key,
 )
-from scripts.qualify_acc14_publication import read as historical_read
 from scripts.qualify_ai13_publication import PublicationError, pointer
 from scripts.qualify_ai15_publication import qualify as qualify_ai15
-from scripts.qualify_ai15_publication import selected_nm_fingerprint
-from scripts.candidate_contract_assets import canonical_resource
+from scripts.qualify_ai15_publication import selected_nm_fingerprint, read as selected_read
+from scripts.candidate_contract_assets import (
+    canonical_resource,
+    historical_resource,
+    dependency_closure,
+    direct_references,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 PREFIX = "authoring-construction/1.5/"
@@ -72,7 +76,16 @@ def read(root: Path, key: str) -> Any:
     cache = _snapshot.get()
     if cache is not None and key in cache:
         return cache[key]
-    if key.startswith(PREFIX) and key != PREFIX + "contract":
+    if key.startswith(
+        (
+            BASE,
+            "authoring-construction/1.3/",
+            "architecture-interpretation/1.4/",
+            "architecture-interpretation/1.3/",
+        )
+    ):
+        value = historical_resource(root, key)
+    elif key.startswith(PREFIX) and key != PREFIX + "contract":
         name = key.removeprefix(PREFIX)
         value = json.loads(
             (
@@ -82,7 +95,7 @@ def read(root: Path, key: str) -> Any:
             ).read_text(encoding="utf-8")
         )
     else:
-        value = historical_read(root, key)
+        value = selected_read(root, key)
     if cache is not None:
         cache[key] = value
     return value
@@ -127,36 +140,27 @@ def qualified_history(root: Path) -> dict[str, Any]:
         validate_semantic_resource_closure,
     )
 
-    pins = (
-        (AI + "contract", selected_ai_fingerprint(root)),
+    # The current AI/NM pair is qualified independently above. Predecessors
+    # qualify against their actual recorded Git closure, never current NM bytes.
+    for key, expected in (
         (BASE + "contract", ACC14_SCF),
-        ("normalized-model/2.5/contract", selected_nm_fingerprint(root)),
-        (
-            "architecture-interpretation/1.4/contract",
-            "scf:v1:sha256:5c338d24961946d7f7d4350d5bfbbfb9e3882c56c8be09ba4d242169163acdd7",
-        ),
-        (
-            "architecture-interpretation/1.3/contract",
-            "scf:v1:sha256:d4a60e843c3069cfd7eb869a4d924d3a70bf900079d3a2ad86ae28884c6ac167",
-        ),
         (
             "authoring-construction/1.3/contract",
             "scf:v1:sha256:5828fe0c3b1692240726152f57ca6de037a1e07f38bb8f9ecda223af105d1b49",
         ),
-    )
-    for key, expected in pins:
-        contract = read(root, key)
+    ):
+        contract = historical_resource(root, key)
         require(
             contract["semanticContractFingerprint"] == expected
             and verify_semantic_contract(contract).success is True,
-            "unqualified_exact_authority_fingerprint",
+            "unqualified_exact_historical_fingerprint",
         )
         bundle = [
             {
-                "canonicalResourceKey": e["canonicalResourceKey"],
-                "content": read(root, e["canonicalResourceKey"]),
+                "canonicalResourceKey": m["canonicalResourceKey"],
+                "content": historical_resource(root, m["canonicalResourceKey"]),
             }
-            for e in contract["resourceManifest"]
+            for m in contract["resourceManifest"]
         ]
         require(
             validate_semantic_resource_closure(contract, bundle).closure_valid is True,
@@ -388,9 +392,26 @@ def qualify_schema(root: Path, raw: dict[str, Any]) -> dict[str, int]:
         "composition_record",
         "construction_qualification",
         "required_output_qualification",
+        "exact_nm25_closure",
     }
     for key in set(previous) - removed - changed:
         require(defs[key] == previous[key], "historical_schema_obligation_changed_" + key)
+    nm_closure = copy.deepcopy(previous["exact_nm25_closure"])
+    nm_members = [
+        {"canonical_resource_key": m["canonicalResourceKey"], "content_digest": m["contentDigest"]}
+        for m in canonical_resource(root, "normalized-model/2.5/contract")["resourceManifest"]
+    ]
+    nm_closure["properties"]["resources"] = {
+        "type": "array",
+        "minItems": len(nm_members),
+        "maxItems": len(nm_members),
+        "uniqueItems": True,
+        "items": {"enum": nm_members},
+    }
+    nm_closure["properties"]["semantic_contract_fingerprint"] = {
+        "const": selected_nm_fingerprint(root)
+    }
+    require(defs["exact_nm25_closure"] == nm_closure, "wrong_current_NM_closure_schema")
     ai_schema(root, defs["architecture_interpretation_qualification"])
     for key, prior, field, value in (
         ("acc15_qualification", "acc14_qualification", "version", {"const": "1.5"}),
@@ -606,7 +627,18 @@ def qualify_rules(root: Path, raw: dict[str, Any]) -> None:
         "wrong_successor_compatibility_scope",
     )
     a, previous = value["authority"], old["authority"]
-    same_except(a, previous, "architecture_interpretation", "inherited_rule_qualification")
+    same_except(
+        a,
+        previous,
+        "architecture_interpretation",
+        "inherited_rule_qualification",
+        "normalized_model",
+    )
+    same_except(a["normalized_model"], previous["normalized_model"], "fingerprint")
+    require(
+        a["normalized_model"]["fingerprint"] == selected_nm_fingerprint(root),
+        "wrong_current_NM_selection",
+    )
     ai = a["architecture_interpretation"]
     same_except(
         ai, previous["architecture_interpretation"], "version", "fingerprint", "closure_source"
@@ -1391,11 +1423,8 @@ def _qualify(root: Path, *, published: bool) -> dict[str, Any]:
         "wrong_successor_resource_version",
     )
     predecessors = (read(root, BASE + "contract"), read(root, AI + "contract"))
-    inherited_keys = {
-        e["canonicalResourceKey"] for d in predecessors for e in d["resourceManifest"]
-    } | {BASE + "contract", AI + "contract"}
     own = {PREFIX + n for n in NAMES}
-    allowed = inherited_keys | own
+    allowed = dependency_closure(root, {PREFIX + n: v for n, v in raw.items()}, read)
     for name, value in raw.items():
         require(
             PREFIX + "contract" not in discovered_dependencies(PREFIX + name, value),
@@ -1411,60 +1440,23 @@ def _qualify(root: Path, *, published: bool) -> dict[str, Any]:
     qualify_compatibility(root, raw["compatibility"])
     qualify_conformance_schema(raw["conformance.schema"])
     cases = qualify_conformance(root, raw["conformance"])
-    old_rules = read(root, BASE + "rules")
-    ai_keys = {e["canonicalResourceKey"] for e in read(root, AI + "contract")["resourceManifest"]}
-    base_keys = {
-        e["canonicalResourceKey"] for e in read(root, BASE + "contract")["resourceManifest"]
+    known = allowed | {
+        m["canonicalResourceKey"] for d in predecessors for m in d["resourceManifest"]
     }
-    expected_deps = {
-        "schema": set(read(root, BASE + "schema")["semanticDependencies"])
-        | ai_keys
-        | {
-            AI + "contract",
-            CATALOG,
-            CATALOG + ".schema",
-            RECIPES,
-            RECIPES + ".schema",
-            LEDGER,
-            BASE + "schema",
-            PREFIX + "composition-bindings",
-            PREFIX + "composition-bindings.schema",
-        },
-        "rules": set(old_rules["semanticDependencies"])
-        | ai_keys
-        | {
-            AI + "contract",
-            AI + "rules",
-            CATALOG,
-            CATALOG + ".schema",
-            RECIPES,
-            RECIPES + ".schema",
-            BASE + "rules",
-            PREFIX + "composition-bindings",
-            PREFIX + "composition-bindings.schema",
-            LEDGER,
-        },
-        "compatibility": base_keys
-        | {BASE + "contract", BASE + "compatibility", AI + "contract", CATALOG, RECIPES, LEDGER},
-        "conformance": {
-            BASE + "conformance",
-            AI + "contract",
-            CATALOG,
-            RECIPES,
-            LEDGER,
-            "normalized-model/2.5/contract",
-        }
-        | (own - {PREFIX + "conformance"}),
-        "conformance.schema": {
-            BASE + "conformance.schema",
-            "architecture-interpretation/1.5/required-output-derivations.schema",
-        },
-    }
-    for name, expected in expected_deps.items():
+    for name in ("schema", "rules", "compatibility", "conformance"):
         require(
-            raw[name]["semanticDependencies"] == sorted(expected),
+            raw[name]["semanticDependencies"]
+            == sorted(direct_references(PREFIX + name, raw[name], known)),
             "incorrect_authoritative_dependency_edges_" + name,
         )
+    require(
+        raw["conformance.schema"]["semanticDependencies"]
+        == [
+            "architecture-interpretation/1.5/required-output-derivations.schema",
+            BASE + "conformance.schema",
+        ],
+        "incorrect_conformance_schema_dependencies",
+    )
     views, registry = sealed_schemas(root, raw, allowed)
     for name in ("schema", "composition-bindings.schema", "conformance.schema"):
         Draft202012Validator.check_schema(raw[name])
@@ -1519,6 +1511,14 @@ def _qualify(root: Path, *, published: bool) -> dict[str, Any]:
         for m in manifest:
             key = m["canonicalResourceKey"]
             content = read(root, key)
+            require(
+                content == canonical_resource(root, key), "selected_resource_canonical_mismatch"
+            )
+            if not key.startswith((PREFIX, AI, "normalized-model/2.5/")):
+                require(
+                    content == historical_resource(root, key),
+                    "changed_historical_selected_resource",
+                )
             require(
                 m["contentDigest"] == digest(content) and m["role"] == roles[key],
                 "resource_digest_or_role_mismatch",

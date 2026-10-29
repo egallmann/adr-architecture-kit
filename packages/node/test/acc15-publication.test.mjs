@@ -6,7 +6,6 @@ const p = "authoring-construction/1.5/";
 
 test("ACC 1.5 exact packaged authority preserves actual inherited rules and unavailable execution", async () => {
   const contract = getSemanticContract("authoring-construction", "1.5");
-  assert.equal(contract.resourceManifest.length, 125);
   assert.deepEqual(contract.frozenNormativeConformanceResources, [p + "conformance"]);
   assert.equal((await verifySemanticContract(contract)).success, true);
   const bundle = contract.resourceManifest.map(m => ({ canonicalResourceKey: m.canonicalResourceKey, content: loadSemanticResource(m.canonicalResourceKey) }));

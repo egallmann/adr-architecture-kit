@@ -7,7 +7,11 @@ writing the already closure-verified definition and deterministic package mirror
 
 from __future__ import annotations
 
+import io
 import json
+import subprocess
+import tarfile
+from functools import lru_cache
 import re
 from pathlib import Path
 from typing import Any
@@ -172,3 +176,107 @@ def distribute(root: Path, family: str, result: dict[str, Any], contents: dict[s
         root / "src/adr_kit/semantic_contract/v1_0" / f"{family}-1.5.json",
     ):
         write_json(path, result)
+
+
+# Historical evidence is read at its recorded Git revision, never resolved through
+# the current candidate's same-version paths or package mirrors.
+HISTORICAL_REVISION = "6ddc8c2b6d66531ff3ecefb0bba7b15616ac4f0c"
+
+
+@lru_cache(maxsize=4)
+def _historical_files(root: Path, revision: str) -> dict[str, bytes]:
+    raw = subprocess.check_output(
+        ["git", "archive", revision, "contracts/semantic-contract/v1.0"], cwd=root
+    )
+    files = {}
+    with tarfile.open(fileobj=io.BytesIO(raw)) as archive:
+        for member in archive.getmembers():
+            if member.isfile() and member.name.endswith(".json"):
+                stream = archive.extractfile(member)
+                if stream is None:
+                    raise ValueError("missing historical archive payload: " + member.name)
+                files[member.name] = stream.read()
+    return files
+
+
+def historical_resource(root: Path, key: str) -> Any:
+    files = _historical_files(root.resolve(), HISTORICAL_REVISION)
+    family, version, name = key.split("/", 2)
+    base = "contracts/semantic-contract/v1.0/"
+    paths = ([base + f"definitions/{family}-{version}.json"] if name == "contract" else []) + [
+        base + "resources/" + key.replace("/", "-") + ".json"
+    ]
+    paths.append(base + f"resources/{family}-{name}.json")
+    path = next((p for p in paths if p in files), None)
+    if path is None:
+        raise ValueError("missing recorded historical resource: " + key)
+    return json.loads(files[path])
+
+
+def dependency_closure(root: Path, roots: dict[str, Any], reader: Any) -> set[str]:
+    """Follow actual declared/ref edges; a definition is not a manifest import."""
+    pending = set(roots)
+    selected: set[str] = set()
+    while pending:
+        key = min(pending)
+        pending.remove(key)
+        if key in selected:
+            continue
+        selected.add(key)
+        value = roots[key] if key in roots else reader(root, key)
+        pending.update(discovered_dependencies(key, value) - selected)
+    return selected
+
+
+def direct_references(key: str, value: Any, known: set[str]) -> set[str]:
+    """Explicit resource selectors, with only closed historical evidence excluded.
+
+    Callers independently verify those exact evidence records. All schema $refs
+    remain operative, including refs selecting historical validation fragments.
+    """
+    historical_fields = {
+        "architecture-interpretation/1.5/rules": {"inherits"},
+        "architecture-interpretation/1.5/conformance": {"inherited_conformance", "inherited_cases"},
+        "authoring-construction/1.5/conformance": {"inherited_cases"},
+        "authoring-construction/1.5/compatibility": {"historical_definitions"},
+    }
+    operative = {
+        k: v
+        for k, v in value.items()
+        if k not in historical_fields.get(key, set()) | {"semanticDependencies"}
+    }
+    found = discovered_dependencies(key, operative)
+
+    def visit(node: Any) -> None:
+        if isinstance(node, str) and node in known:
+            found.add(node)
+        elif isinstance(node, dict):
+            for v in node.values():
+                visit(v)
+        elif isinstance(node, list):
+            for v in node:
+                visit(v)
+
+    visit(operative)
+    if key + ".schema" in known:
+        found.add(key + ".schema")
+    # The conformance audit reads these governing policies independently of the
+    # example fixture payloads; they are real dependencies, not history imports.
+    if key == "architecture-interpretation/1.5/conformance":
+        found.update(
+            "architecture-interpretation/1.5/" + n
+            for n in ("rules", "required-output-derivations", "identity-representation-recipes")
+        )
+    elif key == "authoring-construction/1.5/conformance":
+        found.update(
+            "authoring-construction/1.5/" + n
+            for n in (
+                "rules",
+                "schema",
+                "compatibility",
+                "composition-bindings",
+                "composition-bindings.schema",
+            )
+        )
+        found.add("authoring-construction/1.3/ledger.schema")
+    return found - {key}

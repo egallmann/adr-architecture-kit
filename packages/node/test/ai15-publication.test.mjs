@@ -5,7 +5,6 @@ import { getSemanticContract, loadSemanticResource, verifySemanticContract, vali
 const prefix = "architecture-interpretation/1.5/";
 test("AI 1.5 exact packaged publication qualifies identity recipe definitions without instance execution", async () => {
   const contract = getSemanticContract("architecture-interpretation", "1.5");
-  assert.equal(contract.resourceManifest.length, 69);
   assert.deepEqual(contract.frozenNormativeConformanceResources, [prefix + "conformance"]);
   assert.equal((await verifySemanticContract(contract)).success, true);
   const bundle = contract.resourceManifest.map((m) => ({ canonicalResourceKey: m.canonicalResourceKey, content: loadSemanticResource(m.canonicalResourceKey) }));

@@ -33,7 +33,7 @@ def raw_schemas() -> dict[str, Any]:
         {
             "canonical_resource_key": "x" * 4096,
             "content_digest": "sha256:" + "a" * 64,
-            "schema_pointer": "/日本語/~0~1",
+            "schema_pointer": "/æ—¥æœ¬èªž/~0~1",
         },
         {},
         {
@@ -133,6 +133,9 @@ def test_rehashed_weakened_local_schema_does_not_qualify(monkeypatch: pytest.Mon
 def nm_candidate(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> tuple[Path, dict[str, Any]]:
     if os.name == "nt" and not str(tmp_path).startswith("\\\\?\\"):
         tmp_path = Path("\\\\?\\" + str(tmp_path.resolve()))
+    monkeypatch.setattr(
+        ai, "historical_resource", lambda _, key: assets.historical_resource(ROOT, key)
+    )
     original = assets.canonical_resource(ROOT, ai.NM)
     contents = {
         m["canonicalResourceKey"]: copy.deepcopy(

@@ -1,7 +1,6 @@
 {
   "resource": "architecture-interpretation/1.5/conformance",
   "semanticDependencies": [
-    "architecture-interpretation/1.4/conformance",
     "architecture-interpretation/1.5/conformance.schema",
     "architecture-interpretation/1.5/identity-representation-recipes",
     "architecture-interpretation/1.5/required-output-derivations",

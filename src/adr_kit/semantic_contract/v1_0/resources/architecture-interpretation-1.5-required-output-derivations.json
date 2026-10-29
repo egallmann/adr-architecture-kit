@@ -1,19 +1,13 @@
 {
   "resource": "architecture-interpretation/1.5/required-output-derivations",
   "semanticDependencies": [
-    "architecture-interpretation/1.3/contextual-facts",
-    "architecture-interpretation/1.3/contract",
     "architecture-interpretation/1.3/detached-context",
     "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5",
     "architecture-interpretation/1.3/lifecycle-ownership",
-    "architecture-interpretation/1.3/lifecycle-provenance.schema",
-    "architecture-interpretation/1.3/rules",
     "architecture-interpretation/1.3/source-mapping-1.7-to-2.5",
     "architecture-interpretation/1.4/required-output-derivations",
     "architecture-interpretation/1.5/identity-representation-recipes",
     "architecture-interpretation/1.5/required-output-derivations.schema",
-    "authoring-domain/1.1/contract",
-    "authoring-domain/1.1/schema",
     "authoring/1.7/schema/adr-common.schema",
     "authoring/1.7/schema/adr-logical.schema",
     "authoring/1.7/schema/adr-physical-component.schema",
@@ -1359,7 +1353,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -1492,7 +1486,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -2343,7 +2337,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -2512,7 +2506,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -2645,7 +2639,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -3511,7 +3505,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -3680,7 +3674,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -3813,7 +3807,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -4694,7 +4688,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -4865,7 +4859,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -4998,7 +4992,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -5799,7 +5793,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -5970,7 +5964,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -6103,7 +6097,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -6909,7 +6903,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -7080,7 +7074,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -7213,7 +7207,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -8033,7 +8027,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -8204,7 +8198,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -8337,7 +8331,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -9138,7 +9132,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -9309,7 +9303,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -9442,7 +9436,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -10315,7 +10309,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -10536,7 +10530,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -10669,7 +10663,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -11499,7 +11493,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -11670,7 +11664,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -11803,7 +11797,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -12597,7 +12591,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -12769,7 +12763,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -12902,7 +12896,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -13824,7 +13818,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -13995,7 +13989,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -14128,7 +14122,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -14964,7 +14958,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -15135,7 +15129,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -15268,7 +15262,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -16068,7 +16062,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -16239,7 +16233,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -16372,7 +16366,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -17178,7 +17172,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -17349,7 +17343,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -17482,7 +17476,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -18323,7 +18317,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -18494,7 +18488,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -18627,7 +18621,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -19376,7 +19370,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -19548,7 +19542,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -19681,7 +19675,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -20425,7 +20419,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -20596,7 +20590,7 @@
             "rule_id": "identity-representation.alias-ref",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/0"
             },
             "inputs": [
@@ -20729,7 +20723,7 @@
             "rule_id": "identity-representation.uuidv7-created-at",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/2"
             },
             "inputs": [
@@ -21580,7 +21574,7 @@
             "rule_id": "identity-representation.entity-uri",
             "rule": {
               "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-              "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+              "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
               "schema_pointer": "/recipes/1"
             },
             "inputs": [
@@ -24358,7 +24352,7 @@
   "status_scope": "publication_authority_only_all_instance_prerequisites_must_independently_qualify",
   "identity_representation_recipes": {
     "canonical_resource_key": "architecture-interpretation/1.5/identity-representation-recipes",
-    "content_digest": "sha256:b2abb7fc8ffe7ac379e6416905875b3661905b1ded3151744e44c869737990af",
+    "content_digest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
     "schema_pointer": ""
   },
   "inherited_output_authority": {

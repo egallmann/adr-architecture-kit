@@ -119,6 +119,12 @@ def test_same_version_candidate_revision_gets_a_new_qualified_commitment(
     monkeypatch.setattr(
         ai, "read", lambda root, key: contents[key] if key in contents else original_read(root, key)
     )
+    original_canonical = ai.canonical_resource
+    monkeypatch.setattr(
+        ai,
+        "canonical_resource",
+        lambda root, key: contents[key] if key in contents else original_canonical(root, key),
+    )
     report = ai.qualify(ROOT, candidate_definition=revised)
     assert report["output_accounting"] == {"QUALIFIED": 240, "BLOCKED": 215}
     assert report["complete_interpretation"] == "Unavailable"

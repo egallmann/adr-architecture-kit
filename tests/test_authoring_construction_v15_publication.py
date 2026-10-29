@@ -176,7 +176,7 @@ def test_exact_authority_and_independently_derived_inventory() -> None:
         and result["runtime_execution"] is False
     )
     c = get_semantic_contract("authoring-construction", "1.5")
-    assert c.semantic_contract_fingerprint == SCF and len(c.resource_manifest) == 125
+    assert c.semantic_contract_fingerprint == SCF
     assert c.to_wire()["frozenNormativeConformanceResources"] == [P + "conformance"]
     assert verify_semantic_contract(c).success
     assert validate_semantic_resource_closure(c, bundle()).closure_valid
@@ -186,10 +186,11 @@ def test_exact_authority_and_independently_derived_inventory() -> None:
         e.canonical_resource_key
         for e in get_semantic_contract("architecture-interpretation", "1.5").resource_manifest
     } <= keys
-    assert {
-        e.canonical_resource_key
-        for e in get_semantic_contract("authoring-construction", "1.4").resource_manifest
-    } <= keys
+    assert keys == publication.dependency_closure(
+        ROOT,
+        {P + n: resource(n) for n in publication.NAMES},
+        lambda root, key: load_semantic_resource(key),
+    )
     assert {k for k in keys if k.startswith(P)} == {P + n for n in publication.NAMES}
     assert publication.LEDGER in keys
     for m in c.to_wire()["resourceManifest"]:
@@ -860,7 +861,7 @@ import adr_kit
 from adr_kit.semantic_contract import get_semantic_contract,load_semantic_resource,validate_semantic_resource_closure
 assert pathlib.Path(adr_kit.__file__).is_relative_to(sys.argv[1])
 c=get_semantic_contract('authoring-construction','1.5')
-assert c.semantic_contract_fingerprint==sys.argv[2] and len(c.resource_manifest)==125
+assert c.semantic_contract_fingerprint==sys.argv[2]
 assert validate_semantic_resource_closure(c,[{'canonicalResourceKey':m.canonical_resource_key,'content':load_semantic_resource(m.canonical_resource_key)} for m in c.resource_manifest]).closure_valid
 assert load_semantic_resource('authoring-construction/1.5/rules')['required_output']['schema_valid_is_instance_proof'] is False
 """

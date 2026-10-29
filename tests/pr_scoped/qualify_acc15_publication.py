@@ -34,6 +34,10 @@ EXISTING = {
     "src/adr_kit/semantic_contract/v1_0/architecture-interpretation-1.5.json",
 }
 for schema in (
+    "rules",
+    "required-output-derivations",
+    "identity-representation-recipes",
+    "conformance",
     "required-output-derivations.schema",
     "identity-representation-recipes.schema",
     "conformance.schema",
@@ -46,6 +50,7 @@ for schema in (
         EXISTING.add(directory + "/architecture-interpretation-1.5-" + schema + ".json")
 ALLOWED = EXISTING | {
     "tests/test_candidate_schema_selectors.py",
+    "tests/test_candidate_lineage_selection.py",
     "scripts/candidate_contract_assets.py",
     "tests/test_current_candidate_assets.py",
     "scripts/generate_acc15_publication.py",

@@ -55,7 +55,7 @@ with the original and excludes predecessor schemas from its own evaluation
 registry. Behavior tests exercise valid/invalid records and all 27 type branches;
 a consistently rehashed weakened constraint still fails qualification.
 
-The AI SCF is now
+At the validation-selector checkpoint the AI SCF was
 `scf:v1:sha256:deabae39d62f87a890c511969ab796a21a0db2a88fe45ef7487d04aee94722f3`
 (69 resources); ACC is
 `scf:v1:sha256:5f058d9fada1110ab9db43f15e8104afaf33a3e39b9cef507468c4c4363eea29`
@@ -70,9 +70,68 @@ Stale distributed definitions, wrong-version resources and missing canonical
 inputs cannot qualify. A test-only same-version schema annotation produces a
 different qualified NM SCF; no maintained NM byte changes. This current selection
 is distinct from the exact NM snapshot still required by inherited AI 1.3/1.4
-authority. Removing that enclosing-definition coupling is the next migration
-target; this checkpoint does not claim that an entire mixed historical/current
-cohort can select two different contents under the same canonical key.
+authority. That enclosing-definition coupling is addressed by the following checkpoint;
+no selected closure may contain different contents under a single canonical key.
+
+### Implemented enclosing-selection checkpoint
+
+Current selection now traverses actual resource references and declared governing
+validation/conformance dependencies. It never unions predecessor manifests into
+an enclosing current cohort. The AI rules name the actual AI 1.3 semantic rule
+resource explicitly. Closed historical fields (`inherits`, inherited conformance
+and case qualifications, compatibility historical definitions) are independently
+verified evidence, not permission to import old enclosing selections. The AI
+`inherits` record explicitly declares `historical_evidence_not_current_selection`
+and binds its recorded source revision. Unknown or
+changed evidence records fail qualification; the exclusions cannot hide arbitrary
+new authority. Governing companion schemas and conformance policies remain real
+selected dependencies even where fixture payloads contain no `$ref` to them.
+
+Before: AI selected the whole AI 1.4 manifest plus its definition; ACC selected the
+whole ACC 1.4 and AI 1.5 manifests plus both definitions. After: both select the
+transitive graph rooted in their maintained own resources. The AI 1.4 definition,
+conformance and rule aggregator are no longer active AI members; the ACC 1.4
+definition, compatibility, conformance, rules and schema are no longer active ACC
+members. Historical conformance still has 85 AI and 263 ACC individually verified
+case references with their original assertions. No assertion is discarded.
+
+AI now has **40 resources** at
+`scf:v1:sha256:87b34a6397a90faf4fa875affaa9c40aa510493fd94aa96ac30d420ba32af1c7`;
+ACC has **107 resources** at
+`scf:v1:sha256:6a842c915c565efc06205d2eaa42a2ba87f762af8e454a42acf57e570ff82bec`.
+These are revision commitments, not target counts or compatibility pins. The
+unchanged AI 1.4 catalog/operation and AI 1.3 disposition, ownership, context and
+rules retain their actual resource identities. AI 1.3's definition remains a
+selected provenance record where that catalog requires it; its manifest is not
+an instruction to import a second current closure. Necessary historical ACC
+ledger/schema fragments remain, with their scoped validation selected exactly.
+No historical resource is copied, renamed or modified to manufacture this graph.
+
+Historical AI 1.3/1.4, ACC 1.3/1.4 and NM 2.5 definitions and complete original
+closures are independently reproduced from recorded Git revision
+`6ddc8c2b6d66531ff3ecefb0bba7b15616ac4f0c`. Their original SCFs and bytes remain
+unchanged. Their NM members are read from that revision, never today's NM paths.
+Current NM selection separately requires the maintained definition, canonical
+resources, exact discovered dependencies, SCF/closure verification and unchanged
+schema constraints. Only schema annotations are excluded from that constraint
+comparison; instance property names and literal values remain significant.
+
+A full in-memory atomic cohort test revises NM 2.5 with an annotation, derives a
+new NM SCF and all dependent AI/ACC integrity qualifications, and independently
+qualifies both current candidates. It does not modify maintained NM bytes or
+rewrite an inherited rule's fingerprint. A changed constraint or restored whole
+predecessor import fails even with a valid newly computed SCF. Stale distributed
+NM bytes cannot satisfy the maintained canonical source check. ACC's exact NM
+closure qualification now derives the current manifest/digests/SCF rather than
+freezing its predecessor's snapshot. Each current closure selects one content
+per canonical key; historical reproduction is a separate operation.
+
+No historical publication qualifier executes as an implicit current-selection
+fallback. Shared Rust SCF/closure verification and existing exact Python/Node
+resource discovery suffice; no Rust, WASM, runtime or public API change is needed.
+The remaining target is scoped ACC ledger/schema-helper and residual historical
+compatibility-resource dependencies. They are retained until their actual
+selector/semantic replacements are independently demonstrated.
 
 Actual AI 1.3 field-disposition, lifecycle/ownership and detached-context keys,
 digests, rule IDs and SCFs remain normative dependencies. The one composition
@@ -211,10 +270,10 @@ flattened outputs.
 
 The separate PR-scoped tool takes explicit base/head and protects files outside
 the declared change inventory. This is not a permanent comparison with that base.
-Whole-predecessor-lineage migration remains incomplete: the validation selector
-migration above is implemented, while actual predecessor rule qualifications and
-enclosing-definition history checks remain. Removing candidate byte snapshots
-alone does not establish semantic replacements for those remaining dependencies.
+The enclosing-selection and validation-selector migrations above are implemented.
+Actual inherited rule provenance and historical snapshot verification remain
+necessary; remaining ACC ledger/schema-helper dependencies are a separate target.
+Removing candidate snapshots alone does not establish semantic replacements.
 
 ## Remaining boundary
 

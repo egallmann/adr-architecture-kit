@@ -18,6 +18,7 @@ NAMES = (
     "conformance.schema",
 )
 EXISTING = {
+    "tests/test_semantic_contract_lifecycle_design.py",
     "tests/test_architecture_interpretation_v15_publication.py",
     "tests/fixtures/ai15-publication-byte-baseline.json",
     "packages/node/test/ai15-publication.test.mjs",

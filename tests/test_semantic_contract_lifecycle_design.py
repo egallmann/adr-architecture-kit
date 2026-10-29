@@ -171,15 +171,21 @@ def review_fixture(monkeypatch, tmp_path):
         "user": {"login": "different-author"},
         "base": {"repo": {"full_name": design.REPOSITORY}, "ref": "develop", "sha": "b" * 40},
     }
+    real_check_output = subprocess.check_output
 
     def api(args, **kwargs):
         return json.dumps(review if "/reviews/" in args[-1] else request).encode()
 
     def git(root, rev, path):
+        if path == "PROJECT.yaml" and rev in {revision, request["base"]["sha"]}:
+            return yaml.safe_dump(policy).encode()
+        if rev != revision:
+            # Provider simulation owns the reviewed revision and base policy.
+            # A historical authority is recovered from its actual Git commit,
+            # never from today's candidate bytes or the mocked GitHub response.
+            return real_check_output(["git", "show", f"{rev}:{path}"], cwd=root)
         if path == design.ADR_PATH:
             return yaml.safe_dump(before).encode()
-        if path == "PROJECT.yaml":
-            return yaml.safe_dump(policy).encode()
         return (ROOT / path).read_bytes()
 
     original_read = design.read
@@ -195,6 +201,32 @@ def review_fixture(monkeypatch, tmp_path):
     monkeypatch.setattr(design, "_git", git)
     monkeypatch.setattr(design, "read", read)
     return revision, url, review, request, accepted, before
+
+
+def test_acceptance_transport_does_not_freeze_current_candidates_to_historical_bytes(
+    monkeypatch, tmp_path
+):
+    review_fixture(monkeypatch, tmp_path)
+    classification = design.read(ROOT / design.CLASS_PATH)
+    row = classification["development_lineage"][0]
+    read_bytes = Path.read_bytes
+
+    def revised_candidate(path):
+        if path == ROOT / row["definition_path"]:
+            return b"different current candidate revision; not historical evidence"
+        return read_bytes(path)
+
+    monkeypatch.setattr(Path, "read_bytes", revised_candidate)
+    recovered = design._git(ROOT, classification["audit_source_commit"], row["definition_path"])
+    assert design.digest(recovered) == row["definition_digest"]
+    assert json.loads(recovered)["semanticContractFingerprint"] == row["scf"]
+    assert design.qualify_history_evidence(classification) == len(
+        classification["development_lineage"]
+    )
+    forged = copy.deepcopy(classification)
+    forged["development_lineage"][0]["definition_digest"] = "sha256:" + "0" * 64
+    with pytest.raises(design.DesignError, match="historical Git content mismatch"):
+        design.qualify_history_evidence(forged)
 
 
 def test_live_review_transport_contract_qualifies_exact_review(monkeypatch, tmp_path):

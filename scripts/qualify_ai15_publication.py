@@ -1208,6 +1208,10 @@ def _qualify(root: Path, *, published: bool) -> dict[str, Any]:
             "semanticDependencies",
             "inherits",
             "inherited_semantic_rules",
+            "required_output_policy",
+            "verified_representation_duplication",
+            "whole_ledger",
+            "v0_13_objective",
             "destination_authority",
             "required_output_catalog",
             "recipe_authority",
@@ -1230,6 +1234,31 @@ def _qualify(root: Path, *, published: bool) -> dict[str, Any]:
         == "original_semantic_values_identity_context_order_and_multiplicity_once_not_generated_representation_ownership",
         "weakened_inherited_or_independent_proof_rule",
     )
+    original_policy = historical_resource(root, BASE + "rules")
+    policy_names = (
+        "required_output_coverage",
+        "verified_representation_duplication",
+        "whole_ledger",
+        "v0_13_objective",
+    )
+    policy_sources = {
+        name: {
+            "canonical_resource_key": BASE + "rules",
+            "content_digest": digest(original_policy),
+            "schema_pointer": "/" + name,
+        }
+        for name in policy_names
+    }
+    expected_coverage = {
+        **original_policy["required_output_coverage"],
+        "catalog": PREFIX + CATALOG,
+        "schema": PREFIX + CATALOG + ".schema",
+    }
+    require(
+        rules["required_output_policy"] == expected_coverage
+        and all(rules[name] == original_policy[name] for name in policy_names[1:]),
+        "weakened_inherited_output_policy",
+    )
     require(
         rules["inherits"]
         == {
@@ -1237,6 +1266,7 @@ def _qualify(root: Path, *, published: bool) -> dict[str, Any]:
             "semantic_contract_fingerprint": AI14_SCF,
             "scope": "historical_evidence_not_current_selection",
             "source_revision": HISTORICAL_REVISION,
+            "policy_sources": policy_sources,
             "overrides": [
                 "identity_representation_required_output_definitions",
                 "representation_only_identity_recipes",

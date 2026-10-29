@@ -96,16 +96,23 @@ members. Historical conformance still has 85 AI and 263 ACC individually verifie
 case references with their original assertions. No assertion is discarded.
 
 AI now has **40 resources** at
-`scf:v1:sha256:87b34a6397a90faf4fa875affaa9c40aa510493fd94aa96ac30d420ba32af1c7`;
+`scf:v1:sha256:446dd62bd9f3683136351f41516a37426dee9b7f4faf1d063202a34a82c0bc5a`;
 ACC has **107 resources** at
-`scf:v1:sha256:6a842c915c565efc06205d2eaa42a2ba87f762af8e454a42acf57e570ff82bec`.
+`scf:v1:sha256:43a03fec6e8cd5257184557888f61d9e4168c9af0ad2886f308d226509b53642`.
 These are revision commitments, not target counts or compatibility pins. The
 unchanged AI 1.4 catalog/operation and AI 1.3 disposition, ownership, context and
 rules retain their actual resource identities. AI 1.3's definition remains a
 selected provenance record where that catalog requires it; its manifest is not
 an instruction to import a second current closure. Necessary historical ACC
 ledger/schema fragments remain, with their scoped validation selected exactly.
-No historical resource is copied, renamed or modified to manufacture this graph.
+Four small AI 1.4 policy projections are explicit current rules: complete required-output
+validation, representation-only duplication, whole-ledger equality and the all-27-type
+objective. Every value is compared independently with its exact original fragment;
+only the already-authorized current catalog/schema selectors differ. Their actual
+AI 1.4 keys, pointers and digest are retained under closed historical `policy_sources`.
+This carries all substantive policy in the current closure without importing the
+historical aggregator. A validly rehashed weakened projection is rejected.
+No entire historical resource is copied, renamed or modified to manufacture this graph.
 
 Historical AI 1.3/1.4, ACC 1.3/1.4 and NM 2.5 definitions and complete original
 closures are independently reproduced from recorded Git revision

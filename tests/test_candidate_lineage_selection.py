@@ -259,3 +259,68 @@ def test_historical_evidence_scope_is_closed(monkeypatch: pytest.MonkeyPatch) ->
     monkeypatch.setattr(ai, "read", lambda root, k: changed if k == key else original(root, k))
     with pytest.raises(ai.PublicationError, match="unapproved_inherited_semantic_delta"):
         ai.qualify(ROOT, published=False)
+
+
+def test_current_rules_carry_complete_inherited_policy_projections() -> None:
+    rules = ai.read(ROOT, ai.PREFIX + "rules")
+    original = assets.historical_resource(ROOT, ai.BASE + "rules")
+    for name in ("verified_representation_duplication", "whole_ledger", "v0_13_objective"):
+        assert rules[name] == original[name]
+    assert rules["required_output_policy"] == {
+        **original["required_output_coverage"],
+        "catalog": ai.PREFIX + ai.CATALOG,
+        "schema": ai.PREFIX + ai.CATALOG + ".schema",
+    }
+    for name, source in rules["inherits"]["policy_sources"].items():
+        assert source == {
+            "canonical_resource_key": ai.BASE + "rules",
+            "content_digest": assets.digest(original),
+            "schema_pointer": "/" + name,
+        }
+
+
+def test_validly_rehashed_weakened_policy_projection_fails(monkeypatch: pytest.MonkeyPatch) -> None:
+    key = ai.PREFIX + "rules"
+    changed = copy.deepcopy(ai.read(ROOT, key))
+    changed["required_output_policy"]["complete_entity_schema_validation_required"] = False
+    original_read = ai.read
+
+    def selected(root: Path, k: str) -> Any:
+        return changed if k == key else original_read(root, k)
+
+    current = assets.canonical_resource(ROOT, ai.PREFIX + "contract")
+    manifest = [
+        {
+            **m,
+            "contentDigest": assets.digest(selected(ROOT, m["canonicalResourceKey"])),
+            "dependencies": [
+                {"canonicalResourceKey": dep, "contentDigest": assets.digest(selected(ROOT, dep))}
+                for dep in sorted(
+                    assets.discovered_dependencies(
+                        m["canonicalResourceKey"], selected(ROOT, m["canonicalResourceKey"])
+                    )
+                )
+            ],
+        }
+        for m in current["resourceManifest"]
+    ]
+    forged = assets.definition(
+        "architecture-interpretation",
+        manifest,
+        current["frozenNormativeConformanceResources"],
+        version="1.5",
+    )
+    assert verify_semantic_contract(forged).success
+    assert validate_semantic_resource_closure(
+        forged,
+        [
+            {
+                "canonicalResourceKey": m["canonicalResourceKey"],
+                "content": selected(ROOT, m["canonicalResourceKey"]),
+            }
+            for m in manifest
+        ],
+    ).closure_valid
+    monkeypatch.setattr(ai, "read", selected)
+    with pytest.raises(ai.PublicationError, match="weakened_inherited_output_policy"):
+        ai.qualify(ROOT, candidate_definition=forged)

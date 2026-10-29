@@ -59,7 +59,7 @@
     "architecture_interpretation": {
       "family": "architecture-interpretation",
       "version": "1.5",
-      "fingerprint": "scf:v1:sha256:87b34a6397a90faf4fa875affaa9c40aa510493fd94aa96ac30d420ba32af1c7",
+      "fingerprint": "scf:v1:sha256:446dd62bd9f3683136351f41516a37426dee9b7f4faf1d063202a34a82c0bc5a",
       "closure_source": "architecture-interpretation/1.5/contract",
       "required_resource_set": "exact manifest closure of that definition"
     },

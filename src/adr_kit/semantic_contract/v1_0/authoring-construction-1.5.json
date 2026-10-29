@@ -1010,7 +1010,7 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/rules",
-          "contentDigest": "sha256:d255fa41deb47ad99170ba84b04dde398c2b9c27936e41a0f22eb9bef40d792f"
+          "contentDigest": "sha256:e0cc679486d50d98029b410c347d5b7fb325a6951b116a81a5dc916fbf61bf14"
         },
         {
           "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
@@ -1051,7 +1051,7 @@
     },
     {
       "canonicalResourceKey": "architecture-interpretation/1.5/contract",
-      "contentDigest": "sha256:26e4fecb3f188d86b19d35c1755cd0cb33d969c8623289a4f0277f4e293d889f",
+      "contentDigest": "sha256:56136c08a4da4b5dedc78774c9dea72c103f3addfe990943ba9b5e4ffec3a1c3",
       "role": "normative-definition",
       "dependencies": []
     },
@@ -1156,7 +1156,7 @@
     },
     {
       "canonicalResourceKey": "architecture-interpretation/1.5/rules",
-      "contentDigest": "sha256:d255fa41deb47ad99170ba84b04dde398c2b9c27936e41a0f22eb9bef40d792f",
+      "contentDigest": "sha256:e0cc679486d50d98029b410c347d5b7fb325a6951b116a81a5dc916fbf61bf14",
       "role": "interpretation-rule",
       "dependencies": [
         {
@@ -1170,6 +1170,10 @@
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations",
           "contentDigest": "sha256:3bafde2bdf265e86902f6e09e2c9b63c87ac8b7b9e73b4209852e2300dcd2168"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations.schema",
+          "contentDigest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794"
         },
         {
           "canonicalResourceKey": "normalized-model/2.5/contract",
@@ -2032,7 +2036,7 @@
     },
     {
       "canonicalResourceKey": "authoring-construction/1.5/conformance",
-      "contentDigest": "sha256:1586a6662ebde9ccbe719a0786f4f0eb9d20fb1d4f23fcd0b7d4d73b2b3e1420",
+      "contentDigest": "sha256:471ae05c3428094aacb55d2030e0920f4c93698942db29204faa87d5703061a5",
       "role": "interpretation-conformance",
       "dependencies": [
         {
@@ -2053,7 +2057,7 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/contract",
-          "contentDigest": "sha256:26e4fecb3f188d86b19d35c1755cd0cb33d969c8623289a4f0277f4e293d889f"
+          "contentDigest": "sha256:56136c08a4da4b5dedc78774c9dea72c103f3addfe990943ba9b5e4ffec3a1c3"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes",
@@ -2085,11 +2089,11 @@
         },
         {
           "canonicalResourceKey": "authoring-construction/1.5/rules",
-          "contentDigest": "sha256:e7d9e0d731ed1cbe19964d73758a06de9d67afa08e36a31e0afd82a391512b75"
+          "contentDigest": "sha256:011cfa1281169c6823ca36db78c3ea1d140580c245e7d111db8a55b5c4f2fab0"
         },
         {
           "canonicalResourceKey": "authoring-construction/1.5/schema",
-          "contentDigest": "sha256:fbb4e7c6712de420048a4c3cd4e7fc0805252081267ee7b1bafd34ec0afaef52"
+          "contentDigest": "sha256:22e7c24000ed019350b1857fbae805cecbc6d95acf8b0915c0bce7dee0aabfd8"
         },
         {
           "canonicalResourceKey": "normalized-model/2.5/contract",
@@ -2118,7 +2122,7 @@
     },
     {
       "canonicalResourceKey": "authoring-construction/1.5/rules",
-      "contentDigest": "sha256:e7d9e0d731ed1cbe19964d73758a06de9d67afa08e36a31e0afd82a391512b75",
+      "contentDigest": "sha256:011cfa1281169c6823ca36db78c3ea1d140580c245e7d111db8a55b5c4f2fab0",
       "role": "interpretation-rule",
       "dependencies": [
         {
@@ -2147,7 +2151,7 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/contract",
-          "contentDigest": "sha256:26e4fecb3f188d86b19d35c1755cd0cb33d969c8623289a4f0277f4e293d889f"
+          "contentDigest": "sha256:56136c08a4da4b5dedc78774c9dea72c103f3addfe990943ba9b5e4ffec3a1c3"
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes",
@@ -2167,7 +2171,7 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/rules",
-          "contentDigest": "sha256:d255fa41deb47ad99170ba84b04dde398c2b9c27936e41a0f22eb9bef40d792f"
+          "contentDigest": "sha256:e0cc679486d50d98029b410c347d5b7fb325a6951b116a81a5dc916fbf61bf14"
         },
         {
           "canonicalResourceKey": "authoring-construction/1.3/ledger.schema",
@@ -2189,7 +2193,7 @@
     },
     {
       "canonicalResourceKey": "authoring-construction/1.5/schema",
-      "contentDigest": "sha256:fbb4e7c6712de420048a4c3cd4e7fc0805252081267ee7b1bafd34ec0afaef52",
+      "contentDigest": "sha256:22e7c24000ed019350b1857fbae805cecbc6d95acf8b0915c0bce7dee0aabfd8",
       "role": "source-contract-schema",
       "dependencies": [
         {
@@ -2274,7 +2278,7 @@
         },
         {
           "canonicalResourceKey": "architecture-interpretation/1.5/rules",
-          "contentDigest": "sha256:d255fa41deb47ad99170ba84b04dde398c2b9c27936e41a0f22eb9bef40d792f"
+          "contentDigest": "sha256:e0cc679486d50d98029b410c347d5b7fb325a6951b116a81a5dc916fbf61bf14"
         },
         {
           "canonicalResourceKey": "authoring-construction/1.1/schema",
@@ -2854,5 +2858,5 @@
   "frozenNormativeConformanceResources": [
     "authoring-construction/1.5/conformance"
   ],
-  "semanticContractFingerprint": "scf:v1:sha256:6a842c915c565efc06205d2eaa42a2ba87f762af8e454a42acf57e570ff82bec"
+  "semanticContractFingerprint": "scf:v1:sha256:43a03fec6e8cd5257184557888f61d9e4168c9af0ad2886f308d226509b53642"
 }

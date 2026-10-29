@@ -59,7 +59,7 @@
           "const": "1.5"
         },
         "semantic_contract_fingerprint": {
-          "const": "scf:v1:sha256:87b34a6397a90faf4fa875affaa9c40aa510493fd94aa96ac30d420ba32af1c7"
+          "const": "scf:v1:sha256:446dd62bd9f3683136351f41516a37426dee9b7f4faf1d063202a34a82c0bc5a"
         },
         "authority_closure": {
           "$ref": "#/$defs/exact_ai15_closure"
@@ -685,7 +685,7 @@
                   "const": "1.5"
                 },
                 "semantic_contract_fingerprint": {
-                  "const": "scf:v1:sha256:87b34a6397a90faf4fa875affaa9c40aa510493fd94aa96ac30d420ba32af1c7"
+                  "const": "scf:v1:sha256:446dd62bd9f3683136351f41516a37426dee9b7f4faf1d063202a34a82c0bc5a"
                 },
                 "authority_closure": {
                   "$ref": "#/$defs/exact_ai15_closure"
@@ -769,7 +769,7 @@
               "$ref": "#/$defs/digest"
             },
             "architecture_interpretation_fingerprint": {
-              "const": "scf:v1:sha256:87b34a6397a90faf4fa875affaa9c40aa510493fd94aa96ac30d420ba32af1c7"
+              "const": "scf:v1:sha256:446dd62bd9f3683136351f41516a37426dee9b7f4faf1d063202a34a82c0bc5a"
             }
           },
           "additionalProperties": false
@@ -1002,7 +1002,7 @@
               "const": "1.5"
             },
             "semantic_contract_fingerprint": {
-              "const": "scf:v1:sha256:87b34a6397a90faf4fa875affaa9c40aa510493fd94aa96ac30d420ba32af1c7"
+              "const": "scf:v1:sha256:446dd62bd9f3683136351f41516a37426dee9b7f4faf1d063202a34a82c0bc5a"
             },
             "authority_closure": {
               "$ref": "#/$defs/exact_ai15_closure"
@@ -1227,7 +1227,7 @@
               "const": "1.5"
             },
             "semantic_contract_fingerprint": {
-              "const": "scf:v1:sha256:87b34a6397a90faf4fa875affaa9c40aa510493fd94aa96ac30d420ba32af1c7"
+              "const": "scf:v1:sha256:446dd62bd9f3683136351f41516a37426dee9b7f4faf1d063202a34a82c0bc5a"
             },
             "authority_closure": {
               "$ref": "#/$defs/exact_ai15_closure"
@@ -24687,7 +24687,7 @@
               },
               {
                 "canonical_resource_key": "architecture-interpretation/1.5/rules",
-                "content_digest": "sha256:d255fa41deb47ad99170ba84b04dde398c2b9c27936e41a0f22eb9bef40d792f"
+                "content_digest": "sha256:e0cc679486d50d98029b410c347d5b7fb325a6951b116a81a5dc916fbf61bf14"
               },
               {
                 "canonical_resource_key": "authoring-domain/1.1/contract",

@@ -31542,7 +31542,7 @@
         "input": {
           "qualification": {
             "canonical_resource_key": "architecture-interpretation/1.5/contract",
-            "content_digest": "sha256:26e4fecb3f188d86b19d35c1755cd0cb33d969c8623289a4f0277f4e293d889f",
+            "content_digest": "sha256:56136c08a4da4b5dedc78774c9dea72c103f3addfe990943ba9b5e4ffec3a1c3",
             "schema_pointer": ""
           }
         }
@@ -31561,7 +31561,7 @@
         {
           "path": "SCF",
           "operator": "equals",
-          "expected": "scf:v1:sha256:87b34a6397a90faf4fa875affaa9c40aa510493fd94aa96ac30d420ba32af1c7"
+          "expected": "scf:v1:sha256:446dd62bd9f3683136351f41516a37426dee9b7f4faf1d063202a34a82c0bc5a"
         },
         {
           "path": "resource_count",

@@ -3391,6 +3391,12 @@ if __name__ == "__main__":
         publish_authoring_construction_13()
     elif sys.argv[1:] == ["--publish-acc14-only"]:
         publish_authoring_construction_14()
+    elif sys.argv[1:] == ["--publish-acc15-only"]:
+        if str(ROOT) not in sys.path:
+            sys.path.insert(0, str(ROOT))
+        from scripts.generate_acc15_publication import publish
+
+        publish()
     elif sys.argv[1:]:
         raise SystemExit("Unsupported generator mode")
     else:

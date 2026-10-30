@@ -246,16 +246,17 @@ export function loadSemanticResource(key: string): unknown {
   const ai15 = parts.length >= 3 && parts[0] === "architecture-interpretation" && parts[1] === "1.5";
   const acc13 = parts.length >= 3 && parts[0] === "authoring-construction" && parts[1] === "1.3";
   const acc14 = parts.length >= 3 && parts[0] === "authoring-construction" && parts[1] === "1.4";
-  if (["architecture-interpretation/1.3/contract", "architecture-interpretation/1.4/contract", "architecture-interpretation/1.5/contract", "normalized-model/2.5/contract", "authoring-construction/1.3/contract"].includes(key)) return getSemanticContract(parts[0]!, parts[1]!);
+  const acc15 = parts.length >= 3 && parts[0] === "authoring-construction" && parts[1] === "1.5";
+  if (["architecture-interpretation/1.3/contract", "architecture-interpretation/1.4/contract", "architecture-interpretation/1.5/contract", "normalized-model/2.5/contract", "authoring-construction/1.3/contract", "authoring-construction/1.4/contract", "authoring-construction/1.5/contract"].includes(key)) return getSemanticContract(parts[0]!, parts[1]!);
   if (parts.length === 4 && parts[0] === "authoring" && parts[1] === "1.7" && parts[2] === "schema") {
     const resource = canonicalSchemas[`authoring/v1.7/${parts[3]}.json` as keyof typeof canonicalSchemas];
     if (resource) return deepFreeze(structuredClone(resource));
     throw new Error(`Missing bundled semantic resource: ${key}`);
   }
-  if (parts.length < 3 || (!(ai13 || ai14 || ai15 || acc13 || acc14) && !["1.0", "1.1", "1.2", "1.5", "1.6", "2.3", "2.4", "2.5"].includes(parts[1] ?? ""))) throw new Error(`Unsupported semantic resource: ${key}`);
-  if ((ai13 || ai14 || ai15 || acc13 || acc14) && !getSemanticContract(parts[0]!, parts[1]!).resourceManifest.some((entry) => entry.canonicalResourceKey === key)) throw new Error(`Missing bundled semantic resource: ${key}`);
+  if (parts.length < 3 || (!(ai13 || ai14 || ai15 || acc13 || acc14 || acc15) && !["1.0", "1.1", "1.2", "1.5", "1.6", "2.3", "2.4", "2.5"].includes(parts[1] ?? ""))) throw new Error(`Unsupported semantic resource: ${key}`);
+  if ((ai13 || ai14 || ai15 || acc13 || acc14 || acc15) && !getSemanticContract(parts[0]!, parts[1]!).resourceManifest.some((entry) => entry.canonicalResourceKey === key)) throw new Error(`Missing bundled semantic resource: ${key}`);
   const names = [`${key.replaceAll("/", "-")}.json`];
-  if (parts.length === 3 && !(ai13 || ai14 || ai15 || acc13 || acc14)) names.push(`${parts[0]}-${parts[2]}.json`);
+  if (parts.length === 3 && !(ai13 || ai14 || ai15 || acc13 || acc14 || acc15)) names.push(`${parts[0]}-${parts[2]}.json`);
   for (const name of names) {
     const resource = assets[`resources/${name}`];
     if (resource) return deepFreeze(structuredClone(resource));

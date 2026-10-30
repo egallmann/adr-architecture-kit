@@ -1,0 +1,1432 @@
+{
+  "semanticContractFamily": "authoring-construction",
+  "semanticContractVersion": "1.5",
+  "fingerprintScheme": "scf:v1:sha256",
+  "resourceManifest": [
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.2/source-decoding-1.7",
+      "contentDigest": "sha256:53fe192a1870ce923cbbe14e810c132baa8ecbe1f60d6632d072b0732d43a6b2",
+      "role": "source-contract-mapping",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
+          "contentDigest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+          "contentDigest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-base.schema",
+          "contentDigest": "sha256:f3dd3e6989262477404579a5058c07b3d75cb0fef1fdf37392788d8b287f3a4d"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-component.schema",
+          "contentDigest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-system.schema",
+          "contentDigest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/types.schema",
+          "contentDigest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+        },
+        {
+          "canonicalResourceKey": "custom-entity/1.0/conformance",
+          "contentDigest": "sha256:ace86cadb5369ede9db5f3737b9e0cf4df03cf8ef2ff9a2b69ffeea8f51aa3f7"
+        },
+        {
+          "canonicalResourceKey": "custom-entity/1.0/contract",
+          "contentDigest": "sha256:d236c1e569b32df4e562edcadba6cf2dc28c325fe23681778b2f27242d55c18a"
+        },
+        {
+          "canonicalResourceKey": "custom-entity/1.0/schema",
+          "contentDigest": "sha256:028d43d181a61a51974714213a7ec107ba05c2b7efe4a61c1854022a19c4189c"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.3/contextual-facts",
+      "contentDigest": "sha256:ba9d4f03893528049e75a5d794ce12bdd920eed41936c1ee4ea2713cd57c1d26",
+      "role": "interpretation-rule",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/contextual-facts.schema",
+          "contentDigest": "sha256:0fc5192eac877b6766112585c9c41377d1efa8e28725a5071b3d468869cb1bd6"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-ownership",
+          "contentDigest": "sha256:49c11df61cace7b46b61a1b3242a683709ff84b16c5940cff69051f2763c609e"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-provenance.schema",
+          "contentDigest": "sha256:69fe060c0b0e135e48f2b01233b09d9887becf0599a88ab4ecea361c901bed03"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-architecture-model.schema",
+          "contentDigest": "sha256:b03505fc37ad4528b4670366434b6563f1b0b58c9e1491820e387ded0b32bb5b"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity-registry.schema",
+          "contentDigest": "sha256:f51416e1ba047b0b173c51f08bfc272bbfa98aa77f6ce9196d0138aaa4f21e03"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity.schema",
+          "contentDigest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-record.schema",
+          "contentDigest": "sha256:62a869c2503938b6cee1fca963fbf6025d8f32f9696ba9f8f1dc184db564bf27"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-registry.schema",
+          "contentDigest": "sha256:dbe274123bc0484bc1f42f7ef366664935a2c65b554c5b0904ea703445c746fe"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/unresolved-registry.schema",
+          "contentDigest": "sha256:b07e6021ade7efd91371f48b989ef91d22acc073b812519a297c2f0ba8fe7fec"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.3/contextual-facts.schema",
+      "contentDigest": "sha256:0fc5192eac877b6766112585c9c41377d1efa8e28725a5071b3d468869cb1bd6",
+      "role": "source-contract-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-provenance.schema",
+          "contentDigest": "sha256:69fe060c0b0e135e48f2b01233b09d9887becf0599a88ab4ecea361c901bed03"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.3/contract",
+      "contentDigest": "sha256:44c13c57d7523d3d155c8b190c48f4c96e63c9f33359b6fd55c9340403a37b1e",
+      "role": "normative-definition",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.3/detached-context",
+      "contentDigest": "sha256:64d17109dc8c1c9805eb64acfab117c8235b836ca6588713379a9bbb41c7e527",
+      "role": "interpretation-rule",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5",
+          "contentDigest": "sha256:bf6b25720eceaf7fa5b1754a9bedccbde68835c236cd4230e3ebdd2d78f207a8"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-architecture-model.schema",
+          "contentDigest": "sha256:b03505fc37ad4528b4670366434b6563f1b0b58c9e1491820e387ded0b32bb5b"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity-registry.schema",
+          "contentDigest": "sha256:f51416e1ba047b0b173c51f08bfc272bbfa98aa77f6ce9196d0138aaa4f21e03"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity.schema",
+          "contentDigest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-record.schema",
+          "contentDigest": "sha256:62a869c2503938b6cee1fca963fbf6025d8f32f9696ba9f8f1dc184db564bf27"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-registry.schema",
+          "contentDigest": "sha256:dbe274123bc0484bc1f42f7ef366664935a2c65b554c5b0904ea703445c746fe"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/unresolved-registry.schema",
+          "contentDigest": "sha256:b07e6021ade7efd91371f48b989ef91d22acc073b812519a297c2f0ba8fe7fec"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5",
+      "contentDigest": "sha256:bf6b25720eceaf7fa5b1754a9bedccbde68835c236cd4230e3ebdd2d78f207a8",
+      "role": "source-contract-mapping",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.2/source-decoding-1.7",
+          "contentDigest": "sha256:53fe192a1870ce923cbbe14e810c132baa8ecbe1f60d6632d072b0732d43a6b2"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/field-dispositions.schema",
+          "contentDigest": "sha256:d6402f4aa93c432ab43e0a2e22eda7ceebb8cb463b80423d12d7ffedb78fbb5f"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/source-mapping-1.7-to-2.5",
+          "contentDigest": "sha256:1d946c7e706aec0e0774bc6ae13c56afdfa571ad45b02dd6c071e42591f45c30"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
+          "contentDigest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+          "contentDigest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-base.schema",
+          "contentDigest": "sha256:f3dd3e6989262477404579a5058c07b3d75cb0fef1fdf37392788d8b287f3a4d"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-component.schema",
+          "contentDigest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-system.schema",
+          "contentDigest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/types.schema",
+          "contentDigest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+        },
+        {
+          "canonicalResourceKey": "custom-entity/1.0/conformance",
+          "contentDigest": "sha256:ace86cadb5369ede9db5f3737b9e0cf4df03cf8ef2ff9a2b69ffeea8f51aa3f7"
+        },
+        {
+          "canonicalResourceKey": "custom-entity/1.0/contract",
+          "contentDigest": "sha256:d236c1e569b32df4e562edcadba6cf2dc28c325fe23681778b2f27242d55c18a"
+        },
+        {
+          "canonicalResourceKey": "custom-entity/1.0/schema",
+          "contentDigest": "sha256:028d43d181a61a51974714213a7ec107ba05c2b7efe4a61c1854022a19c4189c"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-architecture-model.schema",
+          "contentDigest": "sha256:b03505fc37ad4528b4670366434b6563f1b0b58c9e1491820e387ded0b32bb5b"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity-registry.schema",
+          "contentDigest": "sha256:f51416e1ba047b0b173c51f08bfc272bbfa98aa77f6ce9196d0138aaa4f21e03"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity.schema",
+          "contentDigest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-record.schema",
+          "contentDigest": "sha256:62a869c2503938b6cee1fca963fbf6025d8f32f9696ba9f8f1dc184db564bf27"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-registry.schema",
+          "contentDigest": "sha256:dbe274123bc0484bc1f42f7ef366664935a2c65b554c5b0904ea703445c746fe"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/unresolved-registry.schema",
+          "contentDigest": "sha256:b07e6021ade7efd91371f48b989ef91d22acc073b812519a297c2f0ba8fe7fec"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.3/field-dispositions.schema",
+      "contentDigest": "sha256:d6402f4aa93c432ab43e0a2e22eda7ceebb8cb463b80423d12d7ffedb78fbb5f",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-ownership",
+      "contentDigest": "sha256:49c11df61cace7b46b61a1b3242a683709ff84b16c5940cff69051f2763c609e",
+      "role": "interpretation-rule",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-ownership.schema",
+          "contentDigest": "sha256:8e4b6f2d3044a2ae7bc989b623ca0c128e5bb627a748f24506b07e56b9f45204"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
+          "contentDigest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+          "contentDigest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-base.schema",
+          "contentDigest": "sha256:f3dd3e6989262477404579a5058c07b3d75cb0fef1fdf37392788d8b287f3a4d"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-component.schema",
+          "contentDigest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-system.schema",
+          "contentDigest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/types.schema",
+          "contentDigest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/conformance",
+          "contentDigest": "sha256:a92fbc154aef4dd896d23e0c29be0f75ffafe86f3442a11a26653864a04b0b9f"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-architecture-model.schema",
+          "contentDigest": "sha256:b03505fc37ad4528b4670366434b6563f1b0b58c9e1491820e387ded0b32bb5b"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity-registry.schema",
+          "contentDigest": "sha256:f51416e1ba047b0b173c51f08bfc272bbfa98aa77f6ce9196d0138aaa4f21e03"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity.schema",
+          "contentDigest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-record.schema",
+          "contentDigest": "sha256:62a869c2503938b6cee1fca963fbf6025d8f32f9696ba9f8f1dc184db564bf27"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-registry.schema",
+          "contentDigest": "sha256:dbe274123bc0484bc1f42f7ef366664935a2c65b554c5b0904ea703445c746fe"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/unresolved-registry.schema",
+          "contentDigest": "sha256:b07e6021ade7efd91371f48b989ef91d22acc073b812519a297c2f0ba8fe7fec"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-ownership.schema",
+      "contentDigest": "sha256:8e4b6f2d3044a2ae7bc989b623ca0c128e5bb627a748f24506b07e56b9f45204",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-provenance.schema",
+      "contentDigest": "sha256:69fe060c0b0e135e48f2b01233b09d9887becf0599a88ab4ecea361c901bed03",
+      "role": "source-contract-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-ownership",
+          "contentDigest": "sha256:49c11df61cace7b46b61a1b3242a683709ff84b16c5940cff69051f2763c609e"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
+          "contentDigest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+          "contentDigest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-base.schema",
+          "contentDigest": "sha256:f3dd3e6989262477404579a5058c07b3d75cb0fef1fdf37392788d8b287f3a4d"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-component.schema",
+          "contentDigest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-system.schema",
+          "contentDigest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/types.schema",
+          "contentDigest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-architecture-model.schema",
+          "contentDigest": "sha256:b03505fc37ad4528b4670366434b6563f1b0b58c9e1491820e387ded0b32bb5b"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity-registry.schema",
+          "contentDigest": "sha256:f51416e1ba047b0b173c51f08bfc272bbfa98aa77f6ce9196d0138aaa4f21e03"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity.schema",
+          "contentDigest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-record.schema",
+          "contentDigest": "sha256:62a869c2503938b6cee1fca963fbf6025d8f32f9696ba9f8f1dc184db564bf27"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-registry.schema",
+          "contentDigest": "sha256:dbe274123bc0484bc1f42f7ef366664935a2c65b554c5b0904ea703445c746fe"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/unresolved-registry.schema",
+          "contentDigest": "sha256:b07e6021ade7efd91371f48b989ef91d22acc073b812519a297c2f0ba8fe7fec"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.3/rules",
+      "contentDigest": "sha256:469d4e296a9fbc49a8662017caa252465b8d5156057fe3598b13634f8d466824",
+      "role": "interpretation-rule",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.2/source-decoding-1.7",
+          "contentDigest": "sha256:53fe192a1870ce923cbbe14e810c132baa8ecbe1f60d6632d072b0732d43a6b2"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/contextual-facts",
+          "contentDigest": "sha256:ba9d4f03893528049e75a5d794ce12bdd920eed41936c1ee4ea2713cd57c1d26"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/detached-context",
+          "contentDigest": "sha256:64d17109dc8c1c9805eb64acfab117c8235b836ca6588713379a9bbb41c7e527"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5",
+          "contentDigest": "sha256:bf6b25720eceaf7fa5b1754a9bedccbde68835c236cd4230e3ebdd2d78f207a8"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-ownership",
+          "contentDigest": "sha256:49c11df61cace7b46b61a1b3242a683709ff84b16c5940cff69051f2763c609e"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-provenance.schema",
+          "contentDigest": "sha256:69fe060c0b0e135e48f2b01233b09d9887becf0599a88ab4ecea361c901bed03"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/source-mapping-1.7-to-2.5",
+          "contentDigest": "sha256:1d946c7e706aec0e0774bc6ae13c56afdfa571ad45b02dd6c071e42591f45c30"
+        },
+        {
+          "canonicalResourceKey": "custom-entity/1.0/conformance",
+          "contentDigest": "sha256:ace86cadb5369ede9db5f3737b9e0cf4df03cf8ef2ff9a2b69ffeea8f51aa3f7"
+        },
+        {
+          "canonicalResourceKey": "custom-entity/1.0/contract",
+          "contentDigest": "sha256:d236c1e569b32df4e562edcadba6cf2dc28c325fe23681778b2f27242d55c18a"
+        },
+        {
+          "canonicalResourceKey": "custom-entity/1.0/schema",
+          "contentDigest": "sha256:028d43d181a61a51974714213a7ec107ba05c2b7efe4a61c1854022a19c4189c"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/conformance",
+          "contentDigest": "sha256:a92fbc154aef4dd896d23e0c29be0f75ffafe86f3442a11a26653864a04b0b9f"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-architecture-model.schema",
+          "contentDigest": "sha256:b03505fc37ad4528b4670366434b6563f1b0b58c9e1491820e387ded0b32bb5b"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity-registry.schema",
+          "contentDigest": "sha256:f51416e1ba047b0b173c51f08bfc272bbfa98aa77f6ce9196d0138aaa4f21e03"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity.schema",
+          "contentDigest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-record.schema",
+          "contentDigest": "sha256:62a869c2503938b6cee1fca963fbf6025d8f32f9696ba9f8f1dc184db564bf27"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-registry.schema",
+          "contentDigest": "sha256:dbe274123bc0484bc1f42f7ef366664935a2c65b554c5b0904ea703445c746fe"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/unresolved-registry.schema",
+          "contentDigest": "sha256:b07e6021ade7efd91371f48b989ef91d22acc073b812519a297c2f0ba8fe7fec"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.3/source-mapping-1.7-to-2.5",
+      "contentDigest": "sha256:1d946c7e706aec0e0774bc6ae13c56afdfa571ad45b02dd6c071e42591f45c30",
+      "role": "source-contract-mapping",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.2/source-decoding-1.7",
+          "contentDigest": "sha256:53fe192a1870ce923cbbe14e810c132baa8ecbe1f60d6632d072b0732d43a6b2"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-architecture-model.schema",
+          "contentDigest": "sha256:b03505fc37ad4528b4670366434b6563f1b0b58c9e1491820e387ded0b32bb5b"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity-registry.schema",
+          "contentDigest": "sha256:f51416e1ba047b0b173c51f08bfc272bbfa98aa77f6ce9196d0138aaa4f21e03"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity.schema",
+          "contentDigest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-record.schema",
+          "contentDigest": "sha256:62a869c2503938b6cee1fca963fbf6025d8f32f9696ba9f8f1dc184db564bf27"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-registry.schema",
+          "contentDigest": "sha256:dbe274123bc0484bc1f42f7ef366664935a2c65b554c5b0904ea703445c746fe"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/unresolved-registry.schema",
+          "contentDigest": "sha256:b07e6021ade7efd91371f48b989ef91d22acc073b812519a297c2f0ba8fe7fec"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.4/required-output-derivations",
+      "contentDigest": "sha256:1aaa457d4a49c04a86c7479c9e46f2110debb4770d7f8d3f166323859d3897ca",
+      "role": "interpretation-rule",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/contextual-facts",
+          "contentDigest": "sha256:ba9d4f03893528049e75a5d794ce12bdd920eed41936c1ee4ea2713cd57c1d26"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/contract",
+          "contentDigest": "sha256:44c13c57d7523d3d155c8b190c48f4c96e63c9f33359b6fd55c9340403a37b1e"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5",
+          "contentDigest": "sha256:bf6b25720eceaf7fa5b1754a9bedccbde68835c236cd4230e3ebdd2d78f207a8"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-ownership",
+          "contentDigest": "sha256:49c11df61cace7b46b61a1b3242a683709ff84b16c5940cff69051f2763c609e"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-provenance.schema",
+          "contentDigest": "sha256:69fe060c0b0e135e48f2b01233b09d9887becf0599a88ab4ecea361c901bed03"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/rules",
+          "contentDigest": "sha256:469d4e296a9fbc49a8662017caa252465b8d5156057fe3598b13634f8d466824"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/source-mapping-1.7-to-2.5",
+          "contentDigest": "sha256:1d946c7e706aec0e0774bc6ae13c56afdfa571ad45b02dd6c071e42591f45c30"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.4/required-output-derivations.schema",
+          "contentDigest": "sha256:2cb0ff9c6632e18aeeb91f1b41ce083faa01ba283dae32a4a9eb00bce2f041c5"
+        },
+        {
+          "canonicalResourceKey": "authoring-domain/1.1/contract",
+          "contentDigest": "sha256:4788acb08de41ce69e51c9b0fc336147d68b6f7ea36feb41d46233c0c7e281aa"
+        },
+        {
+          "canonicalResourceKey": "authoring-domain/1.1/schema",
+          "contentDigest": "sha256:688cfdd2dd5a15960e9ec218e0e058a17dccd3939c3eeac2f4a4c5604977eee9"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
+          "contentDigest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+          "contentDigest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-component.schema",
+          "contentDigest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-system.schema",
+          "contentDigest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/types.schema",
+          "contentDigest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity.schema",
+          "contentDigest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-record.schema",
+          "contentDigest": "sha256:62a869c2503938b6cee1fca963fbf6025d8f32f9696ba9f8f1dc184db564bf27"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.4/required-output-derivations.schema",
+      "contentDigest": "sha256:2cb0ff9c6632e18aeeb91f1b41ce083faa01ba283dae32a4a9eb00bce2f041c5",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.5/conformance",
+      "contentDigest": "sha256:06239052baa6ccde6330f8378e84b39b6c8afadc271006514cc3eb8bf9c29b48",
+      "role": "interpretation-conformance",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/conformance.schema",
+          "contentDigest": "sha256:b13289ba626de5db74efebd573d3a70eb9578886bfc72b0868a5e32eed3a691d"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes",
+          "contentDigest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations",
+          "contentDigest": "sha256:3bafde2bdf265e86902f6e09e2c9b63c87ac8b7b9e73b4209852e2300dcd2168"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/rules",
+          "contentDigest": "sha256:e0cc679486d50d98029b410c347d5b7fb325a6951b116a81a5dc916fbf61bf14"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
+          "contentDigest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+          "contentDigest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-component.schema",
+          "contentDigest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-system.schema",
+          "contentDigest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/types.schema",
+          "contentDigest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity.schema",
+          "contentDigest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.5/conformance.schema",
+      "contentDigest": "sha256:b13289ba626de5db74efebd573d3a70eb9578886bfc72b0868a5e32eed3a691d",
+      "role": "source-contract-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations.schema",
+          "contentDigest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.5/contract",
+      "contentDigest": "sha256:56136c08a4da4b5dedc78774c9dea72c103f3addfe990943ba9b5e4ffec3a1c3",
+      "role": "normative-definition",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes",
+      "contentDigest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18",
+      "role": "interpretation-rule",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/detached-context",
+          "contentDigest": "sha256:64d17109dc8c1c9805eb64acfab117c8235b836ca6588713379a9bbb41c7e527"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes.schema",
+          "contentDigest": "sha256:716e3fdc02feda104a36538eb642ea8e3cbfe18d8382d6ed7cb6aa1c74fbe7f7"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/contract",
+          "contentDigest": "sha256:5e23c8b20c0a34f7904fe6aa58af3252cf837bcca12aed97731b5a729bc61349"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes.schema",
+      "contentDigest": "sha256:716e3fdc02feda104a36538eb642ea8e3cbfe18d8382d6ed7cb6aa1c74fbe7f7",
+      "role": "source-contract-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations.schema",
+          "contentDigest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations",
+      "contentDigest": "sha256:3bafde2bdf265e86902f6e09e2c9b63c87ac8b7b9e73b4209852e2300dcd2168",
+      "role": "interpretation-rule",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/detached-context",
+          "contentDigest": "sha256:64d17109dc8c1c9805eb64acfab117c8235b836ca6588713379a9bbb41c7e527"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5",
+          "contentDigest": "sha256:bf6b25720eceaf7fa5b1754a9bedccbde68835c236cd4230e3ebdd2d78f207a8"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-ownership",
+          "contentDigest": "sha256:49c11df61cace7b46b61a1b3242a683709ff84b16c5940cff69051f2763c609e"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/source-mapping-1.7-to-2.5",
+          "contentDigest": "sha256:1d946c7e706aec0e0774bc6ae13c56afdfa571ad45b02dd6c071e42591f45c30"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.4/required-output-derivations",
+          "contentDigest": "sha256:1aaa457d4a49c04a86c7479c9e46f2110debb4770d7f8d3f166323859d3897ca"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes",
+          "contentDigest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations.schema",
+          "contentDigest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
+          "contentDigest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+          "contentDigest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-component.schema",
+          "contentDigest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-system.schema",
+          "contentDigest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/types.schema",
+          "contentDigest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity.schema",
+          "contentDigest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-record.schema",
+          "contentDigest": "sha256:62a869c2503938b6cee1fca963fbf6025d8f32f9696ba9f8f1dc184db564bf27"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations.schema",
+      "contentDigest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.5/rules",
+      "contentDigest": "sha256:e0cc679486d50d98029b410c347d5b7fb325a6951b116a81a5dc916fbf61bf14",
+      "role": "interpretation-rule",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/rules",
+          "contentDigest": "sha256:469d4e296a9fbc49a8662017caa252465b8d5156057fe3598b13634f8d466824"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes",
+          "contentDigest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations",
+          "contentDigest": "sha256:3bafde2bdf265e86902f6e09e2c9b63c87ac8b7b9e73b4209852e2300dcd2168"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations.schema",
+          "contentDigest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/contract",
+          "contentDigest": "sha256:5e23c8b20c0a34f7904fe6aa58af3252cf837bcca12aed97731b5a729bc61349"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "authoring-construction/1.1/ledger.schema",
+      "contentDigest": "sha256:7b3e22c8eac42eee2e00ceaeb6773d6deb709f3058d0d168653fa5c3aeb7eff7",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "authoring-construction/1.1/schema",
+      "contentDigest": "sha256:5e1d536545457f64a298f137839caee0c874229e6e6da934892361aeebe7b6dc",
+      "role": "source-contract-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "authoring-construction/1.1/ledger.schema",
+          "contentDigest": "sha256:7b3e22c8eac42eee2e00ceaeb6773d6deb709f3058d0d168653fa5c3aeb7eff7"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.4/schema/normalized-architecture-model.schema",
+          "contentDigest": "sha256:14844a15f83f3ac2ecb4e2ceb45ae144b30e93b5e530f83d339c97530aeab7d3"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "authoring-construction/1.3/ledger.schema",
+      "contentDigest": "sha256:da3e4db8a4dcda2d6bcfcc802b015bf499925d1b56095718d2dd746562adc02a",
+      "role": "source-contract-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/contextual-facts",
+          "contentDigest": "sha256:ba9d4f03893528049e75a5d794ce12bdd920eed41936c1ee4ea2713cd57c1d26"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-ownership",
+          "contentDigest": "sha256:49c11df61cace7b46b61a1b3242a683709ff84b16c5940cff69051f2763c609e"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-provenance.schema",
+          "contentDigest": "sha256:69fe060c0b0e135e48f2b01233b09d9887becf0599a88ab4ecea361c901bed03"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity.schema",
+          "contentDigest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "authoring-construction/1.5/compatibility",
+      "contentDigest": "sha256:3769caf5b1025db4691029a852ced139ea5f977f6856a6a1847ce4d665f25df4",
+      "role": "normative-definition",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "authoring-construction/1.3/ledger.schema",
+          "contentDigest": "sha256:da3e4db8a4dcda2d6bcfcc802b015bf499925d1b56095718d2dd746562adc02a"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "authoring-construction/1.5/composition-bindings",
+      "contentDigest": "sha256:9d6c1559f3391ada841189930c750bc66ebc74a87a7e64c8512aa3456a9ee08b",
+      "role": "interpretation-rule",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5",
+          "contentDigest": "sha256:bf6b25720eceaf7fa5b1754a9bedccbde68835c236cd4230e3ebdd2d78f207a8"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-ownership",
+          "contentDigest": "sha256:49c11df61cace7b46b61a1b3242a683709ff84b16c5940cff69051f2763c609e"
+        },
+        {
+          "canonicalResourceKey": "authoring-construction/1.5/composition-bindings.schema",
+          "contentDigest": "sha256:3ba5346e6dbbe90d60d3dee95eaaf3388dd78489d693fd7ee6597f12f0983b3e"
+        },
+        {
+          "canonicalResourceKey": "authoring-domain/1.1/contract",
+          "contentDigest": "sha256:4788acb08de41ce69e51c9b0fc336147d68b6f7ea36feb41d46233c0c7e281aa"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
+          "contentDigest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+          "contentDigest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "authoring-construction/1.5/composition-bindings.schema",
+      "contentDigest": "sha256:3ba5346e6dbbe90d60d3dee95eaaf3388dd78489d693fd7ee6597f12f0983b3e",
+      "role": "source-contract-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5",
+          "contentDigest": "sha256:bf6b25720eceaf7fa5b1754a9bedccbde68835c236cd4230e3ebdd2d78f207a8"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-ownership",
+          "contentDigest": "sha256:49c11df61cace7b46b61a1b3242a683709ff84b16c5940cff69051f2763c609e"
+        },
+        {
+          "canonicalResourceKey": "authoring-domain/1.1/contract",
+          "contentDigest": "sha256:4788acb08de41ce69e51c9b0fc336147d68b6f7ea36feb41d46233c0c7e281aa"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
+          "contentDigest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+          "contentDigest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "authoring-construction/1.5/conformance",
+      "contentDigest": "sha256:471ae05c3428094aacb55d2030e0920f4c93698942db29204faa87d5703061a5",
+      "role": "interpretation-conformance",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5",
+          "contentDigest": "sha256:bf6b25720eceaf7fa5b1754a9bedccbde68835c236cd4230e3ebdd2d78f207a8"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-ownership",
+          "contentDigest": "sha256:49c11df61cace7b46b61a1b3242a683709ff84b16c5940cff69051f2763c609e"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/source-mapping-1.7-to-2.5",
+          "contentDigest": "sha256:1d946c7e706aec0e0774bc6ae13c56afdfa571ad45b02dd6c071e42591f45c30"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.4/required-output-derivations",
+          "contentDigest": "sha256:1aaa457d4a49c04a86c7479c9e46f2110debb4770d7f8d3f166323859d3897ca"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/contract",
+          "contentDigest": "sha256:56136c08a4da4b5dedc78774c9dea72c103f3addfe990943ba9b5e4ffec3a1c3"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes",
+          "contentDigest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations",
+          "contentDigest": "sha256:3bafde2bdf265e86902f6e09e2c9b63c87ac8b7b9e73b4209852e2300dcd2168"
+        },
+        {
+          "canonicalResourceKey": "authoring-construction/1.3/ledger.schema",
+          "contentDigest": "sha256:da3e4db8a4dcda2d6bcfcc802b015bf499925d1b56095718d2dd746562adc02a"
+        },
+        {
+          "canonicalResourceKey": "authoring-construction/1.5/compatibility",
+          "contentDigest": "sha256:3769caf5b1025db4691029a852ced139ea5f977f6856a6a1847ce4d665f25df4"
+        },
+        {
+          "canonicalResourceKey": "authoring-construction/1.5/composition-bindings",
+          "contentDigest": "sha256:9d6c1559f3391ada841189930c750bc66ebc74a87a7e64c8512aa3456a9ee08b"
+        },
+        {
+          "canonicalResourceKey": "authoring-construction/1.5/composition-bindings.schema",
+          "contentDigest": "sha256:3ba5346e6dbbe90d60d3dee95eaaf3388dd78489d693fd7ee6597f12f0983b3e"
+        },
+        {
+          "canonicalResourceKey": "authoring-construction/1.5/conformance.schema",
+          "contentDigest": "sha256:9b28bd470c3d8a34269003f60957de6d1e22ac1ce9e834e9fbf420740393756b"
+        },
+        {
+          "canonicalResourceKey": "authoring-construction/1.5/rules",
+          "contentDigest": "sha256:011cfa1281169c6823ca36db78c3ea1d140580c245e7d111db8a55b5c4f2fab0"
+        },
+        {
+          "canonicalResourceKey": "authoring-construction/1.5/schema",
+          "contentDigest": "sha256:ec5bf1581bca6bb4290113e05b455f690133f296aa1719b11606fd9260cf5b58"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/contract",
+          "contentDigest": "sha256:5e23c8b20c0a34f7904fe6aa58af3252cf837bcca12aed97731b5a729bc61349"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-record.schema",
+          "contentDigest": "sha256:62a869c2503938b6cee1fca963fbf6025d8f32f9696ba9f8f1dc184db564bf27"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "authoring-construction/1.5/conformance.schema",
+      "contentDigest": "sha256:9b28bd470c3d8a34269003f60957de6d1e22ac1ce9e834e9fbf420740393756b",
+      "role": "source-contract-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations.schema",
+          "contentDigest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "authoring-construction/1.5/rules",
+      "contentDigest": "sha256:011cfa1281169c6823ca36db78c3ea1d140580c245e7d111db8a55b5c4f2fab0",
+      "role": "interpretation-rule",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/contextual-facts",
+          "contentDigest": "sha256:ba9d4f03893528049e75a5d794ce12bdd920eed41936c1ee4ea2713cd57c1d26"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/detached-context",
+          "contentDigest": "sha256:64d17109dc8c1c9805eb64acfab117c8235b836ca6588713379a9bbb41c7e527"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5",
+          "contentDigest": "sha256:bf6b25720eceaf7fa5b1754a9bedccbde68835c236cd4230e3ebdd2d78f207a8"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-ownership",
+          "contentDigest": "sha256:49c11df61cace7b46b61a1b3242a683709ff84b16c5940cff69051f2763c609e"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-provenance.schema",
+          "contentDigest": "sha256:69fe060c0b0e135e48f2b01233b09d9887becf0599a88ab4ecea361c901bed03"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.4/required-output-derivations",
+          "contentDigest": "sha256:1aaa457d4a49c04a86c7479c9e46f2110debb4770d7f8d3f166323859d3897ca"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/contract",
+          "contentDigest": "sha256:56136c08a4da4b5dedc78774c9dea72c103f3addfe990943ba9b5e4ffec3a1c3"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes",
+          "contentDigest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes.schema",
+          "contentDigest": "sha256:716e3fdc02feda104a36538eb642ea8e3cbfe18d8382d6ed7cb6aa1c74fbe7f7"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations",
+          "contentDigest": "sha256:3bafde2bdf265e86902f6e09e2c9b63c87ac8b7b9e73b4209852e2300dcd2168"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations.schema",
+          "contentDigest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/rules",
+          "contentDigest": "sha256:e0cc679486d50d98029b410c347d5b7fb325a6951b116a81a5dc916fbf61bf14"
+        },
+        {
+          "canonicalResourceKey": "authoring-construction/1.3/ledger.schema",
+          "contentDigest": "sha256:da3e4db8a4dcda2d6bcfcc802b015bf499925d1b56095718d2dd746562adc02a"
+        },
+        {
+          "canonicalResourceKey": "authoring-construction/1.5/composition-bindings",
+          "contentDigest": "sha256:9d6c1559f3391ada841189930c750bc66ebc74a87a7e64c8512aa3456a9ee08b"
+        },
+        {
+          "canonicalResourceKey": "authoring-construction/1.5/composition-bindings.schema",
+          "contentDigest": "sha256:3ba5346e6dbbe90d60d3dee95eaaf3388dd78489d693fd7ee6597f12f0983b3e"
+        },
+        {
+          "canonicalResourceKey": "authoring-domain/1.1/contract",
+          "contentDigest": "sha256:4788acb08de41ce69e51c9b0fc336147d68b6f7ea36feb41d46233c0c7e281aa"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "authoring-construction/1.5/schema",
+      "contentDigest": "sha256:ec5bf1581bca6bb4290113e05b455f690133f296aa1719b11606fd9260cf5b58",
+      "role": "source-contract-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.2/source-decoding-1.7",
+          "contentDigest": "sha256:53fe192a1870ce923cbbe14e810c132baa8ecbe1f60d6632d072b0732d43a6b2"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/contextual-facts",
+          "contentDigest": "sha256:ba9d4f03893528049e75a5d794ce12bdd920eed41936c1ee4ea2713cd57c1d26"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/contextual-facts.schema",
+          "contentDigest": "sha256:0fc5192eac877b6766112585c9c41377d1efa8e28725a5071b3d468869cb1bd6"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/contract",
+          "contentDigest": "sha256:44c13c57d7523d3d155c8b190c48f4c96e63c9f33359b6fd55c9340403a37b1e"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/detached-context",
+          "contentDigest": "sha256:64d17109dc8c1c9805eb64acfab117c8235b836ca6588713379a9bbb41c7e527"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5",
+          "contentDigest": "sha256:bf6b25720eceaf7fa5b1754a9bedccbde68835c236cd4230e3ebdd2d78f207a8"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/field-dispositions.schema",
+          "contentDigest": "sha256:d6402f4aa93c432ab43e0a2e22eda7ceebb8cb463b80423d12d7ffedb78fbb5f"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-ownership",
+          "contentDigest": "sha256:49c11df61cace7b46b61a1b3242a683709ff84b16c5940cff69051f2763c609e"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-ownership.schema",
+          "contentDigest": "sha256:8e4b6f2d3044a2ae7bc989b623ca0c128e5bb627a748f24506b07e56b9f45204"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/lifecycle-provenance.schema",
+          "contentDigest": "sha256:69fe060c0b0e135e48f2b01233b09d9887becf0599a88ab4ecea361c901bed03"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/rules",
+          "contentDigest": "sha256:469d4e296a9fbc49a8662017caa252465b8d5156057fe3598b13634f8d466824"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.3/source-mapping-1.7-to-2.5",
+          "contentDigest": "sha256:1d946c7e706aec0e0774bc6ae13c56afdfa571ad45b02dd6c071e42591f45c30"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.4/required-output-derivations",
+          "contentDigest": "sha256:1aaa457d4a49c04a86c7479c9e46f2110debb4770d7f8d3f166323859d3897ca"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.4/required-output-derivations.schema",
+          "contentDigest": "sha256:2cb0ff9c6632e18aeeb91f1b41ce083faa01ba283dae32a4a9eb00bce2f041c5"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/conformance",
+          "contentDigest": "sha256:06239052baa6ccde6330f8378e84b39b6c8afadc271006514cc3eb8bf9c29b48"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/conformance.schema",
+          "contentDigest": "sha256:b13289ba626de5db74efebd573d3a70eb9578886bfc72b0868a5e32eed3a691d"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes",
+          "contentDigest": "sha256:a61923525e43a856de605c8390bfd08e6539e85a293009445260996ecf29ea18"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/identity-representation-recipes.schema",
+          "contentDigest": "sha256:716e3fdc02feda104a36538eb642ea8e3cbfe18d8382d6ed7cb6aa1c74fbe7f7"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations",
+          "contentDigest": "sha256:3bafde2bdf265e86902f6e09e2c9b63c87ac8b7b9e73b4209852e2300dcd2168"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/required-output-derivations.schema",
+          "contentDigest": "sha256:e3be0d84ea07bbaaa9a1d1399d7f67b531afbc9d034da651a49b6a6981532794"
+        },
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.5/rules",
+          "contentDigest": "sha256:e0cc679486d50d98029b410c347d5b7fb325a6951b116a81a5dc916fbf61bf14"
+        },
+        {
+          "canonicalResourceKey": "authoring-construction/1.1/schema",
+          "contentDigest": "sha256:5e1d536545457f64a298f137839caee0c874229e6e6da934892361aeebe7b6dc"
+        },
+        {
+          "canonicalResourceKey": "authoring-construction/1.3/ledger.schema",
+          "contentDigest": "sha256:da3e4db8a4dcda2d6bcfcc802b015bf499925d1b56095718d2dd746562adc02a"
+        },
+        {
+          "canonicalResourceKey": "authoring-construction/1.5/composition-bindings",
+          "contentDigest": "sha256:9d6c1559f3391ada841189930c750bc66ebc74a87a7e64c8512aa3456a9ee08b"
+        },
+        {
+          "canonicalResourceKey": "authoring-domain/1.1/contract",
+          "contentDigest": "sha256:4788acb08de41ce69e51c9b0fc336147d68b6f7ea36feb41d46233c0c7e281aa"
+        },
+        {
+          "canonicalResourceKey": "authoring-domain/1.1/schema",
+          "contentDigest": "sha256:688cfdd2dd5a15960e9ec218e0e058a17dccd3939c3eeac2f4a4c5604977eee9"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
+          "contentDigest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+          "contentDigest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-base.schema",
+          "contentDigest": "sha256:f3dd3e6989262477404579a5058c07b3d75cb0fef1fdf37392788d8b287f3a4d"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-component.schema",
+          "contentDigest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-system.schema",
+          "contentDigest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/types.schema",
+          "contentDigest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+        },
+        {
+          "canonicalResourceKey": "custom-entity/1.0/conformance",
+          "contentDigest": "sha256:ace86cadb5369ede9db5f3737b9e0cf4df03cf8ef2ff9a2b69ffeea8f51aa3f7"
+        },
+        {
+          "canonicalResourceKey": "custom-entity/1.0/contract",
+          "contentDigest": "sha256:d236c1e569b32df4e562edcadba6cf2dc28c325fe23681778b2f27242d55c18a"
+        },
+        {
+          "canonicalResourceKey": "custom-entity/1.0/schema",
+          "contentDigest": "sha256:028d43d181a61a51974714213a7ec107ba05c2b7efe4a61c1854022a19c4189c"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/conformance",
+          "contentDigest": "sha256:a92fbc154aef4dd896d23e0c29be0f75ffafe86f3442a11a26653864a04b0b9f"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/contract",
+          "contentDigest": "sha256:5e23c8b20c0a34f7904fe6aa58af3252cf837bcca12aed97731b5a729bc61349"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-architecture-model.schema",
+          "contentDigest": "sha256:b03505fc37ad4528b4670366434b6563f1b0b58c9e1491820e387ded0b32bb5b"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity-registry.schema",
+          "contentDigest": "sha256:f51416e1ba047b0b173c51f08bfc272bbfa98aa77f6ce9196d0138aaa4f21e03"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity.schema",
+          "contentDigest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-record.schema",
+          "contentDigest": "sha256:62a869c2503938b6cee1fca963fbf6025d8f32f9696ba9f8f1dc184db564bf27"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-registry.schema",
+          "contentDigest": "sha256:dbe274123bc0484bc1f42f7ef366664935a2c65b554c5b0904ea703445c746fe"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/unresolved-registry.schema",
+          "contentDigest": "sha256:b07e6021ade7efd91371f48b989ef91d22acc073b812519a297c2f0ba8fe7fec"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "authoring-domain/1.1/contract",
+      "contentDigest": "sha256:4788acb08de41ce69e51c9b0fc336147d68b6f7ea36feb41d46233c0c7e281aa",
+      "role": "normative-definition",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "authoring-domain/1.1/schema",
+      "contentDigest": "sha256:688cfdd2dd5a15960e9ec218e0e058a17dccd3939c3eeac2f4a4c5604977eee9",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
+      "contentDigest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+      "role": "source-contract-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/types.schema",
+          "contentDigest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+      "contentDigest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+      "role": "source-contract-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
+          "contentDigest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/types.schema",
+          "contentDigest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "authoring/1.7/schema/adr-physical-base.schema",
+      "contentDigest": "sha256:f3dd3e6989262477404579a5058c07b3d75cb0fef1fdf37392788d8b287f3a4d",
+      "role": "source-contract-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/types.schema",
+          "contentDigest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "authoring/1.7/schema/adr-physical-component.schema",
+      "contentDigest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+      "role": "source-contract-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
+          "contentDigest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-base.schema",
+          "contentDigest": "sha256:f3dd3e6989262477404579a5058c07b3d75cb0fef1fdf37392788d8b287f3a4d"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/types.schema",
+          "contentDigest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "authoring/1.7/schema/adr-physical-system.schema",
+      "contentDigest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+      "role": "source-contract-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
+          "contentDigest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/adr-physical-base.schema",
+          "contentDigest": "sha256:f3dd3e6989262477404579a5058c07b3d75cb0fef1fdf37392788d8b287f3a4d"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.7/schema/types.schema",
+          "contentDigest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "authoring/1.7/schema/types.schema",
+      "contentDigest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "custom-entity/1.0/conformance",
+      "contentDigest": "sha256:ace86cadb5369ede9db5f3737b9e0cf4df03cf8ef2ff9a2b69ffeea8f51aa3f7",
+      "role": "normative-conformance",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "custom-entity/1.0/contract",
+      "contentDigest": "sha256:d236c1e569b32df4e562edcadba6cf2dc28c325fe23681778b2f27242d55c18a",
+      "role": "normative-definition",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "custom-entity/1.0/schema",
+      "contentDigest": "sha256:028d43d181a61a51974714213a7ec107ba05c2b7efe4a61c1854022a19c4189c",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.4/schema/normalized-architecture-model.schema",
+      "contentDigest": "sha256:14844a15f83f3ac2ecb4e2ceb45ae144b30e93b5e530f83d339c97530aeab7d3",
+      "role": "normalized-model-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "normalized-model/2.4/schema/normalized-entity.schema",
+          "contentDigest": "sha256:eaca142cb37975f7c321a66dcac58f464fe968bc90b6367658088dbeee09df30"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.4/schema/relationship-record.schema",
+          "contentDigest": "sha256:3842db1e8cc12571b0ccbfb76e06ccf48a1bafa46bf55a72be3e316d891b2e85"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.4/schema/unresolved-registry.schema",
+          "contentDigest": "sha256:6ab7768448abffbea1619edde28ad0c14744105a35c7fbc081ed9746b0c85c7e"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.4/schema/normalized-entity.schema",
+      "contentDigest": "sha256:eaca142cb37975f7c321a66dcac58f464fe968bc90b6367658088dbeee09df30",
+      "role": "normalized-model-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.4/schema/relationship-record.schema",
+      "contentDigest": "sha256:3842db1e8cc12571b0ccbfb76e06ccf48a1bafa46bf55a72be3e316d891b2e85",
+      "role": "normalized-model-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.4/schema/unresolved-registry.schema",
+      "contentDigest": "sha256:6ab7768448abffbea1619edde28ad0c14744105a35c7fbc081ed9746b0c85c7e",
+      "role": "normalized-model-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.5/conformance",
+      "contentDigest": "sha256:a92fbc154aef4dd896d23e0c29be0f75ffafe86f3442a11a26653864a04b0b9f",
+      "role": "normalized-model-conformance",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-architecture-model.schema",
+          "contentDigest": "sha256:b03505fc37ad4528b4670366434b6563f1b0b58c9e1491820e387ded0b32bb5b"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity-registry.schema",
+          "contentDigest": "sha256:f51416e1ba047b0b173c51f08bfc272bbfa98aa77f6ce9196d0138aaa4f21e03"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity.schema",
+          "contentDigest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-record.schema",
+          "contentDigest": "sha256:62a869c2503938b6cee1fca963fbf6025d8f32f9696ba9f8f1dc184db564bf27"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-registry.schema",
+          "contentDigest": "sha256:dbe274123bc0484bc1f42f7ef366664935a2c65b554c5b0904ea703445c746fe"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/unresolved-registry.schema",
+          "contentDigest": "sha256:b07e6021ade7efd91371f48b989ef91d22acc073b812519a297c2f0ba8fe7fec"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.5/contract",
+      "contentDigest": "sha256:5e23c8b20c0a34f7904fe6aa58af3252cf837bcca12aed97731b5a729bc61349",
+      "role": "normative-definition",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.5/schema/normalized-architecture-model.schema",
+      "contentDigest": "sha256:b03505fc37ad4528b4670366434b6563f1b0b58c9e1491820e387ded0b32bb5b",
+      "role": "normalized-model-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity.schema",
+          "contentDigest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-record.schema",
+          "contentDigest": "sha256:62a869c2503938b6cee1fca963fbf6025d8f32f9696ba9f8f1dc184db564bf27"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/unresolved-registry.schema",
+          "contentDigest": "sha256:b07e6021ade7efd91371f48b989ef91d22acc073b812519a297c2f0ba8fe7fec"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity-registry.schema",
+      "contentDigest": "sha256:f51416e1ba047b0b173c51f08bfc272bbfa98aa77f6ce9196d0138aaa4f21e03",
+      "role": "normalized-model-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity.schema",
+          "contentDigest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.5/schema/normalized-entity.schema",
+      "contentDigest": "sha256:4a7f31d35b34b61412e880e7bcc56123fc90f22f9b463ee596b8f80b0a4b40ff",
+      "role": "normalized-model-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.5/schema/relationship-record.schema",
+      "contentDigest": "sha256:62a869c2503938b6cee1fca963fbf6025d8f32f9696ba9f8f1dc184db564bf27",
+      "role": "normalized-model-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.5/schema/relationship-registry.schema",
+      "contentDigest": "sha256:dbe274123bc0484bc1f42f7ef366664935a2c65b554c5b0904ea703445c746fe",
+      "role": "normalized-model-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "normalized-model/2.5/schema/relationship-record.schema",
+          "contentDigest": "sha256:62a869c2503938b6cee1fca963fbf6025d8f32f9696ba9f8f1dc184db564bf27"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.5/schema/unresolved-registry.schema",
+      "contentDigest": "sha256:b07e6021ade7efd91371f48b989ef91d22acc073b812519a297c2f0ba8fe7fec",
+      "role": "normalized-model-schema",
+      "dependencies": []
+    }
+  ],
+  "frozenNormativeConformanceResources": [
+    "authoring-construction/1.5/conformance"
+  ],
+  "semanticContractFingerprint": "scf:v1:sha256:482958de83303363fd9e7793b1c56e13da5e13fe78a9e242139e29453e636851"
+}

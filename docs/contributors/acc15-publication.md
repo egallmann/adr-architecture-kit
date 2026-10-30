@@ -18,10 +18,9 @@ rules from predecessor builders. Complete independent semantic qualification of
 the proposed definition precedes distribution. This first checkpoint reproduces
 the original definitions exactly; no authority resource bytes changed.
 
-The subsequent atomic checkpoint must qualify an explicit selector migration and
-remove development-only lineage/byte obligations. It must preserve actual released
-authority, all accepted semantic rules and independently necessary conformance.
-Until that work and co-dependent consumers are qualified, consolidation is incomplete.
+The qualified checkpoints below implement selector migration, independent current
+and historical qualification, and removal of development-only byte obligations.
+Released authority, accepted semantic rules and independent conformance remain.
 
 ### Implemented validation-selector checkpoint
 
@@ -279,8 +278,61 @@ The separate PR-scoped tool takes explicit base/head and protects files outside
 the declared change inventory. This is not a permanent comparison with that base.
 The enclosing-selection and validation-selector migrations above are implemented.
 Actual inherited rule provenance and historical snapshot verification remain
-necessary; remaining ACC ledger/schema-helper dependencies are a separate target.
-Removing candidate snapshots alone does not establish semantic replacements.
+necessary. The final ACC dependency review below distinguishes those requirements
+from obsolete current validation and enclosing-selection coupling.
+
+## Completed ACC dependency review
+
+The final review found two operational selectors, not a missing architectural rule:
+
+| Original current selector | ACC 1.5 replacement | Independent preservation proof |
+| --- | --- | --- |
+| `authoring-construction/1.4/conformance.schema#/properties/cases/items/properties/assertions` (two references) | `authoring-construction/1.5/conformance.schema#/$defs/assertions` | Exact selected constraint body from the historical Git snapshot; differential valid/invalid typed assertions; closed fragment inventory |
+| `authoring-construction/1.5/schema#/$defs/contract_document/properties/frozenNormativeConformanceResources/const` selecting ACC 1.3 conformance | Literal selection of `authoring-construction/1.5/conformance` | Validate the actual current definition against its own contract-document schema; reject predecessor selection; independently qualify frozen conformance membership |
+
+Only the assertion-array fragment moves, not the entire historical companion.
+The conformance-name constraint checks a literal identity, not conformance content.
+The actual audit dependency is conformance → schema. Treating the literal as a
+reverse content dependency would invent a cycle, rejected by native closure
+qualification. Dependency discovery excludes only that exact schema location;
+other selections, actual schema references and governing audit edges remain.
+
+Removing the stale ACC 1.3 conformance selection removes its transitive historical
+compatibility/conformance chain from current selection. The ACC closure moves
+107 → 55 resources across this completion checkpoint (125 → 55 over the PR).
+AI remains 40 (originally 69); NM remains seven. Actual manifests, not a target
+count, determine membership. All historical inputs and original closures remain
+byte-exact and separately reproducible from recorded Git evidence.
+
+### Classification of remaining historical ACC dependencies
+
+| Dependency / consumer | Class and disposition | Why it remains |
+| --- | --- | --- |
+| `authoring-construction/1.3/ledger.schema`, selected by current schema, rules, compatibility and conformance | A — retain actual normative identity | Governs the complete semantic ledger, canonical/owner-local identity, contextual lifecycle facts and expected/observed equality. No successor ledger is invented. |
+| `authoring-construction/1.1/schema#/$defs/*`, 34 direct current request/helper references | A — retain selected inherited contract semantics | Defines exact request/input, source, reference, diagnostic, custom qualification and preservation shapes. It is a normative contract, not an independently duplicated current companion. Copying its interdependent definitions would add another maintained policy source. |
+| `authoring-construction/1.1/ledger.schema` through the selected ACC 1.1 schema | A — retain exact transitive resource qualification | Required by that unchanged resource's actual schema references. It does not replace the current ACC 1.3 ledger selection or authorize predecessor execution. |
+| ACC 1.3/1.4 definition, conformance, compatibility and predecessor closure chain | B — independently qualify historical evidence; D — remove obsolete current import | Original SCFs/bytes and individually preserved assertions remain testable from Git. They are not second current selections or perpetual compatibility promises for development history. |
+| ACC 1.4 conformance companion's assertion fragment | C — migrated above | Current validation shape now has a minimal current owner with independently identical constraints. |
+| Actual inherited AI 1.3 field/ownership/context and AI 1.4 producer rules | A — retain exact keys, digests and rule identities | These supply actual semantic meaning, not historical enclosing-version selection. |
+
+The 34 ACC 1.1 selectors are `non_empty`, `uuid_v7`, `digest`, `scf`, `cecf`,
+`semantic_type`, `resource_member`, `semantic_contract_qualification`,
+`exact_resource_set_qualification`, `custom_qualification`,
+`custom_definition_qualification`, `custom_registry_qualification`,
+`fragment_qualification`, `exact_source_descriptor`, `fragment_reference`,
+`fragment_intent`, `composition_intent`, `endpoint`, `relationship_intent`,
+`reference_entry`, `reference_basis`, `existing_source_entry`,
+`existing_source_basis`, `identity_establishment_policy`, `diagnostic`,
+`construction_map_entry`, `resolved_reference`, `source_schema`,
+`candidate_artifact`, `candidate_source_basis`, `round_trip`,
+`resource_dependency`, `semantic_mismatch_diagnostic`, and `exact_cec10_closure`.
+Their historical resource qualification never promotes a receipt between versions.
+
+The private Rust modules continue to qualify their explicitly named historical
+execution boundaries. They do not select AI/ACC 1.5 implicitly. Generic native
+SCF/closure primitives and Python/Node exact resource discovery consume the
+current cohort without runtime changes. Refactoring historical private modules or
+retiring optional prototype operations is not required for this authority-only PR.
 
 ## Remaining boundary
 
@@ -289,7 +341,11 @@ preimage, source envelope, completeness, custom lifecycle, declaring context,
 shared identity, relationship branch/envelope, nonselected output, owner-local
 context and custom qualification. Static authority and instance applicability
 are distinct. Applicability remains Unknown, complete interpretation Unavailable.
+These are explicit future execution obligations, not missing consolidation work.
 
 No Rust/WASM/runtime/protocol or public capability change, NM materialization,
 semantic equivalence, Constructed, persistence, admission or promotion is enabled.
-Human publication acceptance and later bounded execution are separate gates.
+Human merge authorization is separate from candidate qualification. Release
+promotion still requires ADR-L-0040's operational controls; merge does not promote
+this cohort. Optional future removal of redundant packaged historical candidate
+views must respect actual discovery consumers and release inventory qualification.

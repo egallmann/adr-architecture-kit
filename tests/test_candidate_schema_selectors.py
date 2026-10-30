@@ -14,6 +14,7 @@ from jsonschema import Draft202012Validator
 from adr_kit.semantic_contract import validate_semantic_resource_closure, verify_semantic_contract
 from scripts import candidate_contract_assets as assets
 from scripts import qualify_ai15_publication as ai
+from scripts import qualify_acc15_publication as acc
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -237,3 +238,109 @@ def test_stale_NM_mirror_cannot_replace_missing_canonical_schema(nm_candidate) -
     )
     with pytest.raises(ValueError, match="missing exact canonical resource"):
         ai.qualify_current_nm25(root)
+
+
+# ACC's current conformance shape owns only the selected historical fragment.
+# The historical case resource and normative ledger retain their actual identity.
+def test_acc_assertion_fragment_has_exact_current_ownership_and_constraints() -> None:
+    schema = assets.canonical_resource(ROOT, acc.PREFIX + "conformance.schema")
+    original = assets.historical_resource(ROOT, acc.BASE + "conformance.schema")["properties"][
+        "cases"
+    ]["items"]["properties"]["assertions"]
+    assert schema["$defs"] == {"assertions": original}
+    for path in ("cases", "inherited_cases"):
+        field = "assertions" if path == "cases" else "preserved_assertions"
+        assert schema["properties"][path]["items"]["properties"][field] == {
+            "$ref": "#/$defs/assertions"
+        }
+    assert acc.BASE + "conformance.schema" not in schema["semanticDependencies"]
+    acc.qualify_conformance_schema(schema)
+
+
+@pytest.mark.parametrize(
+    "value",
+    [
+        [],
+        [{"path": "/x", "operator": "equals", "expected": {"typed": [1, True, None]}}],
+        [{"path": "/x", "operator": "authority_is", "expected": "exact"}],
+        [{"path": "/x", "operator": "made_up", "expected": True}],
+        [{"path": "", "operator": "equals", "expected": True}],
+        [{"path": "/x", "operator": "equals"}],
+        [{"path": "/x", "operator": "equals", "expected": True, "extra": 1}],
+    ],
+)
+def test_acc_migrated_assertion_validation_is_identical(value: Any) -> None:
+    schema = assets.canonical_resource(ROOT, acc.PREFIX + "conformance.schema")
+    old = assets.historical_resource(ROOT, acc.BASE + "conformance.schema")["properties"]["cases"][
+        "items"
+    ]["properties"]["assertions"]
+    assert Draft202012Validator(schema["$defs"]["assertions"]).is_valid(
+        value
+    ) == Draft202012Validator(old).is_valid(value)
+
+
+@pytest.mark.parametrize(
+    "fault", ["weaken", "extra_fragment", "historical_selector", "wrong_version"]
+)
+def test_acc_current_fragment_rejects_unauthorized_constraints_or_selection(fault: str) -> None:
+    schema = copy.deepcopy(assets.canonical_resource(ROOT, acc.PREFIX + "conformance.schema"))
+    if fault == "weaken":
+        schema["$defs"]["assertions"]["minItems"] = 0
+    elif fault == "extra_fragment":
+        schema["$defs"]["invented"] = {}
+    else:
+        schema["properties"]["cases"]["items"]["properties"]["assertions"] = {
+            "$ref": (
+                "../1.4/conformance.schema.json#/properties/cases/items/properties/assertions"
+                if fault == "historical_selector"
+                else "../1.6/conformance.schema.json#/$defs/assertions"
+            )
+        }
+    with pytest.raises(
+        acc.PublicationError,
+        match="changed_conformance_assertion_constraints|weakened_assertion_schema",
+    ):
+        acc.qualify_conformance_schema(schema)
+
+
+def test_acc_retains_actual_normative_ledger_and_historical_case_dependencies() -> None:
+    definition = assets.canonical_resource(ROOT, acc.PREFIX + "contract")
+    members = {m["canonicalResourceKey"]: m for m in definition["resourceManifest"]}
+    for key in (acc.LEDGER,):
+        assert assets.canonical_resource(ROOT, key) == assets.historical_resource(ROOT, key)
+        assert members[key]["contentDigest"] == assets.digest(assets.historical_resource(ROOT, key))
+    for name in ("conformance", "conformance.schema"):
+        key = acc.BASE + name
+        assert assets.canonical_resource(ROOT, key) == assets.historical_resource(ROOT, key)
+        assert key not in members
+    assert acc.BASE + "conformance.schema" not in members
+    assert acc.LEDGER in assets.discovered_dependencies(
+        acc.PREFIX + "schema", assets.canonical_resource(ROOT, acc.PREFIX + "schema")
+    )
+    assert acc.BASE + "conformance.schema" not in {
+        d["canonicalResourceKey"]
+        for d in members[acc.PREFIX + "conformance.schema"]["dependencies"]
+    }
+
+
+def test_acc_contract_document_selects_current_conformance_without_reverse_audit_edge() -> None:
+    definition = assets.canonical_resource(ROOT, acc.PREFIX + "contract")
+    raw = {name: assets.canonical_resource(ROOT, acc.PREFIX + name) for name in acc.NAMES}
+    members = {m["canonicalResourceKey"]: m for m in definition["resourceManifest"]}
+    views, registry = acc.sealed_schemas(ROOT, raw, set(members))
+    validator = Draft202012Validator(
+        {"$ref": views[acc.PREFIX + "schema"]["$id"] + "#/$defs/contract_document"},
+        registry=registry,
+    )
+    validator.validate(definition)
+    wrong = {
+        **definition,
+        "frozenNormativeConformanceResources": ["authoring-construction/1.3/conformance"],
+    }
+    assert not validator.is_valid(wrong)
+    assert acc.PREFIX + "conformance" not in raw["schema"]["semanticDependencies"]
+    assert acc.PREFIX + "schema" in raw["conformance"]["semanticDependencies"]
+    # The literal name is checked by both the schema and independent definition
+    # qualifier. Other real resource selections remain actual content edges.
+    assert acc.LEDGER in raw["schema"]["semanticDependencies"]
+    assert "authoring-construction/1.3/conformance" not in members

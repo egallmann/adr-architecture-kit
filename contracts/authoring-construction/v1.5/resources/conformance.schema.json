@@ -2,8 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://adr-kit.dev/semantic-contract/resources/authoring-construction/1.5/conformance.schema.json",
   "semanticDependencies": [
-    "architecture-interpretation/1.5/required-output-derivations.schema",
-    "authoring-construction/1.4/conformance.schema"
+    "architecture-interpretation/1.5/required-output-derivations.schema"
   ],
   "type": "object",
   "additionalProperties": false,
@@ -63,7 +62,7 @@
             "$ref": "../../architecture-interpretation/1.5/required-output-derivations.schema.json#/$defs/qualified_resource"
           },
           "preserved_assertions": {
-            "$ref": "../1.4/conformance.schema.json#/properties/cases/items/properties/assertions"
+            "$ref": "#/$defs/assertions"
           },
           "scope": {
             "const": "historical_authority_only_not_executed_successor_request"
@@ -162,12 +161,46 @@
             }
           },
           "assertions": {
-            "$ref": "../1.4/conformance.schema.json#/properties/cases/items/properties/assertions"
+            "$ref": "#/$defs/assertions"
           },
           "runtime_coverage": {
             "const": "authority_only_not_implemented"
           }
         }
+      }
+    }
+  },
+  "$defs": {
+    "assertions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "operator",
+          "expected"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "operator": {
+            "enum": [
+              "equals",
+              "contains",
+              "excludes",
+              "set_equals",
+              "multiset_equals",
+              "schema_valid",
+              "outcome_is",
+              "authority_is"
+            ]
+          },
+          "expected": {}
+        },
+        "additionalProperties": false
       }
     }
   }

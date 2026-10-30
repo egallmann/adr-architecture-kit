@@ -337,7 +337,9 @@ def test_only_selected_schema_fragments_are_interpreted_not_all_historical_membe
     raw = {n: resource(n) for n in publication.NAMES}
     allowed = {e["canonicalResourceKey"] for e in bundle()}
     historical = "normalized-model/2.3/schema/relationship-record.schema"
-    assert historical in allowed
+    # Explicit unused historical evidence is not an implicit current selection.
+    # It need not remain reachable after candidate closure consolidation.
+    allowed.add(historical)
     views, _ = publication.sealed_schemas(ROOT, raw, allowed)
     assert historical not in views
     assert "normalized-model/2.5/schema/normalized-entity.schema" in views

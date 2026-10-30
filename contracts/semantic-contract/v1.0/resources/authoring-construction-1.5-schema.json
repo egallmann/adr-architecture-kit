@@ -594,7 +594,7 @@
         },
         "frozenNormativeConformanceResources": {
           "const": [
-            "authoring-construction/1.3/conformance"
+            "authoring-construction/1.5/conformance"
           ]
         },
         "semanticContractFingerprint": {
@@ -24795,7 +24795,6 @@
     "architecture-interpretation/1.5/required-output-derivations.schema",
     "architecture-interpretation/1.5/rules",
     "authoring-construction/1.1/schema",
-    "authoring-construction/1.3/conformance",
     "authoring-construction/1.3/ledger.schema",
     "authoring-construction/1.5/composition-bindings",
     "authoring-domain/1.1/contract",

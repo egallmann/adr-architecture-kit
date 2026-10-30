@@ -247,15 +247,27 @@ def direct_references(key: str, value: Any, known: set[str]) -> set[str]:
     }
     found = discovered_dependencies(key, operative)
 
-    def visit(node: Any) -> None:
+    def visit(node: Any, path: tuple[str, ...] = ()) -> None:
+        # This schema constraint checks the conformance resource's *name*, not
+        # its contents. The definition independently selects that resource and
+        # conformance consumes the schema, so reversing the audit edge here
+        # would create a false schema/conformance dependency cycle.
+        if key == "authoring-construction/1.5/schema" and path == (
+            "$defs",
+            "contract_document",
+            "properties",
+            "frozenNormativeConformanceResources",
+            "const",
+        ):
+            return
         if isinstance(node, str) and node in known:
             found.add(node)
         elif isinstance(node, dict):
-            for v in node.values():
-                visit(v)
+            for k, v in node.items():
+                visit(v, (*path, k))
         elif isinstance(node, list):
-            for v in node:
-                visit(v)
+            for i, v in enumerate(node):
+                visit(v, (*path, str(i)))
 
     visit(operative)
     if key + ".schema" in known:

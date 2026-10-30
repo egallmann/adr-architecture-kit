@@ -421,7 +421,15 @@ def qualify_schema(root: Path, raw: dict[str, Any]) -> dict[str, int]:
         ("contract_document", "contract_document", "semanticContractVersion", {"const": "1.5"}),
     ):
         same_except(defs[key], previous[prior], "properties")
-        same_except(defs[key]["properties"], previous[prior]["properties"], field)
+        selection_fields = [field]
+        if key == "contract_document":
+            selection_fields.append("frozenNormativeConformanceResources")
+            require(
+                defs[key]["properties"]["frozenNormativeConformanceResources"]
+                == {"const": [PREFIX + "conformance"]},
+                "wrong_current_conformance_selection",
+            )
+        same_except(defs[key]["properties"], previous[prior]["properties"], *selection_fields)
         require(defs[key]["properties"][field] == value, "wrong_ACC_request_or_result_selection")
     closure = defs["exact_ai15_closure"]
     base_closure = previous["exact_ai14_closure"]
@@ -1242,13 +1250,14 @@ def sealed_schemas(
     return views, registry
 
 
-def qualify_conformance_schema(value: dict[str, Any]) -> None:
+def qualify_conformance_schema(value: dict[str, Any], root: Path = ROOT) -> None:
     require(
         set(value)
         == {
             "$schema",
             "$id",
             "semanticDependencies",
+            "$defs",
             "type",
             "additionalProperties",
             "required",
@@ -1272,7 +1281,11 @@ def qualify_conformance_schema(value: dict[str, Any]) -> None:
         )
 
     closed(
-        {k: v for k, v in value.items() if k not in {"$schema", "$id", "semanticDependencies"}},
+        {
+            k: v
+            for k, v in value.items()
+            if k not in {"$schema", "$id", "semanticDependencies", "$defs"}
+        },
         {
             "resource_kind",
             "resource_version",
@@ -1334,9 +1347,19 @@ def qualify_conformance_schema(value: dict[str, Any]) -> None:
         },
         "unknown_conformance_category",
     )
-    assertion = {
-        "$ref": "../1.4/conformance.schema.json#/properties/cases/items/properties/assertions"
-    }
+    # Only the selected assertion shape migrates. Its constraints remain exactly
+    # those independently read from the historical authority, not a builder copy.
+    require(
+        value["$defs"]
+        == {
+            "assertions": pointer(
+                read(root, BASE + "conformance.schema"),
+                "/properties/cases/items/properties/assertions",
+            )
+        },
+        "changed_conformance_assertion_constraints",
+    )
+    assertion = {"$ref": "#/$defs/assertions"}
     reference = {
         "$ref": "../../architecture-interpretation/1.5/required-output-derivations.schema.json#/$defs/qualified_resource"
     }
@@ -1423,7 +1446,6 @@ def _qualify(root: Path, *, published: bool) -> dict[str, Any]:
         "wrong_successor_resource_version",
     )
     predecessors = (read(root, BASE + "contract"), read(root, AI + "contract"))
-    own = {PREFIX + n for n in NAMES}
     allowed = dependency_closure(root, {PREFIX + n: v for n, v in raw.items()}, read)
     for name, value in raw.items():
         require(
@@ -1438,7 +1460,7 @@ def _qualify(root: Path, *, published: bool) -> dict[str, Any]:
     producer_counts = qualify_schema(root, raw)
     qualify_rules(root, raw)
     qualify_compatibility(root, raw["compatibility"])
-    qualify_conformance_schema(raw["conformance.schema"])
+    qualify_conformance_schema(raw["conformance.schema"], root)
     cases = qualify_conformance(root, raw["conformance"])
     known = allowed | {
         m["canonicalResourceKey"] for d in predecessors for m in d["resourceManifest"]
@@ -1453,7 +1475,6 @@ def _qualify(root: Path, *, published: bool) -> dict[str, Any]:
         raw["conformance.schema"]["semanticDependencies"]
         == [
             "architecture-interpretation/1.5/required-output-derivations.schema",
-            BASE + "conformance.schema",
         ],
         "incorrect_conformance_schema_dependencies",
     )

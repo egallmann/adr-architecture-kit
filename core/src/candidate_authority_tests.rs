@@ -936,3 +936,30 @@ fn shared_canonical_content_identity_does_not_depend_on_number_spelling() {
         assert_eq!(actual, run(f));
     }
 }
+
+#[test]
+fn unrepresentable_canonical_roundtrip_is_unavailable_not_false_authority() {
+    let mut f = fixture().clone();
+    // The shared encoder admits this finite floating spelling but emits a
+    // decimal integer outside its safe parsed-integer domain. Do not change
+    // that existing scheme or return a different/unhashable resource value.
+    set(
+        f.resources
+            .get_mut("normalized-model/2.5/schema/unresolved-registry.schema")
+            .unwrap(),
+        "examples",
+        Json::Array(vec![Json::Number(
+            serde_json::Number::from_f64(1e16).unwrap(),
+        )]),
+    );
+    rebuild(&mut f);
+    native_valid(&f);
+    let q = selected_run(&f);
+    assert_eq!(q.status(), Status::Unavailable, "{:?}", q.findings());
+    assert!(q
+        .findings()
+        .iter()
+        .any(|d| d.code == "canonical_resource_representation_unavailable"));
+    assert!(q.authorities().is_empty() && q.resources().is_empty());
+    assert_eq!(q.complete_interpretation(), Status::Unavailable);
+}

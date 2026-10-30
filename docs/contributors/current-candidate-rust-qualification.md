@@ -48,7 +48,10 @@ authority. Embedded definition resources must identify those qualified roots.
 Overlapping canonical keys must have identical canonical content across all three
 closures. The shared canonicalizer also supplies the handed-off resource JSON
 representation, so equivalent number spellings cannot change downstream evidence.
-This does not normalize authored source artifacts.
+This does not normalize authored source artifacts. If the existing JSON parser
+cannot round-trip an authenticated canonical resource identity, qualification
+remains `Unavailable`; no alternate representation or parser policy is invented.
+The current selected bundle needs no such fallback.
 The union contains only their selected resources.
 
 Inherited AI 1.3 dispositions, lifecycle/ownership/context rules, the AI 1.4

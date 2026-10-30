@@ -268,6 +268,17 @@ fn qualify_selected(selected: &[Json], supplied: [Bundle<'_>; 3]) -> Qualificati
                     continue;
                 }
             };
+            let mut roundtrip = String::new();
+            if semantic_contract::canonicalize_value(&content, &mut roundtrip).is_err()
+                || roundtrip != encoded
+            {
+                out.issue(
+                    Status::Unavailable, family, key,
+                    "canonical_resource_representation_unavailable",
+                    "The existing JSON parser cannot hand off this exact canonical resource identity",
+                );
+                continue;
+            }
             if let Some(previous) = out.resources.get(key) {
                 if previous != &content {
                     out.issue(

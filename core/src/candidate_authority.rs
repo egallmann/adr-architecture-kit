@@ -248,9 +248,28 @@ fn qualify_selected(selected: &[Json], supplied: [Bundle<'_>; 3]) -> Qualificati
         }
         for resource in resources {
             let key = text(&resource, "canonicalResourceKey");
-            let content = resource.get("content").cloned().unwrap_or(Json::Null);
+            let supplied_content = resource.get("content").unwrap_or(&Json::Null);
+            // Authenticated resources use the same representation as their
+            // governed canonical content identity. This is not authored-source
+            // normalization and never establishes authority on its own.
+            let mut encoded = String::new();
+            let normalized = semantic_contract::canonicalize_value(supplied_content, &mut encoded)
+                .and_then(|()| serde_json::from_str::<Json>(&encoded).map_err(|e| e.to_string()));
+            let content = match normalized {
+                Ok(content) => content,
+                Err(error) => {
+                    out.issue(
+                        Status::Rejected,
+                        family,
+                        key,
+                        "invalid_canonical_resource_content",
+                        &error,
+                    );
+                    continue;
+                }
+            };
             if let Some(previous) = out.resources.get(key) {
-                if canonical(previous) != canonical(&content) {
+                if previous != &content {
                     out.issue(
                         Status::Rejected,
                         family,

@@ -903,32 +903,36 @@ fn shared_canonical_content_identity_does_not_depend_on_number_spelling() {
         }
     }
     let f = fixture();
-    let mut r: Vec<_> = (0..3).map(|i| resources(f, i)).collect();
-    let source = r[1]
-        .iter_mut()
-        .find(|r| {
-            text(r, "canonicalResourceKey")
-                == "normalized-model/2.5/schema/normalized-entity.schema"
-        })
-        .unwrap();
-    let original = source.get("content").unwrap().clone();
-    let content = source.as_object_mut().unwrap().get_mut("content").unwrap();
-    assert!(change_one(content));
-    assert_ne!(&original, content);
-    assert_eq!(canonical(&original), canonical(content));
-    let actual = qualify(
-        Bundle {
-            definition: &f.definitions[0],
-            resources: &r[0],
-        },
-        Bundle {
-            definition: &f.definitions[1],
-            resources: &r[1],
-        },
-        Bundle {
-            definition: &f.definitions[2],
-            resources: &r[2],
-        },
-    );
-    assert_eq!(actual, run(f));
+    for altered_roots in [vec![1], vec![0, 1, 2]] {
+        let mut r: Vec<_> = (0..3).map(|i| resources(f, i)).collect();
+        for index in altered_roots {
+            let source = r[index]
+                .iter_mut()
+                .find(|r| {
+                    text(r, "canonicalResourceKey")
+                        == "normalized-model/2.5/schema/normalized-entity.schema"
+                })
+                .unwrap();
+            let original = source.get("content").unwrap().clone();
+            let content = source.as_object_mut().unwrap().get_mut("content").unwrap();
+            assert!(change_one(content));
+            assert_ne!(&original, content);
+            assert_eq!(canonical(&original), canonical(content));
+        }
+        let actual = qualify(
+            Bundle {
+                definition: &f.definitions[0],
+                resources: &r[0],
+            },
+            Bundle {
+                definition: &f.definitions[1],
+                resources: &r[1],
+            },
+            Bundle {
+                definition: &f.definitions[2],
+                resources: &r[2],
+            },
+        );
+        assert_eq!(actual, run(f));
+    }
 }

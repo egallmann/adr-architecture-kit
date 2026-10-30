@@ -45,7 +45,10 @@ is introduced.
 The qualifier independently compares ACC's AI selection with qualified AI 1.5,
 AI's NM selection with qualified NM 2.5, and ACC's NM selection with that same
 authority. Embedded definition resources must identify those qualified roots.
-Overlapping canonical keys must have identical content across all three closures.
+Overlapping canonical keys must have identical canonical content across all three
+closures. The shared canonicalizer also supplies the handed-off resource JSON
+representation, so equivalent number spellings cannot change downstream evidence.
+This does not normalize authored source artifacts.
 The union contains only their selected resources.
 
 Inherited AI 1.3 dispositions, lifecycle/ownership/context rules, the AI 1.4

@@ -2385,3 +2385,7 @@ mod architecture_interpretation_v13;
 // Static required-output authority only; no dispatch or capability registration.
 #[allow(dead_code)]
 mod architecture_interpretation_v14;
+
+// Current-candidate authority only; no protocol route or execution.
+#[allow(dead_code)]
+mod candidate_authority;

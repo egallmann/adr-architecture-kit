@@ -95,6 +95,18 @@ fn resources(f: &Fixture, index: usize) -> Vec<Json> {
         })
         .collect()
 }
+// Shared actual canonical fixtures; no alternative production trust input.
+pub(crate) fn bundles() -> (Vec<Json>, Vec<Vec<Json>>) {
+    let f = fixture();
+    (f.definitions.clone(), (0..3).map(|i| resources(f, i)).collect())
+}
+pub(crate) fn rehashed_with_resource(key: &str, value: Json) -> (Vec<Json>, Vec<Vec<Json>>) {
+    let mut f=fixture().clone();
+    f.resources.insert(key.into(),value);
+    rebuild(&mut f);
+    native_valid(&f);
+    (f.definitions.clone(),(0..3).map(|i|resources(&f,i)).collect())
+}
 fn run(f: &Fixture) -> Qualification {
     let r: Vec<_> = (0..3).map(|i| resources(f, i)).collect();
     qualify(

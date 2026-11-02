@@ -420,3 +420,35 @@ fn rehashed_unauthorized_disposition_and_wrong_version_remain_rejected() {
         .iter()
         .any(|f| f.status == Status::Unavailable));
 }
+
+#[test]
+fn unavailable_receipts_never_become_invalid_success_or_qualified_facts() {
+    for ms in [253402300800000, 0xffffffffffff] {
+        let s = sealed(document(ms));
+        let failed = execute(inputs(), Some(&s), &selections());
+        failure(&failed, Status::Unavailable);
+        assert!(failed.findings().iter().any(|f| f.key == "created_at"));
+        let checked = verify(inputs(), Some(&s), &selections(), &failed);
+        failure(&checked, Status::Unavailable);
+        assert!(checked.findings().iter().any(|f| f.key == "created_at"));
+    }
+    let s = sealed(document(1));
+    let denied = Projection::failure(vec![]);
+    failure(
+        &verify(inputs(), Some(&s), &selections(), &denied),
+        Status::Unavailable,
+    );
+    let mut partial = execute(inputs(), Some(&s), &selections());
+    partial.status = Status::Unavailable;
+    failure(
+        &verify(inputs(), Some(&s), &selections(), &partial),
+        Status::Rejected,
+    );
+    let mut duplicate = document(1);
+    duplicate["decisions"][0]["id"] = duplicate["id"].clone();
+    let s = sealed(duplicate);
+    failure(
+        &verify(inputs(), Some(&s), &selections(), &denied),
+        Status::Rejected,
+    );
+}

@@ -365,6 +365,20 @@ pub(crate) fn verify(
         Ok(p) => p,
         Err(e) => return Projection::failure(e),
     };
+    // A denial can withhold output, never establish successful qualification.
+    // Original-source and authority violations were independently checked above.
+    // No empty failure receipt is promoted into verified semantic facts.
+    if supplied.status == Status::Unavailable
+        && supplied.units.is_empty()
+        && supplied.representations.is_none()
+        && supplied.authorities.is_empty()
+        && supplied.basis_digest.is_empty()
+    {
+        return Projection::failure(unavailable(
+            "projection",
+            "No executed semantic-field or representation evidence supplied",
+        ));
+    }
     let mut findings = vec![];
     if supplied.status != Status::Executed
         || !supplied.findings.is_empty()

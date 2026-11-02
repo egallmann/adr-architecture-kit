@@ -460,6 +460,15 @@ pub(crate) fn qualified_occurrences(
     i: Inputs<'_>, s: Option<&SealedSources>, selected: &[Selection],
 ) -> Result<(Qualification, Vec<Unit>, Vec<Unit>, String), Vec<Finding>> {
     let (q, prepared) = prepare(i, s, selected)?;
+    // This source handoff is for consumers of all three representation facts.
+    // Qualify the existing timestamp domain without executing a representation
+    // or trusting a failed producer receipt. Valid out-of-range UUIDs are not
+    // malformed canonical identities.
+    for p in &prepared {
+        if uuid_ms(text(&p.unit.value, "id"))? > 253402300799999 {
+            return Err(unavailable("created_at", "Valid UUID timestamp exceeds four-digit-year representation"));
+        }
+    }
     let s = s.unwrap(); // prepare proved the original source anchor exists.
     let decoded = s.basis.artifacts.iter().map(|a| {
         source::decode_and_validate_candidate(a)

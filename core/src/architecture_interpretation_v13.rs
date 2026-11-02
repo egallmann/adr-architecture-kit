@@ -119,7 +119,7 @@ impl Projection {
 }
 
 /// This capability is private and can only be obtained from verified closures.
-struct Authority {
+pub(crate) struct Authority {
     sealed: BTreeMap<String, Json>,
     evaluation: BTreeMap<String, Json>,
     types: BTreeMap<String, Json>,
@@ -260,6 +260,19 @@ impl Authority {
             return Err("Exact ACC 1.3 / AI 1.3 / NM 2.5 authority unavailable".into());
         }
         let sealed = manifest_resources(definition, resources);
+        Self::from_resources(sealed)
+    }
+
+    /// Only a genuinely qualified current selection can open the shared engine.
+    /// Qualification fields are private to the candidate authority boundary.
+    pub(crate) fn from_candidate(q: &crate::candidate_authority::Qualification) -> Result<Self, String> {
+        if q.status() != crate::candidate_authority::Status::AuthorityQualified {
+            return Err("Current enclosing authority is not independently qualified".into());
+        }
+        Self::from_resources(q.resources().clone())
+    }
+
+    fn from_resources(sealed: BTreeMap<String, Json>) -> Result<Self, String> {
         let evaluation = qualified_schema_map(&sealed)?;
         for (value, schema) in [
             ("field-dispositions-1.7-to-2.5", "field-dispositions.schema"),
@@ -388,7 +401,7 @@ impl Authority {
         }
         Ok(this)
     }
-    fn field(&self, ty: &str, pointer: &str) -> Result<&Json, String> {
+    pub(crate) fn field(&self, ty: &str, pointer: &str) -> Result<&Json, String> {
         let t = self.types.get(ty).ok_or("unsupported semantic type")?;
         let matches: Vec<_> = array(t, "field_dispositions")
             .iter()
@@ -446,7 +459,7 @@ impl Authority {
         }
         Ok(values.to_vec())
     }
-    fn lifecycle(&self, ty: &str, value: &Json) -> Result<Json, String> {
+    pub(crate) fn lifecycle(&self, ty: &str, value: &Json) -> Result<Json, String> {
         if !self.lifecycle_domain(ty)?.contains(value) {
             return Err("invalid authored lifecycle; no defaults or inverse active mapping".into());
         }
@@ -474,6 +487,29 @@ fn project_fields(
     source: &Json,
     result: &mut Projection,
 ) -> Option<Unit> {
+    project_fields_mode(authority, ty, source, result, false)
+}
+
+/// Same inherited field-disposition engine for verified native occurrences.
+/// This broadens mechanics, never the historical ACC 1.3 entry point.
+pub(crate) fn project_native_fields(
+    authority: &Authority, ty: &str, source: &Json,
+) -> Projection {
+    let mut result = Projection::new();
+    if let Some(unit) = project_fields_mode(authority, ty, source, &mut result, true) {
+        result.units.push(unit);
+    }
+    result.finish()
+}
+
+fn project_fields_mode(
+    authority: &Authority, ty: &str, source: &Json, result: &mut Projection, native: bool,
+) -> Option<Unit> {
+    let proposition = native && text(
+        at(&authority.sealed[&format!("{AI}source-mapping-1.7-to-2.5")], &["mappings", ty]),
+        "output",
+    ) == "normative_proposition";
+    let branch = if proposition { "/oneOf/1" } else { "/oneOf/0" };
     let Some(t) = authority.types.get(ty) else {
         result.issue(Status::Unavailable, ty, "Unimplemented semantic type");
         return None;
@@ -522,7 +558,7 @@ fn project_fields(
     if let Err(e) = schema_validation::validate_fragment(
         &authority.evaluation,
         NM,
-        "/oneOf/0/properties/entity_type",
+        &format!("{branch}/properties/entity_type"),
         &entity_type,
     ) {
         result.issue(Status::Unavailable, ty, error(e));
@@ -546,7 +582,8 @@ fn project_fields(
             .unwrap();
         let fk = text(f, "semantic_field_key");
         match (text(f, "disposition"), text(dest, "kind")) {
-            ("canonical_field_placement", "normalized_entity") => {
+            ("canonical_field_placement", "normalized_entity")
+            | ("direct_semantic_value", "normalized_normative_proposition") if native || text(f, "disposition") == "canonical_field_placement" => {
                 if text(dest, "path") == "/lifecycle_stage" {
                     if let Err(e) = authority.lifecycle(ty, value) {
                         result.issue(Status::Rejected, fk, e);
@@ -556,7 +593,7 @@ fn project_fields(
                 if let Err(e) = schema_validation::validate_fragment(
                     &authority.evaluation,
                     NM,
-                    &format!("/oneOf/0/properties{}", text(dest, "path")),
+                    &format!("{branch}/properties{}", text(dest, "path")),
                     value,
                 ) {
                     result.issue(Status::Rejected, fk, error(e));
@@ -589,7 +626,7 @@ fn project_fields(
                 if value.as_array().is_none() {
                     result.issue(Status::Rejected, fk, "Child membership is not an array");
                 }
-                if name != "decisions" && !ids.is_empty() {
+                if !native && name != "decisions" && !ids.is_empty() {
                     result.issue(
                         Status::Unavailable,
                         fk,
@@ -755,6 +792,49 @@ pub(crate) fn interpret(
     result.finish()
 }
 
+/// Shared exact carrier representation. This pure function grants no authority;
+/// both callers independently prove source ownership and validate its result.
+pub(crate) fn lifecycle_carrier(
+    rule: &Json, parent_id: &Json, governing_scf: &str, ownership_digest: &str,
+) -> Json {
+    object([
+        ("declaring_adr_id".into(), parent_id.clone()),
+        (
+            "declaring_adr_semantic_type".into(),
+            at(rule, &["declaring_adr_semantic_type"]).clone(),
+        ),
+        (
+            "status_semantic_field_key".into(),
+            at(rule, &["status_semantic_field_key"]).clone(),
+        ),
+        (
+            "status_source_authority".into(),
+            at(rule, &["status_source_authority"]).clone(),
+        ),
+        (
+            "ownership_rule".into(),
+            object([
+                ("family".into(), string("architecture-interpretation")),
+                ("version".into(), string("1.3")),
+                (
+                    "semantic_contract_fingerprint".into(),
+                    string(governing_scf),
+                ),
+                ("canonical_resource_key".into(), string(OWNER)),
+                (
+                    "content_digest".into(),
+                    string(ownership_digest),
+                ),
+                ("rule_id".into(), at(rule, &["rule_id"]).clone()),
+            ]),
+        ),
+        (
+            "value_destination".into(),
+            at(rule, &["value_destination"]).clone(),
+        ),
+    ])
+}
+
 fn ownership(
     a: &Authority,
     parent: &Json,
@@ -867,42 +947,10 @@ fn ownership(
     }
     a.root_lifecycle("adr/logical", parent)
         .map_err(|e| (Status::Rejected, e))?;
-    let carrier = object([
-        ("declaring_adr_id".into(), at(parent, &["id"]).clone()),
-        (
-            "declaring_adr_semantic_type".into(),
-            at(rule, &["declaring_adr_semantic_type"]).clone(),
-        ),
-        (
-            "status_semantic_field_key".into(),
-            at(rule, &["status_semantic_field_key"]).clone(),
-        ),
-        (
-            "status_source_authority".into(),
-            at(rule, &["status_source_authority"]).clone(),
-        ),
-        (
-            "ownership_rule".into(),
-            object([
-                ("family".into(), string("architecture-interpretation")),
-                ("version".into(), string("1.3")),
-                (
-                    "semantic_contract_fingerprint".into(),
-                    string(Profile::Acc13.expected().ai_scf),
-                ),
-                ("canonical_resource_key".into(), string(OWNER)),
-                (
-                    "content_digest".into(),
-                    string(format!("sha256:{}", digest(&a.sealed[OWNER]))),
-                ),
-                ("rule_id".into(), at(rule, &["rule_id"]).clone()),
-            ]),
-        ),
-        (
-            "value_destination".into(),
-            at(rule, &["value_destination"]).clone(),
-        ),
-    ]);
+    let carrier = lifecycle_carrier(
+        rule, at(parent, &["id"]), Profile::Acc13.expected().ai_scf,
+        &format!("sha256:{}", digest(&a.sealed[OWNER])),
+    );
     schema_validation::validate(&a.evaluation, CARRIER, &carrier)
         .map_err(|e| (Status::Unavailable, error(e)))?;
     let fact = &array(&a.sealed[&format!("{AI}contextual-facts")], "facts")[0];

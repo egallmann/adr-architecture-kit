@@ -2393,3 +2393,7 @@ mod candidate_authority;
 // Private bounded representation facts, never protocol execution.
 #[allow(dead_code)]
 mod identity_representation;
+
+// Private bounded field execution; no protocol or capability registration.
+#[allow(dead_code)]
+mod semantic_fields;

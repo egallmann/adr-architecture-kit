@@ -433,4 +433,4 @@ fn cross_selection(selected: &[Json], out: &mut Qualification) {
 
 #[cfg(test)]
 #[path = "candidate_authority_tests.rs"]
-mod tests;
+pub(crate) mod tests;

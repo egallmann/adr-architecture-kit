@@ -190,8 +190,8 @@ fn properties(
 /// semanticDependencies is an integrity annotation, not an instance-validation
 /// keyword. Qualify every declared edge before projecting schema documents into
 /// the existing evaluator. Original bytes remain the authority for all digests.
-/// This is isolated to AI 1.3; the historical evaluator is unchanged.
-fn qualified_schema_map(sealed: &BTreeMap<String, Json>) -> Result<BTreeMap<String, Json>, String> {
+/// Private successors may reuse this pure projection; the evaluator is unchanged.
+pub(crate) fn qualified_schema_map(sealed: &BTreeMap<String, Json>) -> Result<BTreeMap<String, Json>, String> {
     let mut evaluation = sealed.clone();
     for (key, value) in &mut evaluation {
         if !(key.contains("/schema/") || key.ends_with("/schema") || key.ends_with(".schema")) {

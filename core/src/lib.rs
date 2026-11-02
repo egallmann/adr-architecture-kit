@@ -2389,3 +2389,7 @@ mod architecture_interpretation_v14;
 // Current-candidate authority only; no protocol route or execution.
 #[allow(dead_code)]
 mod candidate_authority;
+
+// Private bounded representation facts, never protocol execution.
+#[allow(dead_code)]
+mod identity_representation;

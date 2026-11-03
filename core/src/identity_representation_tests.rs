@@ -486,7 +486,7 @@ fn manifest_permutations_and_source_relocation_do_not_change_identity_values() {
     .is_err());
 }
 
-fn physical(kind: &str) -> Value {
+pub(crate) fn physical(kind: &str) -> Value {
     let mut d = document(3000);
     let fields = d.as_object_mut().unwrap();
     fields.remove("decisions");

@@ -6,7 +6,7 @@ fn fixture() -> &'static (Vec<Json>, Vec<Vec<Json>>) {
     static F: OnceLock<(Vec<Json>, Vec<Vec<Json>>)> = OnceLock::new();
     F.get_or_init(crate::candidate_authority::tests::bundles)
 }
-fn inputs() -> Inputs<'static> {
+pub(crate) fn inputs() -> Inputs<'static> {
     let (d, r) = fixture();
     Inputs {
         nm: Bundle {
@@ -23,17 +23,17 @@ fn inputs() -> Inputs<'static> {
         },
     }
 }
-fn j(v: Value) -> Json {
+pub(crate) fn j(v: Value) -> Json {
     serde_json::from_value(v).unwrap()
 }
-fn uuid(ms: u64, n: u64) -> String {
+pub(crate) fn uuid(ms: u64, n: u64) -> String {
     let h = format!("{ms:012x}");
     format!("{}-{}-7000-8000-{n:012x}", &h[..8], &h[8..])
 }
-fn document(ms: u64) -> Value {
+pub(crate) fn document(ms: u64) -> Value {
     json!({"schema_version":"1.7","adr_type":"logical","id":uuid(ms,1),"alias_id":"ADR-L-0001","alias_name":"native-logical","title":"Native source","status":"accepted","created_date":"2026-01-01","authors":["author"],"context":"Unicode 🧭\n  exact content","decisions":[{"id":uuid(1000,2),"alias_id":"DEC-0001","alias_name":"authored-decision","summary":"Exact Unicode π","rationale":"Reason"}],"normative_propositions":[{"id":uuid(2000,3),"alias_id":"NP-0001","alias_name":"authored-proposition","statement":"Preserve meaning","normative_force":"MUST","scope":"architecture"}]})
 }
-fn original(v: Value, source_ref: &str, key: &str, pointer: &str, kind: &str) -> OriginalSource {
+pub(crate) fn original(v: Value, source_ref: &str, key: &str, pointer: &str, kind: &str) -> OriginalSource {
     let selector = CandidateSourceSelector {
         canonical_resource_key: key.into(),
         json_pointer: pointer.into(),
@@ -45,7 +45,7 @@ fn original(v: Value, source_ref: &str, key: &str, pointer: &str, kind: &str) ->
         selector,
     }
 }
-fn source(v: Value) -> OriginalSource {
+pub(crate) fn source(v: Value) -> OriginalSource {
     original(
         v,
         "native:logical",
@@ -54,10 +54,10 @@ fn source(v: Value) -> OriginalSource {
         "authoring_document",
     )
 }
-fn sealed(v: Value) -> SealedSources {
+pub(crate) fn sealed(v: Value) -> SealedSources {
     seal_sources(inputs(), &[source(v)], Some(CONTEXT)).unwrap()
 }
-fn selections() -> Vec<Selection> {
+pub(crate) fn selections() -> Vec<Selection> {
     [
         ("", "adr/logical"),
         ("/decisions/0", "entity/decision"),

@@ -454,12 +454,38 @@ fn replay_sources(
     Ok((q, values))
 }
 
+/// Independently checked source occurrences, with no recipe execution and no
+/// caller-supplied qualification token. Consumers must invoke this themselves.
+pub(crate) fn qualified_occurrences(
+    i: Inputs<'_>, s: Option<&SealedSources>, selected: &[Selection],
+) -> Result<(Qualification, Vec<Unit>, Vec<Unit>, String), Vec<Finding>> {
+    let (q, prepared) = prepare(i, s, selected)?;
+    // This source handoff is for consumers of all three representation facts.
+    // Qualify the existing timestamp domain without executing a representation
+    // or trusting a failed producer receipt. Valid out-of-range UUIDs are not
+    // malformed canonical identities.
+    for p in &prepared {
+        if uuid_ms(text(&p.unit.value, "id"))? > 253402300799999 {
+            return Err(unavailable("created_at", "Valid UUID timestamp exceeds four-digit-year representation"));
+        }
+    }
+    let s = s.unwrap(); // prepare proved the original source anchor exists.
+    let decoded = s.basis.artifacts.iter().map(|a| {
+        source::decode_and_validate_candidate(a)
+            .map(|v| (a.source_ref.clone(), v)).map_err(|e| rejected(&a.source_ref, e))
+    }).collect::<Result<BTreeMap<_, _>, _>>()?;
+    let all = units(&q, s, &decoded)?;
+    let mut selected: Vec<_> = prepared.into_iter().map(|p| p.unit).collect();
+    selected.sort_by(|a,b| text(&a.value, "id").cmp(text(&b.value, "id")));
+    Ok((q, all, selected, s.basis.basis_digest.clone()))
+}
+
 #[derive(Clone)]
-struct Unit {
-    selection: Selection,
-    value: Json,
-    row: Json,
-    owner: Option<(String, String, String)>,
+pub(crate) struct Unit {
+    pub(crate) selection: Selection,
+    pub(crate) value: Json,
+    pub(crate) row: Json,
+    pub(crate) owner: Option<(String, String, String)>,
 }
 fn escape(s: &str) -> String {
     s.replace('~', "~0").replace('/', "~1")
@@ -1123,4 +1149,4 @@ pub(crate) fn verify(
 
 #[cfg(test)]
 #[path = "identity_representation_tests.rs"]
-mod tests;
+pub(crate) mod tests;

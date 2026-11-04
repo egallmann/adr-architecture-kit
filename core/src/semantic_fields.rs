@@ -601,3 +601,7 @@ pub(crate) fn verify(
 #[cfg(test)]
 #[path = "semantic_fields_tests.rs"]
 mod tests;
+
+// Private representation layer; no protocol or capability registration.
+#[path = "label_representations.rs"]
+pub(crate) mod labels;

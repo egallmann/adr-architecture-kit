@@ -485,7 +485,9 @@ pub(crate) struct Unit {
     pub(crate) selection: Selection,
     pub(crate) value: Json,
     pub(crate) row: Json,
+    // Declaring ADR, retained independently of the immediate semantic parent.
     pub(crate) owner: Option<(String, String, String)>,
+    pub(crate) parent: Option<Occurrence>,
 }
 fn escape(s: &str) -> String {
     s.replace('~', "~0").replace('/', "~1")
@@ -506,13 +508,15 @@ fn units(
         location: &str,
         pattern: &str,
         source_ref: &str,
-        parent: Option<(&str, &str)>,
+        declaring: Option<(&str, &str)>,
+        nearest: Option<Occurrence>,
         seen: &mut BTreeSet<(String, String, String)>,
         out: &mut Vec<Unit>,
     ) -> Result<(), Failure> {
         if !seen.insert((key.into(), sp.into(), location.into())) {
             return Ok(());
         }
+        let mut nearest = nearest;
         let node = pointer(&map[key], sp)
             .ok_or_else(|| unavailable(key, "Source schema occurrence unavailable"))?;
         if let Ok(row) = type_row(q, key, sp) {
@@ -536,16 +540,21 @@ fn units(
                     }
                 } else {
                     out.push(Unit {
-                        selection,
+                        selection: selection.clone(),
+                        parent: nearest.clone(),
                         value: value.clone(),
                         row: row.clone(),
                         owner: if location.is_empty() {
                             None
                         } else {
-                            parent.map(|(t, id)| (t.into(), id.into(), pattern.into()))
+                            declaring.map(|(t, id)| (t.into(), id.into(), pattern.into()))
                         },
                     });
                 }
+                nearest = Some(Occurrence {
+                    selection,
+                    id: text(value, "id").into(),
+                });
             }
         }
         if let Some(r) = node.get("$ref").and_then(Json::as_str) {
@@ -553,7 +562,18 @@ fn units(
                 schema::resolve_reference(map, key, r).map_err(|e| unavailable(key, e.message))?;
             let p = r.split_once('#').map(|(_, p)| p).unwrap_or("");
             walk(
-                q, map, &target, p, value, location, pattern, source_ref, parent, seen, out,
+                q,
+                map,
+                &target,
+                p,
+                value,
+                location,
+                pattern,
+                source_ref,
+                declaring,
+                nearest.clone(),
+                seen,
+                out,
             )?;
         }
         for (name, _) in field(node, "/properties").as_object().into_iter().flatten() {
@@ -568,7 +588,8 @@ fn units(
                     &format!("{location}/{name}"),
                     &format!("{pattern}/{name}"),
                     source_ref,
-                    parent,
+                    declaring,
+                    nearest.clone(),
                     seen,
                     out,
                 )?;
@@ -586,7 +607,8 @@ fn units(
                         &format!("{location}/{n}"),
                         &format!("{pattern}/*"),
                         source_ref,
-                        parent,
+                        declaring,
+                        nearest.clone(),
                         seen,
                         out,
                     )?;
@@ -598,7 +620,17 @@ fn units(
                 let child = format!("{sp}/{branch}/{n}");
                 if branch == "allOf" || schema::validate_fragment(map, key, &child, value).is_ok() {
                     walk(
-                        q, map, key, &child, value, location, pattern, source_ref, parent, seen,
+                        q,
+                        map,
+                        key,
+                        &child,
+                        value,
+                        location,
+                        pattern,
+                        source_ref,
+                        declaring,
+                        nearest.clone(),
+                        seen,
                         out,
                     )?;
                 }
@@ -613,7 +645,7 @@ fn units(
         let k = &artifact.source_schema.canonical_resource_key;
         let p = &artifact.source_schema.json_pointer;
         let row = type_row(q, k, p)?;
-        let parent = if artifact.artifact_kind == "authoring_document" {
+        let declaring = if artifact.artifact_kind == "authoring_document" {
             Some((text(row, "semantic_type"), text(root, "id")))
         } else {
             None
@@ -627,14 +659,273 @@ fn units(
             "",
             "",
             &artifact.source_ref,
-            parent,
+            declaring,
+            None,
             &mut BTreeSet::new(),
             &mut out,
         )?;
     }
     Ok(out)
 }
-fn applicable(q: &Qualification, u: &Unit) -> Result<(), Failure> {
+
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct Occurrence {
+    pub(crate) selection: Selection,
+    pub(crate) id: String,
+}
+impl Occurrence {
+    fn of(u: &Unit) -> Self {
+        Self {
+            selection: u.selection.clone(),
+            id: text(&u.value, "id").into(),
+        }
+    }
+}
+/// Private source-containment witness, separate from the closed lifecycle carrier.
+/// Production callers reconstruct all occurrences from sealed original bytes.
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct NativeOwnership {
+    pub(crate) declaring: Occurrence,
+    pub(crate) parent: Occurrence,
+    pub(crate) child: Occurrence,
+    pub(crate) rule: Json,
+}
+fn ownership_reference<'a>(q: &'a Qualification, r: &Json) -> Result<&'a Json, Failure> {
+    let key = text(r, "canonical_resource_key");
+    let raw = q
+        .resources()
+        .get(key)
+        .ok_or_else(|| unavailable(key, "Missing ownership schema authority"))?;
+    if text(r, "content_digest")
+        != format!("sha256:{}", crate::authoring_construction_v12::digest(raw))
+    {
+        return Err(rejected(
+            key,
+            "Ownership reference digest does not qualify selected content",
+        ));
+    }
+    pointer(raw, text(r, "schema_pointer"))
+        .ok_or_else(|| rejected(key, "Invalid ownership schema selector"))
+}
+/// Qualifies the selected one/two-hop array containment, not arbitrary nesting.
+/// Source locators locate original objects; selectors establish their UUIDs.
+pub(crate) fn native_ownership(
+    q: &Qualification,
+    all: &[Unit],
+    child: &Unit,
+) -> Result<NativeOwnership, Failure> {
+    let Some((declaring_type, declaring_id, pattern)) = &child.owner else {
+        return Err(unavailable(
+            "declaring_context",
+            "No declaring ADR evidence",
+        ));
+    };
+    let roots: Vec<_> = all
+        .iter()
+        .filter(|u| {
+            u.selection.source_ref == child.selection.source_ref && u.selection.pointer.is_empty()
+        })
+        .collect();
+    let [declaring] = roots.as_slice() else {
+        return Err(if roots.is_empty() {
+            unavailable("declaring_context", "Missing declaring source")
+        } else {
+            rejected("declaring_context", "Ambiguous declaring source")
+        });
+    };
+    if declaring.selection.semantic_type != *declaring_type
+        || text(&declaring.value, "id") != declaring_id
+        || ![
+            "adr/logical",
+            "adr/physical-system",
+            "adr/physical-component",
+        ]
+        .contains(&declaring_type.as_str())
+    {
+        return Err(rejected(
+            "declaring_context",
+            "Established declaring identity/type conflicts with source",
+        ));
+    }
+    let Some(parent_occurrence) = &child.parent else {
+        return Err(unavailable(
+            "parent_context",
+            "No immediate semantic parent evidence",
+        ));
+    };
+    let parents: Vec<_> = all
+        .iter()
+        .filter(|u| {
+            u.selection.source_ref == parent_occurrence.selection.source_ref
+                && u.selection.pointer == parent_occurrence.selection.pointer
+        })
+        .collect();
+    let [parent] = parents.as_slice() else {
+        return Err(if parents.is_empty() {
+            unavailable("parent_context", "Missing immediate parent")
+        } else {
+            rejected("parent_context", "Ambiguous immediate parent")
+        });
+    };
+    if Occurrence::of(parent) != *parent_occurrence
+        || parent.selection.source_ref != child.selection.source_ref
+    {
+        return Err(rejected(
+            "parent_context",
+            "Established immediate parent identity conflicts with source",
+        ));
+    }
+    let rows: Vec<_> = array(&q.resources()[OWNERSHIP], "rows")
+        .iter()
+        .filter(|r| {
+            text(r, "declaring_adr_semantic_type") == declaring_type
+                && text(r, "child_semantic_type") == child.selection.semantic_type
+                && text(r, "source_instance_pattern") == pattern
+        })
+        .collect();
+    let [rule] = rows.as_slice() else {
+        return Err(if rows.is_empty() {
+            unavailable(OWNERSHIP, "No selected ownership rule for this occurrence")
+        } else {
+            rejected(OWNERSHIP, "Competing ownership rows")
+        });
+    };
+    if text(rule, "parent_semantic_type") != parent.selection.semantic_type
+        || rule.get("source_schema") != declaring.row.get("source_schema")
+        || rule.get("parent_schema") != parent.row.get("source_schema")
+        || rule.get("child_schema") != child.row.get("source_schema")
+        || text(rule, "governing_rule") != "literal_declaring_adr_status"
+        || text(rule, "canonical_identity") != "preserve_established_uuidv7"
+        || text(rule, "value_destination") != "/lifecycle_stage"
+    {
+        return Err(rejected(
+            OWNERSHIP,
+            "Ownership role, schema or governing rule mismatch",
+        ));
+    }
+    let map = schema_map(q)?;
+    for (unit, role, selector) in [
+        (
+            *declaring,
+            "source_schema",
+            "declaring_adr_identity_selector",
+        ),
+        (*parent, "parent_schema", "parent_identity_selector"),
+        (child, "child_schema", "child_identity_selector"),
+    ] {
+        let r = field(rule, &format!("/{role}"));
+        ownership_reference(q, r)?;
+        let key = text(r, "canonical_resource_key");
+        let sp = text(r, "schema_pointer");
+        validate(&map, key, sp, &unit.value)?;
+        let id = pointer(&unit.value, text(rule, selector)).and_then(Json::as_str);
+        if id != Some(text(&unit.value, "id"))
+            || !id
+                .map(crate::authoring_construction_basis_v11::is_uuid_v7)
+                .unwrap_or(false)
+        {
+            return Err(rejected(
+                selector,
+                "Identity selector does not preserve established canonical UUIDv7",
+            ));
+        }
+    }
+    let same_parent = parent.selection == declaring.selection;
+    let chain: Vec<&Unit> = if same_parent {
+        vec![declaring, child]
+    } else {
+        vec![declaring, parent, child]
+    };
+    let ids: BTreeSet<_> = chain.iter().map(|u| text(&u.value, "id")).collect();
+    if ids.len() != chain.len() {
+        return Err(rejected("id", "Parent/child canonical identity collision"));
+    }
+    let parts: Vec<_> = pattern.strip_prefix('/').unwrap_or("").split('/').collect();
+    let hops = array(rule, "ownership_schema_path");
+    if parts.len() != 2 * hops.len()
+        || hops.len() != chain.len() - 1
+        || hops.is_empty()
+        || hops.len() > 2
+        || parts.chunks(2).any(|p| p[0].is_empty() || p[1] != "*")
+    {
+        return Err(unavailable(
+            OWNERSHIP,
+            "Selected containment shape is not an executable one/two-hop array path",
+        ));
+    }
+    for (n, hop) in hops.iter().enumerate() {
+        let from = chain[n];
+        let to = chain[n + 1];
+        let property = parts[2 * n];
+        let from_schema = field(&from.row, "/source_schema");
+        let to_schema = field(&to.row, "/source_schema");
+        ownership_reference(q, hop)?;
+        if text(hop, "canonical_resource_key") != text(from_schema, "canonical_resource_key")
+            || text(hop, "schema_pointer")
+                != format!(
+                    "{}/properties/{property}/items",
+                    text(from_schema, "schema_pointer")
+                )
+        {
+            return Err(rejected(
+                OWNERSHIP,
+                "Ownership schema hop starts from the wrong semantic parent",
+            ));
+        }
+        let mut key = text(hop, "canonical_resource_key").to_owned();
+        let mut sp = text(hop, "schema_pointer").to_owned();
+        let mut node = pointer(&map[&key], &sp).unwrap().clone();
+        let mut visited = BTreeSet::new();
+        while let Some(link) = node.get("$ref").and_then(Json::as_str) {
+            if !visited.insert((key.clone(), sp.clone())) {
+                return Err(unavailable(OWNERSHIP, "Recursive ownership schema path"));
+            }
+            sp = link
+                .split_once('#')
+                .map(|(_, p)| p)
+                .unwrap_or("")
+                .to_owned();
+            (key, node) = schema::resolve_reference(&map, &key, link)
+                .map_err(|e| unavailable(OWNERSHIP, e.message))?;
+        }
+        if key != text(to_schema, "canonical_resource_key")
+            || sp != text(to_schema, "schema_pointer")
+            || Some(&node) != pointer(&map[&key], text(to_schema, "schema_pointer"))
+        {
+            return Err(rejected(
+                OWNERSHIP,
+                "Ownership hop does not select the exact next schema occurrence",
+            ));
+        }
+        let prefix = format!("{}/{property}/", from.selection.pointer);
+        let tail = to.selection.pointer.strip_prefix(&prefix).ok_or_else(|| {
+            rejected(
+                OWNERSHIP,
+                "Child is not under its claimed parent occurrence",
+            )
+        })?;
+        let index = tail
+            .parse::<usize>()
+            .map_err(|_| rejected(OWNERSHIP, "Invalid child occurrence index"))?;
+        if tail != index.to_string()
+            || to.selection.source_ref != from.selection.source_ref
+            || pointer(&from.value, &format!("/{property}/{index}")) != Some(&to.value)
+        {
+            return Err(rejected(
+                OWNERSHIP,
+                "Original source subtree does not preserve the complete child",
+            ));
+        }
+    }
+    Ok(NativeOwnership {
+        declaring: Occurrence::of(declaring),
+        parent: Occurrence::of(parent),
+        child: Occurrence::of(child),
+        rule: (*rule).clone(),
+    })
+}
+
+fn applicable(q: &Qualification, u: &Unit, all: &[Unit]) -> Result<(), Failure> {
     let branch = text(&u.row, "output_branch");
     if !matches!(branch, "regular" | "normative-proposition") {
         return Err(unavailable(
@@ -645,7 +936,7 @@ fn applicable(q: &Qualification, u: &Unit) -> Result<(), Failure> {
     for dependency in array(&u.row, "context_dependencies") {
         match dependency.as_str().unwrap_or("") {
             "declaring_context" => {
-                let Some((parent, id, pattern)) = &u.owner else {
+                let Some((_declaring, id, _pattern)) = &u.owner else {
                     return Err(unavailable(
                         "declaring_context",
                         "Native fragment has no qualified declaring source",
@@ -655,21 +946,7 @@ fn applicable(q: &Qualification, u: &Unit) -> Result<(), Failure> {
                     return Err(rejected("declaring_context", "Invalid declaring identity"));
                 }
                 if branch == "regular" {
-                    let rows = array(&q.resources()[OWNERSHIP], "rows")
-                        .iter()
-                        .filter(|r| {
-                            text(r, "parent_semantic_type") == parent
-                                && text(r, "child_semantic_type") == u.selection.semantic_type
-                                && text(r, "source_instance_pattern") == pattern
-                                && r.get("child_schema") == u.row.get("source_schema")
-                        })
-                        .count();
-                    if rows != 1 {
-                        return Err(unavailable(
-                            "declaring_context",
-                            "No unique governing ownership row for this native containment",
-                        ));
-                    }
+                    native_ownership(q, all, u)?;
                 }
                 // Propositions use exact schema containment, never lifecycle inheritance.
             }
@@ -769,7 +1046,7 @@ fn prepare(
                     "Claimed semantic type differs from the source schema occurrence",
                 ));
             }
-            applicable(&q, u)?;
+            applicable(&q, u, &all)?;
             let id = text(&u.value, "id");
             if !selected.insert(id.to_owned()) {
                 return Err(rejected(

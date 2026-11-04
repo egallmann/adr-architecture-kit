@@ -534,3 +534,7 @@ pub(crate) fn verify(
 #[cfg(test)]
 #[path = "label_representations_tests.rs"]
 mod tests;
+
+#[cfg(test)]
+#[path = "nested_semantic_fields_tests.rs"]
+mod nested_tests;

@@ -6,7 +6,7 @@ use crate::identity_representation::{
     self as identity, Finding, Inputs, SealedSources, Selection, Status,
 };
 use crate::{object, string, Json};
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 const FD: &str = "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5";
 const OWN: &str = "architecture-interpretation/1.3/lifecycle-ownership";
@@ -67,6 +67,7 @@ pub(crate) struct Projection {
     representations: Option<identity::Projection>,
     authorities: Vec<crate::candidate_authority::Authority>,
     basis_digest: String,
+    containment: BTreeMap<String, identity::NativeOwnership>,
 }
 impl Projection {
     pub(crate) fn status(&self) -> Status {
@@ -94,6 +95,7 @@ impl Projection {
             representations: None,
             authorities: vec![],
             basis_digest: String::new(),
+            containment: BTreeMap::new(),
         }
     }
 }
@@ -164,96 +166,63 @@ fn check_reference(p: &Prepared, r: &Json) -> Result<(), Vec<Finding>> {
 fn context(
     p: &Prepared,
     child: &identity::Unit,
-) -> Result<Option<(Json, ContextualFact, Json)>, Vec<Finding>> {
+) -> Result<Option<(Json, ContextualFact, Json, identity::NativeOwnership)>, Vec<Finding>> {
     if text(&child.row, "output_branch") == "normative-proposition" {
         return Ok(None);
     }
     if child.selection.semantic_type.starts_with("adr/") {
         return Ok(None);
     }
-    let Some((parent_type, parent_id, pattern)) = &child.owner else {
-        return Err(unavailable("declaring_context", "No declaring ADR source"));
-    };
-    let parents: Vec<_> = p
+    let ownership = identity::native_ownership(&p.q, &p.all, child)?;
+    let rule = &ownership.rule;
+    let declaring = p
         .all
         .iter()
-        .filter(|u| {
-            u.selection.source_ref == child.selection.source_ref
-                && u.selection.pointer.is_empty()
-                && u.selection.semantic_type == *parent_type
-                && text(&u.value, "id") == parent_id
-        })
-        .collect();
-    let [parent] = parents.as_slice() else {
-        return Err(rejected(parent_id, "Missing or competing declaring ADR"));
-    };
-    let rows: Vec<_> = array(&p.q.resources()[OWN], "rows")
-        .iter()
-        .filter(|r| {
-            text(r, "parent_semantic_type") == parent_type
-                && text(r, "child_semantic_type") == child.selection.semantic_type
-                && text(r, "source_instance_pattern") == pattern
-        })
-        .collect();
-    let [rule] = rows.as_slice() else {
-        return Err(unavailable(OWN, "No unique qualified ownership rule"));
-    };
-    if rule.get("source_schema") != parent.row.get("source_schema")
-        || rule.get("child_schema") != child.row.get("source_schema")
-        || text(rule, "governing_rule") != "literal_declaring_adr_status"
-    {
-        return Err(rejected(OWN, "Ownership schema or literal rule mismatch"));
-    }
-    for name in [
-        "source_schema",
-        "parent_schema",
-        "child_schema",
-        "status_source_authority",
-    ] {
-        check_reference(p, get(rule, name))?;
-    }
+        .find(|u| u.selection == ownership.declaring.selection)
+        .unwrap();
+    let declaring_type = &declaring.selection.semantic_type;
     let map =
         fields::qualified_schema_map(p.q.resources()).map_err(|e| unavailable("schema", e))?;
-    for r in array(rule, "ownership_schema_path") {
-        check_reference(p, r)?;
-        let key = text(r, "canonical_resource_key");
-        let sp = text(r, "schema_pointer");
-        // Exact schema path must resolve to this child's qualified schema, not
-        // merely validate an identically shaped unowned object.
-        let mut node = at(&map[key], sp).unwrap().clone();
-        let mut k = key.to_owned();
-        while let Some(r) = node.get("$ref").and_then(Json::as_str) {
-            (k, node) =
-                crate::schema_validation::resolve_reference(&map, &k, r).map_err(schema_error)?;
-        }
-        let cs = get(&child.row, "source_schema");
-        if k != text(cs, "canonical_resource_key")
-            || Some(&node) != at(&map[&k], text(cs, "schema_pointer"))
-        {
-            return Err(rejected(
-                OWN,
-                "Schema path does not establish child containment",
-            ));
-        }
+    let source = get(rule, "status_source_authority");
+    check_reference(p, source)?;
+    if text(source, "canonical_resource_key")
+        != text(get(rule, "source_schema"), "canonical_resource_key")
+        || text(source, "schema_pointer")
+            != format!(
+                "{}/properties/status",
+                text(get(rule, "source_schema"), "schema_pointer")
+            )
+    {
+        return Err(rejected(OWN, "Wrong declaring status source selector"));
     }
     let status_key = text(rule, "status_semantic_field_key");
     let sf = p
         .engine
-        .field(parent_type, "/status")
+        .field(declaring_type, "/status")
         .map_err(|e| unavailable(status_key, e))?;
-    if text(sf, "semantic_field_key") != status_key {
+    let selector = text(sf, "schema_selector");
+    let (key, _) = crate::schema_validation::resolve_reference(
+        &map,
+        text(source, "canonical_resource_key"),
+        selector,
+    )
+    .map_err(schema_error)?;
+    if key != text(source, "canonical_resource_key")
+        || selector.split_once('#').map(|(_, p)| p).unwrap_or("") != text(source, "schema_pointer")
+        || text(sf, "semantic_field_key") != status_key
+    {
         return Err(rejected(status_key, "Wrong authored status identity"));
     }
     let lifecycle = p
         .engine
-        .lifecycle(parent_type, get(&parent.value, "status"))
+        .lifecycle(declaring_type, get(&declaring.value, "status"))
         .map_err(|e| rejected(status_key, e))?;
     // Actual inherited authority identity is preserved. The enclosing candidate
     // remains AI1.5; no fabricated AI1.5 ownership rule is introduced.
     let inherited = &p.q.resources()["architecture-interpretation/1.3/contract"];
     let carrier = fields::lifecycle_carrier(
         rule,
-        get(&parent.value, "id"),
+        get(&declaring.value, "id"),
         text(inherited, "semanticContractFingerprint"),
         &format!(
             "sha256:{}",
@@ -272,7 +241,7 @@ fn context(
         semantic_identity: text(&child.value, "id").into(),
         value: carrier.clone(),
     };
-    Ok(Some((carrier, fact, lifecycle)))
+    Ok(Some((carrier, fact, lifecycle, ownership)))
 }
 
 pub(crate) fn execute(
@@ -286,6 +255,7 @@ pub(crate) fn execute(
     };
     let mut findings = vec![];
     let mut units = vec![];
+    let mut containment = BTreeMap::new();
     for u in &p.selected {
         let mut projected =
             fields::project_native_fields(&p.engine, &u.selection.semantic_type, &u.value);
@@ -296,7 +266,10 @@ pub(crate) fn execute(
         }));
         if let Some(mut out) = projected.units.pop() {
             match context(&p, u) {
-                Ok(Some((carrier, fact, value))) => {
+                Ok(Some((carrier, fact, value, ownership))) => {
+                    if containment.insert(out.id.clone(), ownership).is_some() {
+                        findings.extend(rejected(&out.id, "Competing containment witnesses"));
+                    }
                     out.lifecycle_provenance = Some(carrier);
                     out.contextual_fact = Some(fact);
                     if out
@@ -327,6 +300,7 @@ pub(crate) fn execute(
         representations: Some(representations),
         authorities: p.q.authorities().to_vec(),
         basis_digest: p.basis,
+        containment,
     }
 }
 
@@ -373,6 +347,7 @@ pub(crate) fn verify(
         && supplied.representations.is_none()
         && supplied.authorities.is_empty()
         && supplied.basis_digest.is_empty()
+        && supplied.containment.is_empty()
     {
         return Projection::failure(unavailable(
             "projection",
@@ -408,6 +383,7 @@ pub(crate) fn verify(
         Ok(m) => m,
         Err(e) => return Projection::failure(unavailable("schema", e)),
     };
+    let mut contextual_ids = BTreeSet::new();
     for original in &p.selected {
         let id = text(&original.value, "id");
         let ty = &original.selection.semantic_type;
@@ -554,7 +530,14 @@ pub(crate) fn verify(
             findings.extend(rejected(id, "Additional or missing source field evidence"));
         }
         match context(&p, original) {
-            Ok(Some((carrier, fact, value))) => {
+            Ok(Some((carrier, fact, value, ownership))) => {
+                contextual_ids.insert(id.to_owned());
+                if supplied.containment.get(id) != Some(&ownership) {
+                    findings.extend(rejected(
+                        id,
+                        "Forged, missing or changed containment witness",
+                    ));
+                }
                 paths.insert("/lifecycle_stage".into());
                 if out.lifecycle_provenance.as_ref() != Some(&carrier)
                     || out.contextual_fact.as_ref() != Some(&fact)
@@ -589,6 +572,18 @@ pub(crate) fn verify(
                 "Missing/additional semantic destinations or fallback output",
             ));
         }
+    }
+    if supplied
+        .containment
+        .keys()
+        .cloned()
+        .collect::<BTreeSet<_>>()
+        != contextual_ids
+    {
+        findings.extend(rejected(
+            "containment",
+            "Missing or additional ownership witnesses",
+        ));
     }
     if !findings.is_empty() {
         return Projection::failure(findings);

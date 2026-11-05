@@ -49,7 +49,7 @@ is a report of the selected authority; it is not a new normative catalog.
 | entity/capability | summary from description | Yes, logical containment |
 | entity/component | summary from responsibilities | Yes, physical-component containment |
 | entity/contract | name from alias_name; summary from guarantees | Yes, logical containment |
-| entity/data_flow | summary from description | Not exercised: physical-system source prerequisites |
+| entity/data_flow | summary from description | Yes, physical-system array containment |
 | entity/decision | name from alias_name | Yes, logical containment |
 | entity/evidence_expectation | name from alias_name; summary from description | Yes, logical containment |
 | entity/extension | name from alias_name; summary from rationale | Unavailable without exact CEC/custom lifecycle qualification |
@@ -59,10 +59,10 @@ is a report of the selected authority; it is not a new normative catalog.
 | entity/invariant | name from alias_name; summary from statement | Yes, logical containment |
 | entity/normative_proposition | name from alias_name; summary from statement | Yes, embedded lifecycle-free proposition |
 | entity/system | name and summary from alias_name | Unavailable without unique shared-identity qualification; summary is label duplication only |
-| entity/system_boundary | summary from description | Not exercised: physical-system source prerequisites |
+| entity/system_boundary | summary from description | Yes, physical-system array containment |
 
-The fixtures exercise 18 distinct definitions across 12 types, spanning regular
-and normative-proposition branches. The remaining eight are statically qualified,
+The fixtures exercise 20 distinct definitions across 14 types, spanning regular
+and normative-proposition branches. The remaining six are statically qualified,
 not claimed executed. Catalog membership does not authorize an independent root.
 All nine relationship/value types remain outside these entity label recipes.
 There is no new hardcoded runtime type allowlist; other instances must establish
@@ -80,3 +80,11 @@ source/completeness envelopes, broader branch/context execution, full entity and
 model validation, and complete independent expected/observed ledgers remain
 separate prerequisites. Label verification is not whole-ledger equality,
 semantic_equivalent, Constructed, admission, promotion or publication.
+
+Physical System fixtures independently execute Data Flow and System Boundary
+summaries from their exact authored descriptions. The complete original
+description remains at its canonical semantic destination. These operations do
+not require unrelated root/System output to be executable. A requested atomic
+scope including an unqualified System still withholds every output in that
+operation. System name/summary and the full Physical System root projection
+remain Unavailable under the current producer-evidence boundary.

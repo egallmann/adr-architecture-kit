@@ -556,8 +556,8 @@ fn nested_schema_units_are_accounted_and_shared_identity_is_unavailable() {
     let s = seal_sources(inputs(), &[raw], Some(CONTEXT)).unwrap();
     let selected = vec![Selection {
         source_ref: "native:ps".into(),
-        pointer: String::new(),
-        semantic_type: "adr/physical-system".into(),
+        pointer: "/system".into(),
+        semantic_type: "entity/system".into(),
     }];
     assert_failure(&execute(inputs(), Some(&s), &selected), Status::Unavailable);
 }

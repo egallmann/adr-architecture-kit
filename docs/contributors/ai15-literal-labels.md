@@ -43,11 +43,11 @@ is a report of the selected authority; it is not a new normative catalog.
 | Semantic type | Derived labels | Qualified fixture execution |
 | --- | --- | --- |
 | adr/logical | summary from context | Yes |
-| adr/physical-component | summary from context | Not exercised: full root field prerequisites |
+| adr/physical-component | summary from context | Not included in the focused independent label fixtures |
 | adr/physical-system | summary from context | Not exercised: shared System identity |
 | entity/boundary | summary from description | Yes, logical containment |
 | entity/capability | summary from description | Yes, logical containment |
-| entity/component | summary from responsibilities | Not exercised: nested interface/context prerequisites |
+| entity/component | summary from responsibilities | Yes, physical-component containment |
 | entity/contract | name from alias_name; summary from guarantees | Yes, logical containment |
 | entity/data_flow | summary from description | Not exercised: physical-system source prerequisites |
 | entity/decision | name from alias_name | Yes, logical containment |
@@ -55,14 +55,14 @@ is a report of the selected authority; it is not a new normative catalog.
 | entity/extension | name from alias_name; summary from rationale | Unavailable without exact CEC/custom lifecycle qualification |
 | entity/gap | name from alias_name; summary from question | Yes, logical containment |
 | entity/implementation_decision | name from alias_name | Yes, physical-component containment; no root output claimed |
-| entity/interface | name from alias_name; summary from specification | Not exercised: qualified nested declaring context |
+| entity/interface | name from alias_name; summary from specification | Yes, qualified Component/declaring-ADR chain |
 | entity/invariant | name from alias_name; summary from statement | Yes, logical containment |
 | entity/normative_proposition | name from alias_name; summary from statement | Yes, embedded lifecycle-free proposition |
 | entity/system | name and summary from alias_name | Unavailable without unique shared-identity qualification; summary is label duplication only |
 | entity/system_boundary | summary from description | Not exercised: physical-system source prerequisites |
 
-The fixtures exercise 15 distinct definitions across 10 types, spanning regular
-and normative-proposition branches. The remaining 11 are statically qualified,
+The fixtures exercise 18 distinct definitions across 12 types, spanning regular
+and normative-proposition branches. The remaining eight are statically qualified,
 not claimed executed. Catalog membership does not authorize an independent root.
 All nine relationship/value types remain outside these entity label recipes.
 There is no new hardcoded runtime type allowlist; other instances must establish

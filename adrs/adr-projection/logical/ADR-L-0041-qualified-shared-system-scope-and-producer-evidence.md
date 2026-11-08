@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 74d636e26c91906feed00b215b94c2bfd43cd4a3dba21fa1ea1261262f869d4b
-rendered_hash: ceac1417403815d0cf49ada51f63e4bd01d8e6edadd258f70acfa15716796e29
+source_hash: da4795c4b124909174b934bd2e03c69d741a77d24fd302a553ba5362c88f9c1f
+rendered_hash: ebbc7391ee48d9b8af4bb746344682a4abd5f624eb1f66d3d8b41c793c8c0970
 -->
 
 # ADR-L-0041: Qualified Shared-System Scope and Producer Evidence
@@ -117,6 +117,18 @@ Repeated transport retrieval of the same object is not another semantic occurren
 The independent exhaustive expansion is compared for exact set equality with the sealed
 original-source inventory; unrelated non-architecture files are outside the already
 authorized collection boundary, never excluded through a new filename scan rule.
+
+
+Complete claim accounting also includes every native typed System fragment and every
+other entity/system definition occurrence selected by the exact source-schema/mapping
+authority. Missing declaring context does not erase a claim or prove producer uniqueness.
+A standalone fragment cannot become this boundary's authorized defining /system producer
+without the independently established original declaring containment; no synthetic ADR
+wrapper is allowed. For a relevant same-identity fragment, missing contextual evidence is
+Unavailable and independently established canonical-value contradictions are Rejected.
+Reference-only fields and relationship endpoints are not defining occurrences. Determine
+that distinction from actual qualified source rules, not a field spelling or locator.
+An unsupported source classification cannot silently hide a potentially relevant claim.
 
 **Alternatives Considered**
 
@@ -254,7 +266,7 @@ scope:
   snapshot: immutable_complete_content_addressed_object_graph
   root_authority: independently_authenticated_provider_publication_binding
   enumeration: independent_exhaustive_expansion_of_every_committed_child_edge
-  claims: all_schema_qualified_physical_system_roots_and_their_system_objects
+  claims: all_selected_system_definition_occurrences_including_native_fragments
   filters: none_by_status_path_alias_uuid_or_requested_selection
   partial_or_unavailable: Unavailable
 unit:

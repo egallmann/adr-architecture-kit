@@ -64,7 +64,7 @@ def test_scope_design_requires_independent_complete_enumeration_and_reuse_only()
         "snapshot": "immutable_complete_content_addressed_object_graph",
         "root_authority": "independently_authenticated_provider_publication_binding",
         "enumeration": "independent_exhaustive_expansion_of_every_committed_child_edge",
-        "claims": "all_schema_qualified_physical_system_roots_and_their_system_objects",
+        "claims": "all_selected_system_definition_occurrences_including_native_fragments",
         "filters": "none_by_status_path_alias_uuid_or_requested_selection",
         "partial_or_unavailable": "Unavailable",
     }
@@ -97,6 +97,7 @@ def test_scope_design_requires_independent_complete_enumeration_and_reuse_only()
         ("scope", "root_authority", "producer_signature"),
         ("scope", "enumeration", "validate_supplied_digests"),
         ("scope", "filters", "requested_uuid"),
+        ("scope", "claims", "physical_system_roots_only"),
         ("unit", "creation_during_qualification", True),
         ("unit", "designation", "first_seen"),
         ("unit", "election", True),
@@ -166,6 +167,8 @@ def test_outcomes_and_future_dependency_boundary_are_explicit() -> None:
     text = " ".join(" ".join(d["rationale"] for d in document()["decisions"]).split())
     for phrase in (
         "separately governed dependency",
+        "every native typed System fragment",
+        "Reference-only fields and relationship endpoints are not defining occurrences",
         "Rejected > Unavailable > Unresolved",
         "AI 1.3",
         "provider-context branch",

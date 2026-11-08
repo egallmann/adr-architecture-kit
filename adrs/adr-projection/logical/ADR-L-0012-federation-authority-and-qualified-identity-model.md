@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: cba43649c19093aad847dcd5dbb6e2c7084412788eb380b8853a506eb1f0c96e
-rendered_hash: 98d3368beb53f77f338ba46d5a299adb2cf007dc6a8b912e33c8f817c3383e7d
+source_hash: abca3b929406e6373690a5b2ab53f9f50799558b7b0af700c240ac98dc1a2abf
+rendered_hash: 53a04cccb5629bdc718b84aebfddb3f3171413ac4484aa7823234cf27ca93754
 -->
 
 # ADR-L-0012: Federation Authority and Qualified Identity Model
@@ -196,12 +196,14 @@ read-only aggregation remaining explicit.
 - [ADR-L-0010](ADR-L-0010-kernel-interface-contract-and-validation-profiles.md)
 - [ADR-L-0018](ADR-L-0018-schema-v1-2-and-normalized-semantic-foundation.md)
 - [ADR-PS-0001](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md)
+- [ADR-L-0041](ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.md)
 
 
 ## Architecture Relationships
 
 | Neighbor | Relationship | Exact Path |
 | --- | --- | --- |
+| [ADR-L-0041 — Qualified Shared-System Scope and Producer Evidence](ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.md) | refines | `DEC-9029 -[:refines]-> DEC-0046` |
 | [ADR-PC-0001 — Entity Registry and Discovery Index](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md) | implements this logical authority | `ADR-PC-0001 -[:implements_logical]-> ADR-L-0012` |
 | [ADR-PS-0001 — ADR Architecture Kit Discovery and Indexing System](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md) | implements this logical authority | `ADR-PS-0001 -[:implements_logical]-> ADR-L-0012` |
 

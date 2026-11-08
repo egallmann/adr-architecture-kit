@@ -19510,3 +19510,411 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: 01a1b9be-d7df-74f4-8dae-189b4ae502cf
+  alias_id: INV-0321
+  alias_name: system-qualify-complete-provider-source-snapshots
+  alias_ref: INV-0321:system-qualify-complete-provider-source-snapshots
+  entity_type: invariant
+  name: INV-0321
+  summary: System applicability MUST require independently reconstructed complete
+    membership of the externally authorized immutable provider source collection;
+    retained input integrity alone MUST NOT prove completeness.
+  uri: adr://adr-architecture-kit/entities/01a1b9be-d7df-74f4-8dae-189b4ae502cf
+  created_at: '2026-11-08T06:00:54.495Z'
+  entity_fingerprint: sha256:f77c1976c1dd94403569f1f36e615808d3add1bdf2f8871a9fba56a47d9d0adc
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-189b4ae502cf
+    artifact_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+    adr_alias_id: ADR-L-0041
+    scope: architecture
+    statement: System applicability MUST require independently reconstructed complete
+      membership of the externally authorized immutable provider source collection;
+      retained input integrity alone MUST NOT prove completeness.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1b9be-d7dc-773b-913e-351fcc7ed3e9
+    supersedes: []
+    alias_id: INV-0321
+    alias_name: system-qualify-complete-provider-source-snapshots
+  relationships:
+    declared_in:
+    - 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-189b4ae502cf
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1b9be-d7df-74f4-8dae-189cd5703bef
+  alias_id: INV-0322
+  alias_name: system-require-preexisting-typed-system-producer-binding
+  alias_ref: INV-0322:system-require-preexisting-typed-system-producer-binding
+  entity_type: invariant
+  name: INV-0322
+  summary: System reuse MUST bind an already-established namespace-qualified entity/system
+    UUID to exactly one independently authenticated provider-authorized defining occurrence;
+    qualification MUST NOT create a unit or elect a pro
+  uri: adr://adr-architecture-kit/entities/01a1b9be-d7df-74f4-8dae-189cd5703bef
+  created_at: '2026-11-08T06:00:54.495Z'
+  entity_fingerprint: sha256:4f2bb03745733d487ceaa154ae950a9dfda2277a4a6e7c4cd07bdab6ca1eff0b
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-189cd5703bef
+    artifact_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+    adr_alias_id: ADR-L-0041
+    scope: architecture
+    statement: System reuse MUST bind an already-established namespace-qualified entity/system
+      UUID to exactly one independently authenticated provider-authorized defining
+      occurrence; qualification MUST NOT create a unit or elect a producer.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1b9be-d7dc-773b-913e-352043bf3964
+    supersedes: []
+    alias_id: INV-0322
+    alias_name: system-require-preexisting-typed-system-producer-binding
+  relationships:
+    declared_in:
+    - 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-189cd5703bef
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1b9be-d7df-74f4-8dae-189de4ddd088
+  alias_id: INV-0323
+  alias_name: system-verify-every-system-reuse-claim-and-context
+  alias_ref: INV-0323:system-verify-every-system-reuse-claim-and-context
+  entity_type: invariant
+  name: INV-0323
+  summary: Every relevant same-identity descriptor MUST preserve all governed semantic
+    values and literal declaring-context meaning; compatible reuse MUST NOT duplicate
+    a unit, lifecycle or semantic owner.
+  uri: adr://adr-architecture-kit/entities/01a1b9be-d7df-74f4-8dae-189de4ddd088
+  created_at: '2026-11-08T06:00:54.495Z'
+  entity_fingerprint: sha256:2ba109b3bffc50cb006b30a95cd2a72bc830aa67a6d3cd2d89ee8101329fa8be
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-189de4ddd088
+    artifact_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+    adr_alias_id: ADR-L-0041
+    scope: architecture
+    statement: Every relevant same-identity descriptor MUST preserve all governed
+      semantic values and literal declaring-context meaning; compatible reuse MUST
+      NOT duplicate a unit, lifecycle or semantic owner.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1b9be-d7dc-773b-913e-35211e236886
+    supersedes: []
+    alias_id: INV-0323
+    alias_name: system-verify-every-system-reuse-claim-and-context
+  relationships:
+    declared_in:
+    - 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-189de4ddd088
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1b9be-d7df-74f4-8dae-189ed36af368
+  alias_id: INV-0324
+  alias_name: system-independently-verify-system-evidence-and-outcomes
+  alias_ref: INV-0324:system-independently-verify-system-evidence-and-outcomes
+  entity_type: invariant
+  name: INV-0324
+  summary: Independent verification MUST bind exact scope, snapshot, sources, existing
+    unit, defining producer, every reuse claim and selected candidate authority; producer
+    receipts MUST NOT establish those facts.
+  uri: adr://adr-architecture-kit/entities/01a1b9be-d7df-74f4-8dae-189ed36af368
+  created_at: '2026-11-08T06:00:54.495Z'
+  entity_fingerprint: sha256:13cd33f6804b83573161728e99429d403182e0b3af9aa94a1bd5267d562b137c
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-189ed36af368
+    artifact_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+    adr_alias_id: ADR-L-0041
+    scope: architecture
+    statement: Independent verification MUST bind exact scope, snapshot, sources,
+      existing unit, defining producer, every reuse claim and selected candidate authority;
+      producer receipts MUST NOT establish those facts.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1b9be-d7dc-773b-913e-3522ba6c6830
+    supersedes: []
+    alias_id: INV-0324
+    alias_name: system-independently-verify-system-evidence-and-outcomes
+  relationships:
+    declared_in:
+    - 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-189ed36af368
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1b9be-d7df-74f4-8dae-189fa440ab5d
+  alias_id: INV-0325
+  alias_name: system-refine-current-candidate-system-applicability-only
+  alias_ref: INV-0325:system-refine-current-candidate-system-applicability-only
+  entity_type: invariant
+  name: INV-0325
+  summary: System applicability refinement MUST preserve historical rule identities,
+    existing operations, all static BLOCKED statuses, independent ledger obligations
+    and candidate-only lifecycle without public capability activation
+  uri: adr://adr-architecture-kit/entities/01a1b9be-d7df-74f4-8dae-189fa440ab5d
+  created_at: '2026-11-08T06:00:54.495Z'
+  entity_fingerprint: sha256:47f9f211ab2966c0ff5d27f5647e9639676428f473183002a9a33916491302d9
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-189fa440ab5d
+    artifact_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+    adr_alias_id: ADR-L-0041
+    scope: architecture
+    statement: System applicability refinement MUST preserve historical rule identities,
+      existing operations, all static BLOCKED statuses, independent ledger obligations
+      and candidate-only lifecycle without public capability activation.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1b9be-d7dc-773b-913e-352399982100
+    supersedes: []
+    alias_id: INV-0325
+    alias_name: system-refine-current-candidate-system-applicability-only
+  relationships:
+    declared_in:
+    - 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-189fa440ab5d
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1b9be-d7df-74f4-8dae-18a02b5d3e11
+  alias_id: INV-0326
+  alias_name: system-qualify-system-scope-boundary-adversarially
+  alias_ref: INV-0326:system-qualify-system-scope-boundary-adversarially
+  entity_type: invariant
+  name: INV-0326
+  summary: Qualification MUST retain Rejected over Unavailable over governed Unresolved,
+    clear partial outputs on failure and preserve independent sibling execution; proposed
+    governance MUST NOT activate System execution.
+  uri: adr://adr-architecture-kit/entities/01a1b9be-d7df-74f4-8dae-18a02b5d3e11
+  created_at: '2026-11-08T06:00:54.495Z'
+  entity_fingerprint: sha256:43360bbdc2dfde76e8d4d8e3dc50979c4397dad66125af6f83ef88d3ed316e49
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-18a02b5d3e11
+    artifact_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+    adr_alias_id: ADR-L-0041
+    scope: architecture
+    statement: Qualification MUST retain Rejected over Unavailable over governed Unresolved,
+      clear partial outputs on failure and preserve independent sibling execution;
+      proposed governance MUST NOT activate System execution.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1b9be-d7dc-773b-913e-352410848c0e
+    supersedes: []
+    alias_id: INV-0326
+    alias_name: system-qualify-system-scope-boundary-adversarially
+  relationships:
+    declared_in:
+    - 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-18a02b5d3e11
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

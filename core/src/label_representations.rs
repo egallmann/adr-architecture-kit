@@ -538,3 +538,7 @@ mod tests;
 #[cfg(test)]
 #[path = "nested_semantic_fields_tests.rs"]
 mod nested_tests;
+
+#[cfg(test)]
+#[path = "physical_system_fields_tests.rs"]
+mod physical_system_tests;

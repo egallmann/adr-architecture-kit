@@ -141,3 +141,59 @@ known duplicate identities and contradictory source/ownership evidence are
 Rejected. Failures clear containment, semantic and representation evidence
 atomically. No unresolved-dependency evidence is invented. All 215 static
 BLOCKED destinations and the complete-interpretation Unavailable boundary remain.
+
+## Native Physical System evidence
+
+The existing ownership qualifier also supports the selected single direct-object
+hop. It validates `/system` against the Physical System schema
+`/properties/system` and the common `/definitions/system` schema. It never
+relabels the object as an array. The existing one/two-hop array paths and their
+exact schema resolution remain unchanged.
+
+The actual inherited AI 1.3 rules exercised are:
+
+- `declaring-lifecycle.adr-physical-system.system` (containment evidence only)
+- `declaring-lifecycle.adr-physical-system.data_flows`
+- `declaring-lifecycle.adr-physical-system.system_boundaries`
+
+Data Flow and System Boundary occurrences retain their independent UUIDs and
+inherit literal status only from the declaring Physical System ADR. Their source,
+parent and child schemas, schema-hop selectors, rule qualification and lifecycle
+carrier are independently reconstructed. Focused fixtures execute all nine Data
+Flow and seven System Boundary authored-field dispositions, including repeated
+typed collection values. Ordered topology-key paths are retained as authored
+semantic fields; this is not topology-record construction or endpoint resolution.
+Boundary unordered-multiset classifications do not authorize dropping duplicates
+or changing the retained original source values. No whole-ledger comparison is
+claimed. The existing identity and literal-label inverses verify the sidecars.
+
+Shared-System containment and semantic producer qualification are separate.
+The selected reuse rule permits coincident declaring-ADR/descriptor source-role
+UUIDs; that permission does not elect a System producer. The current native
+handoff seals all retained bytes under the qualified detached provider, but does
+not prove provider-wide source completeness or bind an independently established
+existing System unit to a unique producer. Even one visible System claim therefore
+remains Unavailable. Adding a local complete/preferred flag, identical aliases,
+source order, file names or digest comparisons cannot supply that evidence.
+
+All observed same-System-identity claims are accounted for when that producer
+is requested. Conflicting values at governed canonical fields are Rejected;
+equal repeated claims remain Unavailable. Distinct UUIDs stay distinct source
+occurrences. No registry, coalescence algorithm, winner or new semantic unit is
+manufactured. A partial basis cannot imply global uniqueness.
+
+Unrequested shared-System claims do not block independent Data Flow/Boundary
+facts. Selecting System atomically with siblings still clears the entire requested
+operation on failure. Root identity-only facts can qualify independently when
+their source roles are unambiguous; they are not proof of a System producer.
+Full root field/label projection still needs its System child semantics and
+therefore remains Unavailable at this seam. No complete Physical System entity
+or model is assembled.
+
+Inverse tests reject changed original fields, lifecycle, declaring/parent IDs,
+containment selectors, receipts and labels without invoking the field or label
+producer to reconstruct expected values. The precise System execution prerequisite
+is independently qualified provider/source scope plus an established unique
+System semantic-unit/producer binding under the selected authority. Other
+unqualified contexts, all 215 static BLOCKED destinations and complete
+interpretation remain unchanged and Unavailable.

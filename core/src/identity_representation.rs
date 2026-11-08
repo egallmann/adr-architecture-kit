@@ -707,7 +707,7 @@ fn ownership_reference<'a>(q: &'a Qualification, r: &Json) -> Result<&'a Json, F
     pointer(raw, text(r, "schema_pointer"))
         .ok_or_else(|| rejected(key, "Invalid ownership schema selector"))
 }
-/// Qualifies the selected one/two-hop array containment, not arbitrary nesting.
+/// Qualifies selected direct-object or one/two-hop array containment, not arbitrary nesting.
 /// Source locators locate original objects; selectors establish their UUIDs.
 pub(crate) fn native_ownership(
     q: &Qualification,
@@ -837,33 +837,45 @@ pub(crate) fn native_ownership(
         vec![declaring, parent, child]
     };
     let ids: BTreeSet<_> = chain.iter().map(|u| text(&u.value, "id")).collect();
-    if ids.len() != chain.len() {
+    // The selected shared descriptor rule permits coincident source roles.
+    // This validates containment only; it cannot select a System producer.
+    let shared_roles = same_parent
+        && text(rule, "shared_system_descriptor")
+            == "reuse_existing_semantic_unit_if_same_canonical_identity";
+    if ids.len() != chain.len() && !shared_roles {
         return Err(rejected("id", "Parent/child canonical identity collision"));
     }
     let parts: Vec<_> = pattern.strip_prefix('/').unwrap_or("").split('/').collect();
     let hops = array(rule, "ownership_schema_path");
-    if parts.len() != 2 * hops.len()
+    let direct = parts.len() == 1
+        && !parts[0].is_empty()
+        && parts[0] != "*"
+        && hops.len() == 1
+        && chain.len() == 2;
+    if (!direct
+        && (parts.len() != 2 * hops.len()
+            || parts.chunks(2).any(|p| p[0].is_empty() || p[1] != "*")))
         || hops.len() != chain.len() - 1
         || hops.is_empty()
         || hops.len() > 2
-        || parts.chunks(2).any(|p| p[0].is_empty() || p[1] != "*")
     {
         return Err(unavailable(
             OWNERSHIP,
-            "Selected containment shape is not an executable one/two-hop array path",
+            "Selected containment shape is not an executable direct-object or one/two-hop array path",
         ));
     }
     for (n, hop) in hops.iter().enumerate() {
         let from = chain[n];
         let to = chain[n + 1];
-        let property = parts[2 * n];
+        let property = parts[if direct { n } else { 2 * n }];
+        let item_suffix = if direct { "" } else { "/items" };
         let from_schema = field(&from.row, "/source_schema");
         let to_schema = field(&to.row, "/source_schema");
         ownership_reference(q, hop)?;
         if text(hop, "canonical_resource_key") != text(from_schema, "canonical_resource_key")
             || text(hop, "schema_pointer")
                 != format!(
-                    "{}/properties/{property}/items",
+                    "{}/properties/{property}{item_suffix}",
                     text(from_schema, "schema_pointer")
                 )
         {
@@ -897,6 +909,19 @@ pub(crate) fn native_ownership(
                 "Ownership hop does not select the exact next schema occurrence",
             ));
         }
+        if direct {
+            if to.selection.source_ref != from.selection.source_ref
+                || to.selection.pointer != format!("{}/{property}", from.selection.pointer)
+                || !matches!(to.value, Json::Object(_))
+                || pointer(&from.value, &format!("/{property}")) != Some(&to.value)
+            {
+                return Err(rejected(
+                    OWNERSHIP,
+                    "Original direct-object containment does not preserve the complete child",
+                ));
+            }
+            continue;
+        }
         let prefix = format!("{}/{property}/", from.selection.pointer);
         let tail = to.selection.pointer.strip_prefix(&prefix).ok_or_else(|| {
             rejected(
@@ -925,6 +950,59 @@ pub(crate) fn native_ownership(
     })
 }
 
+/// Account for actual same-identity descriptor claims in the retained basis.
+/// Neither this finite basis nor equal values proves provider-wide completeness
+/// or an established unique semantic producer. No election or coalescence occurs.
+fn system_claims(q: &Qualification, unit: &Unit, all: &[Unit]) -> Result<(), Failure> {
+    let engine = crate::architecture_interpretation_v13::Authority::from_candidate(q)
+        .map_err(|e| unavailable(OWNERSHIP, e))?;
+    let mut findings = unavailable("shared_identity",
+        "Missing independently qualified provider-complete source scope and established unique System unit/producer binding");
+    let id = text(&unit.value, "id");
+    for other in all.iter().filter(|p| {
+        text(&p.value, "id") == id
+            && p.selection.semantic_type != unit.selection.semantic_type
+            && p.selection.semantic_type != "adr/physical-system"
+    }) {
+        findings.extend(rejected(
+            id,
+            format!(
+                "Canonical System identity conflicts with {}",
+                other.selection.semantic_type
+            ),
+        ));
+    }
+    for peer in all.iter().filter(|p| {
+        p.selection.semantic_type == unit.selection.semantic_type && text(&p.value, "id") == id
+    }) {
+        native_ownership(q, all, peer)?;
+        for (name, value) in unit.value.as_object().into_iter().flatten() {
+            let path = format!("/{}", name.replace('~', "~0").replace('/', "~1"));
+            let rule = engine
+                .field(&unit.selection.semantic_type, &path)
+                .map_err(|e| unavailable(&path, e))?;
+            if text(rule, "disposition") != "canonical_field_placement"
+                || !matches!(
+                    text(rule, "value_semantics"),
+                    "exact_identity_value" | "exact_typed_value"
+                )
+            {
+                return Err(unavailable(
+                    &path,
+                    "No exact canonical field authority for comparing System claims",
+                ));
+            }
+            if peer.value.get(name) != Some(value) {
+                findings.extend(rejected(
+                    text(rule, "semantic_field_key"),
+                    "Same canonical System identity has contradictory authored canonical values",
+                ));
+            }
+        }
+    }
+    Err(findings)
+}
+
 fn applicable(q: &Qualification, u: &Unit, all: &[Unit]) -> Result<(), Failure> {
     let branch = text(&u.row, "output_branch");
     if !matches!(branch, "regular" | "normative-proposition") {
@@ -950,6 +1028,7 @@ fn applicable(q: &Qualification, u: &Unit, all: &[Unit]) -> Result<(), Failure> 
                 }
                 // Propositions use exact schema containment, never lifecycle inheritance.
             }
+            "shared_identity" => system_claims(q, u, all)?,
             other => {
                 return Err(unavailable(
                     other,
@@ -985,20 +1064,6 @@ fn prepare(
     let mut findings = vec![];
     let mut prepared = vec![];
     let mut selected = BTreeSet::new();
-    for u in &all {
-        if array(&u.row, "context_dependencies")
-            .iter()
-            .any(|d| d.as_str() == Some("shared_identity"))
-            && selections
-                .iter()
-                .any(|s| s.source_ref == u.selection.source_ref)
-        {
-            findings.extend(unavailable(
-                "shared_identity",
-                "Unique shared-descriptor unit/producer qualification is not implemented",
-            ));
-        }
-    }
     if selections.is_empty() {
         findings.extend(unavailable("selection", "No semantic units selected"))
     }
@@ -1010,17 +1075,41 @@ fn prepare(
         }
     }
     for (id, occurrences) in identities {
-        if occurrences.len() > 1 {
-            if occurrences
-                .iter()
-                .any(|u| text(&u.row, "semantic_type") == "entity/system")
-            {
-                findings.extend(unavailable("shared_identity","Coincident system identity requires an independently qualified unique producer"))
-            } else {
-                findings.extend(rejected(
-                    id,
-                    "Duplicate canonical semantic identities in the source basis",
-                ))
+        let systems: Vec<_> = occurrences
+            .iter()
+            .copied()
+            .filter(|u| u.selection.semantic_type == "entity/system")
+            .collect();
+        let others: Vec<_> = occurrences
+            .iter()
+            .copied()
+            .filter(|u| u.selection.semantic_type != "entity/system")
+            .collect();
+        if others.len() > 1 {
+            findings.extend(rejected(
+                id,
+                "Duplicate canonical semantic identities in the source basis",
+            ));
+        }
+        // Unrequested shared descriptors cannot poison independent sibling facts.
+        // An ADR and its own descriptor may share source-role identity, without
+        // qualifying either role as the unique existing System semantic producer.
+        for u in others.iter().filter(|u| selections.contains(&u.selection)) {
+            for system in &systems {
+                if u.selection.semantic_type != "adr/physical-system" {
+                    findings.extend(rejected(
+                        id,
+                        "Canonical identity conflicts with a System source claim",
+                    ));
+                } else if system.parent.as_ref().map(|p| &p.selection) != Some(&u.selection)
+                    || system.owner.as_ref().map(|o| o.1.as_str()) != Some(id)
+                    || native_ownership(&q, &all, system).is_err()
+                {
+                    findings.extend(unavailable(
+                        "shared_identity",
+                        "Foreign System claim lacks qualified existing-unit/producer binding",
+                    ));
+                }
             }
         }
     }

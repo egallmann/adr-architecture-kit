@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: da4795c4b124909174b934bd2e03c69d741a77d24fd302a553ba5362c88f9c1f
-rendered_hash: ebbc7391ee48d9b8af4bb746344682a4abd5f624eb1f66d3d8b41c793c8c0970
+source_hash: 3a24e7516cab7a65d906bd192718acc14749ba9351a368a0a2ee64e04a3d7054
+rendered_hash: 4704c1884280ae1a23dca49853ea211379e2954eb787abaf0faa32eb85f28124
 -->
 
 # ADR-L-0041: Qualified Shared-System Scope and Producer Evidence
@@ -98,10 +98,12 @@ a descriptor producer cannot create that authorization. Provider honesty beyond 
 authority boundary is not inferred from cryptography. Unregistered external material
 is not silently included or asserted absent from the world.
 
-Relate the verified membership to minimal non-overlapping sealed original roots by
-exact bytes, source identity, schema and revision. A minimal-root digest proves retained
-integrity, not enumeration completeness. No synthetic complete=true proof is allowed.
-Missing authorized publication, full membership or exact revision is Unavailable.
+ADR-L-0032 DEC-0254 through DEC-0257 and ACC 1.5 distinguish retained returned
+candidate artifacts from the request's minimal non-overlapping interpretation roots.
+That candidate source basis is not the provider's complete source collection. A
+minimal-root digest proves retained integrity, not provider completeness. No synthetic
+complete=true proof is allowed. Missing authorized publication, full provider membership
+or exact revision is Unavailable.
 
 The selected complete provider snapshot and reuse-only binding cost full relevant-source
 enumeration and leave providers without that capability Unavailable. They preserve a
@@ -114,8 +116,9 @@ rules and original source commitments over the complete bytes. A revision label 
 a root commitment. Source identities occur exactly once in authoritative membership;
 duplicate membership or conflicting objects under one source identity are Rejected.
 Repeated transport retrieval of the same object is not another semantic occurrence.
-The independent exhaustive expansion is compared for exact set equality with the sealed
-original-source inventory; unrelated non-architecture files are outside the already
+Exact set equality applies between the independently expanded provider graph and its
+authenticated committed provider inventory, not unconditionally between that inventory
+and the request basis. Unrelated non-architecture files are outside the already
 authorized collection boundary, never excluded through a new filename scan rule.
 
 
@@ -129,6 +132,49 @@ Unavailable and independently established canonical-value contradictions are Rej
 Reference-only fields and relationship endpoints are not defining occurrences. Determine
 that distinction from actual qualified source rules, not a field spelling or locator.
 An unsupported source classification cannot silently hide a potentially relevant claim.
+
+
+Distinguish these source roles. P is the complete authenticated provider snapshot at
+one qualified revision; E is the selection of already-published provider source objects
+relevant to a request; C is newly constructed detached candidate source, not yet in P.
+Here published means provider snapshot membership, not contract release or promotion.
+E may be a strict subset of P. B contains the minimal roots required by its governing
+operation. For ACC these cover ALL returned candidate artifacts using exact containment
+proofs, not a convenient subset of those artifacts and not a copy of all of P.
+Retained child artifacts may be covered by parent roots without becoming extra roots.
+Do not require P = B or add unselected provider roots to the interpretation, output
+model or ledgers merely to prove scope completeness. Whole-inventory equality is
+required only if the exact governing operation independently requires that scope;
+this proposal introduces no such whole-provider interpretation operation.
+
+For every selected existing member E, independently bind its logical request source_ref
+to the actual P member's qualified source identity, exact schema/selector, provider
+revision and original bytes, verifying commitments rather than trusting supplied hashes.
+A logical source_ref need not be a provider storage path and is not membership proof.
+Every relevant System claim in P, including unselected claims outside B, remains part
+of unique-producer/context qualification. Selection does not make those claims absent.
+
+Artifacts in C are sealed and schema-qualified under the existing candidate rules.
+Their legitimate absence from the prior snapshot is not by itself a violation and
+MUST NOT be represented as existing membership or provider publication. Identical bytes
+or a copied existing child do not prove that a newly composed parent or changed declaring
+context was in P. Source origin must qualify from membership or retained construction
+evidence, not a caller-supplied existing/new flag. A purported existing source missing
+at the requested revision cannot be relabelled C to bypass missing or stale evidence.
+Existing exact-subtree/byte-preservation evidence remains necessary
+and is not a substitute for provider membership or declaring-context qualification.
+
+System claims in C would need a separately governed, independently qualified
+candidate-to-provider comparison/qualification relation binding complete P, all relevant
+candidate claims (including children represented by minimal roots), exact namespace,
+revisions, source commitments and existing unit/producer authority. ACC's minimal basis
+and detached context do not currently supply that relation. This proposal does not
+authorize an overlay, publication, producer designation or membership-conversion
+operation. Without that selected comparison authority and evidence, candidate System
+reuse remains Unavailable; known identity/value/context violations remain Rejected
+with their independent diagnostics. No caller declaration or finite candidate basis
+can supply the missing relation. Defining that relation, if needed, is a remaining
+authority prerequisite, not an implementation detail to invent in the later revision.
 
 **Alternatives Considered**
 
@@ -216,12 +262,45 @@ ownership_rule.rule_id/meaning. Validate the full lifecycle carrier under its ac
 AI 1.3 schema. Digests, source locations and rule receipts are qualification evidence,
 not contextual equality or semantic identity. No implicit cross-version equivalence.
 
-A compatible additional descriptor reuses the existing unit/producer and lifecycle
-exactly once; it creates no second semantic owner, unit, lifecycle slot or label owner.
-A descriptor under a different declaring ADR is not compatible merely because status,
-fields or aliases match: a changed governed declaring identity is contextual conflict.
-Existing duplicate-source and semantic-unit identity constraints remain in force;
-compatible reuse is not permission to waive those constraints or duplicate definitions.
+Compatible reuse retains the existing unit/producer and lifecycle exactly once; it
+creates no second semantic owner, unit, lifecycle slot or label owner. Compatibility
+is a necessary equality criterion, not evidence that a second descriptor can reach
+a successful case under the actual schema and declaring-context rules.
+
+Authoring 1.7 Physical System requires one direct /system object, not an array of
+descriptors. The inherited ownership rule selects that occurrence and the declaring
+ADR's /id. Two distinct Physical System ADR identities in the same provider namespace
+necessarily have different declaring_adr_id values. They cannot satisfy the exact
+contextual equality selected above for one shared System identity, even when authored
+fields, labels and literal status are identical. Once both declaring contexts are
+independently established, this is Rejected. When required owner evidence is absent,
+it is Unavailable; unknown context must not be treated as either equality or an
+established contradiction. This decision admits no cross-ADR descriptor coalescence.
+
+Positive reuse is repeated qualified reference, lookup or independent reverification
+of the same already-established source occurrence and typed unit at the qualified
+snapshot revision, without introducing another semantic definition or producer. A
+reference-only occurrence must qualify as a reference under its actual source contract;
+it preserves the defining unit's established context and does not acquire a new
+declaring lifecycle or duplicate that context on a newly invented System unit.
+Repeated transport retrieval is not another source occurrence. Another request can
+reference the same established binding only after its own applicable evidence qualifies.
+These are normative positive cases, not claims of currently available provider support.
+
+The single /system property supplies no positive example of two different descriptors
+inside one unchanged ADR. Copies of an ADR carrying the same canonical ADR UUID are
+not two distinct declaring ADRs; duplicate-source and semantic-unit identity constraints
+remain in force. Repeated reads must not be misreported as additional compatible
+definitions. A compatible_additional_descriptor outcome is conditional on all these
+constraints; it is not an advertised reachable cross-ADR execution capability.
+
+If v0.13 requires meaningful shared-System descriptor reuse across distinct declaring
+ADRs, whether to require that capability and how its ownership/lifecycle/context and
+definition-versus-reference semantics should work remain an unresolved human
+architectural decision. Do not weaken contextual equality, choose a preferred ADR,
+introduce multi-declarer lifecycle or coalesce contextual facts here. This is not a
+runtime Unresolved outcome and does not authorize another ADR automatically.
+
 Distinct canonical UUIDs remain distinct; equal aliases do not merge them. Equal UUIDs
 under different independently qualified namespaces also remain distinct identities.
 System summary remains literal alias_name duplication, without narrative meaning.
@@ -245,7 +324,7 @@ source/identity/context proofs. A System producer supplies outputs only; its suc
 scope and preferred-producer receipts cannot establish any of these evidence facts.
 
 Bind provider, namespace, scope authorization, exact snapshot revision/root, complete
-original-source membership, original bytes/digests/schema identities, existing typed
+provider membership and separately qualified selected/candidate source commitments, original bytes/digests/schema identities, existing typed
 unit, defining occurrence, all reuse claims and exact NM/AI/ACC definitions/resources/
 SCFs in a single qualification. Do not mix source or registry revisions. No latest or
 ambient lookup during replay. Independent verification reconstructs membership, source
@@ -257,6 +336,11 @@ qualified inputs rejects stale results. Historical evidence remains reproducible
 
 The following closed decision summary is proposed authority only. Its tests audit the
 proposal, not signatures, provider completeness or successful System execution:
+
+Provider completeness and minimal request-basis integrity are separate qualifications.
+The former accounts for all relevant P claims; the latter qualifies the exact bounded
+roots consumed by the operation. Do not merge them into one equality or count check.
+New candidate source commitments must remain distinguishable from existing P membership.
 
 ```yaml
 boundary: reuse_only_no_unit_creation
@@ -286,6 +370,12 @@ reuse:
   comparison: all_governed_semantic_values_and_applicable_contextual_facts
   second_unit_or_owner: false
   context_qualification: actual_selected_resource_identity_digest_and_rule_meaning
+  reachability:
+    descriptor_shape: one_required_direct_system_object_per_physical_system_ADR
+    distinct_declaring_ADRs_equal_context: false
+    positive_case: repeat_reference_or_reverification_same_qualified_unit_no_new_definition
+    duplicate_definitions_permitted: false
+    cross_ADR_capability: human_decision_if_required_not_admitted_here
 outcomes:
   unique_qualified_definition: eligible_for_bounded_execution
   compatible_additional_descriptor: reuse_existing_unit_only
@@ -315,6 +405,25 @@ exclusions:
 - whole_ledger_equivalence
 - Constructed
 - authority_promotion
+source_sets:
+  provider_inventory: complete_authenticated_P_independent_of_request_selection
+  selected_existing: E_is_a_qualified_subset_of_P_not_required_equal_P
+  request_basis: B_is_operation_selected_minimal_nonoverlapping_roots_not_all_P
+  existing_member_checks:
+  - source_identity
+  - schema_and_selector
+  - snapshot_revision
+  - exact_original_bytes
+  unselected_system_claims: account_in_complete_P_even_when_outside_B
+  new_candidates: C_is_sealed_detached_source_not_prior_provider_membership
+  new_candidate_comparison: Unavailable_without_selected_candidate_to_provider_authority_and_evidence
+  implicit_publication_or_overlay: false
+execution_prerequisites:
+- accepted_decision_and_independently_qualified_candidate_authority
+- implemented_authenticated_complete_provider_snapshot_capability
+- independently_qualified_prior_System_unit_and_defining_producer
+- implemented_private_scope_unit_and_output_verifiers
+- selected_candidate_to_provider_comparison_when_new_candidate_claims_are_involved
 ```
 
 **Traceability**
@@ -364,6 +473,11 @@ and requalify co-dependent consumers. This decision PR changes none of those res
 current SCS, public capabilities or execution. Human acceptance is a prerequisite to
 the bounded candidate revision; acceptance or merging a proposed ADR is not promotion.
 
+The follow-up evidence/context revision must preserve the P/E/C/B distinction above.
+It does not, by itself, supply an unpublished-candidate comparison rule or make any
+provider operational. Keep the unqualified C-to-P System handoff Unavailable. Neither
+that revision nor this ADR admits cross-ADR declaring-context coalescence.
+
 **Traceability**
 - Refines: Freeze exact snapshots; promote compatibility explicitly (DEC-9023)
 
@@ -403,6 +517,32 @@ All 27 types/six branches, 240 producer definitions, 215 BLOCKED entries, 26 lab
 composition binding remain regression guards rather than proof. No complete NM entity
 or model, complete interpretation, semantic_equivalent, Constructed, persistence,
 admission, package publication or authority promotion follows from this bounded proof.
+
+Execution-path assessment at reviewed head 3534500be75b7d001b1fc6b7a6ad06f1a15b5273:
+ProviderRegistry routes namespaces to loaded repositories and resolves legacy normalized
+entities; _normalized_bundle supports model versions through 2.3. It does not supply
+authenticated complete source snapshots, immutable enumeration or the forward-qualified
+prior System producer binding required here. The selected AI 1.3 detached context
+commits only the retained basis. Rust SealedSources retains originals, authorities,
+basis and context; system_claims checks retained claims and returns Unavailable for
+missing complete scope/unique binding, while preserving known violations as Rejected.
+No existing provider path inspected supplies the complete handoff. This is a baseline
+observation, not a permanent prohibition on later qualified provider implementations.
+
+Keep four milestones separate: a normative evidence shape, an actual supported provider
+capability, prior independently authorized System unit/producer establishment outside
+this reuse-only boundary, and implemented private Rust qualification/execution/replay.
+AI/ACC candidate revision alone cannot make System executable. Real provider snapshot
+acquisition/authentication, complete enumeration, prior establishment evidence and the
+private verifier are external/engineering prerequisites. New candidate System claims
+additionally need the separately governed comparison relation described above.
+
+Proposal tests must cover a strict E subset of P, unselected relevant System claims,
+exact membership/schema/revision/bytes, C absent from prior P without false publication,
+missing authorized candidate comparison, distinct declaring ADR contextual conflict and
+repeated reference to the same qualified unit with no new definition. These are design
+audits, not evidence of a live provider or operational System execution. Known context
+contradictions remain Rejected; missing authorized evidence remains Unavailable.
 
 **Traceability**
 - Refines: Bind each output producer to exact branch, selectors, operation and evidence (DEC-9012)
@@ -544,9 +684,11 @@ Require executable conformance before admitting System facts
 - [ADR-L-0038](ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.md)
 - [ADR-L-0039](ADR-L-0039-forward-identity-representation-recipes.md)
 - [ADR-L-0040](ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.md)
+- [ADR-L-0032](ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.md)
 
 **References**
 - [ADR-L-0012](ADR-L-0012-federation-authority-and-qualified-identity-model.md)
+- [ADR-L-0032](ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.md)
 - [ADR-L-0037](ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.md)
 - [ADR-L-0038](ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.md)
 - [ADR-L-0039](ADR-L-0039-forward-identity-representation-recipes.md)

@@ -5,11 +5,11 @@
   "baseline_sha": "9bce83c",
   "architecture_graph": {
     "path": "adrs/index/architecture-graph.yaml",
-    "source_sha256": "c1475205a224a584387394c7bbd143edd7075a9e376d9d8a12c12b8a058fa531",
+    "source_sha256": "0c07784b5023e33c51c58ee38c6738320ec97407ac390230600f9dd5c02ef698",
     "node_count": 756,
-    "edge_count": 1126,
+    "edge_count": 1127,
     "node_semantic_sha256": "5654ece15b677f6a56b9f7ee0a431ccc540c36fafd0a7e1a78839f94d5cdd9dd",
-    "edge_semantic_sha256": "318fff814d154cf8a751b95a5905a78a0cec94e6b5fc29c1a8652ed2c66e7550",
+    "edge_semantic_sha256": "a4b5d9785485fdc702cbeaad60d48d0fac19f33255bb2382b08d88efd06e5e0e",
     "node_types": {
       "adr": 52,
       "boundary": 4,
@@ -33,7 +33,7 @@
       "implemented_by": 2,
       "implements_logical": 33,
       "provides_interface": 14,
-      "references": 197,
+      "references": 198,
       "refines": 64,
       "superseded_by": 1,
       "supersedes": 1

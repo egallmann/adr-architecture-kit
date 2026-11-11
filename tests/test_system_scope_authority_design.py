@@ -98,6 +98,13 @@ def test_scope_design_requires_independent_complete_enumeration_and_reuse_only()
         ("scope", "enumeration", "validate_supplied_digests"),
         ("scope", "filters", "requested_uuid"),
         ("scope", "claims", "physical_system_roots_only"),
+        ("source_sets", "selected_existing", "E_must_equal_P"),
+        ("source_sets", "request_basis", "all_provider_objects_are_request_roots"),
+        ("source_sets", "unselected_system_claims", "ignore_claims_outside_B"),
+        ("source_sets", "existing_member_checks", ["content_digest"]),
+        ("source_sets", "new_candidates", "already_published_members_of_P"),
+        ("source_sets", "new_candidate_comparison", "same_uuid_is_sufficient"),
+        ("source_sets", "implicit_publication_or_overlay", True),
         ("unit", "creation_during_qualification", True),
         ("unit", "designation", "first_seen"),
         ("unit", "election", True),
@@ -183,3 +190,124 @@ def test_outcomes_and_future_dependency_boundary_are_explicit() -> None:
         "independently qualified Data Flow/Boundary",
     ):
         assert phrase in text
+
+
+def test_provider_inventory_and_minimal_request_basis_are_distinct_obligations() -> None:
+    # These are proposal requirements, not a live membership/completeness verifier.
+    s = policy()["source_sets"]
+    assert s == {
+        "provider_inventory": "complete_authenticated_P_independent_of_request_selection",
+        "selected_existing": "E_is_a_qualified_subset_of_P_not_required_equal_P",
+        "request_basis": "B_is_operation_selected_minimal_nonoverlapping_roots_not_all_P",
+        "existing_member_checks": [
+            "source_identity",
+            "schema_and_selector",
+            "snapshot_revision",
+            "exact_original_bytes",
+        ],
+        "unselected_system_claims": "account_in_complete_P_even_when_outside_B",
+        "new_candidates": "C_is_sealed_detached_source_not_prior_provider_membership",
+        "new_candidate_comparison": "Unavailable_without_selected_candidate_to_provider_authority_and_evidence",
+        "implicit_publication_or_overlay": False,
+    }
+    adr32 = yaml.safe_load(
+        next((ROOT / "adrs/logical").glob("ADR-L-0032-*.yaml")).read_text(encoding="utf-8")
+    )
+    assert adr32["id"] in document()["related_adrs"]
+    minimal = next(d for d in adr32["decisions"] if d["alias_id"] == "DEC-0254")
+    assert "minimal non-overlapping source roots" in minimal["rationale"]
+    assert "while remaining a candidate artifact" in minimal["rationale"]
+    # Parent root coverage is not a mandate to import every provider member.
+    assert "provider" not in minimal["rationale"]
+
+
+@pytest.mark.parametrize(
+    "omitted",
+    ["source_identity", "schema_and_selector", "snapshot_revision", "exact_original_bytes"],
+)
+def test_existing_member_design_cannot_drop_an_exact_membership_commitment(omitted: str) -> None:
+    original = policy()
+    bad = copy.deepcopy(original)
+    bad["source_sets"]["existing_member_checks"].remove(omitted)
+    assert list(Draft202012Validator(closed(original)).iter_errors(bad))
+
+
+def test_new_candidate_absence_is_not_membership_or_an_automatic_violation() -> None:
+    text = document()["decisions"][0]["rationale"]
+    for phrase in (
+        "E may be a strict subset of P",
+        "including unselected claims outside B",
+        "absence from the prior snapshot is not by itself a violation",
+        "MUST NOT be represented as existing membership or provider publication",
+        "without that selected comparison authority and evidence",
+    ):
+        assert phrase.lower() in " ".join(text.split()).lower()
+    assert policy()["source_sets"]["new_candidate_comparison"].startswith("Unavailable_")
+    assert policy()["unit"]["creation_during_qualification"] is False
+    assert policy()["unit"]["election"] is False
+
+
+def test_actual_context_equality_prevents_cross_adr_descriptor_coalescence() -> None:
+    p = policy()
+    ownership = load_semantic_resource(p["reuse"]["ownership_resource"])
+    row = next(r for r in ownership["rows"] if r["rule_id"] == p["reuse"]["ownership_rule"])
+    schema = load_semantic_resource(row["source_schema"]["canonical_resource_key"])
+    assert "system" in schema["required"]
+    assert schema["properties"]["system"]["$ref"].endswith("#/definitions/system")
+    assert "items" not in schema["properties"]["system"]
+    assert schema["additionalProperties"] is False
+    assert row["declaring_adr_identity_selector"] == "/id"
+    fact = load_semantic_resource("architecture-interpretation/1.3/contextual-facts")["facts"][0]
+    keys = fact["semantic_equality_fields"]
+    assert "declaring_adr_id" in keys
+    # Hypothetical equality counterexample only: these do not assert live authority,
+    # complete scope, an established unit or a successful execution receipt.
+    a = {
+        "declaring_adr_id": "00000000-0000-7000-8000-000000000001",
+        "declaring_adr_semantic_type": row["declaring_adr_semantic_type"],
+        "status_semantic_field_key": row["status_semantic_field_key"],
+        "ownership_rule.rule_id": row["rule_id"],
+    }
+    unselected_b = {**a, "declaring_adr_id": "00000000-0000-7000-8000-000000000002"}
+    assert tuple(a[k] for k in keys) != tuple(unselected_b[k] for k in keys)
+    assert (
+        p["source_sets"]["unselected_system_claims"] == "account_in_complete_P_even_when_outside_B"
+    )
+    assert p["outcomes"]["conflicting_lifecycle_or_context"] == "Rejected"
+    assert p["outcomes"]["unqualified_existing_unit"] == "Unavailable"
+
+
+def test_positive_reference_reuse_is_not_a_second_descriptor_definition() -> None:
+    reachability = policy()["reuse"]["reachability"]
+    assert reachability == {
+        "descriptor_shape": "one_required_direct_system_object_per_physical_system_ADR",
+        "distinct_declaring_ADRs_equal_context": False,
+        "positive_case": "repeat_reference_or_reverification_same_qualified_unit_no_new_definition",
+        "duplicate_definitions_permitted": False,
+        "cross_ADR_capability": "human_decision_if_required_not_admitted_here",
+    }
+    assert policy()["reuse"]["second_unit_or_owner"] is False
+    text = " ".join(document()["decisions"][2]["rationale"].split())
+    for phrase in (
+        "They cannot satisfy the exact contextual equality",
+        "same already-established source occurrence and typed unit",
+        "does not acquire a new declaring lifecycle",
+        "not two distinct declaring ADRs",
+        "unresolved human architectural decision",
+    ):
+        assert phrase in text
+
+
+def test_authority_shape_does_not_claim_provider_or_rust_implementation() -> None:
+    assert policy()["execution_prerequisites"] == [
+        "accepted_decision_and_independently_qualified_candidate_authority",
+        "implemented_authenticated_complete_provider_snapshot_capability",
+        "independently_qualified_prior_System_unit_and_defining_producer",
+        "implemented_private_scope_unit_and_output_verifiers",
+        "selected_candidate_to_provider_comparison_when_new_candidate_claims_are_involved",
+    ]
+    text = " ".join(document()["decisions"][5]["rationale"].split())
+    assert "AI/ACC candidate revision alone cannot make System executable" in text
+    assert "No existing provider path inspected supplies the complete handoff" in text
+    assert "baseline observation, not a permanent prohibition" in text
+    assert "design audits, not evidence of a live provider" in text

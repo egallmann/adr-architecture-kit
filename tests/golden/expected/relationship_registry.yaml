@@ -13745,6 +13745,19 @@ relationships:
   confidence: 1.0
   metadata: {}
 - record_kind: compatibility
+  relationship_id: references:01a1b9be-d7df-74f4-8dae-18a1a7eaa706:01a0d054-b885-70b3-a72f-d3630d2e76c6
+  assertion_id: asrt-e042a22df0c2c38a46b34f146cce56a4f45368ed6908e36aa1e1705a6f37ed43
+  relationship_type: references
+  from_entity_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+  to_entity_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+  source_owner_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+  provenance_classification: explicit
+  evidence:
+  - 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+  canonical_source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+  confidence: 1.0
+  metadata: {}
+- record_kind: compatibility
   relationship_id: references:01a1b9be-d7df-74f4-8dae-18a1a7eaa706:01a16457-a08c-76a2-8c85-0c34a56ce5f2
   assertion_id: asrt-1b22df6ef749c20610961e85167597da10bf03aa83335a0551361ec4475a5942
   relationship_type: references

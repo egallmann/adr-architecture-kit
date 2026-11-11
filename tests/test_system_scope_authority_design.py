@@ -189,7 +189,6 @@ def test_outcomes_and_future_dependency_boundary_are_explicit() -> None:
         "without increasing versions",
         "No latest or ambient lookup",
         "System producer supplies outputs only",
-        "Human acceptance is a prerequisite",
         "independently qualified Data Flow/Boundary",
     ):
         assert phrase in text

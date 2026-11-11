@@ -5,10 +5,10 @@ high_water_marks:
   CAP: 9002
   COMP: 23
   CONTRACT: 5
-  DEC: 9028
+  DEC: 9034
   IFACE: 36
   IMPL: 29
-  INV: 320
+  INV: 326
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -2344,6 +2344,42 @@ allocations:
   source_pointer: /decisions/5/alias_id
   state: active
   adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+- id: DEC-9029
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_pointer: /decisions/0/alias_id
+  state: active
+  adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+- id: DEC-9030
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_pointer: /decisions/1/alias_id
+  state: active
+  adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+- id: DEC-9031
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_pointer: /decisions/2/alias_id
+  state: active
+  adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+- id: DEC-9032
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_pointer: /decisions/3/alias_id
+  state: active
+  adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+- id: DEC-9033
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_pointer: /decisions/4/alias_id
+  state: active
+  adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+- id: DEC-9034
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_pointer: /decisions/5/alias_id
+  state: active
+  adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
 - id: IFACE-0001
   entity_type: interface
   adr_id: ADR-P-0001
@@ -4456,3 +4492,39 @@ allocations:
   source_pointer: /invariants/5/alias_id
   state: active
   adr_id: 01a178e3-6104-7299-8ae7-bcb172f45ff9
+- id: INV-0321
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_pointer: /invariants/0/alias_id
+  state: active
+  adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+- id: INV-0322
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_pointer: /invariants/1/alias_id
+  state: active
+  adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+- id: INV-0323
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_pointer: /invariants/2/alias_id
+  state: active
+  adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+- id: INV-0324
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_pointer: /invariants/3/alias_id
+  state: active
+  adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+- id: INV-0325
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_pointer: /invariants/4/alias_id
+  state: active
+  adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+- id: INV-0326
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.yaml
+  source_pointer: /invariants/5/alias_id
+  state: active
+  adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706

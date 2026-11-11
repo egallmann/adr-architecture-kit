@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 4abdbf238dcb7ecc2e31c013bf42a55892fb67a4d6b6146b3304dacf47f1d99e
-rendered_hash: 504fbe3a9475a19676f61ce98b47771d8ed1ea92831a870deb624a8a2f7243fe
+source_hash: 5b216a22af3855b53707efd021dd6cdf4c01ac4394faa12efb64b084e5f7d0d1
+rendered_hash: edfea053ed66ebb7a9f384be14185153ed2a13b7abc8eda0ddf9f607d33c070b
 -->
 
 # ADR-L-0037: Lossless Authored Lifecycle and Declaring-ADR Provenance
@@ -576,6 +576,7 @@ flowchart LR
 - [ADR-L-0038](ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.md)
 - [ADR-L-0039](ADR-L-0039-forward-identity-representation-recipes.md)
 - [ADR-L-0040](ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.md)
+- [ADR-L-0041](ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.md)
 
 
 ## Architecture Relationships
@@ -585,6 +586,7 @@ flowchart LR
 | [ADR-L-0034 — Detached Normalized Semantic Equivalence for Authoring Construction](ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.md) | refines | `DEC-9001 -[:refines]-> DEC-0268` |
 | [ADR-L-0035 — Governed Composition-Intent Binding for Authoring Construction](ADR-L-0035-governed-composition-intent-binding-for-authoring-construction.md) | refines | `DEC-9006 -[:refines]-> DEC-0274` |
 | [ADR-L-0038 — Explicit Required-Output Authority Across the AI Catalog](ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.md) | refines | `DEC-9013 -[:refines]-> DEC-9005` |
+| [ADR-L-0041 — Qualified Shared-System Scope and Producer Evidence](ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.md) | refines | `DEC-9030 -[:refines]-> DEC-9003` |
 
 
 

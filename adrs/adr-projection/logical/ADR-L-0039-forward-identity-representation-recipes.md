@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 705143d3a37d0a2ee71fc2b9c9a6f0f0d93bdd6aeac7a9adbae17894a2fb17f7
-rendered_hash: fe3a709593451b9c306fc4223c9e5ccb5423db9611a6acd854ca2964d89b6c74
+source_hash: 879d515148ed61427d86931c45e2e20e4a35b4aeb1903b9bfaa10031d3f1add6
+rendered_hash: 48e6b5e1d2366d3d11b2f5004d13f3b60a210adb1506beeb8732e81ef20ad64e
 -->
 
 # ADR-L-0039: Forward Identity Representation Recipes
@@ -1148,6 +1148,7 @@ Require closed successor publication and independent instance verification
 - [ADR-L-0037](ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.md)
 - [ADR-L-0038](ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.md)
 - [ADR-L-0040](ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.md)
+- [ADR-L-0041](ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.md)
 
 
 ## Architecture Relationships
@@ -1156,6 +1157,7 @@ Require closed successor publication and independent instance verification
 | --- | --- | --- |
 | [ADR-L-0019 — Canonical Entity Identity](ADR-L-0019-canonical-entity-identity.md) | refines | `DEC-9017 -[:refines]-> DEC-0099` |
 | [ADR-L-0038 — Explicit Required-Output Authority Across the AI Catalog](ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.md) | refines | `DEC-9017 -[:refines]-> DEC-9015` |
+| [ADR-L-0041 — Qualified Shared-System Scope and Producer Evidence](ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.md) | refines | `DEC-9030 -[:refines]-> DEC-9021` |
 
 
 

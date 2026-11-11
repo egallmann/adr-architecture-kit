@@ -1,4 +1,4 @@
-"""Audit the proposed System boundary; these tests do not qualify provider evidence."""
+"""Audit accepted System authority shape without claiming provider evidence."""
 
 from __future__ import annotations
 
@@ -48,11 +48,14 @@ def test_governed_identity_and_acceptance_boundary() -> None:
     ids = [adr["id"], *(d["id"] for d in adr["decisions"]), *(i["id"] for i in adr["invariants"])]
     assert len(set(ids)) == 13
     governance = adr.get("governance") or {}
-    if adr["status"] == "proposed":
-        assert not governance.get("approved_by") and not governance.get("approved_date")
-    elif adr["status"] == "accepted":
-        # Authentic acceptance is checked by repository governance, not these strings.
-        assert governance.get("approved_by") and governance.get("approved_date")
+    assert adr["status"] == "accepted"
+    assert governance == {
+        "approved_by": "egallmann",
+        "approved_date": "2026-11-11T01:52:28Z",
+    }
+    assert "PR #195 head 3d9bab9728bb572c3029d61dc6267a1ba6793fce" in adr["notes"]
+    assert "01a10569-766b-7991-b9c5-3952eff35bcb" in adr["notes"]
+    assert "01a1c84e-797b-7651-81da-385a1a7aea67" in adr["notes"]
 
 
 def test_scope_design_requires_independent_complete_enumeration_and_reuse_only() -> None:
@@ -123,7 +126,7 @@ def test_design_mutations_cannot_relax_declared_requirements(
     original = policy()
     bad = copy.deepcopy(original)
     bad[section][key] = replacement
-    # This audits mutations of proposed requirements, never actual scope or signatures.
+    # This audits mutations of accepted requirements, never actual provider scope/signatures.
     assert list(Draft202012Validator(closed(original)).iter_errors(bad))
 
 

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 3a24e7516cab7a65d906bd192718acc14749ba9351a368a0a2ee64e04a3d7054
-rendered_hash: 4704c1884280ae1a23dca49853ea211379e2954eb787abaf0faa32eb85f28124
+source_hash: 56ce61a9870ae15f6cee63e1bc226746877db0879f7d932398dfcea8534734c5
+rendered_hash: 147c28fbc3206a357b94b0ea9e45913b85bc913ebce8ac4fd045632fe46b252d
 -->
 
 # ADR-L-0041: Qualified Shared-System Scope and Producer Evidence
@@ -14,7 +14,7 @@ rendered_hash: 4704c1884280ae1a23dca49853ea211379e2954eb787abaf0faa32eb85f28124
 ## Identity / Status
 
 **Type:** logical<br>
-**Status:** proposed<br>
+**Status:** accepted<br>
 **Alias:** ADR-L-0041<br>
 **Authoring contract:** authoring v1.5<br>
 **Created:** 2026-11-08<br>
@@ -27,7 +27,7 @@ rendered_hash: 4704c1884280ae1a23dca49853ea211379e2954eb787abaf0faa32eb85f28124
 | | |
 | --- | --- |
 | Logical authority | ADR-L-0041 |
-| Status | proposed |
+| Status | accepted |
 | Decisions | 6 |
 | Invariants | 6 |
 
@@ -42,9 +42,9 @@ ACC 1.5 shared_descriptor requires independently qualified existing unit type an
 shared identity. Neither a minimal sealed basis nor the fixed inherited detached
 context proves a complete relevant provider claim universe or an existing producer.
 Existing provider registry lookup implements historical model versions, not this
-forward evidence handoff. This proposal adds the minimum scope and existing-unit
+forward evidence handoff. This ADR adds the minimum scope and existing-unit
 qualification rule, preserving accepted semantic meaning and conditional reuse.
-It establishes no actual provider capability, accepted authority or executed output.
+It establishes no actual provider capability or executed output.
 ## Architectural Decisions
 
 | Decision | Choice | Traceability |
@@ -145,7 +145,7 @@ Retained child artifacts may be covered by parent roots without becoming extra r
 Do not require P = B or add unselected provider roots to the interpretation, output
 model or ledgers merely to prove scope completeness. Whole-inventory equality is
 required only if the exact governing operation independently requires that scope;
-this proposal introduces no such whole-provider interpretation operation.
+this ADR introduces no such whole-provider interpretation operation.
 
 For every selected existing member E, independently bind its logical request source_ref
 to the actual P member's qualified source identity, exact schema/selector, provider
@@ -168,7 +168,7 @@ System claims in C would need a separately governed, independently qualified
 candidate-to-provider comparison/qualification relation binding complete P, all relevant
 candidate claims (including children represented by minimal roots), exact namespace,
 revisions, source commitments and existing unit/producer authority. ACC's minimal basis
-and detached context do not currently supply that relation. This proposal does not
+and detached context do not currently supply that relation. This ADR does not
 authorize an overlay, publication, producer designation or membership-conversion
 operation. Without that selected comparison authority and evidence, candidate System
 reuse remains Unavailable; known identity/value/context violations remain Rejected
@@ -334,8 +334,9 @@ Source/resource order cannot affect the result. A changed legitimate snapshot re
 requalification, not a mutation of old immutable evidence. Replay against changed
 qualified inputs rejects stale results. Historical evidence remains reproducible.
 
-The following closed decision summary is proposed authority only. Its tests audit the
-proposal, not signatures, provider completeness or successful System execution:
+The following closed decision summary is the accepted normative authority for this
+boundary. Its tests audit the requirements, not signatures, provider completeness or
+successful System execution:
 
 Provider completeness and minimal request-basis integrity are separate qualifications.
 The former accounts for all relevant P claims; the latter qualifies the exact bounded
@@ -434,7 +435,7 @@ execution_prerequisites:
 
 **Rationale**
 
-ADR-L-0037 through ADR-L-0040 remain accepted and unaffected. This proposal refines only
+ADR-L-0037 through ADR-L-0040 remain accepted and unaffected. This ADR refines only
 the shared_identity instance prerequisites of DEC-9011/DEC-9021 and the existing-unit
 evidence requirement; it replaces no accepted MUST clause, field rule or equality rule.
 The additional proof must satisfy, not override, all existing independent qualifications.
@@ -470,8 +471,9 @@ AI 1.5 and ACC 1.5 candidate SCFs will change from qualified authoritative bytes
 increasing versions under ADR-L-0040. NM 2.5, Authoring 1.7, ADC/CEC and released or
 historical authority bytes remain unchanged. Generate mirrors/closures deterministically
 and requalify co-dependent consumers. This decision PR changes none of those resources,
-current SCS, public capabilities or execution. Human acceptance is a prerequisite to
-the bounded candidate revision; acceptance or merging a proposed ADR is not promotion.
+current SCS, public capabilities or execution. This ADR's acceptance and merge are
+prerequisites to the bounded candidate revision; neither constitutes candidate
+promotion.
 
 The follow-up evidence/context revision must preserve the P/E/C/B distinction above.
 It does not, by itself, supply an unpublished-candidate comparison rule or make any
@@ -485,7 +487,7 @@ that revision nor this ADR admits cross-ADR declaring-context coalescence.
 
 **Rationale**
 
-After authentic human acceptance, first revise and independently qualify the AI/ACC
+Following this ADR's acceptance, first revise and independently qualify the AI/ACC
 candidate evidence/context authority and conformance. Then implement a bounded private
 Rust verifier and reuse the existing candidate_authority, original-source, ownership,
 identity-representation, semantic-field and label inverses. Never construct another
@@ -537,7 +539,7 @@ acquisition/authentication, complete enumeration, prior establishment evidence a
 private verifier are external/engineering prerequisites. New candidate System claims
 additionally need the separately governed comparison relation described above.
 
-Proposal tests must cover a strict E subset of P, unselected relevant System claims,
+Conformance tests must cover a strict E subset of P, unselected relevant System claims,
 exact membership/schema/revision/bytes, C absent from prior P without false publication,
 missing authorized candidate comparison, distinct declaring ADR contextual conflict and
 repeated reference to the same qualified unit with no new definition. These are design
@@ -656,7 +658,7 @@ Revise current candidate qualification later without changing semantic recipes o
 
 **Statement**
 
-Qualification MUST retain Rejected over Unavailable over governed Unresolved, clear partial outputs on failure and preserve independent sibling execution; proposed governance MUST NOT activate System execution.
+Qualification MUST retain Rejected over Unavailable over governed Unresolved, clear partial outputs on failure and preserve independent sibling execution; accepted governance alone MUST NOT activate System execution.
 
 **Scope:** architecture
 
@@ -674,6 +676,13 @@ Require executable conformance before admitting System facts
 
 
 
+
+## Governance / Bindings / Evidence
+
+### Governance
+
+**Approved by:** egallmann
+**Approved date:** 2026-11-11 01:52:28+00:00
 
 
 ## Lifecycle / Related Architecture
@@ -710,7 +719,22 @@ Require executable conformance before admitting System facts
 
 ## Notes
 
-Proposed only. Authentic human approval of the exact reviewed revision is required before acceptance. No acceptance evidence or governance activation is asserted.
+Accepted following explicit human architectural approval of ADR-L-0041 at reviewed
+PR #195 head 3d9bab9728bb572c3029d61dc6267a1ba6793fce, covering DEC-9029–9034 and
+INV-0321–0326. Approval source: the authenticated Codex conversation for this
+repository task; thread 01a10569-766b-7991-b9c5-3952eff35bcb; message
+01a1c84e-797b-7651-81da-385a1a7aea67; timestamp 2026-11-11T01:52:28Z. The linked
+GitHub identity verified for the required approver is egallmann, matching PROJECT.yaml.
+The approving human stated: "I am that person, I am approving." In this task context,
+that is explicit authorization for acceptance and merge of this exact reviewed PR
+revision after qualification gates pass. This records architectural authorization;
+it does not claim a GitHub APPROVED review or independent branch-protection review.
+
+All six decisions, six invariants, canonical UUIDs, aliases, source-role distinctions,
+reuse-only establishment, strict declaring-context equality, outcome precedence and
+execution/publication exclusions are unchanged. Acceptance activates this normative
+boundary only; it does not qualify a live provider, execute System interpretation,
+revise AI/ACC candidates or promote any candidate authority.
 
 
 ---

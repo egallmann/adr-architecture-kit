@@ -19522,7 +19522,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1b9be-d7df-74f4-8dae-189b4ae502cf
   created_at: '2026-11-08T06:00:54.495Z'
   entity_fingerprint: sha256:f77c1976c1dd94403569f1f36e615808d3add1bdf2f8871a9fba56a47d9d0adc
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-189b4ae502cf
@@ -19590,7 +19590,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1b9be-d7df-74f4-8dae-189cd5703bef
   created_at: '2026-11-08T06:00:54.495Z'
   entity_fingerprint: sha256:4f2bb03745733d487ceaa154ae950a9dfda2277a4a6e7c4cd07bdab6ca1eff0b
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-189cd5703bef
@@ -19658,7 +19658,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1b9be-d7df-74f4-8dae-189de4ddd088
   created_at: '2026-11-08T06:00:54.495Z'
   entity_fingerprint: sha256:2ba109b3bffc50cb006b30a95cd2a72bc830aa67a6d3cd2d89ee8101329fa8be
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-189de4ddd088
@@ -19726,7 +19726,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1b9be-d7df-74f4-8dae-189ed36af368
   created_at: '2026-11-08T06:00:54.495Z'
   entity_fingerprint: sha256:13cd33f6804b83573161728e99429d403182e0b3af9aa94a1bd5267d562b137c
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-189ed36af368
@@ -19794,7 +19794,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1b9be-d7df-74f4-8dae-189fa440ab5d
   created_at: '2026-11-08T06:00:54.495Z'
   entity_fingerprint: sha256:47f9f211ab2966c0ff5d27f5647e9639676428f473183002a9a33916491302d9
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-189fa440ab5d
@@ -19857,12 +19857,12 @@ entities:
   entity_type: invariant
   name: INV-0326
   summary: Qualification MUST retain Rejected over Unavailable over governed Unresolved,
-    clear partial outputs on failure and preserve independent sibling execution; proposed
-    governance MUST NOT activate System execution.
+    clear partial outputs on failure and preserve independent sibling execution; accepted
+    governance alone MUST NOT activate System execution.
   uri: adr://adr-architecture-kit/entities/01a1b9be-d7df-74f4-8dae-18a02b5d3e11
   created_at: '2026-11-08T06:00:54.495Z'
   entity_fingerprint: sha256:43360bbdc2dfde76e8d4d8e3dc50979c4397dad66125af6f83ef88d3ed316e49
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706#01a1b9be-d7df-74f4-8dae-18a02b5d3e11
@@ -19874,7 +19874,7 @@ entities:
     scope: architecture
     statement: Qualification MUST retain Rejected over Unavailable over governed Unresolved,
       clear partial outputs on failure and preserve independent sibling execution;
-      proposed governance MUST NOT activate System execution.
+      accepted governance alone MUST NOT activate System execution.
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions:

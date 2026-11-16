@@ -32,8 +32,16 @@ jobs:
           [[ "$commit" =~ ^[0-9a-f]{40}$ ]]
           echo "commit=$commit" >> "$GITHUB_OUTPUT"
           echo "Qualified semantic-core source commit: $commit"
-      - uses: dtolnay/rust-toolchain@stable
+      - name: Read repository Rust toolchain authority
+        id: rust-toolchain
+        shell: bash
+        run: |
+          channel="$(sed -n 's/^channel = "\([^"]*\)"$/\1/p' rust-toolchain.toml)"
+          [[ -n "$channel" ]]
+          echo "channel=$channel" >> "$GITHUB_OUTPUT"
+      - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # toolchain: stable; 2026-10-16
         with:
+          toolchain: ${{ steps.rust-toolchain.outputs.channel }}
           targets: wasm32-unknown-unknown
       - uses: actions/setup-node@v4
         with:

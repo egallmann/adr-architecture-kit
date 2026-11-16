@@ -19918,3 +19918,279 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: 01a1e61a-6a95-773d-a36e-01a3d39dd6e9
+  alias_id: INV-0327
+  alias_name: release-promises-match-released-evidence
+  alias_ref: INV-0327:release-promises-match-released-evidence
+  entity_type: invariant
+  name: INV-0327
+  summary: A release version MUST promise only capabilities demonstrated by its released
+    authority, public interfaces, and exact release evidence; the version MUST NOT
+    imply completion of an independent semantic capability mileston
+  uri: adr://adr-architecture-kit/entities/01a1e61a-6a95-773d-a36e-01a3d39dd6e9
+  created_at: '2026-11-16T20:44:13.333Z'
+  entity_fingerprint: sha256:975506d64fce5049486dc11591e87ed1c2fee0e1d99618264d9e41d1c1e7faf6
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a3d39dd6e9
+    artifact_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    adr_alias_id: ADR-L-0042
+    scope: release-engineering
+    statement: A release version MUST promise only capabilities demonstrated by its
+      released authority, public interfaces, and exact release evidence; the version
+      MUST NOT imply completion of an independent semantic capability milestone.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1e61a-6a95-773d-a36e-019f2d2398de
+    supersedes: []
+    alias_id: INV-0327
+    alias_name: release-promises-match-released-evidence
+  relationships:
+    declared_in:
+    - 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a3d39dd6e9
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1e61a-6a95-773d-a36e-01a48751eb6a
+  alias_id: INV-0328
+  alias_name: preserve-forward-execution-milestone-exit-criteria
+  alias_ref: INV-0328:preserve-forward-execution-milestone-exit-criteria
+  entity_type: invariant
+  name: INV-0328
+  summary: Forward Semantic Execution Completion MUST retain all 455 destinations
+    and require each to be QUALIFIED or explicitly retired through accepted authority,
+    together with successor AI/ACC/NM qualification and promotion, req
+  uri: adr://adr-architecture-kit/entities/01a1e61a-6a95-773d-a36e-01a48751eb6a
+  created_at: '2026-11-16T20:44:13.333Z'
+  entity_fingerprint: sha256:d3240909c4d43f5566e3e6a13d7578519c30377ac7267c7be4d94e4df6d62eca
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a48751eb6a
+    artifact_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    adr_alias_id: ADR-L-0042
+    scope: semantic-authority
+    statement: Forward Semantic Execution Completion MUST retain all 455 destinations
+      and require each to be QUALIFIED or explicitly retired through accepted authority,
+      together with successor AI/ACC/NM qualification and promotion, required NM/ACC
+      execution, an advertised public forward route, Rust/Python/Node protocol-vector
+      conformance, approved current SCS selection, and independent qualification of
+      the complete execution; no existing BLOCKED destination may be silently satisfied
+      or removed.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1e61a-6a95-773d-a36e-01a02b5a64f9
+    supersedes: []
+    alias_id: INV-0328
+    alias_name: preserve-forward-execution-milestone-exit-criteria
+  relationships:
+    declared_in:
+    - 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a48751eb6a
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1e61a-6a95-773d-a36e-01a5cdc7d648
+  alias_id: INV-0329
+  alias_name: historical-objective-authority-remains-immutable
+  alias_ref: INV-0329:historical-objective-authority-remains-immutable
+  entity_type: invariant
+  name: INV-0329
+  summary: Historical v0_13_objective fields in AI 1.4/1.5 authority MUST remain unchanged
+    and MUST NOT be interpreted as proof that a repository release completed Forward
+    Semantic Execution Completion.
+  uri: adr://adr-architecture-kit/entities/01a1e61a-6a95-773d-a36e-01a5cdc7d648
+  created_at: '2026-11-16T20:44:13.333Z'
+  entity_fingerprint: sha256:87d38b609a7af0dec96a30f21e1a38db50623dd9e5a72c57995768aa1c7e60c1
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a5cdc7d648
+    artifact_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    adr_alias_id: ADR-L-0042
+    scope: semantic-authority
+    statement: Historical v0_13_objective fields in AI 1.4/1.5 authority MUST remain
+      unchanged and MUST NOT be interpreted as proof that a repository release completed
+      Forward Semantic Execution Completion.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1e61a-6a95-773d-a36e-01a2a8b5c733
+    supersedes: []
+    alias_id: INV-0329
+    alias_name: historical-objective-authority-remains-immutable
+  relationships:
+    declared_in:
+    - 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a5cdc7d648
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1e61a-6a95-773d-a36e-01a6a45e4ab0
+  alias_id: INV-0330
+  alias_name: normative-objectives-are-version-independent
+  alias_ref: INV-0330:normative-objectives-are-version-independent
+  entity_type: invariant
+  name: INV-0330
+  summary: A normative semantic capability objective MUST define its own scope and
+    exit criteria independently of a repository release number; release versioning
+    MUST NOT narrow or declare completion of that objective.
+  uri: adr://adr-architecture-kit/entities/01a1e61a-6a95-773d-a36e-01a6a45e4ab0
+  created_at: '2026-11-16T20:44:13.333Z'
+  entity_fingerprint: sha256:078f355087228fc9fb7e8ac72cc57838152a96ea6af705b6e64991416c3d6def
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a6a45e4ab0
+    artifact_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    adr_alias_id: ADR-L-0042
+    scope: governance
+    statement: A normative semantic capability objective MUST define its own scope
+      and exit criteria independently of a repository release number; release versioning
+      MUST NOT narrow or declare completion of that objective.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1e61a-6a95-773d-a36e-01a2a8b5c733
+    supersedes: []
+    alias_id: INV-0330
+    alias_name: normative-objectives-are-version-independent
+  relationships:
+    declared_in:
+    - 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a6a45e4ab0
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

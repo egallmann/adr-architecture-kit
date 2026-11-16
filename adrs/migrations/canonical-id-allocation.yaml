@@ -5,10 +5,10 @@ high_water_marks:
   CAP: 9002
   COMP: 23
   CONTRACT: 5
-  DEC: 9034
+  DEC: 9038
   IFACE: 36
   IMPL: 29
-  INV: 326
+  INV: 330
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -2380,6 +2380,30 @@ allocations:
   source_pointer: /decisions/5/alias_id
   state: active
   adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+- id: DEC-9035
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_pointer: /decisions/0/alias_id
+  state: active
+  adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+- id: DEC-9036
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_pointer: /decisions/1/alias_id
+  state: active
+  adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+- id: DEC-9037
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_pointer: /decisions/2/alias_id
+  state: active
+  adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+- id: DEC-9038
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_pointer: /decisions/3/alias_id
+  state: active
+  adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
 - id: IFACE-0001
   entity_type: interface
   adr_id: ADR-P-0001
@@ -4528,3 +4552,27 @@ allocations:
   source_pointer: /invariants/5/alias_id
   state: active
   adr_id: 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+- id: INV-0327
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_pointer: /invariants/0/alias_id
+  state: active
+  adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+- id: INV-0328
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_pointer: /invariants/1/alias_id
+  state: active
+  adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+- id: INV-0329
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_pointer: /invariants/2/alias_id
+  state: active
+  adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+- id: INV-0330
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_pointer: /invariants/3/alias_id
+  state: active
+  adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1

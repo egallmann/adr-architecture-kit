@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 69db8235490d72d03bb4d1bd3c70e24d4667f84cfea3baa0fd02ad914f879184
-rendered_hash: 47b080090dc7eec9ee4f47c706abf1b43a83a0aaf43087a84c0f4bd69daa1e53
+source_hash: 947fd809f5baa62a81d2bab165c6b66964eb8dad3868d1830e8d12370af7593b
+rendered_hash: 14efa637cff8af7267df7c9400b9acfdb9e2b4e764d98fe1f59571c532fd0f56
 -->
 
 # ADR-L-0038: Explicit Required-Output Authority Across the AI Catalog
@@ -715,6 +715,7 @@ Require publication conformance, explicit blockers and separate human acceptance
 - [ADR-L-0039](ADR-L-0039-forward-identity-representation-recipes.md)
 - [ADR-L-0040](ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.md)
 - [ADR-L-0041](ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.md)
+- [ADR-L-0042](ADR-L-0042-release-version-and-semantic-capability-milestones.md)
 
 
 ## Architecture Relationships
@@ -725,6 +726,7 @@ Require publication conformance, explicit blockers and separate human acceptance
 | [ADR-L-0037 — Lossless Authored Lifecycle and Declaring-ADR Provenance](ADR-L-0037-lossless-authored-lifecycle-and-declaring-adr-provenance.md) | refines | `DEC-9013 -[:refines]-> DEC-9005` |
 | [ADR-L-0039 — Forward Identity Representation Recipes](ADR-L-0039-forward-identity-representation-recipes.md) | refines | `DEC-9017 -[:refines]-> DEC-9015` |
 | [ADR-L-0041 — Qualified Shared-System Scope and Producer Evidence](ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.md) | refines | `DEC-9032 -[:refines]-> DEC-9011` |
+| [ADR-L-0042 — Separate Release Versions from Semantic Capability Milestones](ADR-L-0042-release-version-and-semantic-capability-milestones.md) | refines | `DEC-9035 -[:refines]-> DEC-9014` |
 
 
 

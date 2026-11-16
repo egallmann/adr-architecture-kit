@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 56ce61a9870ae15f6cee63e1bc226746877db0879f7d932398dfcea8534734c5
-rendered_hash: 147c28fbc3206a357b94b0ea9e45913b85bc913ebce8ac4fd045632fe46b252d
+rendered_hash: fa0c1398841bdcd222570f3b442aa8cdc583a777946f87e1e213d046d70943a4
 -->
 
 # ADR-L-0041: Qualified Shared-System Scope and Producer Evidence
@@ -702,6 +702,7 @@ Require executable conformance before admitting System facts
 - [ADR-L-0038](ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.md)
 - [ADR-L-0039](ADR-L-0039-forward-identity-representation-recipes.md)
 - [ADR-L-0040](ADR-L-0040-semantic-contract-candidate-and-promotion-lifecycle.md)
+- [ADR-L-0042](ADR-L-0042-release-version-and-semantic-capability-milestones.md)
 
 
 ## Architecture Relationships

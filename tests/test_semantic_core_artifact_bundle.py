@@ -97,6 +97,8 @@ def test_bootstrap_rejects_wrong_commit_or_tampering_before_writing(
         (bundle / WASM_NAME).write_bytes(b"tampered")
     checkout = tmp_path / "checkout"
 
-    with pytest.raises(ValueError, match="source commit" if failure == "commit" else "do not match"):
+    with pytest.raises(
+        ValueError, match="source commit" if failure == "commit" else "do not match"
+    ):
         install_bootstrap_bundle(bundle, "a" * 40 if failure == "commit" else COMMIT, checkout)
     assert not checkout.exists()

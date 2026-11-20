@@ -215,31 +215,6 @@ is authorized. No package version bump or release artifact/tag rewrite.
 
 ## Qualification responsibility
 
-## Recovering a Linux semantic-core artifact from Windows
-
-The reusable semantic-core qualification workflow first builds the WASM from its
-exact checked-out commit on Linux and uploads
-`semantic-core-bootstrap-<source-sha>` with an `UNQUALIFIED` manifest containing
-the source commit, byte size and SHA-256. This upload occurs before tracked-copy
-equality enforcement, so it remains available when that gate correctly rejects
-stale Windows host copies. The bootstrap is a recovery aid only; downstream
-qualification, certification and publication consume only the separate
-`semantic-core-<source-sha>` bundle created after strict equality succeeds.
-
-On Windows, download the bootstrap artifact from the failed workflow run, then
-install it explicitly from the repository root:
-
-```powershell
-gh run download <run-id> --name semantic-core-bootstrap-<source-sha> --dir .tmp/semantic-core-bootstrap
-python scripts/semantic_core_artifact_bundle.py install-bootstrap --bundle-dir .tmp/semantic-core-bootstrap --source-commit <source-sha>
-```
-
-The installer verifies the unqualified marker, exact source SHA, byte length and
-digest before copying the WASM into the tracked Python and Node host paths. Commit
-both copies with the Rust source change. The next PR run rebuilds from source and
-must pass the normal equality verifier before producing a qualified bundle. A
-bootstrap artifact cannot be consumed by the qualified-bundle command.
-
 Permanent tests validate exact clause anchoring/scope, proposed inactivity,
 independent approval rejection, released bytes/closures, same-version SCF changes,
 qualified dependency propagation, old Git reproduction and post-promotion identity

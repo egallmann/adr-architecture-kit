@@ -71,8 +71,7 @@ def test_architecture_graph_preserves_baseline_semantics_and_uses_entity_identit
     expected_additions = {
         adr_l0042["id"]: ("adr", adr_l0042["title"]),
         **{
-            decision["id"]: ("decision", decision["summary"])
-            for decision in adr_l0042["decisions"]
+            decision["id"]: ("decision", decision["summary"]) for decision in adr_l0042["decisions"]
         },
         **{
             invariant["id"]: ("invariant", invariant["alias_id"])
@@ -141,8 +140,7 @@ def test_architecture_graph_preserves_baseline_semantics_and_uses_entity_identit
         "refines": 12,
     }
     assert all(
-        edge.get("canonical_source_ref", "").startswith(adr_l0042["id"])
-        for edge in added_edges
+        edge.get("canonical_source_ref", "").startswith(adr_l0042["id"]) for edge in added_edges
     )
 
     errors: list[str] = []

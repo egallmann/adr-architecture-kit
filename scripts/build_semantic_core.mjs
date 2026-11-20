@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile } from "node:fs/promises";
+import { cp, mkdir, readFile, rm } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -21,14 +21,10 @@ const contractSource = resolve(repoRoot, "contracts/semantic-core/v1.0/contract.
 const contractV11Source = resolve(repoRoot, "contracts/semantic-core/v1.1/contract.json");
 const contractV12Source = resolve(repoRoot, "contracts/semantic-core/v1.2/contract.json");
 const contractV13Source = resolve(repoRoot, "contracts/semantic-core/v1.3/contract.json");
-const contractV14Source = resolve(repoRoot, "contracts/semantic-core/v1.4/contract.json");
-const contractV15Source = resolve(repoRoot, "contracts/semantic-core/v1.5/contract.json");
 const pythonContractTarget = resolve(repoRoot, "src/adr_kit/core/semantic-core-contract.json");
 const pythonContractV11Target = resolve(repoRoot, "src/adr_kit/core/semantic-core-contract-v1.1.json");
 const pythonContractV12Target = resolve(repoRoot, "src/adr_kit/core/semantic-core-contract-v1.2.json");
 const pythonContractV13Target = resolve(repoRoot, "src/adr_kit/core/semantic-core-contract-v1.3.json");
-const pythonContractV14Target = resolve(repoRoot, "src/adr_kit/core/semantic-core-contract-v1.4.json");
-const pythonContractV15Target = resolve(repoRoot, "src/adr_kit/core/semantic-core-contract-v1.5.json");
 await mkdir(resolve(repoRoot, "src/adr_kit/core"), { recursive: true });
 await mkdir(resolve(repoRoot, "packages/node/src/generated"), { recursive: true });
 if (!artifactOnly) {
@@ -39,8 +35,8 @@ await cp(contractSource, pythonContractTarget, { force: true });
 await cp(contractV11Source, pythonContractV11Target, { force: true });
 await cp(contractV12Source, pythonContractV12Target, { force: true });
 await cp(contractV13Source, pythonContractV13Target, { force: true });
-await cp(contractV14Source, pythonContractV14Target, { force: true });
-await cp(contractV15Source, pythonContractV15Target, { force: true });
+await rm(resolve(repoRoot, "src/adr_kit/core/semantic-core-contract-v1.4.json"), { force: true });
+await rm(resolve(repoRoot, "src/adr_kit/core/semantic-core-contract-v1.5.json"), { force: true });
 const semanticContractSource = resolve(repoRoot, "contracts/semantic-contract/v1.0");
 const semanticContractTarget = resolve(repoRoot, "src/adr_kit/semantic_contract/v1_0");
 await cp(resolve(semanticContractSource, "semantic-contract-version.schema.json"), resolve(semanticContractTarget, "semantic-contract-version.schema.json"), { force: true });

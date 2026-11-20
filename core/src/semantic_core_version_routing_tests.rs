@@ -111,8 +111,26 @@ fn v12_unknown_operations_are_rejected_at_the_version_boundary() {
 
 #[test]
 fn unsupported_versions_cannot_execute_v10_operations() {
-    let result = execute_request(valid_v10_contract_request("9.9"));
-    assert_generic_rejection(&result);
+    for version in ["1.4", "1.5", "9.9"] {
+        let result = execute_request(valid_v10_contract_request(version));
+        assert_generic_rejection(&result);
+        let diagnostic = result
+            .get("diagnostics")
+            .and_then(Json::as_array)
+            .and_then(|items| items.first());
+        assert_eq!(
+            diagnostic
+                .and_then(|item| item.get("code"))
+                .and_then(Json::as_str),
+            Some("core.invalid_request")
+        );
+        assert_eq!(
+            diagnostic
+                .and_then(|item| item.get("message"))
+                .and_then(Json::as_str),
+            Some("unsupported core_contract_version")
+        );
+    }
 }
 
 #[test]

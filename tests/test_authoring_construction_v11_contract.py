@@ -10,7 +10,6 @@ from typing import Any, cast
 
 from jsonschema import Draft202012Validator, RefResolver
 
-from adr_kit.core import execute_validated_semantic_core_request
 from adr_kit.semantic_contract import (
     calculate_semantic_contract_fingerprint,
     get_semantic_contract,
@@ -110,27 +109,6 @@ def _minimal_acc11_request() -> dict[str, Any]:
                 ],
             },
             "provenance": {},
-        },
-    }
-
-
-def _acc11_protocol_request(construction_request: dict[str, Any]) -> dict[str, Any]:
-    contract = cast(dict[str, Any], _read(ACC11 / "contract.json"))
-    resources = [
-        {
-            "canonicalResourceKey": item["canonicalResourceKey"],
-            "content": load_semantic_resource(item["canonicalResourceKey"]),
-        }
-        for item in contract["resourceManifest"]
-    ]
-    return {
-        "core_contract_version": "1.4",
-        "operation": "qualify_authoring_construction_1_1",
-        "request": {
-            "operation": "qualify_authoring_construction_1_1",
-            "definition": contract,
-            "resources": resources,
-            "construction_request": construction_request,
         },
     }
 
@@ -338,117 +316,6 @@ def test_acc11_publication_does_not_select_or_advertise_execution() -> None:
         "execution_implemented": False,
         "current_semantic_contract_selection": False,
     }
-
-
-def test_rust_acc11_boundary_qualifies_authority_but_never_constructs() -> None:
-    from adr_kit.core import validate_semantic_core_protocol
-
-    request = _acc11_protocol_request(_minimal_acc11_request())
-    result = execute_validated_semantic_core_request(request)
-    validate_semantic_core_protocol(result)
-    assert result["core_contract_version"] == "1.4"
-    payload = result["result"]
-    assert payload["authority"] == {
-        "available": True,
-        "fingerprint": "scf:v1:sha256:dcb38e2247396759ed3cbf0ee308ba4c02c087bf47599e72a342cc5efe6a79c5",
-    }
-    assert payload["outcome"] == "Unavailable"
-    assert payload["success"] is False
-    assert payload["diagnostics"][0]["code"] == (
-        "authoring_construction.execution_capability.unavailable"
-    )
-    assert payload["diagnostics"][0]["status"] == "unavailable"
-    assert payload["capabilities"]["exact_authority_qualification"] is True
-    assert payload["capabilities"]["request_schema_validation"] is True
-    assert payload["capabilities"]["construct_authoring_set"] is False
-    assert payload["capabilities"]["complete_acc11_qualification"] is False
-    assert payload["authority_diagnostics"] == []
-    assert execute_validated_semantic_core_request(request) == result
-
-
-def test_rust_acc11_boundary_rejects_bad_request_but_never_falls_back() -> None:
-    request = _acc11_protocol_request(_minimal_acc11_request())
-    request["request"]["construction_request"]["contract_version"] = "1.0"
-    result = execute_validated_semantic_core_request(request)["result"]
-    assert result["authority"]["available"] is True
-    assert result["outcome"] == "Rejected"
-    assert result["diagnostics"][0]["code"] == "authoring_construction.request.schema"
-    assert result["capabilities"]["construct_authoring_set"] is False
-
-
-def test_rust_acc11_does_not_call_unexecuted_reference_resolution_unresolved() -> None:
-    request = _minimal_acc11_request()
-    request["request"]["fragments"] = [
-        {
-            "request_key": "reference-only",
-            "semantic_kind": "entity",
-            "semantic_type": "authoring/adr-logical",
-            "operation": "reference",
-            "input_mode": "prepared",
-            "fields": {},
-            "contract_qualification": {
-                "family": "authoring",
-                "version": "1.7",
-                "resources": [
-                    {
-                        "canonical_resource_key": "authoring/1.7/schema/types.schema",
-                        "content_digest": "sha256:" + "0" * 64,
-                    }
-                ],
-            },
-            "references": [
-                {
-                    "reference_key": "missing-existing",
-                    "reference_kind": "existing",
-                    "target": "019109a0-b1c2-7def-8a00-112233445567",
-                }
-            ],
-            "composition_keys": [],
-        }
-    ]
-    result = execute_validated_semantic_core_request(_acc11_protocol_request(request))["result"]
-    assert result["authority"]["available"] is True
-    assert result["outcome"] == "Unavailable"
-    assert result["outcome"] != "Unresolved"
-    assert result["diagnostics"][0]["code"] == (
-        "authoring_construction.execution_capability.unavailable"
-    )
-    assert result["capabilities"]["reference_and_composition_resolution"] is False
-
-
-def test_rust_acc11_boundary_reports_missing_or_tampered_authority_unavailable() -> None:
-    valid = _acc11_protocol_request(_minimal_acc11_request())
-    missing = json.loads(json.dumps(valid))
-    missing["request"]["resources"].pop()
-    missing_result = execute_validated_semantic_core_request(missing)["result"]
-    assert missing_result["authority"]["available"] is False
-    assert missing_result["outcome"] == "Unavailable"
-    assert any(
-        item["code"] == "semantic_contract.missing_resource_content"
-        for item in missing_result["authority_diagnostics"]
-    )
-
-    tampered = json.loads(json.dumps(valid))
-    rules = next(
-        item
-        for item in tampered["request"]["resources"]
-        if item["canonicalResourceKey"] == "authoring-construction/1.1/rules"
-    )
-    rules["content"]["authority"]["architecture_interpretation"]["fingerprint"] = (
-        "scf:v1:sha256:" + "0" * 64
-    )
-    tampered_result = execute_validated_semantic_core_request(tampered)["result"]
-    assert tampered_result["authority"]["available"] is False
-    assert tampered_result["outcome"] == "Unavailable"
-    assert any(
-        item["code"]
-        in {
-            "semantic_contract.resource_digest_mismatch",
-            "semantic_contract.fingerprint_mismatch",
-        }
-        for item in tampered_result["authority_diagnostics"]
-    )
-    assert tampered_result["capabilities"]["construct_authoring_set"] is False
 
 
 def test_historical_authorities_and_corpus_remain_byte_stable() -> None:

@@ -165,12 +165,10 @@ def test_v12_transport_vectors_cover_the_closed_envelope_surface() -> None:
 
 def test_v12_capability_negotiation_advertises_only_reachable_operations() -> None:
     capabilities = semantic_core_capabilities()
-    assert capabilities["supported_versions"] == ("1.0", "1.1", "1.2", "1.3", "1.4", "1.5")
+    assert capabilities["supported_versions"] == ("1.0", "1.1", "1.2", "1.3")
     assert capabilities["operations_by_version"] == {
         "1.2": ("validate_authoring", "construct_authoring_set"),
         "1.3": ("materialize_architecture",),
-        "1.4": ("qualify_authoring_construction_1_1",),
-        "1.5": ("prepare_authoring_construction_basis_1_1",),
     }
     assert supports_semantic_core_operation("1.2", "validate_authoring")
     assert supports_semantic_core_operation("1.2", "construct_authoring_set")
@@ -178,9 +176,27 @@ def test_v12_capability_negotiation_advertises_only_reachable_operations() -> No
     assert not supports_semantic_core_operation("1.1", "construct_authoring_set")
     assert supports_semantic_core_operation("1.3", "materialize_architecture")
     assert not supports_semantic_core_operation("1.3", "construct_authoring_set")
-    assert supports_semantic_core_operation("1.4", "qualify_authoring_construction_1_1")
-    assert not supports_semantic_core_operation("1.4", "construct_authoring_set")
-    assert supports_semantic_core_operation("1.5", "prepare_authoring_construction_basis_1_1")
+    assert not supports_semantic_core_operation("1.4", "qualify_authoring_construction_1_1")
+    assert not supports_semantic_core_operation("1.5", "prepare_authoring_construction_basis_1_1")
+
+
+@pytest.mark.parametrize(
+    ("version", "operation"),
+    [
+        ("1.4", "qualify_authoring_construction_1_1"),
+        ("1.5", "prepare_authoring_construction_basis_1_1"),
+    ],
+)
+def test_retired_protocol_versions_return_the_unsupported_version_diagnostic(
+    version: str, operation: str
+) -> None:
+    result = execute_validated_semantic_core_request(
+        {"core_contract_version": version, "operation": operation}
+    )
+    assert result["core_contract_version"] == "1.0"
+    assert result["outcome"] == "invalid_request"
+    assert result["diagnostics"][0]["code"] == "core.invalid_request"
+    assert result["diagnostics"][0]["message"] == "unsupported core_contract_version"
 
 
 def test_v12_representative_acc_cases_execute_through_packaged_wasm() -> None:

@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const repoRoot = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const cargo = process.env.CARGO ?? "cargo";
+const artifactOnly = process.argv.includes("--artifact-only");
 const args = ["build", "--manifest-path", resolve(repoRoot, "core/Cargo.toml"), "--target", "wasm32-unknown-unknown", "--release"];
 
 await new Promise((resolvePromise, reject) => {
@@ -30,8 +31,10 @@ const pythonContractV14Target = resolve(repoRoot, "src/adr_kit/core/semantic-cor
 const pythonContractV15Target = resolve(repoRoot, "src/adr_kit/core/semantic-core-contract-v1.5.json");
 await mkdir(resolve(repoRoot, "src/adr_kit/core"), { recursive: true });
 await mkdir(resolve(repoRoot, "packages/node/src/generated"), { recursive: true });
-await cp(artifact, pythonTarget, { force: true });
-await cp(artifact, nodeTarget, { force: true });
+if (!artifactOnly) {
+  await cp(artifact, pythonTarget, { force: true });
+  await cp(artifact, nodeTarget, { force: true });
+}
 await cp(contractSource, pythonContractTarget, { force: true });
 await cp(contractV11Source, pythonContractV11Target, { force: true });
 await cp(contractV12Source, pythonContractV12Target, { force: true });

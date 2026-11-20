@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 582c06bca453dd9b34b2cb0043d554ce6d4b0f0c0dedd3b2caa3bccb2aedf309
-rendered_hash: dbb6180d6a6777d2b6cd3fa7db6101a2c85c50175e23573bd94569a6b9595d66
+source_hash: 62458a988a058a572751647119724c93f33cd4d9694624c2f91fc4642840f1ad
+rendered_hash: 1014dffa5d3b19342d3c1511d783d739616a70c6f13bb35731d56533d38c8cc0
 -->
 
 # ADR-L-0042: Separate Release Versions from Semantic Capability Milestones
@@ -14,7 +14,7 @@ rendered_hash: dbb6180d6a6777d2b6cd3fa7db6101a2c85c50175e23573bd94569a6b9595d66
 ## Identity / Status
 
 **Type:** logical<br>
-**Status:** proposed<br>
+**Status:** accepted<br>
 **Alias:** ADR-L-0042<br>
 **Authoring contract:** authoring v1.5<br>
 **Created:** 2026-11-16<br>
@@ -27,7 +27,7 @@ rendered_hash: dbb6180d6a6777d2b6cd3fa7db6101a2c85c50175e23573bd94569a6b9595d66
 | | |
 | --- | --- |
 | Logical authority | ADR-L-0042 |
-| Status | proposed |
+| Status | accepted |
 | Decisions | 4 |
 | Invariants | 4 |
 
@@ -266,6 +266,13 @@ Prevent arbitrary package numbering from governing normative capability scope.
 
 
 
+## Governance / Bindings / Evidence
+
+### Governance
+
+**Approved by:** egallmann
+**Approved date:** 2026-11-20 13:38:59+00:00
+
 
 ## Lifecycle / Related Architecture
 
@@ -295,9 +302,19 @@ Prevent arbitrary package numbering from governing normative capability scope.
 
 ## Notes
 
-Proposed REL-1 scope clarification. This record is inactive unless accepted under
-repository governance. It is not approval to release, promote, tag or publish
-v0.13.0 and does not select candidate authority or public capability.
+Accepted following explicit human architectural approval of ADR-L-0042 at reviewed
+PR #197 head 29840e73a3fb2af14141479251a53ab56d6259dc, covering DEC-9035–9038 and
+INV-0327–0330. Approval source: the authenticated Codex conversation for this
+repository task; thread 01a10569-766b-7991-b9c5-3952eff35bcb; message
+01a1f92e-8e52-7302-84fd-466ffdb2ddec; timestamp 2026-11-20T13:38:59Z. The approving
+owner explicitly approved all four decisions and four invariants and approved Path A
+for v0.13.0, subject to separate release qualification and promotion gates. The
+linked GitHub owner identity is egallmann, matching the required approver in
+PROJECT.yaml. This records architectural authorization; it does not claim a GitHub
+APPROVED review or a separate branch-protection review.
+
+Acceptance does not authorize candidate promotion, release publication, tagging,
+changing current SCS, or bypassing governance controls.
 
 ADR-L-0038 DEC-9014/9015 and ADR-L-0039 DEC-9021/9022 retain their full type,
 destination, successor-authority, and independent-qualification requirements.

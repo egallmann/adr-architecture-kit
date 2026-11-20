@@ -4,7 +4,7 @@ id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
 alias_id: ADR-L-0042
 alias_name: release-version-and-semantic-capability-milestones
 title: Separate Release Versions from Semantic Capability Milestones
-status: proposed
+status: accepted
 created_date: '2026-11-16'
 authors:
 - erik.gallmann
@@ -195,9 +195,19 @@ invariants:
   upheld_by_decisions:
   - 01a1e61a-6a95-773d-a36e-01a2a8b5c733
 notes: |-
-  Proposed REL-1 scope clarification. This record is inactive unless accepted under
-  repository governance. It is not approval to release, promote, tag or publish
-  v0.13.0 and does not select candidate authority or public capability.
+  Accepted following explicit human architectural approval of ADR-L-0042 at reviewed
+  PR #197 head 29840e73a3fb2af14141479251a53ab56d6259dc, covering DEC-9035–9038 and
+  INV-0327–0330. Approval source: the authenticated Codex conversation for this
+  repository task; thread 01a10569-766b-7991-b9c5-3952eff35bcb; message
+  01a1f92e-8e52-7302-84fd-466ffdb2ddec; timestamp 2026-11-20T13:38:59Z. The approving
+  owner explicitly approved all four decisions and four invariants and approved Path A
+  for v0.13.0, subject to separate release qualification and promotion gates. The
+  linked GitHub owner identity is egallmann, matching the required approver in
+  PROJECT.yaml. This records architectural authorization; it does not claim a GitHub
+  APPROVED review or a separate branch-protection review.
+
+  Acceptance does not authorize candidate promotion, release publication, tagging,
+  changing current SCS, or bypassing governance controls.
 
   ADR-L-0038 DEC-9014/9015 and ADR-L-0039 DEC-9021/9022 retain their full type,
   destination, successor-authority, and independent-qualification requirements.
@@ -210,3 +220,6 @@ notes: |-
   The REL-3a inventory and package hashes are rehearsal evidence only. They do not
   qualify a future release source, select a packaged cohort, establish owner
   approval, or attest candidate promotion.
+governance:
+  approved_by: egallmann
+  approved_date: '2026-11-20T13:38:59Z'

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 2261455e348d461c716dd4cd8f3c8a84cdc37f9e6444367ea99d039ad02f8b7c
-rendered_hash: 6affe51ed2307c310b9cb5c5cdcd3c80fef91173acbd115e6594eb69ae3f1e79
+source_hash: 09419a439ca1fc87d342e8fde6b5291378e84efbac43afed7e15ec69ea02dce8
+rendered_hash: a6000e7f1143c54676790150c5ec71f6015c25205ea5b9a6da3f68f476212686
 -->
 
 # ADR-L-0040: Enforceable Semantic Contract Candidate and Promotion Lifecycle
@@ -491,6 +491,7 @@ Keep proposed governance and future promotion independently gated
 - [ADR-L-0038](ADR-L-0038-explicit-required-output-authority-across-the-ai-catalog.md)
 - [ADR-L-0039](ADR-L-0039-forward-identity-representation-recipes.md)
 - [ADR-L-0041](ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.md)
+- [ADR-L-0042](ADR-L-0042-release-version-and-semantic-capability-milestones.md)
 
 
 ## Architecture Relationships
@@ -498,6 +499,7 @@ Keep proposed governance and future promotion independently gated
 | Neighbor | Relationship | Exact Path |
 | --- | --- | --- |
 | [ADR-L-0041 — Qualified Shared-System Scope and Producer Evidence](ADR-L-0041-qualified-shared-system-scope-and-producer-evidence.md) | refines | `DEC-9033 -[:refines]-> DEC-9023` |
+| [ADR-L-0042 — Separate Release Versions from Semantic Capability Milestones](ADR-L-0042-release-version-and-semantic-capability-milestones.md) | refines | `DEC-9035 -[:refines]-> DEC-9023` |
 
 
 

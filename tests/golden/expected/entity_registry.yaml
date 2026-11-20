@@ -50879,3 +50879,639 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
+- id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+  alias_id: ADR-L-0042
+  alias_name: release-version-and-semantic-capability-milestones
+  alias_ref: ADR-L-0042:release-version-and-semantic-capability-milestones
+  entity_type: adr
+  name: Separate Release Versions from Semantic Capability Milestones
+  summary: Accepted ADR-L-0038 and ADR-L-0039 define a complete forward semantic execution
+    objective across 27 catalog types and their applicable branches. Their historical
+    prose calls this the v0.13 objective. ADR-L-0040 separatel
+  uri: adr://adr-architecture-kit/entities/01a1e61a-6a95-773d-a36e-019e51b9a8e1
+  created_at: '2026-11-16T20:44:13.333Z'
+  entity_fingerprint: sha256:3237dd4e3388b0603a546b7b4a15df0668ae44188eeb414c718729244e4aebee
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    artifact_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_refs: []
+  metadata:
+    status: accepted
+    domains:
+    - architecture
+    - governance
+    - release-engineering
+    - semantic-authority
+    tags:
+    - release-scope
+    - capability-milestone
+    - forward-semantic-execution
+    - v0.13
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
+    alias_name: release-version-and-semantic-capability-milestones
+    alias_id: ADR-L-0042
+  relationships:
+    declared_in: []
+    references:
+    - 01a16bb0-e682-730f-93a9-54ddf776af32
+    - 01a17432-c52f-74c0-8485-97832c7671ed
+    - 01a178e3-6104-7299-8ae7-bcb172f45ff9
+    - 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1e61a-6a95-773d-a36e-019f2d2398de
+  alias_id: DEC-9035
+  alias_name: separate-release-version-from-capability-milestone
+  alias_ref: DEC-9035:separate-release-version-from-capability-milestone
+  entity_type: decision
+  name: Govern package release versions independently from semantic capability milestones
+  summary: A release version MUST identify the released package cohort and its exact
+    qualification and promotion evidence. It MUST NOT, by itself, assert completion
+    of a semantic capability milestone. A release promises only capabi
+  uri: adr://adr-architecture-kit/entities/01a1e61a-6a95-773d-a36e-019f2d2398de
+  created_at: '2026-11-16T20:44:13.333Z'
+  entity_fingerprint: sha256:9d1a15f06ce58641f844728191ed2908e2458acdc6dc6e5f31824907a4c9b57d
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-019f2d2398de
+    artifact_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    adr_alias_id: ADR-L-0042
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a16bb0-e681-73eb-819e-b31296c73b41
+    - 01a16bb0-e681-73eb-819e-b313463dcf5c
+    - 01a17432-c52f-74c0-8485-977bd24719ac
+    - 01a17432-c52f-74c0-8485-977c2f4218e9
+    - 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    - 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+    alias_name: separate-release-version-from-capability-milestone
+    alias_id: DEC-9035
+  relationships:
+    declared_in:
+    - 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a16bb0-e681-73eb-819e-b31296c73b41
+    - 01a16bb0-e681-73eb-819e-b313463dcf5c
+    - 01a17432-c52f-74c0-8485-977bd24719ac
+    - 01a17432-c52f-74c0-8485-977c2f4218e9
+    - 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    - 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-019f2d2398de
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1e61a-6a95-773d-a36e-01a02b5a64f9
+  alias_id: DEC-9036
+  alias_name: preserve-forward-semantic-execution-completion-criteria
+  alias_ref: DEC-9036:preserve-forward-semantic-execution-completion-criteria
+  entity_type: decision
+  name: Preserve the complete all-27 Forward Semantic Execution Completion milestone
+  summary: The Forward Semantic Execution Completion milestone remains complete only
+    when all 455 AI catalog destination rows are QUALIFIED or explicitly retired through
+    accepted authority; required successor AI, ACC and NM authori
+  uri: adr://adr-architecture-kit/entities/01a1e61a-6a95-773d-a36e-01a02b5a64f9
+  created_at: '2026-11-16T20:44:13.333Z'
+  entity_fingerprint: sha256:133b6821341212fe55c1439d6b775da6c00094a246796b8e1c27d8f1a9835523
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a02b5a64f9
+    artifact_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    adr_alias_id: ADR-L-0042
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a16bb0-e681-73eb-819e-b31296c73b41
+    - 01a17432-c52f-74c0-8485-977bd24719ac
+    alias_name: preserve-forward-semantic-execution-completion-criteria
+    alias_id: DEC-9036
+  relationships:
+    declared_in:
+    - 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a16bb0-e681-73eb-819e-b31296c73b41
+    - 01a17432-c52f-74c0-8485-977bd24719ac
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a02b5a64f9
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1e61a-6a95-773d-a36e-01a11d90397b
+  alias_id: DEC-9037
+  alias_name: propose-v013-lifecycle-governed-consolidation-release
+  alias_ref: DEC-9037:propose-v013-lifecycle-governed-consolidation-release
+  entity_type: decision
+  name: Propose v0.13.0 as a lifecycle-governed consolidation release subject to owner
+    approval
+  summary: If this ADR is accepted and the owner explicitly approves the v0.13.0 release
+    scope, v0.13.0 MAY be prepared as a lifecycle-governed consolidation release under
+    ADR-L-0040. The release description and evidence MUST state
+  uri: adr://adr-architecture-kit/entities/01a1e61a-6a95-773d-a36e-01a11d90397b
+  created_at: '2026-11-16T20:44:13.333Z'
+  entity_fingerprint: sha256:ff32dd1361e85b2d0f9c77fc43ee02525d5bf71e1ab0fd924f89ca350009ce8e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a11d90397b
+    artifact_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    adr_alias_id: ADR-L-0042
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a178e3-6103-76ba-a5b3-4f3d93d86adf
+    - 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+    - 01a178e3-6103-76ba-a5b3-4f400c793547
+    alias_name: propose-v013-lifecycle-governed-consolidation-release
+    alias_id: DEC-9037
+  relationships:
+    declared_in:
+    - 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a178e3-6103-76ba-a5b3-4f3d93d86adf
+    - 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+    - 01a178e3-6103-76ba-a5b3-4f400c793547
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a11d90397b
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1e61a-6a95-773d-a36e-01a2a8b5c733
+  alias_id: DEC-9038
+  alias_name: preserve-historical-objective-evidence-and-version-independence
+  alias_ref: DEC-9038:preserve-historical-objective-evidence-and-version-independence
+  entity_type: decision
+  name: Preserve immutable historical objective labels and avoid future release-number
+    coupling
+  summary: Existing v0_13_objective labels embedded in immutable AI 1.4/1.5 authority
+    MUST remain byte-for-byte unchanged. They record the historical objective vocabulary
+    under which those authorities were authored and qualified; t
+  uri: adr://adr-architecture-kit/entities/01a1e61a-6a95-773d-a36e-01a2a8b5c733
+  created_at: '2026-11-16T20:44:13.333Z'
+  entity_fingerprint: sha256:90ba2315562ad0a4f06e854132a2f181935b3bef5aa093fea8085f932eaffd96
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a2a8b5c733
+    artifact_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    adr_alias_id: ADR-L-0042
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines:
+    - 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    alias_name: preserve-historical-objective-evidence-and-version-independence
+    alias_id: DEC-9038
+  relationships:
+    declared_in:
+    - 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines:
+    - 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a2a8b5c733
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1e61a-6a95-773d-a36e-01a3d39dd6e9
+  alias_id: INV-0327
+  alias_name: release-promises-match-released-evidence
+  alias_ref: INV-0327:release-promises-match-released-evidence
+  entity_type: invariant
+  name: INV-0327
+  summary: A release version MUST promise only capabilities demonstrated by its released
+    authority, public interfaces, and exact release evidence; the version MUST NOT
+    imply completion of an independent semantic capability mileston
+  uri: adr://adr-architecture-kit/entities/01a1e61a-6a95-773d-a36e-01a3d39dd6e9
+  created_at: '2026-11-16T20:44:13.333Z'
+  entity_fingerprint: sha256:975506d64fce5049486dc11591e87ed1c2fee0e1d99618264d9e41d1c1e7faf6
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a3d39dd6e9
+    artifact_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    adr_alias_id: ADR-L-0042
+    scope: release-engineering
+    statement: A release version MUST promise only capabilities demonstrated by its
+      released authority, public interfaces, and exact release evidence; the version
+      MUST NOT imply completion of an independent semantic capability milestone.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1e61a-6a95-773d-a36e-019f2d2398de
+    supersedes: []
+    alias_id: INV-0327
+    alias_name: release-promises-match-released-evidence
+  relationships:
+    declared_in:
+    - 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a3d39dd6e9
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1e61a-6a95-773d-a36e-01a48751eb6a
+  alias_id: INV-0328
+  alias_name: preserve-forward-execution-milestone-exit-criteria
+  alias_ref: INV-0328:preserve-forward-execution-milestone-exit-criteria
+  entity_type: invariant
+  name: INV-0328
+  summary: Forward Semantic Execution Completion MUST retain all 455 destinations
+    and require each to be QUALIFIED or explicitly retired through accepted authority,
+    together with successor AI/ACC/NM qualification and promotion, req
+  uri: adr://adr-architecture-kit/entities/01a1e61a-6a95-773d-a36e-01a48751eb6a
+  created_at: '2026-11-16T20:44:13.333Z'
+  entity_fingerprint: sha256:d3240909c4d43f5566e3e6a13d7578519c30377ac7267c7be4d94e4df6d62eca
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a48751eb6a
+    artifact_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    adr_alias_id: ADR-L-0042
+    scope: semantic-authority
+    statement: Forward Semantic Execution Completion MUST retain all 455 destinations
+      and require each to be QUALIFIED or explicitly retired through accepted authority,
+      together with successor AI/ACC/NM qualification and promotion, required NM/ACC
+      execution, an advertised public forward route, Rust/Python/Node protocol-vector
+      conformance, approved current SCS selection, and independent qualification of
+      the complete execution; no existing BLOCKED destination may be silently satisfied
+      or removed.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1e61a-6a95-773d-a36e-01a02b5a64f9
+    supersedes: []
+    alias_id: INV-0328
+    alias_name: preserve-forward-execution-milestone-exit-criteria
+  relationships:
+    declared_in:
+    - 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a48751eb6a
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1e61a-6a95-773d-a36e-01a5cdc7d648
+  alias_id: INV-0329
+  alias_name: historical-objective-authority-remains-immutable
+  alias_ref: INV-0329:historical-objective-authority-remains-immutable
+  entity_type: invariant
+  name: INV-0329
+  summary: Historical v0_13_objective fields in AI 1.4/1.5 authority MUST remain unchanged
+    and MUST NOT be interpreted as proof that a repository release completed Forward
+    Semantic Execution Completion.
+  uri: adr://adr-architecture-kit/entities/01a1e61a-6a95-773d-a36e-01a5cdc7d648
+  created_at: '2026-11-16T20:44:13.333Z'
+  entity_fingerprint: sha256:87d38b609a7af0dec96a30f21e1a38db50623dd9e5a72c57995768aa1c7e60c1
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a5cdc7d648
+    artifact_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    adr_alias_id: ADR-L-0042
+    scope: semantic-authority
+    statement: Historical v0_13_objective fields in AI 1.4/1.5 authority MUST remain
+      unchanged and MUST NOT be interpreted as proof that a repository release completed
+      Forward Semantic Execution Completion.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1e61a-6a95-773d-a36e-01a2a8b5c733
+    supersedes: []
+    alias_id: INV-0329
+    alias_name: historical-objective-authority-remains-immutable
+  relationships:
+    declared_in:
+    - 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a5cdc7d648
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1e61a-6a95-773d-a36e-01a6a45e4ab0
+  alias_id: INV-0330
+  alias_name: normative-objectives-are-version-independent
+  alias_ref: INV-0330:normative-objectives-are-version-independent
+  entity_type: invariant
+  name: INV-0330
+  summary: A normative semantic capability objective MUST define its own scope and
+    exit criteria independently of a repository release number; release versioning
+    MUST NOT narrow or declare completion of that objective.
+  uri: adr://adr-architecture-kit/entities/01a1e61a-6a95-773d-a36e-01a6a45e4ab0
+  created_at: '2026-11-16T20:44:13.333Z'
+  entity_fingerprint: sha256:078f355087228fc9fb7e8ac72cc57838152a96ea6af705b6e64991416c3d6def
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a6a45e4ab0
+    artifact_path: adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    adr_alias_id: ADR-L-0042
+    scope: governance
+    statement: A normative semantic capability objective MUST define its own scope
+      and exit criteria independently of a repository release number; release versioning
+      MUST NOT narrow or declare completion of that objective.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions:
+    - 01a1e61a-6a95-773d-a36e-01a2a8b5c733
+    supersedes: []
+    alias_id: INV-0330
+    alias_name: normative-objectives-are-version-independent
+  relationships:
+    declared_in:
+    - 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1e61a-6a95-773d-a36e-019e51b9a8e1#01a1e61a-6a95-773d-a36e-01a6a45e4ab0
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

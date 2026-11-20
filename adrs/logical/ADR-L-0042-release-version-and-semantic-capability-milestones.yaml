@@ -1,0 +1,225 @@
+schema_version: '1.5'
+adr_type: logical
+id: 01a1e61a-6a95-773d-a36e-019e51b9a8e1
+alias_id: ADR-L-0042
+alias_name: release-version-and-semantic-capability-milestones
+title: Separate Release Versions from Semantic Capability Milestones
+status: accepted
+created_date: '2026-11-16'
+authors:
+- erik.gallmann
+domains:
+- architecture
+- governance
+- release-engineering
+- semantic-authority
+tags:
+- release-scope
+- capability-milestone
+- forward-semantic-execution
+- v0.13
+related_adrs:
+- 01a16bb0-e682-730f-93a9-54ddf776af32
+- 01a17432-c52f-74c0-8485-97832c7671ed
+- 01a178e3-6104-7299-8ae7-bcb172f45ff9
+- 01a1b9be-d7df-74f4-8dae-18a1a7eaa706
+context: |-
+  Accepted ADR-L-0038 and ADR-L-0039 define a complete forward semantic execution
+  objective across 27 catalog types and their applicable branches. Their historical
+  prose calls this the v0.13 objective. ADR-L-0040 separately governs candidate
+  authority, package inventory, promotion and the compatibility obligations created
+  by promotion. These are distinct concerns: a repository release version identifies
+  a package and its evidence, while a semantic capability milestone describes an
+  independently qualified system outcome.
+
+  REL-3a rehearsal on develop 602480299e5a8ea146e985a9772f0f8d26f2eebf found 33
+  released and 12 candidate authority rows in the current built distributions. The
+  current promotion subject binds the complete packaged cohort. This supports
+  considering a lifecycle-governed consolidation release, but does not accept its
+  scope, select a distribution cohort, promote authority or establish any new
+  runtime capability. Those actions retain their separate owner and qualification
+  gates.
+
+  This ADR proposes a scope clarification only. It preserves the full 27-type
+  objective, its 455 destination rows and every existing BLOCKED obligation. It
+  does not amend AI 1.4/1.5 authority, including immutable v0_13_objective labels,
+  or change AI, ACC, NM, SCF, protocol, SCS, runtime or publication state.
+decisions:
+- id: 01a1e61a-6a95-773d-a36e-019f2d2398de
+  alias_id: DEC-9035
+  alias_name: separate-release-version-from-capability-milestone
+  summary: Govern package release versions independently from semantic capability milestones
+  rationale: |-
+    A release version MUST identify the released package cohort and its exact
+    qualification and promotion evidence. It MUST NOT, by itself, assert completion
+    of a semantic capability milestone. A release promises only capabilities
+    demonstrated by its released authority, public interfaces, and release evidence.
+    A milestone records a separately governed outcome and its explicit exit criteria;
+    its completion may span more than one repository release.
+
+    Refine ADR-L-0038's and ADR-L-0039's use of “v0.13 objective” as the name of the
+    all-27 forward semantic work: that work is the Forward Semantic Execution
+    Completion milestone, not an unconditional claim attached to package version
+    0.13.0. This clarification changes neither their semantic requirements nor the
+    order and qualification requirements of successor authority.
+  alternatives_considered:
+  - name: Require every release to complete the next semantic milestone
+    rejected_because: This couples package maintenance and release timing to a potentially larger
+      capability objective and can misstate the capabilities actually qualified in a release.
+  - name: Reduce the 27-type objective to the capabilities available in one release
+    rejected_because: This would discard accepted obligations and leave the existing BLOCKED
+      destinations without an accepted disposition.
+  refines:
+  - 01a16bb0-e681-73eb-819e-b31296c73b41
+  - 01a16bb0-e681-73eb-819e-b313463dcf5c
+  - 01a17432-c52f-74c0-8485-977bd24719ac
+  - 01a17432-c52f-74c0-8485-977c2f4218e9
+  - 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+  - 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+- id: 01a1e61a-6a95-773d-a36e-01a02b5a64f9
+  alias_id: DEC-9036
+  alias_name: preserve-forward-semantic-execution-completion-criteria
+  summary: Preserve the complete all-27 Forward Semantic Execution Completion milestone
+  rationale: |-
+    The Forward Semantic Execution Completion milestone remains complete only when
+    all 455 AI catalog destination rows are QUALIFIED or explicitly retired through
+    accepted authority; required successor AI, ACC and NM authorities are independently
+    qualified and promoted; NM materialization and ACC execution meet their required
+    boundary; a public forward protocol route is available and advertised; Rust,
+    Python and Node conform to the relevant protocol vectors; a current SCS selects
+    the approved successor authority; and the complete execution is independently
+    qualified.
+
+    No release or this ADR may relabel, omit, infer satisfied, or weaken any of the
+    existing 215 BLOCKED obligations. Retirement requires explicit accepted authority
+    for the exact destination; absence, deferral, package inclusion or release status
+    is not retirement. All existing scope, semantic ownership, source authority,
+    equality, lifecycle, outcome-precedence and fail-closed requirements remain.
+  alternatives_considered:
+  - name: Treat package release qualification as milestone qualification
+    rejected_because: Package inventory and publication do not prove complete semantic execution,
+      public protocol conformance or current SCS selection.
+  refines:
+  - 01a16bb0-e681-73eb-819e-b31296c73b41
+  - 01a17432-c52f-74c0-8485-977bd24719ac
+- id: 01a1e61a-6a95-773d-a36e-01a11d90397b
+  alias_id: DEC-9037
+  alias_name: propose-v013-lifecycle-governed-consolidation-release
+  summary: Propose v0.13.0 as a lifecycle-governed consolidation release subject to owner approval
+  rationale: |-
+    If this ADR is accepted and the owner explicitly approves the v0.13.0 release
+    scope, v0.13.0 MAY be prepared as a lifecycle-governed consolidation release
+    under ADR-L-0040. The release description and evidence MUST state only the
+    capabilities demonstrated by its selected released authority, public interfaces
+    and exact release qualification. It MUST NOT claim Forward Semantic Execution
+    Completion unless every milestone criterion in DEC-9036 independently passes.
+
+    This proposed decision does not choose the packaged authority cohort, accept a
+    released-only distribution policy, retire protocol 1.4/1.5, authorize candidate
+    promotion, or waive exact inventory, approval, certification and publication
+    controls. Each remains subject to its own accepted authority and release gate.
+  alternatives_considered:
+  - name: Hold v0.13.0 until all 27 semantic types are complete
+    rejected_because: This keeps release numbering coupled to a distinct capability milestone and
+      prevents a bounded consolidation release even when its own lifecycle gates pass.
+  - name: Publish v0.13.0 as if all-27 execution were complete
+    rejected_because: The current objective includes BLOCKED obligations and incomplete runtime and
+      public-conformance prerequisites; release evidence cannot imply those outcomes.
+  refines:
+  - 01a178e3-6103-76ba-a5b3-4f3d93d86adf
+  - 01a178e3-6103-76ba-a5b3-4f3e648d69ad
+  - 01a178e3-6103-76ba-a5b3-4f400c793547
+- id: 01a1e61a-6a95-773d-a36e-01a2a8b5c733
+  alias_id: DEC-9038
+  alias_name: preserve-historical-objective-evidence-and-version-independence
+  summary: Preserve immutable historical objective labels and avoid future release-number coupling
+  rationale: |-
+    Existing v0_13_objective labels embedded in immutable AI 1.4/1.5 authority MUST
+    remain byte-for-byte unchanged. They record the historical objective vocabulary
+    under which those authorities were authored and qualified; they do not make a
+    package release number evidence of milestone completion and MUST NOT be used to
+    rewrite those authorities.
+
+    Future normative capability objectives MUST name their scope and exit criteria
+    independently of an arbitrary repository release number. A release may reference
+    a milestone and report its measured status, but version assignment MUST NOT
+    rename, narrow or declare completion of that objective.
+  alternatives_considered:
+  - name: Rewrite historical candidate labels to the new milestone name
+    rejected_because: That would mutate immutable authority and invalidate its established content identity.
+  refines:
+  - 01a178e3-6103-76ba-a5b3-4f3b49f0ad33
+invariants:
+- id: 01a1e61a-6a95-773d-a36e-01a3d39dd6e9
+  alias_id: INV-0327
+  alias_name: release-promises-match-released-evidence
+  statement: A release version MUST promise only capabilities demonstrated by its released authority, public interfaces, and exact release evidence; the version MUST NOT imply completion of an independent semantic capability milestone.
+  scope: release-engineering
+  enforcement_level: must
+  enforcement_mechanism: policy
+  verification_method: automated
+  rationale: Separate package release claims from milestone qualification.
+  upheld_by_decisions:
+  - 01a1e61a-6a95-773d-a36e-019f2d2398de
+- id: 01a1e61a-6a95-773d-a36e-01a48751eb6a
+  alias_id: INV-0328
+  alias_name: preserve-forward-execution-milestone-exit-criteria
+  statement: Forward Semantic Execution Completion MUST retain all 455 destinations and require each to be QUALIFIED or explicitly retired through accepted authority, together with successor AI/ACC/NM qualification and promotion, required NM/ACC execution, an advertised public forward route, Rust/Python/Node protocol-vector conformance, approved current SCS selection, and independent qualification of the complete execution; no existing BLOCKED destination may be silently satisfied or removed.
+  scope: semantic-authority
+  enforcement_level: must
+  enforcement_mechanism: policy
+  verification_method: automated
+  rationale: Preserve the complete accepted semantic objective across package release boundaries.
+  upheld_by_decisions:
+  - 01a1e61a-6a95-773d-a36e-01a02b5a64f9
+- id: 01a1e61a-6a95-773d-a36e-01a5cdc7d648
+  alias_id: INV-0329
+  alias_name: historical-objective-authority-remains-immutable
+  statement: Historical v0_13_objective fields in AI 1.4/1.5 authority MUST remain unchanged and MUST NOT be interpreted as proof that a repository release completed Forward Semantic Execution Completion.
+  scope: semantic-authority
+  enforcement_level: must
+  enforcement_mechanism: policy
+  verification_method: automated
+  rationale: Preserve historical authority bytes while clarifying release scope.
+  upheld_by_decisions:
+  - 01a1e61a-6a95-773d-a36e-01a2a8b5c733
+- id: 01a1e61a-6a95-773d-a36e-01a6a45e4ab0
+  alias_id: INV-0330
+  alias_name: normative-objectives-are-version-independent
+  statement: A normative semantic capability objective MUST define its own scope and exit criteria independently of a repository release number; release versioning MUST NOT narrow or declare completion of that objective.
+  scope: governance
+  enforcement_level: must
+  enforcement_mechanism: policy
+  verification_method: automated
+  rationale: Prevent arbitrary package numbering from governing normative capability scope.
+  upheld_by_decisions:
+  - 01a1e61a-6a95-773d-a36e-01a2a8b5c733
+notes: |-
+  Accepted following explicit human architectural approval of ADR-L-0042 at reviewed
+  PR #197 head 29840e73a3fb2af14141479251a53ab56d6259dc, covering DEC-9035–9038 and
+  INV-0327–0330. Approval source: the authenticated Codex conversation for this
+  repository task; thread 01a10569-766b-7991-b9c5-3952eff35bcb; message
+  01a1f92e-8e52-7302-84fd-466ffdb2ddec; timestamp 2026-11-20T13:38:59Z. The approving
+  owner explicitly approved all four decisions and four invariants and approved Path A
+  for v0.13.0, subject to separate release qualification and promotion gates. The
+  linked GitHub owner identity is egallmann, matching the required approver in
+  PROJECT.yaml. This records architectural authorization; it does not claim a GitHub
+  APPROVED review or a separate branch-protection review.
+
+  Acceptance does not authorize candidate promotion, release publication, tagging,
+  changing current SCS, or bypassing governance controls.
+
+  ADR-L-0038 DEC-9014/9015 and ADR-L-0039 DEC-9021/9022 retain their full type,
+  destination, successor-authority, and independent-qualification requirements.
+  The phrase “v0.13 objective” is refined to refer to the Forward Semantic Execution
+  Completion milestone rather than an unconditional assertion about a package
+  version. ADR-L-0040's accepted candidate, inventory, promotion and immutability
+  controls remain unchanged; ADR-L-0041's System evidence and execution boundaries
+  remain unchanged. No accepted semantic requirement is retired or weakened.
+
+  The REL-3a inventory and package hashes are rehearsal evidence only. They do not
+  qualify a future release source, select a packaged cohort, establish owner
+  approval, or attest candidate promotion.
+governance:
+  approved_by: egallmann
+  approved_date: '2026-11-20T13:38:59Z'

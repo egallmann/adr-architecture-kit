@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import subprocess
+import sys
 
 import pytest
 
@@ -12,6 +13,7 @@ pytestmark = pytest.mark.fast
 
 def setup_artifacts(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> list[list[str]]:
     monkeypatch.setattr(guard, "ROOT", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["check_semantic_core_artifact_change.py"])
     for path in [
         *guard.ARTIFACTS,
         "core/target/wasm32-unknown-unknown/release/adr_kit_semantic_core.wasm",

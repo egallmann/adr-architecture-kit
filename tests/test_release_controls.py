@@ -416,10 +416,51 @@ def test_pr_feedback_is_fast_and_semantically_explicit() -> None:
     ):
         workflow_jobs = _load_workflow(workflow_name)["jobs"]
         for job_name in consumer_jobs:
+            expected_dependency = (
+                "rust-semantic-core" if workflow_name == "pr-feedback.yml" else "semantic-core"
+            )
+            dependencies = workflow_jobs[job_name].get("needs", [])
+            if isinstance(dependencies, str):
+                dependencies = [dependencies]
+            assert expected_dependency in dependencies
             text = _job_steps_text(workflow_jobs[job_name])
             assert "actions/download-artifact@v4" in text
             assert "semantic_core_artifact_bundle.py consume" in text
             assert "--source-commit" in text
+
+
+def test_semantic_core_bootstrap_precedes_strict_qualification_and_is_not_consumed() -> None:
+    producer = _load_workflow("semantic-core-qualification.yml")["jobs"]["semantic-core"]
+    steps = producer["steps"]
+    names = [step.get("name", "") for step in steps]
+    build = next(i for i, name in enumerate(names) if "Build WASM without changing" in name)
+    bootstrap = next(i for i, name in enumerate(names) if "UNQUALIFIED" in name)
+    upload = next(
+        i
+        for i, step in enumerate(steps)
+        if step.get("uses") == "actions/upload-artifact@v4"
+        and "bootstrap" in step.get("with", {}).get("name", "")
+    )
+    guard = next(i for i, name in enumerate(names) if "Guard semantic-core source" in name)
+    equality = next(i for i, name in enumerate(names) if "Verify source-built artifact" in name)
+    qualified_bundle = next(
+        i for i, name in enumerate(names) if "Create commit-bound artifact bundle" in name
+    )
+    assert build < bootstrap < upload < guard < equality < qualified_bundle
+    assert steps[build]["run"].endswith("--artifact-only")
+    assert "--built-artifact" in steps[guard]["run"]
+    assert "semantic-core-${{ steps.source.outputs.commit }}" not in steps[upload]["with"]["name"]
+
+    for workflow_name in (
+        "pr-feedback.yml",
+        "integration-assurance.yml",
+        "release-certification.yml",
+    ):
+        workflow_text = (ROOT / ".github" / "workflows" / workflow_name).read_text(encoding="utf-8")
+        assert "semantic-core-bootstrap-" not in workflow_text
+    assert "semantic_core_artifact_bundle.py consume" in (
+        ROOT / ".github" / "workflows" / "release-certification.yml"
+    ).read_text(encoding="utf-8")
 
 
 def test_integration_assurance_owns_full_suite_and_develop_runs_it() -> None:

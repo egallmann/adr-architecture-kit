@@ -12,6 +12,8 @@ from scripts.semantic_core_artifact_bundle import (
     WASM_NAME,
     consume_bundle,
     create_bundle,
+    create_bootstrap_bundle,
+    install_bootstrap_bundle,
 )
 
 pytestmark = pytest.mark.fast
@@ -60,4 +62,43 @@ def test_bundle_rejects_tampered_bytes_before_writing(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="do not match"):
         consume_bundle(bundle, COMMIT, checkout)
 
+    assert not checkout.exists()
+
+
+def test_bootstrap_is_explicitly_unqualified_and_installs_only_host_copies(tmp_path: Path) -> None:
+    artifact = tmp_path / "linux-built.wasm"
+    artifact.write_bytes(b"Linux source build")
+    bundle = tmp_path / "bootstrap"
+    manifest = create_bootstrap_bundle(artifact, bundle, COMMIT)
+    checkout = tmp_path / "checkout"
+
+    installed = install_bootstrap_bundle(bundle, COMMIT, checkout)
+
+    assert installed == manifest
+    assert manifest["qualification"] == "UNQUALIFIED"
+    assert manifest["source_commit"] == COMMIT
+    assert manifest["size_bytes"] == len(artifact.read_bytes())
+    for relative_path in ARTIFACT_DESTINATIONS[1:]:
+        assert (checkout / relative_path).read_bytes() == artifact.read_bytes()
+    assert not (checkout / ARTIFACT_DESTINATIONS[0]).exists()
+    with pytest.raises(ValueError, match="unexpected shape"):
+        consume_bundle(bundle, COMMIT, checkout)
+
+
+@pytest.mark.parametrize("failure", ["commit", "bytes"])
+def test_bootstrap_rejects_wrong_commit_or_tampering_before_writing(
+    tmp_path: Path, failure: str
+) -> None:
+    artifact = tmp_path / "linux-built.wasm"
+    artifact.write_bytes(b"Linux source build")
+    bundle = tmp_path / "bootstrap"
+    create_bootstrap_bundle(artifact, bundle, COMMIT)
+    if failure == "bytes":
+        (bundle / WASM_NAME).write_bytes(b"tampered")
+    checkout = tmp_path / "checkout"
+
+    with pytest.raises(
+        ValueError, match="source commit" if failure == "commit" else "do not match"
+    ):
+        install_bootstrap_bundle(bundle, "a" * 40 if failure == "commit" else COMMIT, checkout)
     assert not checkout.exists()

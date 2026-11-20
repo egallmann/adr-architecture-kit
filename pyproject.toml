@@ -85,6 +85,9 @@ where = ["src"]
 "adr_kit.semantic_contract.v1_0" = ["*.json", "profiles/*.json", "definitions/*.json", "sets/*.json", "qualifications/*.json", "catalog/*.json", "policy/*.json", "current/*.json"]
 "adr_kit.semantic_contract.v1_0.resources" = ["*.json"]
 
+[tool.setuptools.exclude-package-data]
+"adr_kit.core" = ["semantic-core-contract-v1.4.json", "semantic-core-contract-v1.5.json"]
+
 [tool.black]
 line-length = 100
 target-version = ['py314']

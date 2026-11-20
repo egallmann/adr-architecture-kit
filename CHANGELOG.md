@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Retired the unpublished semantic-core protocol 1.4 and 1.5 public routes.
+  Protocols 1.0–1.3 remain supported; canonical candidate contracts and
+  successor implementation helpers remain available in the repository.
+
 ### Fixed
 
 - Authoring Construction now seals only minimal non-overlapping candidate

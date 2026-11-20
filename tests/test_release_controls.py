@@ -1,1 +1,629 @@
-YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíó~9N‹Z–‹­¦ëeŠw¬Ôˆˆ‰	Õ¥±µ½¹”É•±•…Í”°¥¹ÍÑ…±±•µİ¡••°°…¹İ½É­™±½Ü½¹ÑÉ…ÑÌ¸ˆˆˆ4(4)™É½´}}™ÕÑÕÉ•}|¥µÁ½ÉĞ…¹¹½Ñ…Ñ¥½¹Ì4(4)¥µÁ½ÉĞé¥À4)¥µÁ½ÉĞ¥¼4)¥µÁ½ÉĞ©Í½¸4)¥µÁ½ÉĞÍÕ‰ÁÉ½•ÍÌ4)¥µÁ½ÉĞÍåÌ4)¥µÁ½ÉĞÑ…É™¥±”4)™É½´Á…Ñ¡±¥ˆ¥µÁ½ÉĞA…Ñ 4(4)™É½´ÑåÁ¥¹œ¥µÁ½ÉĞ¹ä°…ÍĞ4(4)¥µÁ½ÉĞå…µ°4(4)I==P€ôA…Ñ ¡}}™¥±•}|¤¹É•Í½±Ù” ¤¹Á…É•¹ÑÍlÅt4(4(4)‘•˜}É•±•…Í•}ÕÑ¥±¥Ñä ©…ÉÕµ•¹ÑÌèÍÑÈ¤€´øÍÕ‰ÁÉ½•ÍÌ¹½µÁ±•Ñ•‘AÉ½•ÍÍmÍÑÉtè4(€€€ÍÉ¥ÁĞ€ôI==P€¼€‰ÍÉ¥ÁÑÌˆ€¼€‰É•±•…Í•}µ…¹¥™•ÍĞ¹Áäˆ4(€€€…ÍÍ•ÉĞÍÉ¥ÁĞ¹¥Í}™¥±” ¤°€‰µ¥ÍÍ¥¹œÉ•±•…Í”µµ…¹¥™•ÍĞÕÑ¥±¥Ñäˆ4(€€€É•ÑÕÉ¸ÍÕ‰ÁÉ½•ÍÌ¹ÉÕ¸ 4(€€€€€€€mÍåÌ¹•á•ÕÑ…‰±”°ÍÑÈ¡ÍÉ¥ÁĞ¤°€©…ÉÕµ•¹ÑÍt°4(€€€€€€€İõI==P°4(€€€€€€€Ñ•áĞõQÉÕ”°4(€€€€€€€…ÁÑÕÉ•}½ÕÑÁÕĞõQÉÕ”°4(€€€€€€€¡•¬õ…±Í”°4(€€€€¤4(4(4)‘•˜}İÉ¥Ñ•}Í‘¥ÍĞ¡Á…Ñ èA…Ñ °Ñ¥µ•ÍÑ…µÀè¥¹Ğ¤€´ø9½¹”è4(€€€Á…å±½…€ôˆ‰‘•Ñ•Éµ¥¹¥ÍÑ¥Œ½¹Ñ•¹Ñq¸ˆ4(€€€İ¥Ñ € 4(€€€€€€€Á…Ñ ¹½Á•¸ ‰İˆˆ¤…ÌÉ…Ü°4(€€€€€€€é¥À¹é¥Á¥±”¡™¥±•¹…µ”ôˆˆ°µ½‘”ô‰İˆˆ°™¥±•½‰¨õÉ…Ü°µÑ¥µ”õÑ¥µ•ÍÑ…µÀ¤…Ì½µÁÉ•ÍÍ•°4(€€€€€€€Ñ…É™¥±”¹½Á•¸¡™¥±•½‰¨õ½µÁÉ•ÍÍ•°µ½‘”ô‰Üˆ°™½Éµ…ĞõÑ…É™¥±”¹Aa}=I5P¤…Ì…É¡¥Ù”°4(€€€€¤è4(€€€€€€€µ•µ‰•È€ôÑ…É™¥±”¹Q…É%¹™¼ ‰Á…­…”½™¥±”¹ÑáĞˆ¤4(€€€€€€€µ•µ‰•È¹Í¥é”€ô±•¸¡Á…å±½…¤4(€€€€€€€µ•µ‰•È¹µÑ¥µ”€ôÑ¥µ•ÍÑ…µÀ4(€€€€€€€µ•µ‰•È¹Õ¥€ôÑ¥µ•ÍÑ…µÀ4(€€€€€€€µ•µ‰•È¹¥€ôÑ¥µ•ÍÑ…µÀ4(€€€€€€€µ•µ‰•È¹Õ¹…µ”€ô€‰‰Õ¥±‘•Èˆ4(€€€€€€€µ•µ‰•È¹¹…µ”€ô€‰‰Õ¥±‘•Èˆ4(€€€€€€€…É¡¥Ù”¹…‘‘™¥±”¡µ•µ‰•È°¥¼¹	åÑ•Í%<¡Á…å±½…¤¤4(4(4)‘•˜}±½…‘}İ½É­™±½Ü¡¹…µ”èÍÑÈ¤€´ø‘¥ÑmÍÑÈ°¹åtè4(€€€Á…Ñ €ôI==P€¼€ˆ¹¥Ñ¡Õˆˆ€¼€‰İ½É­™±½İÌˆ€¼¹…µ”4(€€€…ÍÍ•ÉĞÁ…Ñ ¹¥Í}™¥±” ¤°˜‰µ¥ÍÍ¥¹œİ½É­™±½Üí¹…µ•ôˆ4(€€€Á…å±½…€ôå…µ°¹Í…™•}±½…¡Á…Ñ ¹É•…‘}Ñ•áĞ¡•¹½‘¥¹œô‰ÕÑ˜´àˆ¤¤4(€€€…ÍÍ•ÉĞ¥Í¥¹ÍÑ…¹”¡Á…å±½…°‘¥Ğ¤4(€€€É•ÑÕÉ¸Á…å±½…4(4(4)‘•˜}©½‰}ÍÑ•ÁÍ}Ñ•áĞ¡©½ˆè‘¥ÑmÍÑÈ°¹åt¤€´øÍÑÈè4(€€€¡Õ¹­Ìè±¥ÍÑmÍÑÉt€ômt4(€€€™½ÈÍÑ•À¥¸©½ˆ¹•Ğ ‰ÍÑ•ÁÌˆ¤½Èmtè4(€€€€€€€¥˜¹½Ğ¥Í¥¹ÍÑ…¹”¡ÍÑ•À°‘¥Ğ¤è4(€€€€€€€€€€€½¹Ñ¥¹Õ”4(€€€€€€€™½È­•ä¥¸€ ‰ÉÕ¸ˆ°€‰ÕÍ•Ìˆ°€‰¹…µ”ˆ¤è4(€€€€€€€€€€€Ù…±Õ”€ôÍÑ•À¹•Ğ¡­•ä¤4(€€€€€€€€€€€¥˜¥Í¥¹ÍÑ…¹”¡Ù…±Õ”°ÍÑÈ¤è4(€€€€€€€€€€€€€€€¡Õ¹­Ì¹…ÁÁ•¹¡Ù…±Õ”¤4(€€€€€€€İ¥Ñ¡}‰±½¬€ôÍÑ•À¹•Ğ ‰İ¥Ñ ˆ¤4(€€€€€€€¥˜¥Í¥¹ÍÑ…¹”¡İ¥Ñ¡}‰±½¬°‘¥Ğ¤è4(€€€€€€€€€€€¡Õ¹­Ì¹•áÑ•¹¡ÍÑÈ¡Ù…±Õ”¤™½ÈÙ…±Õ”¥¸İ¥Ñ¡}‰±½¬¹Ù…±Õ•Ì ¤¤4(€€€É•ÑÕÉ¸€‰q¸ˆ¹©½¥¸¡¡Õ¹­Ì¤4(4(4)‘•˜Ñ•ÍÑ}É•±•…Í•}µ…¹¥™•ÍÑ}É•©•ÑÍ}µ¥ÍÍ¥¹}•áÑÉ…}¡…Í¡}Ñ…}…¹‘}Ù•ÉÍ¥½¹}µ¥Íµ…Ñ¡•Ì 4(€€€ÑµÁ}Á…Ñ èA…Ñ °4(¤€´ø9½¹”è4(€€€‘¥ÍĞ€ôÑµÁ}Á…Ñ €¼€‰‘¥ÍĞˆ4(€€€‘¥ÍĞ¹µ­‘¥È ¤4(€€€İ¡••°€ô‘¥ÍĞ€¼€‰…‘É}…É¡¥Ñ•ÑÕÉ•}­¥Ğ´À¸Ä¸ÀµÁäÌµ¹½¹”µ…¹ä¹İ¡°ˆ4(€€€Í‘¥ÍĞ€ô‘¥ÍĞ€¼€‰…‘É}…É¡¥Ñ•ÑÕÉ•}­¥Ğ´À¸Ä¸À¹Ñ…È¹èˆ4(€€€İ¡••°¹İÉ¥Ñ•}‰åÑ•Ì¡ˆ‰İ¡••°ˆ¤4(€€€Í‘¥ÍĞ¹İÉ¥Ñ•}‰åÑ•Ì¡ˆ‰Í‘¥ÍĞˆ¤4(€€€µ…¹¥™•ÍĞ€ôÑµÁ}Á…Ñ €¼€‰É•±•…Í”µµ…¹¥™•ÍĞ¹©Í½¸ˆ4(4(€€€É•…Ñ•€ô}É•±•…Í•}ÕÑ¥±¥Ñä 4(€€€€€€€€‰É•…Ñ”ˆ°4(€€€€€€€€ˆ´µ‘¥ÍĞµ‘¥Èˆ°4(€€€€€€€ÍÑÈ¡‘¥ÍĞ¤°4(€€€€€€€€ˆ´µ½ÕÑÁÕĞˆ°4(€€€€€€€ÍÑÈ¡µ…¹¥™•ÍĞ¤°4(€€€€€€€€ˆ´µÍ½ÕÉ”µ½µµ¥Ğˆ°4(€€€€€€€€‰„ˆ€¨€ĞÀ°4(€€€€€€€€ˆ´µÙ•ÉÍ¥½¸ˆ°4(€€€€€€€€ˆÀ¸Ä¸Àˆ°4(€€€€¤4(€€€…ÍÍ•ÉĞÉ•…Ñ•¹É•ÑÕÉ¹½‘”€ôô€À°É•…Ñ•¹ÍÑ‘½ÕĞ€¬É•…Ñ•¹ÍÑ‘•ÉÈ4(4(€€€Ù•É¥™¥•€ô}É•±•…Í•}ÕÑ¥±¥Ñä 4(€€€€€€€€‰Ù•É¥™äˆ°4(€€€€€€€€ˆ´µ‘¥ÍĞµ‘¥Èˆ°4(€€€€€€€ÍÑÈ¡‘¥ÍĞ¤°4(€€€€€€€€ˆ´µµ…¹¥™•ÍĞˆ°4(€€€€€€€ÍÑÈ¡µ…¹¥™•ÍĞ¤°4(€€€€€€€€ˆ´µ•áÁ•Ñ•µÍ½ÕÉ”µ½µµ¥Ğˆ°4(€€€€€€€€‰„ˆ€¨€ĞÀ°4(€€€€€€€€ˆ´µ•áÁ•Ñ•µÙ•ÉÍ¥½¸ˆ°4(€€€€€€€€ˆÀ¸Ä¸Àˆ°4(€€€€€€€€ˆ´µ•áÁ•Ñ•µÑ…œˆ°4(€€€€€€€€‰ØÀ¸Ä¸Àˆ°4(€€€€¤4(€€€…ÍÍ•ÉĞÙ•É¥™¥•¹É•ÑÕÉ¹½‘”€ôô€À°Ù•É¥™¥•¹ÍÑ‘½ÕĞ€¬Ù•É¥™¥•¹ÍÑ‘•ÉÈ4(4(€€€İ¡••°¹İÉ¥Ñ•}‰åÑ•Ì¡ˆ‰½ÉÉÕÁĞˆ¤4(€€€…ÍÍ•ÉĞ€ 4(€€€€€€€}É•±•…Í•}ÕÑ¥±¥Ñä ‰Ù•É¥™äˆ°€ˆ´µ‘¥ÍĞµ‘¥Èˆ°ÍÑÈ¡‘¥ÍĞ¤°€ˆ´µµ…¹¥™•ÍĞˆ°ÍÑÈ¡µ…¹¥™•ÍĞ¤¤¹É•ÑÕÉ¹½‘”4(€€€€€€€€„ô€À4(€€€€¤4(€€€İ¡••°¹İÉ¥Ñ•}‰åÑ•Ì¡ˆ‰İ¡••°ˆ¤4(€€€…ÍÍ•ÉĞ€ 4(€€€€€€€}É•±•…Í•}ÕÑ¥±¥Ñä 4(€€€€€€€€€€€€‰Ù•É¥™äˆ°4(€€€€€€€€€€€€ˆ´µ‘¥ÍĞµ‘¥Èˆ°4(€€€€€€€€€€€ÍÑÈ¡‘¥ÍĞ¤°4(€€€€€€€€€€€€ˆ´µµ…¹¥™•ÍĞˆ°4(€€€€€€€€€€€ÍÑÈ¡µ…¹¥™•ÍĞ¤°4(€€€€€€€€€€€€ˆ´µ•áÁ•Ñ•µÑ…œˆ°4(€€€€€€€€€€€€‰ØÀ¸Ä¸Äˆ°4(€€€€€€€€¤¹É•ÑÕÉ¹½‘”4(€€€€€€€€„ô€À4(€€€€¤4(4(€€€Á…å±½…€ô©Í½¸¹±½…‘Ì¡µ…¹¥™•ÍĞ¹É•…‘}Ñ•áĞ¡•¹½‘¥¹œô‰ÕÑ˜´àˆ¤¤4(€€€Á…å±½…‘l‰Á…­…•}Ù•ÉÍ¥½¸‰t€ô€ˆÀ¸Ä¸Äˆ4(€€€µ…¹¥™•ÍĞ¹İÉ¥Ñ•}Ñ•áĞ¡©Í½¸¹‘ÕµÁÌ¡Á…å±½…¤°•¹½‘¥¹œô‰ÕÑ˜´àˆ¤4(€€€…ÍÍ•ÉĞ€ 4(€€€€€€€}É•±•…Í•}ÕÑ¥±¥Ñä 4(€€€€€€€€€€€€‰Ù•É¥™äˆ°4(€€€€€€€€€€€€ˆ´µ‘¥ÍĞµ‘¥Èˆ°4(€€€€€€€€€€€ÍÑÈ¡‘¥ÍĞ¤°4(€€€€€€€€€€€€ˆ´µµ…¹¥™•ÍĞˆ°4(€€€€€€€€€€€ÍÑÈ¡µ…¹¥™•ÍĞ¤°4(€€€€€€€€€€€€ˆ´µ•áÁ•Ñ•µÙ•ÉÍ¥½¸ˆ°4(€€€€€€€€€€€€ˆÀ¸Ä¸Àˆ°4(€€€€€€€€¤¹É•ÑÕÉ¹½‘”4(€€€€€€€€„ô€À4(€€€€¤4(4(€€€µ…¹¥™•ÍĞ¹Õ¹±¥¹¬ ¤4(€€€Í‘¥ÍĞ¹Õ¹±¥¹¬ ¤4(€€€…ÍÍ•ÉĞ€ 4(€€€€€€€}É•±•…Í•}ÕÑ¥±¥Ñä 4(€€€€€€€€€€€€‰É•…Ñ”ˆ°4(€€€€€€€€€€€€ˆ´µ‘¥ÍĞµ‘¥Èˆ°4(€€€€€€€€€€€ÍÑÈ¡‘¥ÍĞ¤°4(€€€€€€€€€€€€ˆ´µ½ÕÑÁÕĞˆ°4(€€€€€€€€€€€ÍÑÈ¡µ…¹¥™•ÍĞ¤°4(€€€€€€€€€€€€ˆ´µÍ½ÕÉ”µ½µµ¥Ğˆ°4(€€€€€€€€€€€€‰„ˆ€¨€ĞÀ°4(€€€€€€€€€€€€ˆ´µÙ•ÉÍ¥½¸ˆ°4(€€€€€€€€€€€€ˆÀ¸Ä¸Àˆ°4(€€€€€€€€¤¹É•ÑÕÉ¹½‘”4(€€€€€€€€„ô€À4(€€€€¤4(4(€€€Í‘¥ÍĞ¹İÉ¥Ñ•}‰åÑ•Ì¡ˆ‰Í‘¥ÍĞˆ¤4(€€€€¡‘¥ÍĞ€¼€‰•áÑÉ„´À¸Ä¸À¹Ñ…È¹èˆ¤¹İÉ¥Ñ•}‰åÑ•Ì¡ˆ‰•áÑÉ„ˆ¤4(€€€…ÍÍ•ÉĞ€ 4(€€€€€€€}É•±•…Í•}ÕÑ¥±¥Ñä 4(€€€€€€€€€€€€‰É•…Ñ”ˆ°4(€€€€€€€€€€€€ˆ´µ‘¥ÍĞµ‘¥Èˆ°4(€€€€€€€€€€€ÍÑÈ¡‘¥ÍĞ¤°4(€€€€€€€€€€€€ˆ´µ½ÕÑÁÕĞˆ°4(€€€€€€€€€€€ÍÑÈ¡µ…¹¥™•ÍĞ¤°4(€€€€€€€€€€€€ˆ´µÍ½ÕÉ”µ½µµ¥Ğˆ°4(€€€€€€€€€€€€‰„ˆ€¨€ĞÀ°4(€€€€€€€€€€€€ˆ´µÙ•ÉÍ¥½¸ˆ°4(€€€€€€€€€€€€ˆÀ¸Ä¸Àˆ°4(€€€€€€€€¤¹É•ÑÕÉ¹½‘”4(€€€€€€€€„ô€À4(€€€€¤4(4(4)‘•˜Ñ•ÍÑ}Í‘¥ÍÑ}¹½Éµ…±¥é…Ñ¥½¹}É•µ½Ù•Í}‰Õ¥±‘}Ñ¥µ•}…¹‘}½İ¹•É}Ù…É¥…Ñ¥½¸¡ÑµÁ}Á…Ñ èA…Ñ ¤€´ø9½¹”è4(€€€™¥ÉÍĞ€ôÑµÁ}Á…Ñ €¼€‰™¥ÉÍĞ¹Ñ…È¹èˆ4(€€€Í•½¹€ôÑµÁ}Á…Ñ €¼€‰Í•½¹¹Ñ…È¹èˆ4(€€€•Á½ €ô€Å|ÜØİ|ÈÈÕ|ØÀÀ4(€€€}İÉ¥Ñ•}Í‘¥ÍĞ¡™¥ÉÍĞ°•Á½ €¬€ÄÀ¤4(€€€}İÉ¥Ñ•}Í‘¥ÍĞ¡Í•½¹°•Á½ €¬€ÈÀ¤4(€€€…ÍÍ•ÉĞ™¥ÉÍĞ¹É•…‘}‰åÑ•Ì ¤€„ôÍ•½¹¹É•…‘}‰åÑ•Ì ¤4(4(€€€™½ÈÁ…Ñ ¥¸€¡™¥ÉÍĞ°Í•½¹¤è4(€€€€€€€É•ÍÕ±Ğ€ô}É•±•…Í•}ÕÑ¥±¥Ñä 4(€€€€€€€€€€€€‰¹½Éµ…±¥é”µÍ‘¥ÍĞˆ°4(€€€€€€€€€€€€ˆ´µÍ‘¥ÍĞˆ°4(€€€€€€€€€€€ÍÑÈ¡Á…Ñ ¤°4(€€€€€€€€€€€€ˆ´µÍ½ÕÉ”µ‘…Ñ”µ•Á½ ˆ°4(€€€€€€€€€€€ÍÑÈ¡•Á½ ¤°4(€€€€€€€€¤4(€€€€€€€…ÍÍ•ÉĞÉ•ÍÕ±Ğ¹É•ÑÕÉ¹½‘”€ôô€À°É•ÍÕ±Ğ¹ÍÑ‘½ÕĞ€¬É•ÍÕ±Ğ¹ÍÑ‘•ÉÈ4(4(€€€…ÍÍ•ÉĞ™¥ÉÍĞ¹É•…‘}‰åÑ•Ì ¤€ôôÍ•½¹¹É•…‘}‰åÑ•Ì ¤4(€€€İ¥Ñ Ñ…É™¥±”¹½Á•¸¡™¥ÉÍĞ°€‰Èéèˆ¤…Ì…É¡¥Ù”è4(€€€€€€€µ•µ‰•ÉÌ€ô…É¡¥Ù”¹•Ñµ•µ‰•ÉÌ ¤4(€€€…ÍÍ•ÉĞµ•µ‰•ÉÌ4(€€€…ÍÍ•ÉĞ…±°¡µ•µ‰•È¹µÑ¥µ”€ôô•Á½ ™½Èµ•µ‰•È¥¸µ•µ‰•ÉÌ¤4(€€€…ÍÍ•ÉĞ…±°¡µ•µ‰•È¹Õ¥€ôôµ•µ‰•È¹¥€ôô€À™½Èµ•µ‰•È¥¸µ•µ‰•ÉÌ¤4(€€€…ÍÍ•ÉĞ…±°¡µ•µ‰•È¹Õ¹…µ”€ôôµ•µ‰•È¹¹…µ”€ôô€ˆˆ™½Èµ•µ‰•È¥¸µ•µ‰•ÉÌ¤4(4(4)‘•˜Ñ•ÍÑ}¥¹ÍÑ…±±•‘}İ¡••±}¡…É¹•ÍÍ}‘•±…É•Í}…±±}½¹ÍÕµ•É}ÁÉ½‰•Ì ¤€´ø9½¹”è4(€€€ÍÉ¥ÁĞ€ôI==P€¼€‰ÍÉ¥ÁÑÌˆ€¼€‰Ñ•ÍÑ}¥¹ÍÑ…±±•‘}İ¡••°¹Áäˆ4(€€€…ÍÍ•ÉĞÍÉ¥ÁĞ¹¥Í}™¥±” ¤°€‰µ¥ÍÍ¥¹œ¥¹ÍÑ…±±•µİ¡••°½¹ÍÕµ•È¡…É¹•ÍÌˆ4(€€€É•ÍÕ±Ğ€ôÍÕ‰ÁÉ½•ÍÌ¹ÉÕ¸ 4(€€€€€€€mÍåÌ¹•á•ÕÑ…‰±”°ÍÑÈ¡ÍÉ¥ÁĞ¤°€ˆ´µ‘•ÍÉ¥‰”‰t°4(€€€€€€€İõI==P°4(€€€€€€€Ñ•áĞõQÉÕ”°4(€€€€€€€…ÁÑÕÉ•}½ÕÑÁÕĞõQÉÕ”°4(€€€€€€€¡•¬õ…±Í”°4(€€€€¤4(€€€…ÍÍ•ÉĞÉ•ÍÕ±Ğ¹É•ÑÕÉ¹½‘”€ôô€À°É•ÍÕ±Ğ¹ÍÑ‘½ÕĞ€¬É•ÍÕ±Ğ¹ÍÑ‘•ÉÈ4(€€€™½ÈÁÉ½‰”¥¸€ 4(€€€€€€€€‰¥µÁ½ÉÑÌˆ°4(€€€€€€€€‰±¤ˆ°4(€€€€€€€€‰•áÑ•É¹…°µ™¥áÑÕÉ”ˆ°4(€€€€€€€€‰Í¡•µ…Ìˆ°4(€€€€€€€€‰Ñ•µÁ±…Ñ•Ìˆ°4(€€€€€€€€‰Í½ÕÉ”µ¥Í½±…Ñ¥½¸ˆ°4(€€€€€€€€‰Í‘¬µ½¹ÍÕµ•Èˆ°4(€€€€€€€€‰Í‘¬µÙ•ÉÍ¥½¸µÁ…É¥Ñäˆ°4(€€€€€€€€‰Í‘¬µ½Á•É…Ñ¥½¹Ìˆ°4(€€€€€€€€‰½µÁ¥±•Èµ½¹Ñ…¥¹µ•¹Ğˆ°4(€€€€€€€€‰ØÄ¸ÈµÍ¡•µ…Ìˆ°4(€€€€€€€€‰ØÄ¸Èµ½µÁ¥±…Ñ¥½¸ˆ°4(€€€€€€€€‰ÁÉ½µ½Ñ•µ•¹Ñ¥ÑäµÅÕ•É¥•Ìˆ°4(€€€€€€€€‰•áÑ•É¹…°µ‰¥¹‘¥¹Ìˆ°4(€€€€€€€€‰Ñ½Á½±½äµµ¥É…Ñ¥½¸µ•¹ÑÉåÁ½¥¹Ğˆ°4(€€€€€€€€‰ÁÕ‰±¥Œµ…Á¤ˆ°4(€€€€€€€€‰½Ù•É…”µÉ•¥ÍÑÉäˆ°4(€€€€€€€€‰ÁÉ½©•Ñ¥½¸µ•¹•É…Ñ¥½¸ˆ°4(€€€€€€€€‰½Ù•É¹…¹”µ±¤ˆ°4(€€€€€€€€‰ÍåÍÑ•´µ½Ù•ÉÙ¥•Üˆ°4(€€€€¤è4(€€€€€€€…ÍÍ•ÉĞÁÉ½‰”¥¸É•ÍÕ±Ğ¹ÍÑ‘½ÕĞ4(4(4)‘•˜Ñ•ÍÑ}¥¹ÍÑ…±±•‘}İ¡••±}¡…É¹•ÍÍ}ÍÑ…ÉÑÍ}İ¥Ñ¡½ÕÑ}Í¥Ñ•}Á…­…•Ì ¤€´ø9½¹”è4(€€€ÍÉ¥ÁĞ€ôI==P€¼€‰ÍÉ¥ÁÑÌˆ€¼€‰Ñ•ÍÑ}¥¹ÍÑ…±±•‘}İ¡••°¹Áäˆ4(€€€É•ÍÕ±Ğ€ôÍÕ‰ÁÉ½•ÍÌ¹ÉÕ¸ 4(€€€€€€€mÍåÌ¹•á•ÕÑ…‰±”°€ˆµ$ˆ°€ˆµLˆ°ÍÑÈ¡ÍÉ¥ÁĞ¤°€ˆ´µ‘•ÍÉ¥‰”‰t°4(€€€€€€€İõI==P°4(€€€€€€€Ñ•áĞõQÉÕ”°4(€€€€€€€…ÁÑÕÉ•}½ÕÑÁÕĞõQÉÕ”°4(€€€€€€€¡•¬õ…±Í”°4(€€€€¤4(€€€…ÍÍ•ÉĞÉ•ÍÕ±Ğ¹É•ÑÕÉ¹½‘”€ôô€À°É•ÍÕ±Ğ¹ÍÑ‘½ÕĞ€¬É•ÍÕ±Ğ¹ÍÑ‘•ÉÈ4(4(4)‘•˜Ñ•ÍÑ}ÁÕ‰±¥Í¡}İ½É­™±½İ}¥Í}ÁÉ½µ½Ñ¥½¹}½¹±å}…¹‘}Í½Á•Í}½¥‘Œ ¤€´ø9½¹”è4(€€€İ½É­™±½Ü€ô}±½…‘}İ½É­™±½Ü ‰ÁÕ‰±¥Í ·}øæÚ$z{-®éÜj×†öâÖ6÷fW&vR%ÒĞ¢76W'B"ÒÖ6÷cÖG%ö¶—B"–â6÷fW&vU÷FW‡@Ğ¢76W'B"ÒÖ6÷bÖf–Â×VæFW#Óƒ"–â6÷fW&vU÷FW‡@Ğ¢76W'B"ÒÖGW&F–öç3Ó3"–â6÷fW&vU÷FW‡@Ğ¢76W'BrÖÒ&æ÷Bv÷fW&ææ6R"r–â6÷fW&vU÷FW‡@Ğ¢v÷fW&ææ6U÷FW‡BÒö¦ö%÷7FW5÷FW‡B†¦ö'5²&v÷fW&ææ6R%ÒĞ¢76W'B'—F†öâÖÒ—FW7BÖÒv÷fW&ææ6RÒÖGW&F–öç3Ó3"–âv÷fW&ææ6U÷FW‡@Ğ¢76W'B&G"v÷fW&ææ6RÖ6†V6·2Ò×6¶—×FW7G2"–âv÷fW&ææ6U÷FW‡@Ğ¢76W'B&G"&W—"Ö6æöæ–6ÂÖ–G2ÒÖ6†V6²"–âv÷fW&ææ6U÷FW‡@Ğ¢76W'B&G"fÆ–FFRÖvVæW&FVBÖFö72"–âv÷fW&ææ6U÷FW‡@Ğ¢76W'B&G"fÆ–FFR×7—7FVÒÖ÷fW'f–Wr"–âv÷fW&ææ6U÷FW‡@Ğ¢÷5÷÷'BÒ¦ö'5²&÷2×÷'F&–Æ—G’%ĞĞ¢76W'B6WB†÷5÷÷'E²'7G&FVw’%Õ²&ÖG&—‚%Õ²&÷2%Ò’ÓÒ²'v–æF÷w2ÖÆFW7B"Â&Ö6÷2ÖÆFW7B'ĞĞ¢76W'B"ÒÖGW&F–öç3Ó3"–âö¦ö%÷7FW5÷FW‡B†÷5÷÷'BĞ¢76W'B'&VÆV6RÖ'F–f7G2"æ÷B–â¦ö'0Ğ¢76W'B¦ö'5²'6VÖçF–2Ö6÷&R%Õ²'W6W2%ÒÓÒ"âòæv—F‡V"÷v÷&¶fÆ÷w2÷6VÖçF–2Ö6÷&R×VÆ–f–6F–öâç–ÖÂ Ğ Ğ Ğ¦FVbFW7EöFWfVÆ÷ö77W&æ6UöVæf÷&6W5÷÷7E÷&VÆV6Uö'&æ6…÷7–æ6‡&öæ—¦F–öâ‚’ÓâæöæS Ğ¢v÷&¶fÆ÷rÒöÆöE÷v÷&¶fÆ÷r‚&FWfVÆ÷Ö77W&æ6Rç–ÖÂ"Ğ¢7–æ5ö¦ö"Òv÷&¶fÆ÷u²&¦ö'2%Õ²'&VÆV6RÖ'&æ6‚×7–æ2%ĞĞ¢7–æ5÷FW‡BÒö¦ö%÷7FW5÷FW‡B‡7–æ5ö¦ö"Ğ¢76W'B7–æ5ö¦ö%²''Vç2Ööâ%ÒÓÒ'V'VçGRÖÆFW7B Ğ¢76W'B7–æ5ö¦ö%²'7FW2%Õ³Õ²'v—F‚%Õ²&fWF6‚ÖFWF‚%ÒÓÒ Ğ¢76W'B'67&—G2÷fW&–g•÷&VÆV6Uö'&æ6…÷7–æ2ç’"–â7–æ5÷FW‡@Ğ¢76W'B&÷&–v–âöÖ–â"–â7–æ5÷FW‡@Ğ¢76W'B&v—F‡V"ç6†"–â7–æ5÷FW‡@Ğ Ğ¢6öçG&–'WF–ærÒ…$ôõBò$4ôåE$”%UD”äræÖB"’ç&VE÷FW‡B†Væ6öF–æsÒ'WFbÓ‚"Ğ¢6¶–ÆÂÒ…$ôõBò"ævVçG2"ò'6¶–ÆÇ2"ò'6†—×&VÆV6R"ò%4´”ÄÂæÖB"’ç&VE÷FW‡B†Væ6öF–æsÒ'WFbÓ‚"Ğ¢f÷"FW‡B–â†6öçG&–'WF–ærÂ6¶–ÆÂ“ Ğ¢76W'B'÷7B×&VÆV6R"–âFW‡@Ğ¢76W'B'fW&–g•÷&VÆV6Uö'&æ6…÷7–æ2ç’"–âFW‡@Ğ¢76W'B$FWfVÆ÷77W&æ6R"–âFW‡@Ğ Ğ Ğ¦FVbFW7E÷&VÆV6Uö6W'F–f–6F–öåö÷vç5÷&WF–æVEö'F–f7G5öæE÷&VÆV6UööæÇ•ö6†V6·2‚’ÓâæöæS Ğ¢v÷&¶fÆ÷rÒöÆöE÷v÷&¶fÆ÷r‚'&VÆV6RÖ6W'F–f–6F–öâç–ÖÂ"Ğ¢G&–vvW"Ò÷v÷&¶fÆ÷u÷G&–vvW"‡v÷&¶fÆ÷rĞ¢76W'BG&–vvW%²'W6‚%Õ²&'&æ6†W2%ÒÓÒ²&Ö–â%ĞĞ¢76W'B'v÷&¶fÆ÷uöF—7F6‚"æ÷B–âG&–vvW Ğ¢¦ö'2Òv÷&¶fÆ÷u²&¦ö'2%ĞĞ¢76W'B¦ö'5²&–çFVw&F–öâ%Õ²'W6W2%ÒÓÒ"âòæv—F‡V"÷v÷&¶fÆ÷w2ö–çFVw&F–öâÖ77W&æ6Rç–ÖÂ Ğ¢76W'B¦ö'5²&–çFVw&F–öâ%Õ²'v—F‚%Õ²&gVÆÅö÷5÷÷'F&–Æ—G’%Ò—2G'VPĞ¢76W'B¦ö'5²'&VÆV6RÖ'F–f7G2%Õ²&æVVG2%ÒÓÒ&–çFVw&F–öâ Ğ¢76W'B¦ö'5²'v†VVÂ×6Öö¶R%Õ²&æVVG2%ÒÓÒ'&VÆV6RÖ'F–f7G2 Ğ¢76W'B¦ö'5²&÷2×v†VVÂ×6Öö¶R%Õ²&æVVG2%ÒÓÒ'&VÆV6RÖ'F–f7G2 Ğ¢f÷"æÖR–â‚'&VÆV6RÖ'F–f7G2"Â'&W&öGV6–&–Æ—G’"Â&&Væ6†Ö&²×6Öö¶R"“ Ğ¢FW‡BÒö¦ö%÷7FW5÷FW‡B†¦ö'5¶æÖUÒĞ¢76W'B%&V6÷&B–çFW'&WFW""–âFW‡B÷"æÖRÓÒ&&Væ6†Ö&²×6Öö¶R Ğ¢&VÆV6U÷FW‡BÒö¦ö%÷7FW5÷FW‡B†¦ö'5²'&VÆV6RÖ'F–f7G2%ÒĞ¢76W'B&æ÷&ÖÆ—¦R×6F—7B"–â&VÆV6U÷FW‡@Ğ¢76W'B'&VÆV6RÖÖæ–fW7Bæ§6öâ"–â&VÆV6U÷FW‡@Ğ¢76W'B'WÆöBÖ'F–f7B"–â&VÆV6U÷FW‡@Ğ¢76W'B'6VÖçF–2Ö6÷&Rçv6Ò"–â&VÆV6U÷FW‡@Ğ¢76W'B'67&—G2÷fW&–g•÷6VÖçF–5ö6÷&Uö'F–f7Bç’"–â&VÆV6U÷FW‡@Ğ Ğ¢v†VVÅ÷FW‡BÒö¦ö%÷7FW5÷FW‡B†¦ö'5²'v†VVÂ×6Öö¶R%ÒĞ¢76W'B'67&—G2÷FW7Eö–ç7FÆÆVE÷v†VVÂç’"–âv†VVÅ÷FW‡@Ğ¢÷5÷v†VVÂÒ¦ö'5²&÷2×v†VVÂ×6Öö¶R%ĞĞ¢76W'B6WB†÷5÷v†VVÅ²'7G&FVw’%Õ²&ÖG&—‚%Õ²&÷2%Ò’ÓÒ²'v–æF÷w2ÖÆFW7B"Â&Ö6÷2ÖÆFW7B'ĞĞ¢76W'B&F÷væÆöBÖ'F–f7B"–âö¦ö%÷7FW5÷FW‡B†÷5÷v†VVÂĞ Ğ¢÷'F&–Æ—G’ÒöÆöE÷v÷&¶fÆ÷r‚'÷'F&–Æ—G’Ö77W&æ6Rç–ÖÂ"Ğ¢÷'F&–Æ—G•÷G&–vvW"Ò÷v÷&¶fÆ÷u÷G&–vvW"‡÷'F&–Æ—G’Ğ¢76W'B'66†VGVÆR"–â÷'F&–Æ—G•÷G&–vvW Ğ¢76W'B'v÷&¶fÆ÷uöF—7F6‚"–â÷'F&–Æ—G•÷G&–vvW Ğ¢&W6öÇfW"Ò÷'F&–Æ—G•²&¦ö'2%Õ²'&W6öÇfR×6÷W&6R%ĞĞ¢&W6öÇfW%÷&VbÒ&W6öÇfW%²'7FW2%Õ³Õ²'v—F‚%Õ²'&Vb%ĞĞ¢76W'B&v—F‡V"æWfVçEöæÖRÓÒw66†VGVÆRr"–â&W6öÇfW%÷&V`Ğ¢76W'B'&Vg2ö†VG2öFWfVÆ÷"–â&W6öÇfW%÷&V`Ğ¢76W'B&v—F‡V"ç6†"–â&W6öÇfW%÷&V`Ğ¢76W'B&v—B&Wb×'6R„TB"–âö¦ö%÷7FW5÷FW‡B‡&W6öÇfW"Ğ¢76W'B&W6öÇfW%²&÷WGWG2%Õ²'6÷W&6Uö6öÖÖ—B%ÒÓÒ"G·²7FW2ç6÷W&6Ræ÷WGWG2æ6öÖÖ—B×Ò Ğ Ğ¢÷'F&–Æ—G•ö6÷&RÒ÷'F&–Æ—G•²&¦ö'2%Õ²'6VÖçF–2Ö6÷&R%ĞĞ¢76W'B÷'F&–Æ—G•ö6÷&U²&æVVG2%ÒÓÒ'&W6öÇfR×6÷W&6R Ğ¢76W'B÷'F&–Æ—G•ö6÷&U²'W6W2%ÒÓÒ‚"âòæv—F‡V"÷v÷&¶fÆ÷w2÷6VÖçF–2Ö6÷&R×VÆ–f–6F–öâç–ÖÂ"Ğ¢76W'B÷'F&–Æ—G•ö6÷&U²'v—F‚%Õ²'6÷W&6U÷&Vb%ÒÓÒ€Ğ¢"G·²æVVG2ç&W6öÇfR×6÷W&6Ræ÷WGWG2ç6÷W&6Uö6öÖÖ—B×Ò Ğ¢Ğ¢&öGV6W"ÒöÆöE÷v÷&¶fÆ÷r‚'6VÖçF–2Ö6÷&R×VÆ–f–6F–öâç–ÖÂ"Ğ¢&öGV6W%÷G&–vvW"Ò÷v÷&¶fÆ÷u÷G&–vvW"‡&öGV6W"Ğ¢&öGV6W%ö6ÆÂÒ&öGV6W%÷G&–vvW%²'v÷&¶fÆ÷uö6ÆÂ%ĞĞ¢76W'B&öGV6W%ö6ÆÅ²&–çWG2%Õ²'6÷W&6U÷&Vb%Õ²'G—R%ÒÓÒ'7G&–ær Ğ¢76W'B&öGV6W%ö6ÆÅ²&÷WGWG2%Õ²'6÷W&6Uö6öÖÖ—B%Õ²'fÇVR%ÒÓÒ€Ğ¢"G·²¦ö'2ç6VÖçF–2Ö6÷&Ræ÷WGWG2ç6÷W&6Uö6öÖÖ—B×Ò Ğ¢Ğ¢&öGV6W%ö¦ö"Ò&öGV6W%²&¦ö'2%Õ²'6VÖçF–2Ö6÷&R%ĞĞ¢76W'B&öGV6W%ö¦ö%²'7FW2%Õ³Õ²'v—F‚%Õ²'&Vb%ÒÓÒ"G·²–çWG2ç6÷W&6U÷&VbÇÂv—F‡V"ç6†×Ò Ğ¢&öGV6W%÷FW‡BÒö¦ö%÷7FW5÷FW‡B‡&öGV6W%ö¦ö"Ğ¢76W'B&v—B&Wb×'6R„TB"–â&öGV6W%÷FW‡@Ğ¢76W'B"G·²7FW2ç6÷W&6Ræ÷WGWG2æ6öÖÖ—B×Ò"–â&öGV6W%÷FW‡@Ğ Ğ¢÷'F&–Æ—G•÷7V—FRÒ÷'F&–Æ—G•²&¦ö'2%Õ²&gVÆÂÖ÷2×7V—FR%ĞĞ¢76W'B÷'F&–Æ—G•÷7V—FU²&æVVG2%ÒÓÒ'6VÖçF–2Ö6÷&R Ğ¢76W'B÷'F&–Æ—G•÷7V—FU²'7FW2%Õ³Õ²'v—F‚%Õ²'&Vb%ÒÓÒ€Ğ¢"G·²æVVG2ç6VÖçF–2Ö6÷&Ræ÷WGWG2ç6÷W&6Uö6öÖÖ—B×Ò Ğ¢Ğ¢76W'B6WB‡÷'F&–Æ—G•÷7V—FU²'7G&FVw’%Õ²&ÖG&—‚%Õ²&÷2%Ò’ÓÒ°Ğ¢'v–æF÷w2ÖÆFW7B"ÀĞ¢&Ö6÷2ÖÆFW7B"ÀĞ¢ĞĞ¢÷'F&–Æ—G•÷FW‡BÒö¦ö%÷7FW5÷FW‡B‡÷'F&–Æ—G•÷7V—FRĞ¢76W'B'6VÖçF–2Ö6÷&RÒG·²æVVG2ç6VÖçF–2Ö6÷&Ræ÷WGWG2ç6÷W&6Uö6öÖÖ—B×Ò"–â÷'F&–Æ—G•÷FW‡@Ğ¢76W'BrÒ×6÷W&6RÖ6öÖÖ—B"G·²æVVG2ç6VÖçF–2Ö6÷&Ræ÷WGWG2ç6÷W&6Uö6öÖÖ—B×Ò"r–â÷'F&–Æ—G•÷FW‡@Ğ¢76W'B'—F†öâÖÒ—FW7BÒÖGW&F–öç3Ó3"–â÷'F&–Æ—G•÷FW‡@Ğ Ğ Ğ¦FVbFW7E÷V&Æ—6†–æu÷v÷&¶fÆ÷w5÷&W6öÇfUöÖ–å÷&VÆV6Uö6W'F–f–6F–öâ‚’ÓâæöæS Ğ¢f÷"f–ÆVæÖR–â‚'V&Æ—6‚×—’ç–ÖÂ"Â'V&Æ—6‚ÖçÒç–ÖÂ"“ Ğ¢v÷&¶fÆ÷u÷FW‡BÒ…$ôõBò"æv—F‡V""ò'v÷&¶fÆ÷w2"òf–ÆVæÖR’ç&VE÷FW‡B†Væ6öF–æsÒ'WFbÓ‚"Ğ¢76W'B'&VÆV6RÖ6W'F–f–6F–öâç–ÖÂ"–âv÷&¶fÆ÷u÷FW‡@Ğ¢76W'B&G"Öv÷fW&ææ6Rç–ÖÂ"æ÷B–âv÷&¶fÆ÷u÷FW‡@Ğ Ğ Ğ¦FVbFW7EöÆö6Å÷&U÷W6…ö6†V6·5ö–æ6ÇVFU÷&VFÖU÷—•÷÷'F&–Æ—G’‚’ÓâæöæS Ğ¢67&—BÒ…$ôõBò'67&—G2"ò''VåöÆö6Å÷&U÷W6…ö6†V6·2ç’"’ç&VE÷FW‡B†Væ6öF–æsÒ'WFbÓ‚"Ğ¢76W'B'FW7G2÷FW7E÷&VFÖU÷—•÷÷'F&–Æ—G’ç’"–â67&—@Ğ Ğ Ğ¦FVbFW7EöÆö6Å÷&U÷W6…ö6†V6·5ö–æ6ÇVFU÷cUöGG&–'WF–öåö–çf&–çG2‚’ÓâæöæS Ğ¢67&—BÒ…$ôõBò'67&—G2"ò''VåöÆö6Å÷&U÷W6…ö6†V6·2ç’"’ç&VE÷FW‡B†Væ6öF–æsÒ'WFbÓ‚"Ğ¢f÷"F‚–â€Ğ¢'FW7G2÷FW7E÷&VFÖUöGG&–'WF–öåöFö72ç’"ÀĞ¢'FW7G2÷FW7E÷6VÖçF–5öGG&–'WF–öåöÖG&—‚ç’"ÀĞ¢'FW7G2÷FW7E÷6VÖçF–5öGG&–'WF–öå÷fö6'VÆ'•÷&—G’ç’"ÀĞ¢'FW7G2÷FW7EöGG&–'WF–öå÷6†–Õ÷&—G’ç’"ÀĞ¢'FW7G2÷FW7EöÆVv7•öGG&–'WF–öåöæ÷&ÖÆ—¦F–öâç’"ÀĞ¢'FW7G2÷FW7EöGG&–'WF–öå÷&W6öÇWF–öâç’"ÀĞ¢'FW7G2÷FW7EöFV6÷&F÷'2ç’"ÀĞ¢'FW7G2÷FW7EöGG&–'WF–öåöGVÅöVæ6öFUöwV&Bç’"ÀĞ¢'FW7G2÷FW7EöæW‡Eö–E÷c5öÆ–5öÆÆö6F–öâç’"ÀĞ¢'FW7G2÷FW7E÷6¶vU÷66†VÖ÷&—G’ç’"ÀĞ¢'FW7G2÷FW7Eö–×ÆVÖVçFF–öåöGG&–'WF–öå÷fÆ–FF–öâç’"ÀĞ¢'FW7G2÷FW7EöGG&–'WF–öåö6Æ’ç’"ÀĞ¢“ Ğ¢76W'BF‚–â67&—@Ğ Ğ Ğ¦FVbFW7E÷%öfVVF&6µ÷'VææW%ö–æ6ÇVFW5öW†7Eö7W'&VçEö÷WGWEö'—FUövöÆFVâ‚’ÓâæöæS Ğ¢g&öÒ67&—G2ç'Vå÷%öfVVF&6²–×÷'B4TÔåD”5õDU5E0Ğ Ğ¢76W'B'FW7G2÷FW7EöWF†÷&–æuö6öç7G'V7F–öå÷cö6öçG&7Bç’"–â4TÔåD”5õDU5E0Ğ¢76W'B€Ğ¢'FW7G2övöÆFVâ÷FW7Eö7W'&VçEö÷WGWG2ç“£§FW7Eö7W'&VçEö÷WGWG5öÖF6…öW‡V7FVEö'—FW2 Ğ¢–â4TÔåD”5õDU5E0Ğ¢Ğ
+"""Build-once release, installed-wheel, and workflow contracts."""
+
+from __future__ import annotations
+
+import gzip
+import io
+import json
+import subprocess
+import sys
+import tarfile
+from pathlib import Path
+
+from typing import Any, cast
+
+import yaml
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def _release_utility(*arguments: str) -> subprocess.CompletedProcess[str]:
+    script = ROOT / "scripts" / "release_manifest.py"
+    assert script.is_file(), "missing release-manifest utility"
+    return subprocess.run(
+        [sys.executable, str(script), *arguments],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+
+def _write_sdist(path: Path, timestamp: int) -> None:
+    payload = b"deterministic content\n"
+    with (
+        path.open("wb") as raw,
+        gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=timestamp) as compressed,
+        tarfile.open(fileobj=compressed, mode="w", format=tarfile.PAX_FORMAT) as archive,
+    ):
+        member = tarfile.TarInfo("package/file.txt")
+        member.size = len(payload)
+        member.mtime = timestamp
+        member.uid = timestamp
+        member.gid = timestamp
+        member.uname = "builder"
+        member.gname = "builder"
+        archive.addfile(member, io.BytesIO(payload))
+
+
+def _load_workflow(name: str) -> dict[str, Any]:
+    path = ROOT / ".github" / "workflows" / name
+    assert path.is_file(), f"missing workflow {name}"
+    payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+    assert isinstance(payload, dict)
+    return payload
+
+
+def _job_steps_text(job: dict[str, Any]) -> str:
+    chunks: list[str] = []
+    for step in job.get("steps") or []:
+        if not isinstance(step, dict):
+            continue
+        for key in ("run", "uses", "name"):
+            value = step.get(key)
+            if isinstance(value, str):
+                chunks.append(value)
+        with_block = step.get("with")
+        if isinstance(with_block, dict):
+            chunks.extend(str(value) for value in with_block.values())
+    return "\n".join(chunks)
+
+
+def test_release_manifest_rejects_missing_extra_hash_tag_and_version_mismatches(
+    tmp_path: Path,
+) -> None:
+    dist = tmp_path / "dist"
+    dist.mkdir()
+    wheel = dist / "adr_architecture_kit-0.1.0-py3-none-any.whl"
+    sdist = dist / "adr_architecture_kit-0.1.0.tar.gz"
+    wheel.write_bytes(b"wheel")
+    sdist.write_bytes(b"sdist")
+    manifest = tmp_path / "release-manifest.json"
+
+    created = _release_utility(
+        "create",
+        "--dist-dir",
+        str(dist),
+        "--output",
+        str(manifest),
+        "--source-commit",
+        "a" * 40,
+        "--version",
+        "0.1.0",
+    )
+    assert created.returncode == 0, created.stdout + created.stderr
+
+    verified = _release_utility(
+        "verify",
+        "--dist-dir",
+        str(dist),
+        "--manifest",
+        str(manifest),
+        "--expected-source-commit",
+        "a" * 40,
+        "--expected-version",
+        "0.1.0",
+        "--expected-tag",
+        "v0.1.0",
+    )
+    assert verified.returncode == 0, verified.stdout + verified.stderr
+
+    wheel.write_bytes(b"corrupt")
+    assert (
+        _release_utility("verify", "--dist-dir", str(dist), "--manifest", str(manifest)).returncode
+        != 0
+    )
+    wheel.write_bytes(b"wheel")
+    assert (
+        _release_utility(
+            "verify",
+            "--dist-dir",
+            str(dist),
+            "--manifest",
+            str(manifest),
+            "--expected-tag",
+            "v0.1.1",
+        ).returncode
+        != 0
+    )
+
+    payload = json.loads(manifest.read_text(encoding="utf-8"))
+    payload["package_version"] = "0.1.1"
+    manifest.write_text(json.dumps(payload), encoding="utf-8")
+    assert (
+        _release_utility(
+            "verify",
+            "--dist-dir",
+            str(dist),
+            "--manifest",
+            str(manifest),
+            "--expected-version",
+            "0.1.0",
+        ).returncode
+        != 0
+    )
+
+    manifest.unlink()
+    sdist.unlink()
+    assert (
+        _release_utility(
+            "create",
+            "--dist-dir",
+            str(dist),
+            "--output",
+            str(manifest),
+            "--source-commit",
+            "a" * 40,
+            "--version",
+            "0.1.0",
+        ).returncode
+        != 0
+    )
+
+    sdist.write_bytes(b"sdist")
+    (dist / "extra-0.1.0.tar.gz").write_bytes(b"extra")
+    assert (
+        _release_utility(
+            "create",
+            "--dist-dir",
+            str(dist),
+            "--output",
+            str(manifest),
+            "--source-commit",
+            "a" * 40,
+            "--version",
+            "0.1.0",
+        ).returncode
+        != 0
+    )
+
+
+def test_sdist_normalization_removes_build_time_and_owner_variation(tmp_path: Path) -> None:
+    first = tmp_path / "first.tar.gz"
+    second = tmp_path / "second.tar.gz"
+    epoch = 1_767_225_600
+    _write_sdist(first, epoch + 10)
+    _write_sdist(second, epoch + 20)
+    assert first.read_bytes() != second.read_bytes()
+
+    for path in (first, second):
+        result = _release_utility(
+            "normalize-sdist",
+            "--sdist",
+            str(path),
+            "--source-date-epoch",
+            str(epoch),
+        )
+        assert result.returncode == 0, result.stdout + result.stderr
+
+    assert first.read_bytes() == second.read_bytes()
+    with tarfile.open(first, "r:gz") as archive:
+        members = archive.getmembers()
+    assert members
+    assert all(member.mtime == epoch for member in members)
+    assert all(member.uid == member.gid == 0 for member in members)
+    assert all(member.uname == member.gname == "" for member in members)
+
+
+def test_installed_wheel_harness_declares_all_consumer_probes() -> None:
+    script = ROOT / "scripts" / "test_installed_wheel.py"
+    assert script.is_file(), "missing installed-wheel consumer harness"
+    result = subprocess.run(
+        [sys.executable, str(script), "--describe"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    for probe in (
+        "imports",
+        "cli",
+        "external-fixture",
+        "schemas",
+        "templates",
+        "source-isolation",
+        "sdk-consumer",
+        "sdk-version-parity",
+        "sdk-operations",
+        "compiler-containment",
+        "v1.2-schemas",
+        "v1.2-compilation",
+        "promoted-entity-queries",
+        "external-bindings",
+        "topology-migration-entrypoint",
+        "public-api",
+        "coverage-registry",
+        "projection-generation",
+        "governance-cli",
+        "system-overview",
+    ):
+        assert probe in result.stdout
+
+
+def test_installed_wheel_harness_starts_without_site_packages() -> None:
+    script = ROOT / "scripts" / "test_installed_wheel.py"
+    result = subprocess.run(
+        [sys.executable, "-I", "-S", str(script), "--describe"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_publish_workflow_is_promotion_only_and_scopes_oidc() -> None:
+    workflow = _load_workflow("publish-pypi.yml")
+    jobs = workflow["jobs"]
+    assert set(jobs) == {"resolve-bundle", "publish"}
+
+    resolve = jobs["resolve-bundle"]
+    publish = jobs["publish"]
+    assert resolve["permissions"]["contents"] == "read"
+    assert resolve["permissions"]["actions"] == "read"
+    assert "id-token" not in resolve.get("permissions", {})
+    assert publish["permissions"]["contents"] == "read"
+    assert publish["permissions"]["id-token"] == "write"
+    assert publish["environment"]["name"] == "pypi"
+    assert publish["needs"] == ["resolve-bundle"]
+    assert "concurrency" not in workflow
+
+    resolve_text = _job_steps_text(resolve)
+    publish_text = _job_steps_text(publish)
+    for text in (resolve_text, publish_text):
+        assert "actions/checkout@" in text
+        assert "actions/setup-python@" in text
+        assert "3.14" in text
+        assert "Record interpreter" in text
+        assert "python --version" in text
+        assert "release_authority_promotion.py verify" in text
+        assert "release_authority_promotion.py download" in text
+        assert '--source "$SOURCE"' in text
+        assert '--certification-run "$CERTIFICATION"' in text
+        assert "pip install .[dev]" not in text
+        assert "python -m build" not in text
+        assert '-m", "build"' not in text and '("-m", "build")' not in text
+        assert "pytest" not in text
+        assert "governance-checks" not in text
+        assert "pip_audit" not in text
+    assert "resolve_qualified_release_bundle.py" in resolve_text
+    assert "attestation_digest" in resolve_text
+    assert "--expected-attestation-digest" in publish_text
+    assert "gh-action-pypi-publish" in publish_text
+    assert "os-portability" not in yaml.dump(workflow)
+    assert "os-wheel-smoke" not in yaml.dump(workflow)
+
+
+def test_npm_publish_workflow_is_promotion_only_and_uses_trusted_publishing_runtime() -> None:
+    workflow = _load_workflow("publish-npm.yml")
+    jobs = workflow["jobs"]
+    resolve = jobs["resolve-bundle"]
+    publish = jobs["publish"]
+
+    trigger = workflow.get("on")
+    if trigger is None:
+        trigger = workflow.get(cast(Any, True))
+    assert isinstance(trigger, dict)
+    assert trigger["push"]["tags"] == ["v*"]
+    assert resolve["permissions"] == {"contents": "read", "actions": "read"}
+    assert publish["permissions"] == {"contents": "read", "actions": "read", "id-token": "write"}
+    assert publish["environment"]["name"] == "npm"
+    assert publish["needs"] == ["resolve-bundle"]
+
+    publish_text = _job_steps_text(publish)
+    assert "22.14.0" in publish_text
+    assert "npm@11.15.0" in publish_text
+    assert "npm publish" in publish_text
+    assert "--provenance" in publish_text
+    assert "release_authority_promotion.py download" in publish_text
+    assert "release_authority_promotion.py verify" in publish_text
+    assert "--expected-attestation-digest" in publish_text
+    assert "check_npm_publication.py" in publish_text
+    assert "publication_status" in publish_text
+    assert "noop" in publish_text
+    assert "npm run build" not in publish_text
+    assert "npm ci" not in publish_text
+    assert "python -m build" not in publish_text
+
+
+def test_codeql_analyzes_python_and_typescript_consumer_binding_separately() -> None:
+    workflow = _load_workflow("codeql.yml")
+    jobs = workflow["jobs"]
+    analyze = jobs["analyze"]
+    matrix = analyze["strategy"]["matrix"]["language"]
+    assert matrix == ["python", "javascript-typescript"]
+    assert analyze["name"] == "Analyze (${{ matrix.language }})"
+
+    steps_text = _job_steps_text(analyze)
+    assert "github/codeql-action/init@v3" in steps_text
+    assert "${{ matrix.language }}" in steps_text
+    assert "security-extended" in steps_text
+    assert "github/codeql-action/autobuild@v3" in steps_text
+    assert "github/codeql-action/analyze@v3" in steps_text
+    assert "/language:${{ matrix.language }}" in steps_text
+
+    trigger = workflow.get("on")
+    if trigger is None:
+        trigger = workflow.get(cast(Any, True))
+    assert isinstance(trigger, dict)
+    assert trigger["push"]["branches"] == ["main", "develop"]
+    assert trigger["pull_request"]["branches"] == ["main", "develop"]
+    assert trigger["schedule"] == [{"cron": "17 7 * * 1"}]
+
+
+def _workflow_trigger(workflow: dict[str, Any]) -> dict[str, Any]:
+    trigger = workflow.get("on")
+    if trigger is None:
+        trigger = workflow.get(cast(Any, True))
+    assert isinstance(trigger, dict)
+    return trigger
+
+
+def test_pr_feedback_is_fast_and_semantically_explicit() -> None:
+    workflow = _load_workflow("pr-feedback.yml")
+    assert _workflow_trigger(workflow)["pull_request"]["branches"] == ["main", "develop"]
+    assert workflow["concurrency"]["cancel-in-progress"] is True
+    jobs = workflow["jobs"]
+    assert set(jobs) == {
+        "rust-semantic-core",
+        "python-semantic",
+        "typescript-consumer",
+        "governance",
+        "quality-ratchets",
+    }
+    assert (
+        jobs["rust-semantic-core"]["uses"] == "./.github/workflows/semantic-core-qualification.yml"
+    )
+    assert jobs["rust-semantic-core"]["name"] == "Rust semantic core"
+
+    python_text = _job_steps_text(jobs["python-semantic"])
+    assert "run_pr_feedback.py" in python_text
+    assert "run_source_compat.py" in python_text
+    assert "python -m pytest -m fast --durations=10" in python_text
+    assert "--durations=30" not in python_text
+
+    node_text = _job_steps_text(jobs["typescript-consumer"])
+    for command in ("npm run build", "npm run typecheck", "npm test", "browser:check"):
+        assert command in node_text
+    assert "npm audit" not in node_text
+    assert "npm run pack:check" not in node_text
+    producer = _load_workflow("semantic-core-qualification.yml")
+    producer_text = _job_steps_text(producer["jobs"]["semantic-core"])
+    for command in (
+        "cargo test --manifest-path core/Cargo.toml",
+        "scripts/build_semantic_core.mjs",
+        "scripts/verify_semantic_core_artifact.py",
+        "upload-artifact",
+    ):
+        assert command in producer_text
+
+    for name, job in jobs.items():
+        text = _job_steps_text(job)
+        assert "release_manifest.py" not in text
+        assert "python -m build" not in text
+        if name != "rust-semantic-core":
+            assert "upload-artifact" not in text
+
+    producer = _load_workflow("semantic-core-qualification.yml")["jobs"]["semantic-core"]
+    assert "actions/upload-artifact@v4" in _job_steps_text(producer)
+    for workflow_name, consumer_jobs in (
+        ("pr-feedback.yml", ("python-semantic", "typescript-consumer", "governance")),
+        (
+            "integration-assurance.yml",
+            ("source-compatibility", "typescript-consumer", "governance", "full-python-coverage"),
+        ),
+    ):
+        workflow_jobs = _load_workflow(workflow_name)["jobs"]
+        for job_name in consumer_jobs:
+            expected_dependency = (
+                "rust-semantic-core" if workflow_name == "pr-feedback.yml" else "semantic-core"
+            )
+            dependencies = workflow_jobs[job_name].get("needs", [])
+            if isinstance(dependencies, str):
+                dependencies = [dependencies]
+            assert expected_dependency in dependencies
+            text = _job_steps_text(workflow_jobs[job_name])
+            assert "actions/download-artifact@v4" in text
+            assert "semantic_core_artifact_bundle.py consume" in text
+            assert "--source-commit" in text
+
+
+def test_semantic_core_bootstrap_precedes_strict_qualification_and_is_not_consumed() -> None:
+    producer = _load_workflow("semantic-core-qualification.yml")["jobs"]["semantic-core"]
+    steps = producer["steps"]
+    names = [step.get("name", "") for step in steps]
+    build = next(i for i, name in enumerate(names) if "Build WASM without changing" in name)
+    bootstrap = next(i for i, name in enumerate(names) if "UNQUALIFIED" in name)
+    upload = next(
+        i
+        for i, step in enumerate(steps)
+        if step.get("uses") == "actions/upload-artifact@v4"
+        and "bootstrap" in step.get("with", {}).get("name", "")
+    )
+    guard = next(i for i, name in enumerate(names) if "Guard semantic-core source" in name)
+    equality = next(i for i, name in enumerate(names) if "Verify source-built artifact" in name)
+    qualified_bundle = next(
+        i for i, name in enumerate(names) if "Create commit-bound artifact bundle" in name
+    )
+    assert build < bootstrap < upload < guard < equality < qualified_bundle
+    assert steps[build]["run"].endswith("--artifact-only")
+    assert "--built-artifact" in steps[guard]["run"]
+    assert "semantic-core-${{ steps.source.outputs.commit }}" not in steps[upload]["with"]["name"]
+
+    for workflow_name in (
+        "pr-feedback.yml",
+        "integration-assurance.yml",
+        "release-certification.yml",
+    ):
+        workflow_text = (ROOT / ".github" / "workflows" / workflow_name).read_text(encoding="utf-8")
+        assert "semantic-core-bootstrap-" not in workflow_text
+    assert "semantic_core_artifact_bundle.py consume" in (
+        ROOT / ".github" / "workflows" / "release-certification.yml"
+    ).read_text(encoding="utf-8")
+
+
+def test_integration_assurance_owns_full_suite_and_develop_runs_it() -> None:
+    workflow = _load_workflow("develop-assurance.yml")
+    trigger = _workflow_trigger(workflow)
+    assert trigger["push"]["branches"] == ["develop"]
+    assert (
+        workflow["jobs"]["integration"]["uses"] == "./.github/workflows/integration-assurance.yml"
+    )
+
+    assurance = _load_workflow("integration-assurance.yml")
+    jobs = assurance["jobs"]
+    assert {
+        "full-python-coverage",
+        "os-portability",
+        "dependency-audit",
+        "typescript-consumer",
+    } <= set(jobs)
+    coverage_text = _job_steps_text(jobs["full-python-coverage"])
+    assert "--cov=adr_kit" in coverage_text
+    assert "--cov-fail-under=80" in coverage_text
+    assert "--durations=30" in coverage_text
+    assert '-m "not governance"' in coverage_text
+    governance_text = _job_steps_text(jobs["governance"])
+    assert "python -m pytest -m governance --durations=30" in governance_text
+    assert "adr governance-checks --skip-tests" in governance_text
+    assert "adr repair-canonical-ids --check" in governance_text
+    assert "adr validate-generated-docs" in governance_text
+    assert "adr validate-system-overview" in governance_text
+    os_port = jobs["os-portability"]
+    assert set(os_port["strategy"]["matrix"]["os"]) == {"windows-latest", "macos-latest"}
+    assert "--durations=30" in _job_steps_text(os_port)
+    assert "release-artifacts" not in jobs
+    assert jobs["semantic-core"]["uses"] == "./.github/workflows/semantic-core-qualification.yml"
+
+
+def test_develop_assurance_enforces_post_release_branch_synchronization() -> None:
+    workflow = _load_workflow("develop-assurance.yml")
+    sync_job = workflow["jobs"]["release-branch-sync"]
+    sync_text = _job_steps_text(sync_job)
+    assert sync_job["runs-on"] == "ubuntu-latest"
+    assert sync_job["steps"][0]["with"]["fetch-depth"] == 0
+    assert "scripts/verify_release_branch_sync.py" in sync_text
+    assert "origin/main" in sync_text
+    assert "github.sha" in sync_text
+
+    contributing = (ROOT / "CONTRIBUTING.md").read_text(encoding="utf-8")
+    skill = (ROOT / ".agents" / "skills" / "ship-release" / "SKILL.md").read_text(encoding="utf-8")
+    for text in (contributing, skill):
+        assert "post-release" in text
+        assert "verify_release_branch_sync.py" in text
+        assert "Develop Assurance" in text
+
+
+def test_release_certification_owns_retained_artifacts_and_release_only_checks() -> None:
+    workflow = _load_workflow("release-certification.yml")
+    trigger = _workflow_trigger(workflow)
+    assert trigger["push"]["branches"] == ["main"]
+    assert "workflow_dispatch" not in trigger
+    jobs = workflow["jobs"]
+    assert jobs["integration"]["uses"] == "./.github/workflows/integration-assurance.yml"
+    assert jobs["integration"]["with"]["full_os_portability"] is True
+    assert jobs["release-artifacts"]["needs"] == "integration"
+    assert jobs["wheel-smoke"]["needs"] == "release-artifacts"
+    assert jobs["os-wheel-smoke"]["needs"] == "release-artifacts"
+    for name in ("release-artifacts", "reproducibility", "benchmark-smoke"):
+        text = _job_steps_text(jobs[name])
+        assert "Record interpreter" in text or name == "benchmark-smoke"
+    release_text = _job_steps_text(jobs["release-artifacts"])
+    assert "normalize-sdist" in release_text
+    assert "release-manifest.json" in release_text
+    assert "upload-artifact" in release_text
+    assert "semantic-core.wasm" in release_text
+    assert "scripts/verify_semantic_core_artifact.py" in release_text
+
+    wheel_text = _job_steps_text(jobs["wheel-smoke"])
+    assert "scripts/test_installed_wheel.py" in wheel_text
+    os_wheel = jobs["os-wheel-smoke"]
+    assert set(os_wheel["strategy"]["matrix"]["os"]) == {"windows-latest", "macos-latest"}
+    assert "download-artifact" in _job_steps_text(os_wheel)
+
+    portability = _load_workflow("portability-assurance.yml")
+    portability_trigger = _workflow_trigger(portability)
+    assert "schedule" in portability_trigger
+    assert "workflow_dispatch" in portability_trigger
+    resolver = portability["jobs"]["resolve-source"]
+    resolver_ref = resolver["steps"][0]["with"]["ref"]
+    assert "github.event_name == 'schedule'" in resolver_ref
+    assert "refs/heads/develop" in resolver_ref
+    assert "github.sha" in resolver_ref
+    assert "git rev-parse HEAD" in _job_steps_text(resolver)
+    assert resolver["outputs"]["source_commit"] == "${{ steps.source.outputs.commit }}"
+
+    portability_core = portability["jobs"]["semantic-core"]
+    assert portability_core["needs"] == "resolve-source"
+    assert portability_core["uses"] == ("./.github/workflows/semantic-core-qualification.yml")
+    assert portability_core["with"]["source_ref"] == (
+        "${{ needs.resolve-source.outputs.source_commit }}"
+    )
+    producer = _load_workflow("semantic-core-qualification.yml")
+    producer_trigger = _workflow_trigger(producer)
+    producer_call = producer_trigger["workflow_call"]
+    assert producer_call["inputs"]["source_ref"]["type"] == "string"
+    assert producer_call["outputs"]["source_commit"]["value"] == (
+        "${{ jobs.semantic-core.outputs.source_commit }}"
+    )
+    producer_job = producer["jobs"]["semantic-core"]
+    assert producer_job["steps"][0]["with"]["ref"] == "${{ inputs.source_ref || github.sha }}"
+    producer_text = _job_steps_text(producer_job)
+    assert "git rev-parse HEAD" in producer_text
+    assert "${{ steps.source.outputs.commit }}" in producer_text
+
+    portability_suite = portability["jobs"]["full-os-suite"]
+    assert portability_suite["needs"] == "semantic-core"
+    assert portability_suite["steps"][0]["with"]["ref"] == (
+        "${{ needs.semantic-core.outputs.source_commit }}"
+    )
+    assert set(portability_suite["strategy"]["matrix"]["os"]) == {
+        "windows-latest",
+        "macos-latest",
+    }
+    portability_text = _job_steps_text(portability_suite)
+    assert "semantic-core-${{ needs.semantic-core.outputs.source_commit }}" in portability_text
+    assert '--source-commit "${{ needs.semantic-core.outputs.source_commit }}"' in portability_text
+    assert "python -m pytest --durations=30" in portability_text
+
+
+def test_publishing_workflows_resolve_main_release_certification() -> None:
+    for filename in ("publish-pypi.yml", "publish-npm.yml"):
+        workflow_text = (ROOT / ".github" / "workflows" / filename).read_text(encoding="utf-8")
+        assert "release-certification.yml" in workflow_text
+        assert "adr-governance.yml" not in workflow_text
+
+
+def test_local_pre_push_checks_include_readme_pypi_portability() -> None:
+    script = (ROOT / "scripts" / "run_local_pre_push_checks.py").read_text(encoding="utf-8")
+    assert "tests/test_readme_pypi_portability.py" in script
+
+
+def test_local_pre_push_checks_include_v15_attribution_invariants() -> None:
+    script = (ROOT / "scripts" / "run_local_pre_push_checks.py").read_text(encoding="utf-8")
+    for path in (
+        "tests/test_readme_attribution_docs.py",
+        "tests/test_semantic_attribution_matrix.py",
+        "tests/test_semantic_attribution_vocabulary_parity.py",
+        "tests/test_attribution_shim_parity.py",
+        "tests/test_legacy_attribution_normalization.py",
+        "tests/test_attribution_resolution.py",
+        "tests/test_decorators.py",
+        "tests/test_attribution_dual_encode_guard.py",
+        "tests/test_next_id_v13_alias_allocation.py",
+        "tests/test_package_schema_parity.py",
+        "tests/test_implementation_attribution_validation.py",
+        "tests/test_attribution_cli.py",
+    ):
+        assert path in script
+
+
+def test_pr_feedback_runner_includes_exact_current_output_byte_golden() -> None:
+    from scripts.run_pr_feedback import SEMANTIC_TESTS
+
+    assert "tests/test_authoring_construction_v11_contract.py" in SEMANTIC_TESTS
+    assert (
+        "tests/golden/test_current_outputs.py::test_current_outputs_match_expected_bytes"
+        in SEMANTIC_TESTS
+    )

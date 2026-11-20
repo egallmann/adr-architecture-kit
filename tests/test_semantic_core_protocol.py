@@ -203,17 +203,22 @@ def test_v11_operations_execute_through_the_packaged_wasm_boundary() -> None:
         validate_semantic_core_protocol(result)
 
 
-def test_protocol_contract_mirrors_are_byte_identical_for_all_versions() -> None:
+def test_protocol_contract_mirrors_match_released_versions_only() -> None:
     mirrors = {
         CONTRACT: ROOT / "src" / "adr_kit" / "core" / "semantic-core-contract.json",
         CONTRACT_V11: ROOT / "src" / "adr_kit" / "core" / "semantic-core-contract-v1.1.json",
         CONTRACT_V12: ROOT / "src" / "adr_kit" / "core" / "semantic-core-contract-v1.2.json",
         CONTRACT_V13: ROOT / "src" / "adr_kit" / "core" / "semantic-core-contract-v1.3.json",
-        CONTRACT_V14: ROOT / "src" / "adr_kit" / "core" / "semantic-core-contract-v1.4.json",
     }
     for canonical, mirror in mirrors.items():
         assert mirror.is_file(), mirror
         assert canonical.read_bytes() == mirror.read_bytes(), (canonical, mirror)
+    assert CONTRACT_V14.is_file()
+    contract_v15 = ROOT / "contracts" / "semantic-core" / "v1.5" / "contract.json"
+    assert contract_v15.is_file()
+    for version in ("1.4", "1.5"):
+        mirror = ROOT / "src" / "adr_kit" / "core" / f"semantic-core-contract-v{version}.json"
+        assert not mirror.exists(), mirror
 
 
 def _assert_v11_vector(

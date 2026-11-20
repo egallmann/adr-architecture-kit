@@ -42,9 +42,8 @@ def semantic_core_capabilities() -> dict[str, object]:
 def supports_semantic_core_operation(version: str, operation: str) -> bool:
     """Return whether an additive operation is reachable for an exact version."""
 
-    return (
-        (version == "1.2" and operation in SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS)
-        or (version == "1.3" and operation in SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS)
+    return (version == "1.2" and operation in SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS) or (
+        version == "1.3" and operation in SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS
     )
 
 
@@ -124,8 +123,7 @@ def validate_semantic_core_protocol(value: dict[str, Any]) -> None:
     declared_version = value.get("core_contract_version")
     version = (
         declared_version
-        if isinstance(declared_version, str)
-        and declared_version in SEMANTIC_CORE_PROTOCOL_VERSIONS
+        if isinstance(declared_version, str) and declared_version in SEMANTIC_CORE_PROTOCOL_VERSIONS
         else "1.0"
     )
     errors = sorted(

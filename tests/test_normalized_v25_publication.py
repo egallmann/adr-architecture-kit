@@ -65,7 +65,7 @@ BASELINE_GIT_BLOBS = {
     "contracts/semantic-contract/v1.0/resources/normalized-model-2.4-schema-unresolved-registry.schema.json": "3a799c04c6c3244034422d380711e862f1bc0146",
     "contracts/semantic-contract/v1.0/sets/scs-v1-sha256-2cf903fe80c50b97443645369b28443c7fa186ed758e2e22d7ce758ccb0d6020.json": "a038827f86a122d71bb8ae148f69bf7e1acc8598",
     "contracts/semantic-contract/v1.0/sets/scs-v1-sha256-d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6.json": "361a336464c8ce0dc1bf936145066dd4b8d6be8f",
-    "packages/node/src/generated/semantic-core.wasm": "7ad5c0594effa63b8246e77e5926e20545fd34f3",
+    "packages/node/src/generated/semantic-core.wasm": "eadd1e250139c2132f26b1c75e1ab197cad28652",
     "schema/normalized-model/v2.3/normalized-architecture-model.schema.json": "c5caf6b3f008b9d32dacaeed9d251e2978773004",
     "schema/normalized-model/v2.3/normalized-entity-registry.schema.json": "c3ba0f7648127dc874bf6887bf59dc33e430bcab",
     "schema/normalized-model/v2.3/normalized-entity.schema.json": "cc5bd2bac84978bd3a82fa99b480767df21d8926",

@@ -658,7 +658,7 @@ def test_valid_but_unselected_or_malformed_resource_conveys_no_authority(
         publication.qualify(ROOT, history=False)
 
 
-def test_exact_installed_wheel_discovery(tmp_path: Path) -> None:
+def test_candidate_authority_is_unavailable_from_installed_wheel(tmp_path: Path) -> None:
     wheel_dir = tmp_path / "wheels"
     subprocess.run(
         [
@@ -696,9 +696,16 @@ sys.path.insert(0,sys.argv[1])
 import adr_kit
 from adr_kit.semantic_contract import get_semantic_contract,load_semantic_resource,validate_semantic_resource_closure
 assert pathlib.Path(adr_kit.__file__).is_relative_to(sys.argv[1])
-c=get_semantic_contract('architecture-interpretation','1.4')
-assert c.to_wire()['semanticContractFingerprint']==sys.argv[2]
-assert validate_semantic_resource_closure(c,[{'canonicalResourceKey':e.canonical_resource_key,'content':load_semantic_resource(e.canonical_resource_key)} for e in c.resource_manifest]).closure_valid
+for load in (
+    lambda: get_semantic_contract('architecture-interpretation','1.4'),
+    lambda: load_semantic_resource('architecture-interpretation/1.4/contract'),
+):
+    try:
+        load()
+    except LookupError:
+        pass
+    else:
+        raise AssertionError('unreleased authority is available from the installed wheel')
 """
     checked = subprocess.run(
         [sys.executable, "-I", "-c", code, str(installed), SCF],

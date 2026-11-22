@@ -53,6 +53,12 @@ package_path = Path(adr_kit.__file__).resolve()
 assert 'site-packages' in package_path.as_posix().lower(), package_path
 assert not resources.files('adr_kit.core').joinpath('semantic-core-contract-v1.4.json').is_file()
 assert not resources.files('adr_kit.core').joinpath('semantic-core-contract-v1.5.json').is_file()
+try:
+    nm25_schema_assets = resources.files('adr_kit.schema.v2_5')
+except ModuleNotFoundError:
+    pass
+else:
+    assert not nm25_schema_assets.joinpath('normalized-architecture-model.schema.json').is_file()
 assert callable(implements) and callable(enforces) and callable(embodies)
 assert resources.files('adr_kit.schema.v1_0').joinpath('adr-logical.schema.json').is_file()
 assert resources.files('adr_kit.schema.v1_1').joinpath('architecture-index.schema.json').is_file()

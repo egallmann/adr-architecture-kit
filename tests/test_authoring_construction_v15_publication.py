@@ -839,7 +839,7 @@ def test_exact_discovery_and_closure_corruption_rejection() -> None:
     ).closure_valid
 
 
-def test_independent_installed_wheel_discovery(tmp_path: Path) -> None:
+def test_candidate_authority_is_unavailable_from_installed_wheel(tmp_path: Path) -> None:
     if os.name == "nt" and not str(tmp_path).startswith("\\\\?\\"):
         tmp_path = Path("\\\\?\\" + str(tmp_path))
     built = subprocess.run(
@@ -879,10 +879,16 @@ sys.path.insert(0,sys.argv[1])
 import adr_kit
 from adr_kit.semantic_contract import get_semantic_contract,load_semantic_resource,validate_semantic_resource_closure
 assert pathlib.Path(adr_kit.__file__).is_relative_to(sys.argv[1])
-c=get_semantic_contract('authoring-construction','1.5')
-assert c.semantic_contract_fingerprint==sys.argv[2]
-assert validate_semantic_resource_closure(c,[{'canonicalResourceKey':m.canonical_resource_key,'content':load_semantic_resource(m.canonical_resource_key)} for m in c.resource_manifest]).closure_valid
-assert load_semantic_resource('authoring-construction/1.5/rules')['required_output']['schema_valid_is_instance_proof'] is False
+for load in (
+    lambda: get_semantic_contract('authoring-construction','1.5'),
+    lambda: load_semantic_resource('authoring-construction/1.5/contract'),
+):
+    try:
+        load()
+    except LookupError:
+        pass
+    else:
+        raise AssertionError('unreleased authority is available from the installed wheel')
 """
     result = subprocess.run(
         [sys.executable, "-I", "-c", code, str(installed), SCF],

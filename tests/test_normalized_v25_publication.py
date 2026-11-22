@@ -7,7 +7,6 @@ import hashlib
 import json
 import subprocess
 import sys
-from importlib import resources
 from pathlib import Path
 from typing import Any
 
@@ -19,9 +18,7 @@ from referencing import Registry, Resource
 from adr_kit.semantic_contract import (
     SemanticContractVersion,
     calculate_semantic_contract_fingerprint,
-    get_semantic_contract as get_packaged_semantic_contract,
     list_semantic_contracts,
-    load_semantic_resource as load_packaged_semantic_resource,
     validate_semantic_resource_closure,
     verify_semantic_contract,
 )
@@ -407,7 +404,7 @@ def test_nm25_exact_discovery_does_not_change_historical_selection() -> None:
             load_semantic_resource(name)
 
 
-def test_nm25_canonical_and_source_mirrors_are_byte_exact_and_not_packaged() -> None:
+def test_nm25_canonical_and_source_mirrors_remain_byte_exact() -> None:
     for name in NAMES:
         canonical = (SCHEMA_ROOT / name).read_bytes()
         filename = "normalized-model-2.5-schema-" + name
@@ -422,12 +419,6 @@ def test_nm25_canonical_and_source_mirrors_are_byte_exact_and_not_packaged() -> 
     ).read_bytes()
     assert authority == (BUNDLED / "definitions" / "normalized-model-2.5.json").read_bytes()
     assert authority == (BUNDLED / "normalized-model-2.5.json").read_bytes()
-    with pytest.raises(LookupError):
-        get_packaged_semantic_contract("normalized-model", "2.5")
-    with pytest.raises(LookupError):
-        load_packaged_semantic_resource("normalized-model/2.5/conformance")
-    with pytest.raises(ModuleNotFoundError):
-        resources.files("adr_kit.schema.v2_5")
 
 
 def test_nm25_successor_only_generation_is_byte_deterministic() -> None:

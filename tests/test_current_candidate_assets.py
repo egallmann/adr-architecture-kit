@@ -16,10 +16,9 @@ import pytest
 from scripts import candidate_contract_assets as assets
 from scripts import qualify_ai15_publication as ai
 from scripts import qualify_acc15_publication as acc
-from adr_kit.semantic_contract import (
-    get_semantic_contract,
-    validate_semantic_resource_closure,
-    verify_semantic_contract,
+from adr_kit.semantic_contract import validate_semantic_resource_closure, verify_semantic_contract
+from tests.candidate_authority_source import (
+    get_semantic_contract_for_qualification as get_semantic_contract,
 )
 
 ROOT = Path(__file__).resolve().parents[1]

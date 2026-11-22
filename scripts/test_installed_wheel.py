@@ -273,11 +273,16 @@ def run_harness(wheel: Path, python: Path) -> None:
                 encoding="utf-8"
             )
         )
-        released = {(entry["family"], entry["version"]) for entry in lifecycle["released_contracts"]}
+        released = {
+            (entry["family"], entry["version"]) for entry in lifecycle["released_contracts"]
+        }
         candidate_identities = []
         for path in (ROOT / "contracts/semantic-contract/v1.0/definitions").glob("*.json"):
             definition = json.loads(path.read_text(encoding="utf-8"))
-            identity = (definition["semanticContractFamily"], definition["semanticContractVersion"])
+            identity = (
+                definition["semanticContractFamily"],
+                definition["semanticContractVersion"],
+            )
             if identity not in released:
                 candidate_identities.append(identity)
         isolated_environment["ADR_KIT_CANDIDATE_IDENTITIES"] = json.dumps(candidate_identities)

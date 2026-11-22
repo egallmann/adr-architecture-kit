@@ -26,7 +26,9 @@ def test_python_package_data_excludes_every_unreleased_contract_identity() -> No
             encoding="utf-8"
         )
     )
-    released = {(entry["family"], entry["version"]) for entry in lifecycle["released_contracts"]}
+    released = {
+        (entry["family"], entry["version"]) for entry in lifecycle["released_contracts"]
+    }
     definitions = ROOT / "contracts/semantic-contract/v1.0/definitions"
     candidate_ids = {
         (value["semanticContractFamily"], value["semanticContractVersion"])

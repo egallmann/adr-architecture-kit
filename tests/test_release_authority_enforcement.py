@@ -592,10 +592,7 @@ def test_missing_member_in_one_package_is_not_supplied_by_another(
     files = {
         name: data
         for name, data in files.items()
-        if not (
-            name.endswith(".json")
-            and scanner.json_identity(json.loads(data)) == selected
-        )
+        if not (name.endswith(".json") and scanner.json_identity(json.loads(data)) == selected)
     }
     wheel.write_bytes(zip_payload(files))
     with pytest.raises((ValueError, RuntimeError), match="incomplete|missing"):
@@ -648,9 +645,7 @@ def test_candidate_changes_are_not_frozen_but_genuine_promotions_are(
         for path in (ROOT / "contracts/semantic-contract/v1.0/definitions").glob("*.json")
         if (value := json.loads(path.read_text(encoding="utf-8")))
         and (value["semanticContractFamily"], value["semanticContractVersion"])
-        not in {
-            (entry["family"], entry["version"]) for entry in lifecycle["released_contracts"]
-        }
+        not in {(entry["family"], entry["version"]) for entry in lifecycle["released_contracts"]}
     }
     assert not candidates.intersection(
         (record["family"], record["version"]) for record in inventory["authorities"]

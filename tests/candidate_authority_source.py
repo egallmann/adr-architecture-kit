@@ -59,9 +59,8 @@ def get_semantic_contract_for_qualification(family: str, version: str) -> Semant
 def load_semantic_resource_for_qualification(key: str) -> Any:
     parts = key.split("/")
     if (
-        (len(parts) >= 2 and tuple(parts[:2]) in candidate_identities())
-        or key in candidate_resource_keys()
-    ):
+        len(parts) >= 2 and tuple(parts[:2]) in candidate_identities()
+    ) or key in candidate_resource_keys():
         try:
             return canonical_resource(ROOT, key)
         except ValueError as exc:

@@ -37,7 +37,9 @@ def candidate_identities() -> frozenset[tuple[str, str]]:
 def get_semantic_contract_for_qualification(family: str, version: str) -> SemanticContractVersion:
     if (family, version) not in candidate_identities():
         return get_bundled_semantic_contract(family, version)
-    return SemanticContractVersion.from_wire(canonical_resource(ROOT, f"{family}/{version}/contract"))
+    return SemanticContractVersion.from_wire(
+        canonical_resource(ROOT, f"{family}/{version}/contract")
+    )
 
 
 def load_semantic_resource_for_qualification(key: str) -> Any:

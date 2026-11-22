@@ -26,9 +26,7 @@ def test_python_package_data_excludes_every_unreleased_contract_identity() -> No
             encoding="utf-8"
         )
     )
-    released = {
-        (entry["family"], entry["version"]) for entry in lifecycle["released_contracts"]
-    }
+    released = {(entry["family"], entry["version"]) for entry in lifecycle["released_contracts"]}
     definitions = ROOT / "contracts/semantic-contract/v1.0/definitions"
     candidate_ids = {
         (value["semanticContractFamily"], value["semanticContractVersion"])
@@ -46,8 +44,7 @@ def test_python_package_data_excludes_every_unreleased_contract_identity() -> No
         assert f"{stem}-*.json" in resource_exclusions
         assert f"exclude src/adr_kit/semantic_contract/v1_0/{stem}.json" in manifest_lines
         assert (
-            f"exclude src/adr_kit/semantic_contract/v1_0/definitions/{stem}.json"
-            in manifest_lines
+            f"exclude src/adr_kit/semantic_contract/v1_0/definitions/{stem}.json" in manifest_lines
         )
         assert (
             f"recursive-exclude src/adr_kit/semantic_contract/v1_0/resources {stem}-*.json"

@@ -3,10 +3,9 @@ import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import {
-  getSemanticContract,
   listSemanticContracts,
-  loadSemanticResource,
 } from "../dist/node/semantic-contract.js";
+import { getContractForQualification as getSemanticContract, getResourceForQualification as loadSemanticResource } from "./candidate-authority-source.mjs";
 
 test("NM 2.5 is exactly discoverable without runtime support or current selection", async () => {
   const definition = getSemanticContract("normalized-model", "2.5");
@@ -31,5 +30,8 @@ test("NM 2.5 is exactly discoverable without runtime support or current selectio
   assert.equal(getSemanticContract("normalized-model", "2.4").semanticContractVersion, "2.4");
   assert.throws(() => getSemanticContract("normalized-model", "2.6"), /Unsupported semantic contract/);
   assert.throws(() => loadSemanticResource("normalized-model/2.6/conformance"), /Unsupported semantic resource/);
-  assert.throws(() => loadSemanticResource("normalized-model/2.5/schema/not-published"), /Missing bundled semantic resource/);
+  assert.throws(
+    () => loadSemanticResource("normalized-model/2.5/schema/not-published"),
+    /Missing canonical candidate resource/,
+  );
 });

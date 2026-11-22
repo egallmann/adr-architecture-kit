@@ -268,6 +268,41 @@ def run_harness(wheel: Path, python: Path) -> None:
         venv_python, pip, adr = _venv_paths(environment_path)
 
         _run([str(pip), "install", str(wheel)], root, isolated_environment)
+        lifecycle = json.loads(
+            (ROOT / "adrs/migrations/semantic-contract-lifecycle-classification.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        released = {(entry["family"], entry["version"]) for entry in lifecycle["released_contracts"]}
+        candidate_identities = []
+        for path in (ROOT / "contracts/semantic-contract/v1.0/definitions").glob("*.json"):
+            definition = json.loads(path.read_text(encoding="utf-8"))
+            identity = (definition["semanticContractFamily"], definition["semanticContractVersion"])
+            if identity not in released:
+                candidate_identities.append(identity)
+        isolated_environment["ADR_KIT_CANDIDATE_IDENTITIES"] = json.dumps(candidate_identities)
+        _run(
+            [
+                str(venv_python),
+                "-c",
+                "\n".join(
+                    (
+                        "import json, os",
+                        "from adr_kit.semantic_contract import get_semantic_contract, load_semantic_resource",
+                        "for family, version in json.loads(os.environ['ADR_KIT_CANDIDATE_IDENTITIES']):",
+                        "    for load in (",
+                        "        lambda: get_semantic_contract(family, version),",
+                        "        lambda: load_semantic_resource(f'{family}/{version}/contract'),",
+                        "    ): ",
+                        "        try: load()",
+                        "        except LookupError: continue",
+                        "        raise AssertionError(f'unreleased authority is bundled: {family}/{version}')",
+                    )
+                ),
+            ],
+            root,
+            isolated_environment,
+        )
         consumer = root / "consumer"
         fixture = _materialize_external_consumer_fixture(consumer)
         fixture_sources = (

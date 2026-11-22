@@ -18,10 +18,14 @@ from referencing import Registry, Resource
 from adr_kit.semantic_contract import (
     SemanticContractVersion,
     calculate_semantic_contract_fingerprint,
-    get_semantic_contract,
-    load_semantic_resource,
+    get_semantic_contract as get_packaged_semantic_contract,
+    load_semantic_resource as load_packaged_semantic_resource,
     validate_semantic_resource_closure,
     verify_semantic_contract,
+)
+from tests.candidate_authority_source import (
+    get_semantic_contract_for_qualification as get_semantic_contract,
+    load_semantic_resource_for_qualification as load_semantic_resource,
 )
 from scripts import qualify_acc14_publication as publication
 from scripts.generate_semantic_contract_assets import discovered_dependencies
@@ -206,9 +210,9 @@ def test_exact_definition_closure_dependencies_and_mirrors() -> None:
         "authoring-construction/99.99/rules",
     ):
         with pytest.raises(LookupError):
-            load_semantic_resource(key)
+            load_packaged_semantic_resource(key)
     with pytest.raises(LookupError):
-        get_semantic_contract("authoring-construction", "99.99")
+        get_packaged_semantic_contract("authoring-construction", "99.99")
     assert (
         load_semantic_resource(publication.AI + "contract")
         == get_semantic_contract("architecture-interpretation", "1.4").to_wire()

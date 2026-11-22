@@ -16,10 +16,12 @@ import pytest
 from jsonschema import Draft202012Validator
 
 from adr_kit.semantic_contract import (
-    get_semantic_contract,
-    load_semantic_resource,
     validate_semantic_resource_closure,
     verify_semantic_contract,
+)
+from tests.candidate_authority_source import (
+    get_semantic_contract_for_qualification as get_semantic_contract,
+    load_semantic_resource_for_qualification as load_semantic_resource,
 )
 from scripts import qualify_acc15_publication as publication
 from scripts.generate_semantic_contract_assets import definition, digest, discovered_dependencies

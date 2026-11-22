@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { getSemanticContract, loadSemanticResource, verifySemanticContract, validateSemanticResourceClosure } from "../dist/node/semantic-contract.js";
+import { verifySemanticContract, validateSemanticResourceClosure } from "../dist/node/semantic-contract.js";
+import { getSemanticContract as getPackagedSemanticContract, loadSemanticResource as loadPackagedSemanticResource } from "../dist/node/semantic-contract.js";
+import { getContractForQualification as getSemanticContract, getResourceForQualification as loadSemanticResource } from "./candidate-authority-source.mjs";
 
 test("ACC 1.4 exact immutable publication qualifies its complete packaged authority", async () => {
   const definition = getSemanticContract("authoring-construction", "1.4");
@@ -27,9 +29,9 @@ test("ACC 1.4 exact immutable publication qualifies its complete packaged author
 });
 
 test("ACC exact discovery rejects missing versions and malformed resources without predecessor fallback", () => {
-  assert.throws(() => getSemanticContract("authoring-construction", "99.99"), /Unsupported semantic contract/);
+  assert.throws(() => getPackagedSemanticContract("authoring-construction", "99.99"), /Unsupported semantic contract/);
   for (const key of ["authoring-construction/1.4/../1.3/rules", "authoring-construction/1.4/missing", "authoring-construction/1.4/composition/bindings", "authoring-construction/99.99/rules"]) {
-    assert.throws(() => loadSemanticResource(key), /Unsupported semantic resource|Missing bundled semantic resource/);
+    assert.throws(() => loadPackagedSemanticResource(key), /Unsupported semantic (resource|contract)|Missing bundled semantic resource/);
   }
   assert.equal(getSemanticContract("authoring-construction", "1.3").semanticContractFingerprint, "scf:v1:sha256:5828fe0c3b1692240726152f57ca6de037a1e07f38bb8f9ecda223af105d1b49");
 });

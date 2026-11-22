@@ -18,10 +18,12 @@ from jsonschema import Draft7Validator, Draft202012Validator, RefResolver
 from adr_kit.core import semantic_core_capabilities
 from adr_kit.semantic_contract import (
     calculate_semantic_contract_fingerprint,
-    get_semantic_contract,
-    load_semantic_resource,
     validate_semantic_resource_closure,
     verify_semantic_contract,
+)
+from tests.candidate_authority_source import (
+    get_semantic_contract_for_qualification as get_semantic_contract,
+    load_semantic_resource_for_qualification as load_semantic_resource,
 )
 
 ROOT = Path(__file__).resolve().parents[1]

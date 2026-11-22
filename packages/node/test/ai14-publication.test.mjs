@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { getSemanticContract, loadSemanticResource, verifySemanticContract, validateSemanticResourceClosure } from "../dist/node/semantic-contract.js";
+import { verifySemanticContract, validateSemanticResourceClosure } from "../dist/node/semantic-contract.js";
+import { getSemanticContract as getPackagedSemanticContract, loadSemanticResource as loadPackagedSemanticResource } from "../dist/node/semantic-contract.js";
+import { getContractForQualification as getSemanticContract, getResourceForQualification as loadSemanticResource } from "./candidate-authority-source.mjs";
 
 test("AI 1.4 exact authority and complete packaged closure qualify without execution", async () => {
   const contract = getSemanticContract("architecture-interpretation", "1.4");
@@ -20,9 +22,9 @@ test("AI 1.4 exact authority and complete packaged closure qualify without execu
 });
 
 test("AI successor exact lookup never falls back or accepts malformed resources", () => {
-  assert.throws(() => getSemanticContract("architecture-interpretation", "99.99"), /Unsupported semantic contract/);
+  assert.throws(() => getPackagedSemanticContract("architecture-interpretation", "99.99"), /Unsupported semantic contract/);
   for (const key of ["architecture-interpretation/1.4/missing", "architecture-interpretation/1.4/../1.3/rules", "architecture-interpretation/1.4/required/output"]) {
-    assert.throws(() => loadSemanticResource(key), /Missing bundled semantic resource/);
+    assert.throws(() => loadPackagedSemanticResource(key), /Missing bundled semantic resource|Unsupported semantic contract/);
   }
-  assert.throws(() => loadSemanticResource("architecture-interpretation/99.99/rules"), /Unsupported semantic resource/);
+  assert.throws(() => loadPackagedSemanticResource("architecture-interpretation/99.99/rules"), /Unsupported semantic resource/);
 });

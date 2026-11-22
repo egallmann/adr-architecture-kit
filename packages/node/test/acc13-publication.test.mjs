@@ -2,7 +2,9 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import { getSemanticContract, loadSemanticResource, verifySemanticContract, validateSemanticResourceClosure } from "../dist/node/semantic-contract.js";
+import { verifySemanticContract, validateSemanticResourceClosure } from "../dist/node/semantic-contract.js";
+import { loadSemanticResource as loadPackagedSemanticResource } from "../dist/node/semantic-contract.js";
+import { getContractForQualification as getSemanticContract, getResourceForQualification as loadSemanticResource } from "./candidate-authority-source.mjs";
 
 test("ACC 1.3 is an exact immutable publication without runtime construction selection", async () => {
   const d = getSemanticContract("authoring-construction", "1.3");
@@ -32,6 +34,6 @@ test("ACC 1.3 is an exact immutable publication without runtime construction sel
   assert.deepEqual(loadSemanticResource("authoring-construction/1.3/contract"), d);
   assert.throws(() => getSemanticContract("authoring-construction", "99.99"), /Unsupported semantic contract/);
   for (const key of ["authoring-construction/99.99/rules", "authoring-construction/1.3/composition/bindings", "authoring-construction/1.3/conformance-not-published"]) {
-    assert.throws(() => loadSemanticResource(key), /Unsupported semantic resource|Missing bundled semantic resource/);
+    assert.throws(() => loadPackagedSemanticResource(key), /Unsupported semantic (resource|contract)|Missing bundled semantic resource/);
   }
 });

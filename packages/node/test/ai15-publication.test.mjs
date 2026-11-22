@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { getSemanticContract, loadSemanticResource, verifySemanticContract, validateSemanticResourceClosure } from "../dist/node/semantic-contract.js";
+import { verifySemanticContract, validateSemanticResourceClosure } from "../dist/node/semantic-contract.js";
+import { getSemanticContract as getPackagedSemanticContract, loadSemanticResource as loadPackagedSemanticResource } from "../dist/node/semantic-contract.js";
+import { getContractForQualification as getSemanticContract, getResourceForQualification as loadSemanticResource } from "./candidate-authority-source.mjs";
 
 const prefix = "architecture-interpretation/1.5/";
 test("AI 1.5 exact packaged publication qualifies identity recipe definitions without instance execution", async () => {
@@ -25,8 +27,8 @@ test("AI 1.5 exact packaged publication qualifies identity recipe definitions wi
 });
 
 test("AI 1.5 missing versions, malformed keys and corrupted bundles fail closed", async () => {
-  assert.throws(() => getSemanticContract("architecture-interpretation", "99.99"), /Unsupported semantic contract/);
-  for (const key of [prefix + "missing", prefix + "../1.4/rules", prefix + "required/output"]) assert.throws(() => loadSemanticResource(key), /Missing bundled semantic resource/);
+  assert.throws(() => getPackagedSemanticContract("architecture-interpretation", "1.5"), /Unsupported semantic contract/);
+  for (const key of [prefix + "missing", prefix + "../1.4/rules", prefix + "required/output"]) assert.throws(() => loadPackagedSemanticResource(key), /Missing bundled semantic resource|Unsupported semantic contract/);
   const c = getSemanticContract("architecture-interpretation", "1.5");
   const bundle = c.resourceManifest.map((m) => ({ canonicalResourceKey: m.canonicalResourceKey, content: loadSemanticResource(m.canonicalResourceKey) }));
   assert.equal((await validateSemanticResourceClosure(c, bundle.slice(1))).closure_valid, false);

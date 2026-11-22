@@ -7,6 +7,7 @@ import io
 import json
 import subprocess
 import sys
+import tomllib
 import tarfile
 from pathlib import Path
 
@@ -15,6 +16,48 @@ from typing import Any, cast
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_python_package_data_excludes_every_unreleased_contract_identity() -> None:
+    project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+    excluded = project["tool"]["setuptools"]["exclude-package-data"]
+    lifecycle = json.loads(
+        (ROOT / "adrs/migrations/semantic-contract-lifecycle-classification.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    released = {(entry["family"], entry["version"]) for entry in lifecycle["released_contracts"]}
+    definitions = ROOT / "contracts/semantic-contract/v1.0/definitions"
+    candidate_ids = {
+        (value["semanticContractFamily"], value["semanticContractVersion"])
+        for path in definitions.glob("*.json")
+        if (value := json.loads(path.read_text(encoding="utf-8")))
+        and (value["semanticContractFamily"], value["semanticContractVersion"]) not in released
+    }
+    semantic_exclusions = set(excluded["adr_kit.semantic_contract.v1_0"])
+    resource_exclusions = set(excluded["adr_kit.semantic_contract.v1_0.resources"])
+    manifest_lines = set((ROOT / "MANIFEST.in").read_text(encoding="utf-8").splitlines())
+    for family, version in candidate_ids:
+        stem = f"{family}-{version}"
+        assert f"{stem}.json" in semantic_exclusions
+        assert f"definitions/{stem}.json" in semantic_exclusions
+        assert f"{stem}-*.json" in resource_exclusions
+        assert f"exclude src/adr_kit/semantic_contract/v1_0/{stem}.json" in manifest_lines
+        assert (
+            f"exclude src/adr_kit/semantic_contract/v1_0/definitions/{stem}.json"
+            in manifest_lines
+        )
+        assert (
+            f"recursive-exclude src/adr_kit/semantic_contract/v1_0/resources {stem}-*.json"
+            in manifest_lines
+        )
+    assert "custom-entity-1.0-*.json" in resource_exclusions
+    assert (
+        "recursive-exclude src/adr_kit/semantic_contract/v1_0/resources custom-entity-1.0-*.json"
+        in manifest_lines
+    )
+    assert "*.json" in excluded["adr_kit.schema.v2_5"]
+    assert "prune src/adr_kit/schema/v2_5" in manifest_lines
 
 
 def _release_utility(*arguments: str) -> subprocess.CompletedProcess[str]:

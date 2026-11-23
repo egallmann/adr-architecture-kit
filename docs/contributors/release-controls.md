@@ -46,3 +46,21 @@ actual package/WASM payloads and independently enforces the exact retained cohor
 and external human promotion evidence in both publishers. See the
 [approval, durable-evidence and publisher procedure](authority-promotion-enforcement.md).
 This implementation does not itself approve or promote any authority.
+
+## v0.13.0 consolidation boundary
+
+The owner-selected v0.13.0 release scope is the lifecycle-governed consolidation
+path established by accepted ADR-L-0042. A package release number does not certify
+Forward Semantic Execution Completion. That separate milestone retains the all-27
+type objective, its 455 destination obligations (including all 215 currently
+BLOCKED destinations), successor authority qualification/promotion, public protocol
+conformance, approved current SCS, and independent end-to-end qualification.
+
+The v0.13 distribution and certified promotion cohort must include released
+semantic authority only. AI 1.2–1.5, ACC 1.1–1.5, and NM 2.5 remain canonical
+development candidates in `contracts/` and are excluded from wheel, sdist, npm,
+and publisher inventory. Release
+Certification must scan the actual built archives and produce a fresh exact cohort;
+REL-3b rehearsal counts and hashes are not certification evidence. The first real
+promotion remains gated by the protected human approval and durable evidence PR in
+[the promotion procedure](authority-promotion-enforcement.md).

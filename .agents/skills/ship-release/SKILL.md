@@ -2,10 +2,10 @@
 name: ship-release
 description: >
   Ship an ADR Architecture Kit release from admitted develop through main
-  qualification, exact v* tagging, and promotion-only PyPI/npm publish. Use when
+  qualification, authority promotion, exact v* tagging, and gated PyPI/npm publish. Use when
   the user asks to cut/ship/release a version, prepare release/X.Y.Z, promote a
-  release candidate to main, tag vX.Y.Z after main-push ADR Governance, or close
-  the release-protocol skill issue with a validated execution trace.
+  release candidate to main, or close the release-protocol skill issue with a
+  validated execution trace.
 disable-model-invocation: true
 ---
 
@@ -95,38 +95,66 @@ gh pr merge <n> --merge
 
 ### 5. Main-push qualification (release-eligible)
 
-PR and develop runs are **not** publication admission.
+PR and develop runs are **not** release admission. Wait for successful Release
+Certification on the exact release PR merge SHA pushed to `main`. Record the run ID
+and retain its exact `release-bundle`. A failed certification has no promotion path:
+correct the source/configuration through reviewed changes and qualify the resulting
+exact source; never edit a retained bundle.
 
-Wait for successful **main `push`** ADR Governance on the merge commit SHA.
-Retain the `release-bundle` artifact from that run.
+### 6. Qualify and record authority promotion
 
-### 6. Tag exactly
+1. Confirm `authority-promotion.yml` is present on the default branch. For its first
+   use, it becomes dispatchable after the release source containing the workflow
+   lands on `main`.
+2. Verify live `semantic-authority-promotion` environment protections: a required
+   reviewer is an account authorized by `PROJECT.yaml`; the authorized owner can
+   approve their dispatched workflow (self-review permitted for this environment);
+   administrator bypass is disabled. Stop if live settings cannot be verified.
+3. Dispatch the workflow on `main` for the exact successful certification run ID.
+   Review its independently scanned inventory, retained artifact, source, and
+   printed exact source/cohort approval statement. An authorized human approves the
+   protected environment and enters that exact statement. A denied/withheld approval
+   or mismatched digest produces no attestation and no publication admission.
+4. After successful attestation, open the evidence-only PR
+   `.github/authority-promotions/<source-sha>.json` with the exact attestation bytes.
+   Review and merge it to `main` without changing source S or the certified bundle.
+   The workflow artifact alone is pending evidence; publishers require the durable
+   record and re-check its origin, ancestry, workflow run, and approval.
 
-On the admitted main SHA only:
+Do not tag before the evidence PR is merged and qualified. If the run or retained
+artifact expires, stop: do not reconstruct or replace certified bytes. Recover only
+through an exact-source certification run and its newly retained bundle if the
+repository controls still admit that run; otherwise return for owner/control-plane
+decision.
+
+### 7. Tag exactly after durable promotion evidence
+
+On the exact certified source SHA S (which must be an ancestor of the evidence
+commit), and only after the durable evidence PR is merged:
 
 ```bash
 git fetch origin main
-git tag -a v$VERSION <main-sha> -m "v$VERSION"
+git tag -a v$VERSION <certified-source-sha> -m "v$VERSION"
 git push origin v$VERSION
 ```
 
-Tag push triggers promotion-only workflows (no rebuild / no re-pytest).
+The tag triggers promotion-only publishers. Each publisher independently resolves
+the successful certification run, downloads and verifies the same retained bundle,
+and verifies the durable attestation and exact authority cohort before publication.
+The tag event itself is not proof of publisher admission or success.
 
-### 7. Confirm publish
+### 8. Confirm publish
 
 1. `Publish to PyPI` success → `pip index versions adr-architecture-kit` shows `$VERSION`.
 2. `Publish to npm` success → `npm view @system-of-thought/adr-kit version` shows `$VERSION`.
 
-If npm fails because a bare `dir/file.tgz` was passed to `npm publish`, that is a
-known footgun (npm treats it as a GitHub locator). The workflow must pass an
-explicit `./`-prefixed or absolute tarball path. Recover by:
+PyPI and npm remain independently gated by their existing environments and trusted
+publisher/OIDC settings. Verify those settings in GitHub and each registry before
+the release. A failed or expired-evidence publisher run must not be bypassed; use
+only the supported retry for the same tag and retained bundle. Never rebuild or
+retarget the certified release.
 
-- fixing/publishing via `workflow_dispatch` on `Publish to npm` with input tag
-  `v$VERSION` after the path fix is on the default branch used by the workflow, or
-- human-authenticated publish of the **exact** retained `node-dist/*.tgz` from the
-  qualifying main `release-bundle` (never rebuild).
-
-### 8. Post-release synchronization → develop
+### 9. Post-release synchronization → develop
 
 Publication does not complete the branch lifecycle. After PyPI and npm both expose
 `$VERSION`, synchronize the exact released `main` state back into `develop`:
@@ -153,14 +181,15 @@ The synchronization is incomplete if the released `main` commit or current
 `main` tip is not an ancestor of `develop`. This is a required post-release gate,
 not an optional cleanup step.
 
-### 9. Verify
+### 10. Verify
 
 Record evidence for the skill/issue trail:
 
 - develop tip SHA admitted
 - release PR URL + merge commit on `main`
-- main ADR Governance run URL (release-eligible)
-- tag `v$VERSION` → annotated tag object / target SHA
+- main Release Certification run URL and retained bundle identity
+- promotion run and durable evidence PR URL / merge commit
+- tag `v$VERSION` → annotated tag object / certified target SHA
 - PyPI + npm publish run URLs
 - installed/version probes
 - post-release synchronization PR URL + merge commit on `develop`

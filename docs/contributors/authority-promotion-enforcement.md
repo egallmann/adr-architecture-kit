@@ -1,8 +1,81 @@
 # Exact authority-cohort release enforcement
 
-This checkpoint implements the operational gate specified by accepted ADR-L-0040.
-It does not release a package, promote a candidate authority, change an SCF, or
-select a new capability. PR #186 remains a separate candidate-consolidation slice.
+This document describes the operational gate specified by accepted ADR-L-0040.
+It does not itself release a package, promote a candidate authority, change an SCF,
+or select a new capability.
+
+## First v0.13.0 consolidation release sequence
+
+The owner-approved v0.13.0 path is a lifecycle-governed consolidation release, not
+completion of Forward Semantic Execution Completion. Release claims are bounded by
+the released authority, public routes, and release evidence. The release source must
+produce an inventory containing only released authority; candidate authorities
+remain in canonical `contracts/` for development and must be absent from Python
+wheel, sdist, npm tarball, and the promotion subject. The excluded candidate set is
+AI 1.2–1.5, ACC 1.1–1.5, and NM 2.5. Recompute the exact cohort at
+certification; rehearsal inventory digests are not release evidence.
+
+Perform the first release in this order:
+
+1. Prepare a release branch from exact admitted `develop`, set package versions and
+   changelog through the repository release procedure, and open the release PR to
+   `main`. Do not modify candidate authority, current SCS, or public capability
+   routes as part of this documentation/runbook scope.
+2. Merge the qualified release PR. The merge commit S must contain
+   `authority-promotion.yml` on `main` for its first hosted dispatch. Run Release
+   Certification on the exact `main` push for S and retain its exact
+   `release-bundle`. Require success before continuing.
+3. Confirm from GitHub Settings that `semantic-authority-promotion` has a required
+   reviewer authorized by `PROJECT.yaml`, allows that authorized owner to approve
+   the workflow they dispatched, and prevents administrator bypass. Confirm the
+   PyPI/npm publication environments and registry Trusted Publisher/OIDC settings
+   independently. These live settings are control-plane facts; repository files
+   alone do not prove them. If any setting is absent or cannot be verified, stop.
+4. Dispatch the promotion workflow on `main` with the exact successful certification
+   run ID. Review the workflow's fresh inventory scan and the exact retained bundle.
+   The subject job prints the source and cohort digest. Only an authorized human
+   approves the protected environment and enters that exact statement. The workflow
+   independently verifies the approval before creating the external attestation.
+5. Store the exact attestation bytes in the source-keyed, evidence-only PR under
+   `.github/authority-promotions/`. Review and merge it to `main`. This later commit
+   records evidence only; it must not alter S or any certified package bytes.
+6. After the evidence PR is merged and qualified, create an annotated version tag
+   pointing exactly to S. Tag publishers then independently verify S, its successful
+   certification run, retained bundle, durable promotion evidence, and cohort before
+   either registry receives credentials. PyPI and npm are separate publishers and
+   both must succeed and be verified in their registries.
+
+The workflow file is currently maintained on `develop`; the release merge must make
+it available on the default branch before its first `workflow_dispatch`. The first
+hosted promotion execution is a bootstrap event and has not been rehearsed by local
+fixtures. It is not evidence of a successful real promotion. Test fixtures and local
+verification never substitute for the protected environment approval or attestation.
+
+### Failure and recovery
+
+- **Certification fails:** no release bundle is admitted and promotion cannot start.
+  Fix through reviewed source/configuration changes and qualify the resulting exact
+  `main` source. Do not repair or replace bytes inside a retained bundle.
+- **Dispatch is missing or fails, or environment approval is withheld:** no durable
+  evidence exists, so do not tag. Resolve workflow/default-branch or environment
+  configuration, then retry only for the exact certified source and retained bundle.
+- **Approval statement, cohort digest, source, or run ID mismatches:** treat the
+  attempt as rejected. Recompute/review the actual subject from the retained bundle;
+  never approve a guessed or stale digest.
+- **Evidence PR is missing or fails qualification:** no tag or publication. Recreate
+  only the evidence PR from the original attestation bytes; do not modify the source
+  or bundle.
+- **A tag is created before durable evidence:** both publishers must fail closed
+  before publication. Complete and qualify the evidence record, then use only the
+  repository-supported retry for that same tag. Never move or recreate the tag.
+- **Run/artifact expires before promotion completes:** publication verification
+  cannot use a substitute local build. Stop; only an exact-source certification run
+  with a newly retained bundle can restart the gates where the existing workflows
+  permit it. If a tagged publication can no longer resolve its certified bundle,
+  stop for an owner/control-plane recovery decision; do not retag or rebuild.
+- **PyPI or npm upload fails:** keep the tag, evidence, and certified bundle fixed.
+  Retry through that publisher's supported path against the same version/tag, and
+  verify the registry result. Do not use the other registry's success as proof.
 
 ## Qualification and retained inventory
 

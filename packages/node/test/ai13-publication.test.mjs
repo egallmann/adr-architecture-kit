@@ -2,7 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import { getSemanticContract, loadSemanticResource, verifySemanticContract, validateSemanticResourceClosure } from "../dist/node/semantic-contract.js";
+import { verifySemanticContract, validateSemanticResourceClosure, loadSemanticResource as loadPackagedSemanticResource } from "../dist/node/semantic-contract.js";
+import { getContractForQualification as getSemanticContract, getResourceForQualification as loadSemanticResource } from "./candidate-authority-source.mjs";
 
 test("AI 1.3 exact publication is available without selection or execution", async () => {
   const definition = getSemanticContract("architecture-interpretation", "1.3");
@@ -30,7 +31,7 @@ test("AI 1.3 exact publication is available without selection or execution", asy
   assert.throws(() => getSemanticContract("architecture-interpretation", "99.99"), /Unsupported semantic contract/);
   assert.throws(() => getSemanticContract("authoring-construction", "99.99"), /Unsupported semantic contract/);
   assert.throws(() => loadSemanticResource("architecture-interpretation/99.99/rules"), /Unsupported semantic resource/);
-  assert.throws(() => loadSemanticResource("architecture-interpretation/1.3/missing"), /Missing bundled semantic resource/);
-  assert.throws(() => loadSemanticResource("architecture-interpretation/1.3/source-decoding-1.5"), /Missing bundled semantic resource/);
-  assert.throws(() => loadSemanticResource("architecture-interpretation/1.3/lifecycle/ownership"), /Missing bundled semantic resource/);
+  assert.throws(() => loadPackagedSemanticResource("architecture-interpretation/1.3/missing"), /Missing bundled semantic resource|Unsupported semantic contract/);
+  assert.throws(() => loadPackagedSemanticResource("architecture-interpretation/1.3/source-decoding-1.5"), /Missing bundled semantic resource|Unsupported semantic contract/);
+  assert.throws(() => loadPackagedSemanticResource("architecture-interpretation/1.3/lifecycle/ownership"), /Missing bundled semantic resource|Unsupported semantic contract/);
 });

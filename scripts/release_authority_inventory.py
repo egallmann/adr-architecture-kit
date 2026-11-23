@@ -597,6 +597,15 @@ def discover_inventory(bundle: Path, source: str, root: Path = ROOT) -> dict[str
     require(re.fullmatch(r"[0-9a-f]{40}", source) is not None, "invalid source commit")
     payloads = package_payloads(bundle)
     index = AuthorityIndex(root)
+    from scripts.release_authority_promotion import qualified_prior_promotions, enforce_promoted
+
+    prior = qualified_prior_promotions(source, root)
+    distributable_identities = set(index.released)
+    distributable_identities.update(
+        (authority["family"], authority["version"])
+        for record in prior
+        for authority in record["approved_authorities"]
+    )
     authorities: dict[tuple[str, str], dict[str, Any]] = {}
     wasm_hashes: set[str] = set()
     package_kinds: set[str] = set()
@@ -607,7 +616,21 @@ def discover_inventory(bundle: Path, source: str, root: Path = ROOT) -> dict[str
         contents_seen.setdefault(artifact, set()).add(value_key)
         if value_key in index.definition_values:
             definitions_seen.add((artifact, index.definition_values[value_key]))
-        for family, version, key, content_digest in index.values[value_key]:
+        owners = index.values[value_key]
+        selected_owners = [
+            entry
+            for entry in owners
+            if (entry[0], entry[1]) in distributable_identities
+            or (
+                (entry[0], entry[1]) not in index.definitions
+                and entry[3] in index.released_digests
+            )
+        ]
+        require(
+            bool(selected_owners),
+            f"unreleased candidate authority is packaged: {artifact}{locator}",
+        )
+        for family, version, key, content_digest in selected_owners:
             identity = family, version
             definition = index.definitions.get(identity)
             authority = authorities.setdefault(
@@ -773,7 +796,7 @@ def discover_inventory(bundle: Path, source: str, root: Path = ROOT) -> dict[str
             )
             for family, version, _, _ in index.values[value]:
                 identity = family, version
-                if identity in index.definitions:
+                if identity in distributable_identities and identity in index.definitions:
                     required_definitions.add(identity)
         for identity in required_definitions:
             require(
@@ -809,9 +832,6 @@ def discover_inventory(bundle: Path, source: str, root: Path = ROOT) -> dict[str
         ],
         "authorities": rows,
     }
-    from scripts.release_authority_promotion import qualified_prior_promotions, enforce_promoted
-
-    prior = qualified_prior_promotions(source, root)
     enforce_promoted(inventory, prior)
     promoted = {(a["family"], a["version"]) for p in prior for a in p["approved_authorities"]}
     for row in rows:

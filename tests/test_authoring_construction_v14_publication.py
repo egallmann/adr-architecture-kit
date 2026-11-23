@@ -18,10 +18,14 @@ from referencing import Registry, Resource
 from adr_kit.semantic_contract import (
     SemanticContractVersion,
     calculate_semantic_contract_fingerprint,
-    get_semantic_contract,
-    load_semantic_resource,
+    get_semantic_contract as get_packaged_semantic_contract,
+    load_semantic_resource as load_packaged_semantic_resource,
     validate_semantic_resource_closure,
     verify_semantic_contract,
+)
+from tests.candidate_authority_source import (
+    get_semantic_contract_for_qualification as get_semantic_contract,
+    load_semantic_resource_for_qualification as load_semantic_resource,
 )
 from scripts import qualify_acc14_publication as publication
 from scripts.generate_semantic_contract_assets import discovered_dependencies
@@ -206,9 +210,9 @@ def test_exact_definition_closure_dependencies_and_mirrors() -> None:
         "authoring-construction/99.99/rules",
     ):
         with pytest.raises(LookupError):
-            load_semantic_resource(key)
+            load_packaged_semantic_resource(key)
     with pytest.raises(LookupError):
-        get_semantic_contract("authoring-construction", "99.99")
+        get_packaged_semantic_contract("authoring-construction", "99.99")
     assert (
         load_semantic_resource(publication.AI + "contract")
         == get_semantic_contract("architecture-interpretation", "1.4").to_wire()
@@ -587,7 +591,7 @@ def test_future_publications_and_explicit_selection_do_not_invalidate_integrity(
         immutable_bytes(tmp_path)
 
 
-def test_installed_wheel_exact_discovery(tmp_path: Path) -> None:
+def test_candidate_authority_is_unavailable_from_installed_wheel(tmp_path: Path) -> None:
     if os.name == "nt" and not str(tmp_path).startswith("\\\\?\\"):
         tmp_path = Path("\\\\?\\" + str(tmp_path))
     wheels = tmp_path / "wheels"
@@ -611,13 +615,19 @@ def test_installed_wheel_exact_discovery(tmp_path: Path) -> None:
         check=True,
         capture_output=True,
     )
-    code = (
-        "from adr_kit.semantic_contract import *; c=get_semantic_contract('authoring-construction','1.4'); assert c.to_wire()['semanticContractFingerprint']=="
-        + repr(SCF)
-        + "; assert len(c.resource_manifest)=="
-        + str(RESOURCE_COUNT)
-        + "; assert validate_semantic_resource_closure(c,[{'canonicalResourceKey':e.canonical_resource_key,'content':load_semantic_resource(e.canonical_resource_key)} for e in c.resource_manifest]).closure_valid"
-    )
+    code = """
+from adr_kit.semantic_contract import get_semantic_contract, load_semantic_resource
+for load in (
+    lambda: get_semantic_contract('authoring-construction', '1.4'),
+    lambda: load_semantic_resource('authoring-construction/1.4/contract'),
+):
+    try:
+        load()
+    except LookupError:
+        pass
+    else:
+        raise AssertionError('unreleased authority is available from the installed wheel')
+"""
     env = dict(os.environ, PYTHONPATH=str(target))
     subprocess.run(
         [sys.executable, "-c", code], cwd=tmp_path, env=env, check=True, capture_output=True

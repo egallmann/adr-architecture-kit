@@ -53,6 +53,12 @@ package_path = Path(adr_kit.__file__).resolve()
 assert 'site-packages' in package_path.as_posix().lower(), package_path
 assert not resources.files('adr_kit.core').joinpath('semantic-core-contract-v1.4.json').is_file()
 assert not resources.files('adr_kit.core').joinpath('semantic-core-contract-v1.5.json').is_file()
+try:
+    nm25_schema_assets = resources.files('adr_kit.schema.v2_5')
+except ModuleNotFoundError:
+    pass
+else:
+    assert not nm25_schema_assets.joinpath('normalized-architecture-model.schema.json').is_file()
 assert callable(implements) and callable(enforces) and callable(embodies)
 assert resources.files('adr_kit.schema.v1_0').joinpath('adr-logical.schema.json').is_file()
 assert resources.files('adr_kit.schema.v1_1').joinpath('architecture-index.schema.json').is_file()
@@ -268,6 +274,46 @@ def run_harness(wheel: Path, python: Path) -> None:
         venv_python, pip, adr = _venv_paths(environment_path)
 
         _run([str(pip), "install", str(wheel)], root, isolated_environment)
+        lifecycle = json.loads(
+            (ROOT / "adrs/migrations/semantic-contract-lifecycle-classification.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        released = {
+            (entry["family"], entry["version"]) for entry in lifecycle["released_contracts"]
+        }
+        candidate_identities = []
+        for path in (ROOT / "contracts/semantic-contract/v1.0/definitions").glob("*.json"):
+            definition = json.loads(path.read_text(encoding="utf-8"))
+            identity = (
+                definition["semanticContractFamily"],
+                definition["semanticContractVersion"],
+            )
+            if identity not in released:
+                candidate_identities.append(identity)
+        isolated_environment["ADR_KIT_CANDIDATE_IDENTITIES"] = json.dumps(candidate_identities)
+        _run(
+            [
+                str(venv_python),
+                "-c",
+                "\n".join(
+                    (
+                        "import json, os",
+                        "from adr_kit.semantic_contract import get_semantic_contract, load_semantic_resource",
+                        "for family, version in json.loads(os.environ['ADR_KIT_CANDIDATE_IDENTITIES']):",
+                        "    for load in (",
+                        "        lambda: get_semantic_contract(family, version),",
+                        "        lambda: load_semantic_resource(f'{family}/{version}/contract'),",
+                        "    ): ",
+                        "        try: load()",
+                        "        except LookupError: continue",
+                        "        raise AssertionError(f'unreleased authority is bundled: {family}/{version}')",
+                    )
+                ),
+            ],
+            root,
+            isolated_environment,
+        )
         consumer = root / "consumer"
         fixture = _materialize_external_consumer_fixture(consumer)
         fixture_sources = (

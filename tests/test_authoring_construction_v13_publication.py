@@ -18,11 +18,15 @@ from referencing import Registry, Resource
 
 from adr_kit.core import semantic_core_capabilities
 from adr_kit.semantic_contract import (
-    get_semantic_contract,
-    load_semantic_resource,
+    get_semantic_contract as get_packaged_semantic_contract,
+    load_semantic_resource as load_packaged_semantic_resource,
     verify_semantic_contract,
     validate_semantic_resource_closure,
     calculate_semantic_contract_fingerprint,
+)
+from tests.candidate_authority_source import (
+    get_semantic_contract_for_qualification as get_semantic_contract,
+    load_semantic_resource_for_qualification as load_semantic_resource,
 )
 from scripts import qualify_acc13_publication as publication
 
@@ -1135,9 +1139,9 @@ def test_exact_discovery_missing_versions_aliases_and_publication_only() -> None
         publication.PREFIX + "conformance-not-published",
     ]:
         with pytest.raises(LookupError):
-            load_semantic_resource(key)
+            load_packaged_semantic_resource(key)
     with pytest.raises(LookupError):
-        get_semantic_contract("authoring-construction", "99.99")
+        get_packaged_semantic_contract("authoring-construction", "99.99")
     assert (
         load_semantic_resource(publication.PREFIX + "contract")
         == get_semantic_contract("authoring-construction", "1.3").to_wire()

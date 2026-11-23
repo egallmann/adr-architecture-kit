@@ -11,11 +11,10 @@ from typing import Any
 import pytest
 import yaml
 
-from adr_kit.semantic_contract import (
-    get_semantic_contract,
-    load_semantic_resource,
-    validate_semantic_resource_closure,
-    verify_semantic_contract,
+from adr_kit.semantic_contract import validate_semantic_resource_closure, verify_semantic_contract
+from tests.candidate_authority_source import (
+    get_semantic_contract_for_qualification as get_semantic_contract,
+    load_semantic_resource_for_qualification as load_semantic_resource,
 )
 from adr_kit.validators.adr_validator import ADRValidator
 from tests.test_required_output_authority_design import registry

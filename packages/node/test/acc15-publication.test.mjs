@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { getSemanticContract, loadSemanticResource, verifySemanticContract, validateSemanticResourceClosure } from "../dist/node/semantic-contract.js";
+import { verifySemanticContract, validateSemanticResourceClosure } from "../dist/node/semantic-contract.js";
+import { getSemanticContract as getPackagedSemanticContract, loadSemanticResource as loadPackagedSemanticResource } from "../dist/node/semantic-contract.js";
+import { getContractForQualification as getSemanticContract, getResourceForQualification as loadSemanticResource } from "./candidate-authority-source.mjs";
 
 const p = "authoring-construction/1.5/";
 
@@ -31,8 +33,8 @@ test("ACC 1.5 exact packaged authority preserves actual inherited rules and unav
 });
 
 test("ACC 1.5 missing, malformed and corrupted packaged authority fails closed", async () => {
-  assert.throws(() => getSemanticContract("authoring-construction", "missing-version"));
-  for (const key of [p + "missing", p + "../1.4/rules", p + "composition/bindings"]) assert.throws(() => loadSemanticResource(key));
+  assert.throws(() => getPackagedSemanticContract("authoring-construction", "1.5"));
+  for (const key of [p + "missing", p + "../1.4/rules", p + "composition/bindings"]) assert.throws(() => loadPackagedSemanticResource(key));
   const contract = getSemanticContract("authoring-construction", "1.5");
   const bundle = contract.resourceManifest.map(m => ({ canonicalResourceKey: m.canonicalResourceKey, content: loadSemanticResource(m.canonicalResourceKey) }));
   assert.equal((await validateSemanticResourceClosure(contract, bundle.slice(1))).closure_valid, false);

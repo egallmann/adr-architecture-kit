@@ -69,10 +69,63 @@ def cohort_template(
     version = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"][
         "version"
     ]
-    files = {
-        p.relative_to(ROOT / "src").as_posix(): p.read_bytes()
-        for p in (ROOT / "src/adr_kit").rglob("*.json")
+    lifecycle = json.loads(
+        (ROOT / "adrs/migrations/semantic-contract-lifecycle-classification.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    released_identities = {
+        (entry["family"], entry["version"]) for entry in lifecycle["released_contracts"]
     }
+    definitions = [
+        json.loads(path.read_text(encoding="utf-8"))
+        for path in (ROOT / "contracts/semantic-contract/v1.0/definitions").glob("*.json")
+    ]
+    candidate_definitions = [
+        value
+        for value in definitions
+        if (value["semanticContractFamily"], value["semanticContractVersion"])
+        not in released_identities
+    ]
+    candidate_definition_names = {
+        f"{value['semanticContractFamily']}-{value['semanticContractVersion']}.json"
+        for value in candidate_definitions
+    }
+    released_resources = {
+        f"{member['canonicalResourceKey'].replace('/', '-')}.json"
+        for entry in lifecycle["released_contracts"]
+        for member in json.loads((ROOT / entry["definition_path"]).read_text(encoding="utf-8"))[
+            "resourceManifest"
+        ]
+    }
+    released_resources.update(
+        f"{Path(entry['path']).parts[1]}-{Path(entry['path']).parts[2][1:]}-"
+        f"{Path(entry['path']).stem}.json"
+        for entry in lifecycle["embedded_resource_authorities"]
+    )
+    released_resources.update(
+        "-".join(member["canonicalResourceKey"].split("/")) + ".json"
+        for value in definitions
+        if (value["semanticContractFamily"], value["semanticContractVersion"])
+        in released_identities
+        for member in value["resourceManifest"]
+    )
+    candidate_resources = {
+        "-".join(member["canonicalResourceKey"].split("/")) + ".json"
+        for value in candidate_definitions
+        for member in value["resourceManifest"]
+    } - released_resources
+    files: dict[str, bytes] = {}
+    for path in (ROOT / "src/adr_kit").rglob("*.json"):
+        relative = path.relative_to(ROOT / "src").as_posix()
+        parts = Path(relative).parts
+        if "v2_5" in parts:
+            continue
+        if path.name in candidate_definition_names:
+            continue
+        if "resources" in parts and path.name in candidate_resources:
+            continue
+        files[relative] = path.read_bytes()
     files["adr_kit/core/semantic-core.wasm"] = (
         ROOT / "src/adr_kit/core/semantic-core.wasm"
     ).read_bytes()
@@ -345,15 +398,17 @@ def test_retained_bundle_is_never_repaired_or_rehashed(
 
 
 def test_changed_resource_with_recalculated_package_digests_is_not_authority(
-    admitted: dict[str, Any],
+    admitted: dict[str, Any], qualified_index: scanner.AuthorityIndex
 ) -> None:
     bundle = admitted["bundle"]
     wheel = next((bundle / "python-dist").glob("*.whl"))
     files = scanner.archive_members(wheel.read_bytes(), True)
     name = next(
         n
-        for n in files
-        if n.endswith("architecture-interpretation-1.5-identity-representation-recipes.json")
+        for n in sorted(files)
+        if "resources" in Path(n).parts
+        and n.endswith(".json")
+        and scanner.json_identity(json.loads(files[n])) in qualified_index.released_values["wheel"]
     )
     value = json.loads(files[name])
     value["forged_rule"] = "unauthorized but rehashed"
@@ -494,27 +549,50 @@ def test_validly_recomputed_unauthorized_definition_is_rejected(admitted: dict[s
     bundle = admitted["bundle"]
     wheel = next((bundle / "python-dist").glob("*.whl"))
     files = scanner.archive_members(wheel.read_bytes(), True)
-    name = next(n for n in files if n.endswith("definitions/architecture-interpretation-1.5.json"))
-    value = json.loads(files[name])
+    from scripts.candidate_contract_assets import canonical_resource
+
+    value = canonical_resource(ROOT, "architecture-interpretation/1.5/contract")
     value["resourceManifest"][0]["role"] = "interpretation-rule"
     computed = calculate_semantic_contract_fingerprint(value)
     assert computed.success
     value["semanticContractFingerprint"] = computed.semantic_contract_fingerprint
     assert verify_semantic_contract(value).success
+    name = "adr_kit/semantic_contract/v1_0/definitions/architecture-interpretation-1.5.json"
     files[name] = json.dumps(value).encode()
     wheel.write_bytes(zip_payload(files))
     with pytest.raises((ValueError, RuntimeError), match="unknown or changed"):
         scanner.create_cohort(bundle, admitted["source"])
 
 
-def test_missing_member_in_one_package_is_not_supplied_by_another(admitted: dict[str, Any]) -> None:
+def test_missing_member_in_one_package_is_not_supplied_by_another(
+    admitted: dict[str, Any], qualified_index: scanner.AuthorityIndex
+) -> None:
     bundle = admitted["bundle"]
     wheel = next((bundle / "python-dist").glob("*.whl"))
     files = scanner.archive_members(wheel.read_bytes(), True)
+    wasm = (ROOT / "src/adr_kit/core/semantic-core.wasm").read_bytes()
+    embedded = {
+        value for _, value in qualified_index.observations["wasm", hashlib.sha256(wasm).hexdigest()]
+    }
+    manifest_keys = {
+        entry["key"] for entries in qualified_index.required.values() for entry in entries
+    }
+    candidates = {
+        scanner.json_identity(json.loads(data))
+        for name, data in files.items()
+        if name.endswith(".json")
+        and scanner.json_identity(json.loads(data)) in qualified_index.released_values["wheel"]
+        and scanner.json_identity(json.loads(data)) not in embedded
+        and not any(
+            entry[2] in manifest_keys
+            for entry in qualified_index.values[scanner.json_identity(json.loads(data))]
+        )
+    }
+    selected = sorted(candidates)[0]
     files = {
-        k: v
-        for k, v in files.items()
-        if not k.endswith("architecture-interpretation-1.5-identity-representation-recipes.json")
+        name: data
+        for name, data in files.items()
+        if not (name.endswith(".json") and scanner.json_identity(json.loads(data)) == selected)
     }
     wheel.write_bytes(zip_payload(files))
     with pytest.raises((ValueError, RuntimeError), match="incomplete|missing"):
@@ -557,10 +635,30 @@ def test_candidate_changes_are_not_frozen_but_genuine_promotions_are(
     admitted: dict[str, Any],
 ) -> None:
     inventory = {"authorities": copy.deepcopy(admitted["evidence"]["approved_authorities"])}
+    lifecycle = json.loads(
+        (ROOT / "adrs/migrations/semantic-contract-lifecycle-classification.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    candidates = {
+        (value["semanticContractFamily"], value["semanticContractVersion"])
+        for path in (ROOT / "contracts/semantic-contract/v1.0/definitions").glob("*.json")
+        if (value := json.loads(path.read_text(encoding="utf-8")))
+        and (value["semanticContractFamily"], value["semanticContractVersion"])
+        not in {(entry["family"], entry["version"]) for entry in lifecycle["released_contracts"]}
+    }
+    assert not candidates.intersection(
+        (record["family"], record["version"]) for record in inventory["authorities"]
+    )
+    promotion.enforce_promoted(inventory, [])
     selected = next(
         r
         for r in inventory["authorities"]
-        if r["family"] == "architecture-interpretation" and r["version"] == "1.5"
+        if (r["family"], r["version"])
+        in {
+            (old["family"], old["version"])
+            for old in admitted["attestation"]["approved_authorities"]
+        }
     )
     selected["scf"] = "scf:v1:sha256:" + "f" * 64
     promotion.enforce_promoted(inventory, [])

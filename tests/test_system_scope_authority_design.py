@@ -10,7 +10,9 @@ import pytest
 import yaml
 from jsonschema import Draft202012Validator
 
-from adr_kit.semantic_contract import load_semantic_resource
+from tests.candidate_authority_source import (
+    load_semantic_resource_for_qualification as load_semantic_resource,
+)
 from adr_kit.validators.adr_validator import ADRValidator
 
 ROOT = Path(__file__).resolve().parents[1]

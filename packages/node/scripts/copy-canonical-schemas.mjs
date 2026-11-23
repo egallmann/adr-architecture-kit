@@ -29,6 +29,30 @@ const authoringDomainContractPath = resolve(
 const authoringDomainContractBytes = await readFile(authoringDomainContractPath);
 const authoringDomainContract = JSON.parse(authoringDomainContractBytes.toString("utf8"));
 const semanticContractRoot = resolve(repoRoot, "contracts/semantic-contract/v1.0");
+const lifecycle = JSON.parse(
+  await readFile(
+    resolve(repoRoot, "adrs/migrations/semantic-contract-lifecycle-classification.json"),
+    "utf8",
+  ),
+);
+const releasedContractIds = new Set(
+  lifecycle.released_contracts.map((entry) => `${entry.family}/${entry.version}`),
+);
+const releasedResourceNames = new Set();
+const semanticResourceDirectory = resolve(semanticContractRoot, "resources");
+const semanticResourceFiles = new Set(await readdir(semanticResourceDirectory));
+for (const entry of lifecycle.released_contracts) {
+  const definition = JSON.parse(
+    await readFile(resolve(repoRoot, entry.definition_path), "utf8"),
+  );
+  for (const member of definition.resourceManifest) {
+    const parts = member.canonicalResourceKey.split("/");
+    const fullName = `${parts.join("-")}.json`;
+    const legacyName = `${parts[0]}-${parts.at(-1)}.json`;
+    if (semanticResourceFiles.has(fullName)) releasedResourceNames.add(fullName);
+    else if (semanticResourceFiles.has(legacyName)) releasedResourceNames.add(legacyName);
+  }
+}
 
 const families = [
   ["authoring", "v1.2"],
@@ -52,6 +76,7 @@ const canonicalBytes = {};
 for (const [family, version] of families) {
   const source = version ? resolve(canonicalRoot, family, version) : resolve(canonicalRoot, family);
   const target = version ? resolve(generatedRoot, "schemas", family, version) : resolve(generatedRoot, "schemas", family);
+  await rm(target, { recursive: true, force: true });
   await mkdir(target, { recursive: true });
   for (const name of await readdir(source)) {
     if (!name.endsWith(".json")) continue;
@@ -95,12 +120,23 @@ const semanticContractAssets = {};
 for (const directory of ["definitions", "resources", "profiles", "sets", "qualifications", "catalog", "policy", "current"]) {
   const source = resolve(semanticContractRoot, directory);
   const target = resolve(generatedRoot, "semantic-contract", directory);
+  await rm(target, { recursive: true, force: true });
   await mkdir(target, { recursive: true });
   for (const name of await readdir(source)) {
     if (!name.endsWith(".json")) continue;
     const bytes = await readFile(resolve(source, name));
-    await writeFile(resolve(target, name), bytes);
-    semanticContractAssets[`${directory}/${name}`] = JSON.parse(bytes.toString("utf8"));
+    const value = JSON.parse(bytes.toString("utf8"));
+    const identity = `${value.semanticContractFamily ?? ""}/${value.semanticContractVersion ?? ""}`;
+    const definition = directory === "definitions";
+    const releasedDefinition = definition && releasedContractIds.has(identity);
+    const releasedResource = !definition && releasedResourceNames.has(name);
+    const releaseControl = ["profiles", "sets", "qualifications", "catalog", "policy", "current"].includes(directory);
+    if (definition ? releasedDefinition : releasedResource || releaseControl) {
+      await writeFile(resolve(target, name), bytes);
+      semanticContractAssets[`${directory}/${name}`] = value;
+    } else {
+      await rm(resolve(target, name), { force: true });
+    }
   }
 }
 for (const name of (await readdir(semanticContractRoot)).filter((name) => name.endsWith(".schema.json"))) {

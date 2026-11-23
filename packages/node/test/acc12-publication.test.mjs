@@ -2,11 +2,13 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import {
-  getSemanticContract,
-  loadSemanticResource,
   validateSemanticResourceClosure,
   verifySemanticContract,
 } from "../dist/node/semantic-contract.js";
+import {
+  getContractForQualification as getSemanticContract,
+  getResourceForQualification as loadSemanticResource,
+} from "./candidate-authority-source.mjs";
 import { semanticCoreCapabilities } from "../dist/node/protocol.js";
 
 test("Node exposes exact ACC 1.2 authority without selecting it or advertising execution", async () => {

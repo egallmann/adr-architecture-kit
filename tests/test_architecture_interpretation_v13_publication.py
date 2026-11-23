@@ -18,10 +18,13 @@ from jsonschema import Draft202012Validator
 from adr_kit.semantic_contract import (
     SemanticContractVersion,
     calculate_semantic_contract_fingerprint,
-    get_semantic_contract,
-    load_semantic_resource,
     validate_semantic_resource_closure,
     verify_semantic_contract,
+)
+from adr_kit.semantic_contract import load_semantic_resource as load_bundled_semantic_resource
+from tests.candidate_authority_source import (
+    get_semantic_contract_for_qualification as get_semantic_contract,
+    load_semantic_resource_for_qualification as load_semantic_resource,
 )
 from scripts import qualify_ai13_publication as publication
 
@@ -1042,11 +1045,11 @@ def test_exact_discovery_and_byte_identical_package_mirrors() -> None:
     with pytest.raises(LookupError):
         load_semantic_resource("architecture-interpretation/99.99/rules")
     with pytest.raises(LookupError):
-        load_semantic_resource("architecture-interpretation/1.3/not-published")
+        load_bundled_semantic_resource("architecture-interpretation/1.3/not-published")
     with pytest.raises(LookupError):
-        load_semantic_resource("architecture-interpretation/1.3/source-decoding-1.5")
+        load_bundled_semantic_resource("architecture-interpretation/1.3/source-decoding-1.5")
     with pytest.raises(LookupError):
-        load_semantic_resource("architecture-interpretation/1.3/lifecycle/ownership")
+        load_bundled_semantic_resource("architecture-interpretation/1.3/lifecycle/ownership")
     with pytest.raises(LookupError):
         get_semantic_contract("authoring-construction", "99.99")
 

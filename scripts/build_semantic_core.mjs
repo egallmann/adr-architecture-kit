@@ -1,10 +1,11 @@
-import { cp, mkdir, readFile } from "node:fs/promises";
+import { cp, mkdir, readFile, rm } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const repoRoot = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const cargo = process.env.CARGO ?? "cargo";
+const artifactOnly = process.argv.includes("--artifact-only");
 const args = ["build", "--manifest-path", resolve(repoRoot, "core/Cargo.toml"), "--target", "wasm32-unknown-unknown", "--release"];
 
 await new Promise((resolvePromise, reject) => {
@@ -26,12 +27,16 @@ const pythonContractV12Target = resolve(repoRoot, "src/adr_kit/core/semantic-cor
 const pythonContractV13Target = resolve(repoRoot, "src/adr_kit/core/semantic-core-contract-v1.3.json");
 await mkdir(resolve(repoRoot, "src/adr_kit/core"), { recursive: true });
 await mkdir(resolve(repoRoot, "packages/node/src/generated"), { recursive: true });
-await cp(artifact, pythonTarget, { force: true });
-await cp(artifact, nodeTarget, { force: true });
+if (!artifactOnly) {
+  await cp(artifact, pythonTarget, { force: true });
+  await cp(artifact, nodeTarget, { force: true });
+}
 await cp(contractSource, pythonContractTarget, { force: true });
 await cp(contractV11Source, pythonContractV11Target, { force: true });
 await cp(contractV12Source, pythonContractV12Target, { force: true });
 await cp(contractV13Source, pythonContractV13Target, { force: true });
+await rm(resolve(repoRoot, "src/adr_kit/core/semantic-core-contract-v1.4.json"), { force: true });
+await rm(resolve(repoRoot, "src/adr_kit/core/semantic-core-contract-v1.5.json"), { force: true });
 const semanticContractSource = resolve(repoRoot, "contracts/semantic-contract/v1.0");
 const semanticContractTarget = resolve(repoRoot, "src/adr_kit/semantic_contract/v1_0");
 await cp(resolve(semanticContractSource, "semantic-contract-version.schema.json"), resolve(semanticContractTarget, "semantic-contract-version.schema.json"), { force: true });

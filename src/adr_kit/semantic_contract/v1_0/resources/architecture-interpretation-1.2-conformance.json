@@ -1,0 +1,152 @@
+{
+  "resource": "architecture-interpretation/1.2/conformance",
+  "semanticDependencies": [
+    "architecture-interpretation/1.2/conformance.schema",
+    "architecture-interpretation/1.2/detached-context",
+    "architecture-interpretation/1.2/field-dispositions-1.7-to-2.4",
+    "architecture-interpretation/1.2/legacy-compatibility",
+    "architecture-interpretation/1.2/rules",
+    "architecture-interpretation/1.2/source-decoding-1.7",
+    "architecture-interpretation/1.2/source-mapping-1.7-to-2.4",
+    "authoring/1.7/schema/adr-common.schema",
+    "authoring/1.7/schema/adr-logical.schema",
+    "authoring/1.7/schema/adr-physical-base.schema",
+    "authoring/1.7/schema/adr-physical-component.schema",
+    "authoring/1.7/schema/adr-physical-system.schema",
+    "authoring/1.7/schema/types.schema",
+    "custom-entity/1.0/conformance",
+    "custom-entity/1.0/contract",
+    "custom-entity/1.0/schema",
+    "normalized-model/2.4/schema/normalized-architecture-model.schema",
+    "normalized-model/2.4/schema/normalized-entity-registry.schema",
+    "normalized-model/2.4/schema/normalized-entity.schema",
+    "normalized-model/2.4/schema/relationship-record.schema",
+    "normalized-model/2.4/schema/relationship-registry.schema",
+    "normalized-model/2.4/schema/unresolved-registry.schema"
+  ],
+  "source_contract": "authoring@1.7",
+  "output_contract": "normalized-model@2.4",
+  "frozen_conformance_schema": {
+    "required": [
+      "id",
+      "assertion",
+      "expected"
+    ],
+    "expected_values": [
+      "conforms",
+      "rejects",
+      "preserves",
+      "excludes",
+      "matches"
+    ],
+    "authority_only": true,
+    "not_acc_execution": true
+  },
+  "cases": [
+    {
+      "id": "AI12-001",
+      "assertion": "The disposition inventory exactly covers every supported Authoring 1.7 schema field after declared semantic-child boundaries; new or missing fields fail closed.",
+      "expected": "conforms"
+    },
+    {
+      "id": "AI12-002",
+      "assertion": "Every field key is unique within its semantic unit and has exactly one member of the closed five-class vocabulary.",
+      "expected": "rejects"
+    },
+    {
+      "id": "AI12-003",
+      "assertion": "entity/gap#/context maps to metadata.semantic_extensions with its complete exact string value.",
+      "expected": "preserves"
+    },
+    {
+      "id": "AI12-004",
+      "assertion": "Removing or changing the gap context semantic-extension value is semantic loss even when metadata.source_semantics retains the original source bytes/value.",
+      "expected": "rejects"
+    },
+    {
+      "id": "AI12-005",
+      "assertion": "Moving a field to another runtime source JSON Pointer, root traversal position, candidate filename, or embedded location does not change the stable field key or semantic identity.",
+      "expected": "excludes"
+    },
+    {
+      "id": "AI12-006",
+      "assertion": "Structured extension values preserve JSON type, object members, array order where declared, and nested values without coercion.",
+      "expected": "preserves"
+    },
+    {
+      "id": "AI12-007",
+      "assertion": "Authoring title/status and evidence_expectation kind/description/related_entities map to their exact Normalized Model 2.4 first-class fields; values with first-class destinations are not duplicated in semantic_extensions.",
+      "expected": "matches"
+    },
+    {
+      "id": "AI12-008",
+      "assertion": "Topology compatibility equality uses type, owner scope when material, resolved endpoint UUIDs, authored semantic properties, and multiplicity; generated IDs and pointers are excluded.",
+      "expected": "matches"
+    },
+    {
+      "id": "AI12-009",
+      "assertion": "Normative-proposition lifecycle is absent only under the named lifecycle-free rule; an implementation omission of any other field is not declared absence.",
+      "expected": "conforms"
+    },
+    {
+      "id": "AI12-010",
+      "assertion": "schema_version and fixed adr_type discriminators are derivable from the exact selected authoring schema and are deterministic ceremony; authored status, aliases, dates, UUIDs, custom qualification, and relationship meaning are never ceremony.",
+      "expected": "conforms"
+    },
+    {
+      "id": "AI12-011",
+      "assertion": "Embedded semantic children retain their own UUID and field ledger exactly once; parent membership carries child identity/order only and never duplicates the child payload.",
+      "expected": "preserves"
+    },
+    {
+      "id": "AI12-012",
+      "assertion": "Standalone semantic fragments remain native roots and mixed root sets are aggregated without synthetic ADR wrapping.",
+      "expected": "preserves"
+    },
+    {
+      "id": "AI12-013",
+      "assertion": "Reordering identity-keyed child collections leaves semantic identity and equality unchanged; multiplicity and duplicate-identity rejection remain governed.",
+      "expected": "matches"
+    },
+    {
+      "id": "AI12-014",
+      "assertion": "Reordering entity/data_flow#/path changes its ordered semantic value and therefore equality.",
+      "expected": "rejects"
+    },
+    {
+      "id": "AI12-015",
+      "assertion": "Unclassified compatibility endpoint, custom qualification, semantic extension, or unresolved record fails closed rather than yielding equivalent success.",
+      "expected": "rejects"
+    },
+    {
+      "id": "AI12-016",
+      "assertion": "CEC-qualified custom entity/relationship meaning includes exact qualification, UUID identity, custom property values, endpoint identities, and relationship multiplicity.",
+      "expected": "preserves"
+    },
+    {
+      "id": "AI12-017",
+      "assertion": "A detached scope and root locator derive only from the exact basis digest, source_ref UTF-8 digest, and fixed domain constants and cannot be interpreted as a repository path or admission.",
+      "expected": "conforms"
+    },
+    {
+      "id": "AI12-018",
+      "assertion": "AI 1.1 remains independently valid under its original SCF and frozen conformance resource; AI 1.2 does not rewrite historical authority.",
+      "expected": "preserves"
+    },
+    {
+      "id": "AI12-019",
+      "assertion": "SYS-to-COMP composed_of is derived only from physical-system component_topology.components membership: the owning System UUID is from_entity_id, each resolved component_ref UUID is to_entity_id, topology/local handles are never endpoints, the compatibility occurrence remains multiplicity-significant, unresolved references remain explicit without fabricated endpoints, and composed_of remains forward-forbidden.",
+      "expected": "matches"
+    },
+    {
+      "id": "AI12-020",
+      "assertion": "Every field disposition names a destination catalog entry, closed value semantics, ordering vocabulary, matching-identity catalog entry, and multiplicity policy; unknown catalog references fail closed and rationale prose does not define execution.",
+      "expected": "conforms"
+    },
+    {
+      "id": "AI12-021",
+      "assertion": "System-boundary, data-flow, evidence-expectation, custom entity, and custom relationship source values with Normalized Model 2.4 first-class destinations map there exactly once; data-flow path also carries owner_local_ordered_topology_path semantics.",
+      "expected": "preserves"
+    }
+  ]
+}

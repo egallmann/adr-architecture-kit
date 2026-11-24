@@ -322,16 +322,26 @@ invariants:
   alias_id: INV-0022
   alias_name: inv-0022
 - id: 019fee89-e615-758b-a31f-a0dcb8d9d09a
-  statement: 'Test suite MUST complete in under 30 seconds for fast feedback
+  statement: 'The developer/TDD fast test suite MUST complete in under 30 seconds
+
+    for fast feedback. Comprehensive integration, governance, portability, and release
+
+    qualification remain mandatory and have independent lifecycle budgets.
 
     '
   scope: global
   enforcement_level: should
   enforcement_mechanism: test
   verification_method: automated
-  rationale: 'Slow tests discourage running them frequently. Fast feedback enables
+  rationale: 'The isolated developer/TDD fast suite must support rapid Red-Green-Refactor
 
-    test-driven development and rapid iteration.
+    iteration. Comprehensive assurance remains mandatory in integration, governance,
+
+    cross-host, and release lanes, each with a lifecycle-appropriate budget. Release
+
+    certification may intentionally take longer. Assurance duration and test counts
+
+    must remain visible so regressions can be investigated rather than hidden.
 
     '
   alias_id: INV-0023
@@ -568,11 +578,15 @@ capabilities:
   name: Test-Driven Development Support
   description: 'Test infrastructure supports TDD workflow - write failing test, implement
 
-    feature, test passes. Fast test execution enables rapid iteration.
+    feature, test passes. The isolated developer/TDD fast suite enables rapid iteration;
+
+    comprehensive assurance remains mandatory in separate integration, governance,
+
+    portability, and release lanes with independently visible duration budgets.
 
     '
   acceptance_criteria:
-  - Tests run in under 30 seconds
+  - The developer/TDD fast suite runs in under 30 seconds
   - Clear test output (pass/fail/error)
   - Easy to run subset of tests
   - Good test isolation (no shared state)
@@ -660,19 +674,25 @@ notes: "Testing strategy implementation:\n\nTest organization:\n```\ntests/\n  t
   \ 0 --max-non-complete-entities 0\n\n# Generated artifact integrity (manifest +\
   \ rendered ADR markdown)\nadr validate-generated-docs\n\n# Generated system overview\
   \ integrity\nadr validate-system-overview\n\n# PROJECT.yaml integrity\nadr validate-project-metadata\n\
-  \n# Targeted pytest usage for local development\npytest tests/ -v\npytest tests/\
-  \ --cov=adr_kit --cov-report=html --cov-report=term --cov-fail-under=80\npytest\
-  \ tests/ -k \"scope\" -v\n```\n\nCI/CD integration (orthogonal evidence axes):\n\
+  \n# Developer/TDD fast suite (isolated behavior and contract checks)\npython -m pytest -m fast --durations=10\n\n# Focus one test file or case\npython -m pytest tests/test_schema_validation.py -q\npython -m pytest -k 'scope' -q\n\n# Complete suite and canonical coverage\npython -m pytest --durations=30\npython -m pytest --durations=30 --cov=adr_kit --cov-report=term-missing --cov-fail-under=80\n\n# PR fast/TDD plus semantic/source assurance\npython -m pytest -m fast --durations=10\npython scripts/run_pr_feedback.py\n\n# Governance pytest assertions and repository-state assurance\npython -m pytest -m governance --durations=30\nadr governance-checks --skip-tests\n```\n\nCI/CD integration (orthogonal evidence axes):\n\
   - Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently\
   \ qualified released minor line is 3.14; reference interpreter is currently 3.14.7;\
   \ new GA Python minors require explicit admission to the qualification matrix\n\
-  - Canonical correctness: Ubuntu + Python 3.14 runs the complete suite with coverage\
-  \ (`--cov=adr_kit --cov-fail-under=80`) exactly once\n- Python-version compatibility:\
+  - Canonical correctness: Ubuntu + Python 3.14 runs the non-governance behavioral,\
+  \ integration, and cross-host suite with canonical coverage (`--cov=adr_kit\
+  \ --cov-fail-under=80`). The governance job separately runs every governance-marked\
+  \ pytest assertion. Together, those lanes execute the complete Python assertion\
+  \ inventory for the same develop commit; the 80% threshold remains on the canonical\
+  \ coverage lane\n- Python-version compatibility:\
   \ Ubuntu runs focused source/install/SDK compatibility on the currently qualified\
   \ released minor line (Python 3.14; not a second full suite on each interpreter)\n\
-  - OS behavior / source-runtime portability: Windows and macOS at Python 3.14 each\
-  \ run the complete suite (no coverage gate); Ubuntu 3.14 suite is owned by the\
-  \ coverage job and is not duplicated\n- Retained-wheel Python compatibility: exact\
+  - OS behavior / source-runtime portability: each develop integration runs the\
+  \ complete Python assertion inventory across the Linux behavioral/coverage and\
+  \ governance pytest lanes; governance CLI and quality gates separately validate\
+  \ repository state. The scheduled portability workflow resolves and qualifies one\
+  \ current `develop` commit on both Windows and macOS. Release Certification\
+  \ independently requalifies complete Windows/macOS source suites and retained\
+  \ artifacts\n- Retained-wheel Python compatibility:\
   \ retained wheel via `scripts/test_installed_wheel.py` on Ubuntu Python 3.14\n\
   - Retained-wheel OS portability: the exact same retained wheel via\
   \ `scripts/test_installed_wheel.py` on Windows and macOS at Python 3.14; the\
@@ -681,13 +701,15 @@ notes: "Testing strategy implementation:\n\nTest organization:\n```\ntests/\n  t
   \ axes are orthogonal and MUST NOT imply that all supported Python versions\
   \ execute on every OS\n- Linux-only execution\
   \ is insufficient evidence for an OS-agnostic package claim\n- PR feedback = proposed-change evidence: it MUST install and exercise the\
-  \ project through the designated fast semantic/source collection and MUST NOT be\
+  \ project through an explicit developer/TDD fast suite and the broader designated\n  \ semantic/source collection, and MUST NOT be\
   \ treated as complete release qualification. Develop qualification = integration\
-  \ evidence: it MUST own the complete Python suite, canonical coverage, and source\
-  \ runtime portability. Only a successful completed `push` of Release Certification\
-  \ on `main` for the exact source commit and retained artifacts is release-eligible;\
-  \ tag publication is promotion/identity verification only\n\
-  - `adr governance-checks --skip-tests` must pass in CI when the complete suite is\
+  \ evidence: it MUST own the complete Linux behavioral/integration/cross-host suite,\
+  \ canonical coverage, and\
+  \ peer-host checks, every governance-marked pytest assertion, and repository-state\n  \ governance commands. Scheduled portability and Release Certification own\
+  \ complete Windows/macOS source-suite evidence. Only a successful completed `push`\
+  \ of Release Certification on `main` for the exact source commit and retained\
+  \ artifacts is release-eligible; tag publication is promotion/identity verification\
+  \ only\n- `adr governance-checks --skip-tests` must pass in CI when the complete suite is\
   \ already owned by the coverage job\n- `adr validate-generated-docs` must pass for\
   \ manifest and rendered ADR output\n- `adr validate-system-overview` must pass for\
   \ `SYSTEM-OVERVIEW.md`\n- `adr validate-project-metadata` must pass for `PROJECT.yaml`\n\

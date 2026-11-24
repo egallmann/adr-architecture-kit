@@ -116,6 +116,29 @@ def test_constructed_result_preserves_detached_candidate_and_round_trip() -> Non
     assert result.candidate_artifacts[0]["bytes"]
 
 
+@pytest.mark.parametrize(
+    ("case_id", "parent_key", "child_key"),
+    [("C05", "parent", "child"), ("C07", "adr", "decision")],
+)
+def test_public_host_preserves_complete_artifacts_and_minimal_source_roots(
+    case_id: str, parent_key: str, child_key: str
+) -> None:
+    result = construct_authoring_set(_request(case_id))
+    expected = _case(case_id)["expected"]["result"]
+    assert result.candidate_source_basis is not None
+    basis_artifacts = cast(list[dict[str, Any]], result.candidate_source_basis["artifacts"])
+
+    assert result.outcome == "Constructed"
+    assert [item["source_ref"] for item in result.candidate_artifacts] == [
+        item["source_ref"] for item in expected["candidate_artifacts"]
+    ]
+    assert [item["source_ref"] for item in basis_artifacts] == [
+        item["source_ref"] for item in expected["candidate_source_basis"]["artifacts"]
+    ]
+    assert [item["request_key"] for item in basis_artifacts] == [parent_key]
+    assert child_key in {item["request_key"] for item in result.candidate_artifacts}
+
+
 @pytest.mark.parametrize("case_id", ["C01", "C32", "C33", "C41"])
 def test_construct_authoring_set_preserves_shared_case_result(case_id: str) -> None:
     result = construct_authoring_set(_request(case_id))

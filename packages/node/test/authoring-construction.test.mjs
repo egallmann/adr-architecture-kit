@@ -87,6 +87,27 @@ for (const [caseId, outcome] of [["C01", "Constructed"], ["C32", "Rejected"], ["
   });
 }
 
+for (const [caseId, parentKey, childKey] of [["C05", "parent", "child"], ["C07", "adr", "decision"]]) {
+  test(`public Node construction preserves minimal source roots for ${caseId}`, async () => {
+    const result = await constructAuthoringSet(requestFor(caseId));
+    const expected = corpus.cases.find((item) => item.id === caseId).expected.result;
+    assert.equal(result.outcome, "Constructed");
+    assert.deepEqual(
+      result.candidate_artifacts.map((item) => item.source_ref),
+      expected.candidate_artifacts.map((item) => item.source_ref),
+    );
+    assert.deepEqual(
+      result.candidate_source_basis.artifacts.map((item) => item.source_ref),
+      expected.candidate_source_basis.artifacts.map((item) => item.source_ref),
+    );
+    assert.deepEqual(
+      result.candidate_source_basis.artifacts.map((item) => item.request_key),
+      [parentKey],
+    );
+    assert.ok(result.candidate_artifacts.some((item) => item.request_key === childKey));
+  });
+}
+
 test("Python and Node public construction results have equivalent observables", async () => {
   for (const caseId of ["C01", "C32", "C33", "C41"]) {
     const result = await constructAuthoringSet(requestFor(caseId));

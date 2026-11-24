@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 451994e0eb171c8d07954f2711cb71e990bba4b534cfd2ae86eb6052c6f297a1
-rendered_hash: a331d77b312446be48407ff6b5a24acb5b5b83a9c1f3a9c6ae9b9925144a68a7
+source_hash: 608815ccf104d08007a12328209856acf27402c055db088a881a42659021cb59
+rendered_hash: b8e815a9591b8e24fe2aacfa1eacd1d50029887ea5d3d588589588ad496410e1
 -->
 
 # ADR-PC-0002: Schema and Contract Validation
@@ -32,6 +32,7 @@ rendered_hash: a331d77b312446be48407ff6b5a24acb5b5b83a9c1f3a9c6ae9b9925144a68a7
 | Type | service |
 | System | [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) |
 | Purpose | Validate canonical architecture artifacts before downstream use. |
+| Depends on | Canonical Semantic Execution Core (COMP-0023) |
 | Depended on by | Compiler Pipeline and Driver (COMP-0012) |
 | Interfaces | IFACE-0012 — CLI; IFACE-0017 — library_api |
 | Primary implementation | `src/adr_kit/schema/contract_validation.py` |
@@ -52,6 +53,7 @@ rendered_hash: a331d77b312446be48407ff6b5a24acb5b5b83a9c1f3a9c6ae9b9925144a68a7
 - Consumer code must not invent a second contract interpretation path
 
 **Known architectural surface**
+- Depends on: Canonical Semantic Execution Core (COMP-0023)
 - Depended on by: Compiler Pipeline and Driver (COMP-0012)
 - Provided interfaces: IFACE-0012 — CLI; IFACE-0017 — library_api
 
@@ -80,12 +82,19 @@ flowchart LR
   n_019fee89_e617_74dd_a62f_5ce1a1994d18["IFACE-0017<br/>library_api"]
   n_019fee89_e617_76ad_9336_b3615a6e4bde["COMP-0012<br/>Compiler Pipeline and Driver"]
   n_019fee89_e617_78b8_852f_9b2c984f9300["IFACE-0012<br/>CLI"]
+  n_01a10e4c_9ea8_76a2_93f7_8fbfd4c11741["COMP-0023<br/>Canonical Semantic Execution Core"]
+  n_019fee89_e617_7060_8f3f_4ecd46a719da -->|"depends_on"| n_01a10e4c_9ea8_76a2_93f7_8fbfd4c11741
   n_019fee89_e617_76ad_9336_b3615a6e4bde -->|"depends_on"| n_019fee89_e617_7060_8f3f_4ecd46a719da
   n_019fee89_e617_7060_8f3f_4ecd46a719da -->|"provides_interface"| n_019fee89_e617_74dd_a62f_5ce1a1994d18
   n_019fee89_e617_7060_8f3f_4ecd46a719da -->|"provides_interface"| n_019fee89_e617_78b8_852f_9b2c984f9300
 ```
 
 ### Component Relationships
+
+**Depends on**
+- Canonical Semantic Execution Core (COMP-0023)
+
+  `COMP-0011 -[:depends_on]-> COMP-0023`
 
 **Depended on by**
 - Compiler Pipeline and Driver (COMP-0012)
@@ -273,6 +282,7 @@ Typed contract and validation result models.
 | [ADR-L-0011 — Metadata Schemas and Remediation Ledger Enforcement](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md) | Schema and Contract Validation (ADR-PC-0002) → Metadata Schemas and Remediation Ledger Enforcement (ADR-L-0011) | `ADR-PC-0002 -[:implements_logical]-> ADR-L-0011` |
 | [ADR-L-0020 — Semantic Implementation Attribution and Cross-Layer Architecture Relationships](../logical/ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md) | Schema and Contract Validation (ADR-PC-0002) → Semantic Implementation Attribution and Cross-Layer Architecture Relationships (ADR-L-0020) | `ADR-PC-0002 -[:implements_logical]-> ADR-L-0020` |
 | [ADR-PC-0003 — Compiler Pipeline and Driver](ADR-PC-0003-compiler-pipeline-and-driver.md) | Compiler Pipeline and Driver (COMP-0012) → Schema and Contract Validation Surface (COMP-0011) | `COMP-0012 -[:depends_on]-> COMP-0011` |
+| [ADR-PC-0009 — Canonical Semantic Execution Core](ADR-PC-0009-canonical-semantic-execution-core.md) | Schema and Contract Validation Surface (COMP-0011) → Canonical Semantic Execution Core (COMP-0023) | `COMP-0011 -[:depends_on]-> COMP-0023` |
 
 
 

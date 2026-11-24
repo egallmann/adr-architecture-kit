@@ -1,0 +1,165 @@
+{
+  "semanticDependencies": [
+    "normalized-model/2.5/schema/normalized-architecture-model.schema",
+    "normalized-model/2.5/schema/normalized-entity-registry.schema",
+    "normalized-model/2.5/schema/normalized-entity.schema",
+    "normalized-model/2.5/schema/relationship-record.schema",
+    "normalized-model/2.5/schema/relationship-registry.schema",
+    "normalized-model/2.5/schema/unresolved-registry.schema"
+  ],
+  "schemaVersion": "2.5",
+  "representation": "normalized_architecture_model",
+  "cases": [
+    {
+      "id": "NM25-001",
+      "name": "normative-proposition-is-lifecycle-free",
+      "classification": "inherited-normative-proposition",
+      "expected": [
+        "lifecycle_stage=absent",
+        "declaring_adr=required"
+      ]
+    },
+    {
+      "id": "NM25-002",
+      "name": "normative-proposition-and-invariant-are-peer-types",
+      "classification": "inherited-normative-proposition",
+      "expected": [
+        "normative_proposition",
+        "invariant"
+      ]
+    },
+    {
+      "id": "NM25-003",
+      "name": "scope-is-preserved-without-inferred-applicability",
+      "classification": "inherited-normative-proposition",
+      "expected": [
+        "declared-scope-preserved",
+        "unknown-scope-remains-unknown"
+      ]
+    },
+    {
+      "id": "NM25-004",
+      "name": "canonical-definition-ownership-is-unique",
+      "classification": "inherited-normative-proposition",
+      "expected": [
+        "duplicate-canonical-definition-rejected",
+        "references-do-not-create-definitions"
+      ]
+    },
+    {
+      "id": "NM25-005",
+      "name": "regular-lifecycle-proposed",
+      "classification": "executable-schema-assertion",
+      "expected": [
+        "lifecycle_stage=proposed",
+        "schema-accepted"
+      ]
+    },
+    {
+      "id": "NM25-006",
+      "name": "regular-lifecycle-accepted",
+      "classification": "executable-schema-assertion",
+      "expected": [
+        "lifecycle_stage=accepted",
+        "schema-accepted"
+      ]
+    },
+    {
+      "id": "NM25-007",
+      "name": "regular-lifecycle-active",
+      "classification": "executable-schema-assertion",
+      "expected": [
+        "lifecycle_stage=active",
+        "schema-accepted"
+      ]
+    },
+    {
+      "id": "NM25-008",
+      "name": "regular-lifecycle-deprecated",
+      "classification": "executable-schema-assertion",
+      "expected": [
+        "lifecycle_stage=deprecated",
+        "schema-accepted"
+      ]
+    },
+    {
+      "id": "NM25-009",
+      "name": "regular-lifecycle-superseded",
+      "classification": "executable-schema-assertion",
+      "expected": [
+        "lifecycle_stage=superseded",
+        "schema-accepted"
+      ]
+    },
+    {
+      "id": "NM25-010",
+      "name": "unknown-lifecycle-rejected",
+      "classification": "executable-schema-assertion",
+      "expected": [
+        "schema-rejected"
+      ]
+    },
+    {
+      "id": "NM25-011",
+      "name": "normative-proposition-forbidden-governance-fields",
+      "classification": "executable-schema-assertion",
+      "expected": [
+        "lifecycle_stage=forbidden",
+        "applicability=forbidden",
+        "materiality=forbidden"
+      ]
+    },
+    {
+      "id": "NM25-012",
+      "name": "exact-version-selectors",
+      "classification": "executable-schema-assertion",
+      "expected": [
+        "schema_version=2.5",
+        "2.4-rejected"
+      ]
+    },
+    {
+      "id": "NM25-013",
+      "name": "open-metadata-uninterpreted",
+      "classification": "executable-schema-assertion",
+      "expected": [
+        "metadata.ai_lifecycle_provenance=uninterpreted"
+      ]
+    },
+    {
+      "id": "NM25-014",
+      "name": "uuidv7-and-relationship-constraints",
+      "classification": "executable-schema-assertion",
+      "expected": [
+        "uuidv7-required",
+        "invalid-relationship-rejected"
+      ]
+    },
+    {
+      "id": "NM25-015",
+      "name": "closed-reference-graph",
+      "classification": "executable-schema-assertion",
+      "expected": [
+        "all-six-resolve",
+        "network-retrieval=forbidden"
+      ]
+    },
+    {
+      "id": "NM25-016",
+      "name": "immutable-resource-closure",
+      "classification": "executable-schema-assertion",
+      "expected": [
+        "seven-resources",
+        "digest-verified"
+      ]
+    }
+  ],
+  "schemas": [
+    "normalized-architecture-model.schema.json",
+    "normalized-entity-registry.schema.json",
+    "normalized-entity.schema.json",
+    "relationship-record.schema.json",
+    "relationship-registry.schema.json",
+    "unresolved-registry.schema.json"
+  ]
+}

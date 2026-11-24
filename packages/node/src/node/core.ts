@@ -4,7 +4,7 @@ import { ContractValidationError, RepositoryError } from "../errors.js";
 import { openRepository } from "./repository.js";
 import { parse } from "yaml";
 import { packageVersion } from "../generated/package-metadata.js";
-import { validateSemanticCoreProtocol } from "./protocol.js";
+import { SEMANTIC_CORE_PROTOCOL_VERSIONS, validateSemanticCoreProtocol } from "./protocol.js";
 
 const API_CONTRACT_VERSION = "1.0" as const;
 
@@ -78,9 +78,20 @@ function loadCoreBytes(): Promise<Buffer> {
   return coreBytes;
 }
 
+let coreModule: Promise<WebAssembly.Module> | undefined;
+function loadCoreModule(): Promise<WebAssembly.Module> {
+  coreModule ??= loadCoreBytes().then((bytes) => {
+    const moduleBytes = new Uint8Array(bytes.byteLength);
+    moduleBytes.set(bytes);
+    return new WebAssembly.Module(moduleBytes);
+  });
+  return coreModule;
+}
+
 export async function executeSemanticCoreRequest(request: Record<string, unknown>): Promise<Record<string, unknown>> {
-  const instantiated = await WebAssembly.instantiate(await loadCoreBytes());
-  const instance = ("instance" in instantiated ? instantiated.instance : instantiated) as WebAssembly.Instance;
+  // Compiled modules are immutable and reusable; each request gets a fresh
+  // instance (and therefore fresh guest memory and mutable globals).
+  const instance = new WebAssembly.Instance(await loadCoreModule());
   const exports = instance.exports as unknown as CoreExports;
   const payload = Buffer.from(JSON.stringify(request), "utf8");
   const input = exports.alloc(payload.length);
@@ -100,6 +111,11 @@ export async function executeSemanticCoreRequest(request: Record<string, unknown
 }
 
 export async function executeValidatedSemanticCoreRequest(request: Record<string, unknown>): Promise<Record<string, unknown>> {
+  if (!(SEMANTIC_CORE_PROTOCOL_VERSIONS as readonly string[]).includes(String(request.core_contract_version))) {
+    const result = await executeSemanticCoreRequest(request);
+    validateSemanticCoreProtocol(result);
+    return result;
+  }
   validateSemanticCoreProtocol(request);
   const result = await executeSemanticCoreRequest(request);
   validateSemanticCoreProtocol(result);

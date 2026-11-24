@@ -1,0 +1,962 @@
+{
+  "resource": "architecture-interpretation/1.3/conformance",
+  "semanticDependencies": [
+    "architecture-interpretation/1.2/legacy-compatibility",
+    "architecture-interpretation/1.2/source-decoding-1.7",
+    "architecture-interpretation/1.3/conformance.schema",
+    "architecture-interpretation/1.3/contextual-facts",
+    "architecture-interpretation/1.3/detached-context",
+    "architecture-interpretation/1.3/field-dispositions-1.7-to-2.5",
+    "architecture-interpretation/1.3/lifecycle-ownership",
+    "architecture-interpretation/1.3/lifecycle-provenance.schema",
+    "architecture-interpretation/1.3/rules",
+    "architecture-interpretation/1.3/source-mapping-1.7-to-2.5",
+    "authoring/1.7/schema/adr-common.schema",
+    "authoring/1.7/schema/adr-logical.schema",
+    "authoring/1.7/schema/adr-physical-base.schema",
+    "authoring/1.7/schema/adr-physical-component.schema",
+    "authoring/1.7/schema/adr-physical-system.schema",
+    "authoring/1.7/schema/types.schema",
+    "custom-entity/1.0/conformance",
+    "custom-entity/1.0/contract",
+    "custom-entity/1.0/schema",
+    "normalized-model/2.5/conformance",
+    "normalized-model/2.5/schema/normalized-architecture-model.schema",
+    "normalized-model/2.5/schema/normalized-entity-registry.schema",
+    "normalized-model/2.5/schema/normalized-entity.schema",
+    "normalized-model/2.5/schema/relationship-record.schema",
+    "normalized-model/2.5/schema/relationship-registry.schema",
+    "normalized-model/2.5/schema/unresolved-registry.schema"
+  ],
+  "source_contract": "authoring@1.7",
+  "output_contract": "normalized-model@2.5",
+  "frozen_conformance_schema": {
+    "required": [
+      "id",
+      "assertion",
+      "expected"
+    ],
+    "expected_values": [
+      "conforms",
+      "rejects",
+      "preserves",
+      "excludes",
+      "matches"
+    ],
+    "authority_only": true,
+    "not_acc_execution": true
+  },
+  "cases": [
+    {
+      "id": "AI13-001",
+      "assertion": "The disposition inventory exactly covers every supported Authoring 1.7 schema field after declared semantic-child boundaries; new or missing fields fail closed.",
+      "expected": "conforms",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-001"
+    },
+    {
+      "id": "AI13-002",
+      "assertion": "Every field key is unique within its semantic unit and has exactly one member of the closed five-class vocabulary.",
+      "expected": "rejects",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-002"
+    },
+    {
+      "id": "AI13-003",
+      "assertion": "entity/gap#/context maps to metadata.semantic_extensions with its complete exact string value.",
+      "expected": "preserves",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-003"
+    },
+    {
+      "id": "AI13-004",
+      "assertion": "Removing or changing the gap context semantic-extension value is semantic loss even when metadata.source_semantics retains the original source bytes/value.",
+      "expected": "rejects",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-004"
+    },
+    {
+      "id": "AI13-005",
+      "assertion": "Moving a field to another runtime source JSON Pointer, root traversal position, candidate filename, or embedded location does not change the stable field key or semantic identity.",
+      "expected": "excludes",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-005"
+    },
+    {
+      "id": "AI13-006",
+      "assertion": "Structured extension values preserve JSON type, object members, array order where declared, and nested values without coercion.",
+      "expected": "preserves",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-006"
+    },
+    {
+      "id": "AI13-007",
+      "assertion": "Authoring title/status and evidence_expectation kind/description/related_entities map to their exact Normalized Model 2.5 first-class fields; values with first-class destinations are not duplicated in semantic_extensions.",
+      "expected": "matches",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-007"
+    },
+    {
+      "id": "AI13-008",
+      "assertion": "Topology compatibility equality uses type, owner scope when material, resolved endpoint UUIDs, authored semantic properties, and multiplicity; generated IDs and pointers are excluded.",
+      "expected": "matches",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-008"
+    },
+    {
+      "id": "AI13-009",
+      "assertion": "Normative-proposition lifecycle is absent only under the named lifecycle-free rule; an implementation omission of any other field is not declared absence.",
+      "expected": "conforms",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-009"
+    },
+    {
+      "id": "AI13-010",
+      "assertion": "schema_version and fixed adr_type discriminators are derivable from the exact selected authoring schema and are deterministic ceremony; authored status, aliases, dates, UUIDs, custom qualification, and relationship meaning are never ceremony.",
+      "expected": "conforms",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-010"
+    },
+    {
+      "id": "AI13-011",
+      "assertion": "Embedded semantic children retain their own UUID and field ledger exactly once; parent membership carries child identity/order only and never duplicates the child payload.",
+      "expected": "preserves",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-011"
+    },
+    {
+      "id": "AI13-012",
+      "assertion": "Standalone semantic fragments remain native roots and mixed root sets are aggregated without synthetic ADR wrapping. Complete interpretation is conditional on qualified lifecycle provenance where required; missing provenance is Unavailable without invented ownership.",
+      "expected": "preserves",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-012"
+    },
+    {
+      "id": "AI13-013",
+      "assertion": "Reordering identity-keyed child collections leaves semantic identity and equality unchanged; multiplicity and duplicate-identity rejection remain governed.",
+      "expected": "matches",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-013"
+    },
+    {
+      "id": "AI13-014",
+      "assertion": "Reordering entity/data_flow#/path changes its ordered semantic value and therefore equality.",
+      "expected": "rejects",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-014"
+    },
+    {
+      "id": "AI13-015",
+      "assertion": "Unclassified compatibility endpoint, custom qualification, semantic extension, or unresolved record fails closed rather than yielding equivalent success.",
+      "expected": "rejects",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-015"
+    },
+    {
+      "id": "AI13-016",
+      "assertion": "CEC-qualified custom entity/relationship meaning includes exact qualification, UUID identity, custom property values, endpoint identities, and relationship multiplicity.",
+      "expected": "preserves",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-016"
+    },
+    {
+      "id": "AI13-017",
+      "assertion": "A detached scope and root locator derive only from the exact basis digest, source_ref UTF-8 digest, and fixed domain constants and cannot be interpreted as a repository path or admission.",
+      "expected": "conforms",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-017"
+    },
+    {
+      "id": "AI13-018",
+      "assertion": "AI 1.1 remains independently valid under its original SCF and frozen conformance resource; AI 1.2 does not rewrite historical authority. AI 1.3 also retains the exact AI 1.2 publication unchanged.",
+      "expected": "preserves",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-018"
+    },
+    {
+      "id": "AI13-019",
+      "assertion": "SYS-to-COMP composed_of is derived only from physical-system component_topology.components membership: the owning System UUID is from_entity_id, each resolved component_ref UUID is to_entity_id, topology/local handles are never endpoints, the compatibility occurrence remains multiplicity-significant, unresolved references remain explicit without fabricated endpoints, and composed_of remains forward-forbidden.",
+      "expected": "matches",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-019"
+    },
+    {
+      "id": "AI13-020",
+      "assertion": "Every field disposition names a destination catalog entry, closed value semantics, ordering vocabulary, matching-identity catalog entry, and multiplicity policy; unknown catalog references fail closed and rationale prose does not define execution.",
+      "expected": "conforms",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-020"
+    },
+    {
+      "id": "AI13-021",
+      "assertion": "System-boundary, data-flow, evidence-expectation, custom entity, and custom relationship source values with Normalized Model 2.5 first-class destinations map there exactly once; data-flow path also carries owner_local_ordered_topology_path semantics.",
+      "expected": "preserves",
+      "category": "inherited-requalified",
+      "requalified_from": "AI12-021"
+    },
+    {
+      "id": "AI13-022",
+      "assertion": "adr/logical authored status proposed maps literally to lifecycle_stage=proposed; the complete source enum is included in the exact NM 2.5 destination.",
+      "expected": "preserves",
+      "category": "root-lifecycle"
+    },
+    {
+      "id": "AI13-023",
+      "assertion": "adr/logical authored status accepted maps literally to lifecycle_stage=accepted; the complete source enum is included in the exact NM 2.5 destination.",
+      "expected": "preserves",
+      "category": "root-lifecycle"
+    },
+    {
+      "id": "AI13-024",
+      "assertion": "adr/logical authored status deprecated maps literally to lifecycle_stage=deprecated; the complete source enum is included in the exact NM 2.5 destination.",
+      "expected": "preserves",
+      "category": "root-lifecycle"
+    },
+    {
+      "id": "AI13-025",
+      "assertion": "adr/logical authored status superseded maps literally to lifecycle_stage=superseded; the complete source enum is included in the exact NM 2.5 destination.",
+      "expected": "preserves",
+      "category": "root-lifecycle"
+    },
+    {
+      "id": "AI13-026",
+      "assertion": "adr/physical-system authored status proposed maps literally to lifecycle_stage=proposed; the complete source enum is included in the exact NM 2.5 destination.",
+      "expected": "preserves",
+      "category": "root-lifecycle"
+    },
+    {
+      "id": "AI13-027",
+      "assertion": "adr/physical-system authored status accepted maps literally to lifecycle_stage=accepted; the complete source enum is included in the exact NM 2.5 destination.",
+      "expected": "preserves",
+      "category": "root-lifecycle"
+    },
+    {
+      "id": "AI13-028",
+      "assertion": "adr/physical-system authored status deprecated maps literally to lifecycle_stage=deprecated; the complete source enum is included in the exact NM 2.5 destination.",
+      "expected": "preserves",
+      "category": "root-lifecycle"
+    },
+    {
+      "id": "AI13-029",
+      "assertion": "adr/physical-system authored status superseded maps literally to lifecycle_stage=superseded; the complete source enum is included in the exact NM 2.5 destination.",
+      "expected": "preserves",
+      "category": "root-lifecycle"
+    },
+    {
+      "id": "AI13-030",
+      "assertion": "adr/physical-component authored status proposed maps literally to lifecycle_stage=proposed; the complete source enum is included in the exact NM 2.5 destination.",
+      "expected": "preserves",
+      "category": "root-lifecycle"
+    },
+    {
+      "id": "AI13-031",
+      "assertion": "adr/physical-component authored status accepted maps literally to lifecycle_stage=accepted; the complete source enum is included in the exact NM 2.5 destination.",
+      "expected": "preserves",
+      "category": "root-lifecycle"
+    },
+    {
+      "id": "AI13-032",
+      "assertion": "adr/physical-component authored status deprecated maps literally to lifecycle_stage=deprecated; the complete source enum is included in the exact NM 2.5 destination.",
+      "expected": "preserves",
+      "category": "root-lifecycle"
+    },
+    {
+      "id": "AI13-033",
+      "assertion": "adr/physical-component authored status superseded maps literally to lifecycle_stage=superseded; the complete source enum is included in the exact NM 2.5 destination.",
+      "expected": "preserves",
+      "category": "root-lifecycle"
+    },
+    {
+      "id": "AI13-034",
+      "assertion": "declaring-lifecycle.adr-logical.architectural_boundaries: independently qualify /architectural_boundaries/* under adr/logical, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.architectural_boundaries"
+    },
+    {
+      "id": "AI13-035",
+      "assertion": "declaring-lifecycle.adr-logical.architectural_boundaries: independently qualify /architectural_boundaries/* under adr/logical, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.architectural_boundaries"
+    },
+    {
+      "id": "AI13-036",
+      "assertion": "declaring-lifecycle.adr-logical.architectural_boundaries: independently qualify /architectural_boundaries/* under adr/logical, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.architectural_boundaries"
+    },
+    {
+      "id": "AI13-037",
+      "assertion": "declaring-lifecycle.adr-logical.architectural_boundaries: independently qualify /architectural_boundaries/* under adr/logical, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.architectural_boundaries"
+    },
+    {
+      "id": "AI13-038",
+      "assertion": "declaring-lifecycle.adr-logical.capabilities: independently qualify /capabilities/* under adr/logical, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.capabilities"
+    },
+    {
+      "id": "AI13-039",
+      "assertion": "declaring-lifecycle.adr-logical.capabilities: independently qualify /capabilities/* under adr/logical, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.capabilities"
+    },
+    {
+      "id": "AI13-040",
+      "assertion": "declaring-lifecycle.adr-logical.capabilities: independently qualify /capabilities/* under adr/logical, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.capabilities"
+    },
+    {
+      "id": "AI13-041",
+      "assertion": "declaring-lifecycle.adr-logical.capabilities: independently qualify /capabilities/* under adr/logical, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.capabilities"
+    },
+    {
+      "id": "AI13-042",
+      "assertion": "declaring-lifecycle.adr-logical.contracts: independently qualify /contracts/* under adr/logical, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.contracts"
+    },
+    {
+      "id": "AI13-043",
+      "assertion": "declaring-lifecycle.adr-logical.contracts: independently qualify /contracts/* under adr/logical, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.contracts"
+    },
+    {
+      "id": "AI13-044",
+      "assertion": "declaring-lifecycle.adr-logical.contracts: independently qualify /contracts/* under adr/logical, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.contracts"
+    },
+    {
+      "id": "AI13-045",
+      "assertion": "declaring-lifecycle.adr-logical.contracts: independently qualify /contracts/* under adr/logical, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.contracts"
+    },
+    {
+      "id": "AI13-046",
+      "assertion": "declaring-lifecycle.adr-logical.decisions: independently qualify /decisions/* under adr/logical, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.decisions"
+    },
+    {
+      "id": "AI13-047",
+      "assertion": "declaring-lifecycle.adr-logical.decisions: independently qualify /decisions/* under adr/logical, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.decisions"
+    },
+    {
+      "id": "AI13-048",
+      "assertion": "declaring-lifecycle.adr-logical.decisions: independently qualify /decisions/* under adr/logical, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.decisions"
+    },
+    {
+      "id": "AI13-049",
+      "assertion": "declaring-lifecycle.adr-logical.decisions: independently qualify /decisions/* under adr/logical, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.decisions"
+    },
+    {
+      "id": "AI13-050",
+      "assertion": "declaring-lifecycle.adr-logical.evidence_expectations: independently qualify /evidence_expectations/* under adr/logical, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.evidence_expectations"
+    },
+    {
+      "id": "AI13-051",
+      "assertion": "declaring-lifecycle.adr-logical.evidence_expectations: independently qualify /evidence_expectations/* under adr/logical, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.evidence_expectations"
+    },
+    {
+      "id": "AI13-052",
+      "assertion": "declaring-lifecycle.adr-logical.evidence_expectations: independently qualify /evidence_expectations/* under adr/logical, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.evidence_expectations"
+    },
+    {
+      "id": "AI13-053",
+      "assertion": "declaring-lifecycle.adr-logical.evidence_expectations: independently qualify /evidence_expectations/* under adr/logical, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.evidence_expectations"
+    },
+    {
+      "id": "AI13-054",
+      "assertion": "declaring-lifecycle.adr-logical.gaps: independently qualify /gaps/* under adr/logical, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.gaps"
+    },
+    {
+      "id": "AI13-055",
+      "assertion": "declaring-lifecycle.adr-logical.gaps: independently qualify /gaps/* under adr/logical, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.gaps"
+    },
+    {
+      "id": "AI13-056",
+      "assertion": "declaring-lifecycle.adr-logical.gaps: independently qualify /gaps/* under adr/logical, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.gaps"
+    },
+    {
+      "id": "AI13-057",
+      "assertion": "declaring-lifecycle.adr-logical.gaps: independently qualify /gaps/* under adr/logical, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.gaps"
+    },
+    {
+      "id": "AI13-058",
+      "assertion": "declaring-lifecycle.adr-logical.invariants: independently qualify /invariants/* under adr/logical, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.invariants"
+    },
+    {
+      "id": "AI13-059",
+      "assertion": "declaring-lifecycle.adr-logical.invariants: independently qualify /invariants/* under adr/logical, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.invariants"
+    },
+    {
+      "id": "AI13-060",
+      "assertion": "declaring-lifecycle.adr-logical.invariants: independently qualify /invariants/* under adr/logical, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.invariants"
+    },
+    {
+      "id": "AI13-061",
+      "assertion": "declaring-lifecycle.adr-logical.invariants: independently qualify /invariants/* under adr/logical, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-logical.invariants"
+    },
+    {
+      "id": "AI13-062",
+      "assertion": "declaring-lifecycle.adr-physical-component.component_specifications: independently qualify /component_specifications/* under adr/physical-component, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.component_specifications"
+    },
+    {
+      "id": "AI13-063",
+      "assertion": "declaring-lifecycle.adr-physical-component.component_specifications: independently qualify /component_specifications/* under adr/physical-component, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.component_specifications"
+    },
+    {
+      "id": "AI13-064",
+      "assertion": "declaring-lifecycle.adr-physical-component.component_specifications: independently qualify /component_specifications/* under adr/physical-component, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.component_specifications"
+    },
+    {
+      "id": "AI13-065",
+      "assertion": "declaring-lifecycle.adr-physical-component.component_specifications: independently qualify /component_specifications/* under adr/physical-component, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.component_specifications"
+    },
+    {
+      "id": "AI13-066",
+      "assertion": "declaring-lifecycle.adr-physical-component.component_specifications.interfaces: independently qualify /component_specifications/*/interfaces/* under adr/physical-component, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.component_specifications.interfaces"
+    },
+    {
+      "id": "AI13-067",
+      "assertion": "declaring-lifecycle.adr-physical-component.component_specifications.interfaces: independently qualify /component_specifications/*/interfaces/* under adr/physical-component, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.component_specifications.interfaces"
+    },
+    {
+      "id": "AI13-068",
+      "assertion": "declaring-lifecycle.adr-physical-component.component_specifications.interfaces: independently qualify /component_specifications/*/interfaces/* under adr/physical-component, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.component_specifications.interfaces"
+    },
+    {
+      "id": "AI13-069",
+      "assertion": "declaring-lifecycle.adr-physical-component.component_specifications.interfaces: independently qualify /component_specifications/*/interfaces/* under adr/physical-component, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.component_specifications.interfaces"
+    },
+    {
+      "id": "AI13-070",
+      "assertion": "declaring-lifecycle.adr-physical-component.evidence_expectations: independently qualify /evidence_expectations/* under adr/physical-component, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.evidence_expectations"
+    },
+    {
+      "id": "AI13-071",
+      "assertion": "declaring-lifecycle.adr-physical-component.evidence_expectations: independently qualify /evidence_expectations/* under adr/physical-component, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.evidence_expectations"
+    },
+    {
+      "id": "AI13-072",
+      "assertion": "declaring-lifecycle.adr-physical-component.evidence_expectations: independently qualify /evidence_expectations/* under adr/physical-component, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.evidence_expectations"
+    },
+    {
+      "id": "AI13-073",
+      "assertion": "declaring-lifecycle.adr-physical-component.evidence_expectations: independently qualify /evidence_expectations/* under adr/physical-component, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.evidence_expectations"
+    },
+    {
+      "id": "AI13-074",
+      "assertion": "declaring-lifecycle.adr-physical-component.gaps: independently qualify /gaps/* under adr/physical-component, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.gaps"
+    },
+    {
+      "id": "AI13-075",
+      "assertion": "declaring-lifecycle.adr-physical-component.gaps: independently qualify /gaps/* under adr/physical-component, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.gaps"
+    },
+    {
+      "id": "AI13-076",
+      "assertion": "declaring-lifecycle.adr-physical-component.gaps: independently qualify /gaps/* under adr/physical-component, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.gaps"
+    },
+    {
+      "id": "AI13-077",
+      "assertion": "declaring-lifecycle.adr-physical-component.gaps: independently qualify /gaps/* under adr/physical-component, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.gaps"
+    },
+    {
+      "id": "AI13-078",
+      "assertion": "declaring-lifecycle.adr-physical-component.implementation_decisions: independently qualify /implementation_decisions/* under adr/physical-component, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.implementation_decisions"
+    },
+    {
+      "id": "AI13-079",
+      "assertion": "declaring-lifecycle.adr-physical-component.implementation_decisions: independently qualify /implementation_decisions/* under adr/physical-component, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.implementation_decisions"
+    },
+    {
+      "id": "AI13-080",
+      "assertion": "declaring-lifecycle.adr-physical-component.implementation_decisions: independently qualify /implementation_decisions/* under adr/physical-component, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.implementation_decisions"
+    },
+    {
+      "id": "AI13-081",
+      "assertion": "declaring-lifecycle.adr-physical-component.implementation_decisions: independently qualify /implementation_decisions/* under adr/physical-component, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-component.implementation_decisions"
+    },
+    {
+      "id": "AI13-082",
+      "assertion": "declaring-lifecycle.adr-physical-system.data_flows: independently qualify /data_flows/* under adr/physical-system, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.data_flows"
+    },
+    {
+      "id": "AI13-083",
+      "assertion": "declaring-lifecycle.adr-physical-system.data_flows: independently qualify /data_flows/* under adr/physical-system, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.data_flows"
+    },
+    {
+      "id": "AI13-084",
+      "assertion": "declaring-lifecycle.adr-physical-system.data_flows: independently qualify /data_flows/* under adr/physical-system, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.data_flows"
+    },
+    {
+      "id": "AI13-085",
+      "assertion": "declaring-lifecycle.adr-physical-system.data_flows: independently qualify /data_flows/* under adr/physical-system, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.data_flows"
+    },
+    {
+      "id": "AI13-086",
+      "assertion": "declaring-lifecycle.adr-physical-system.evidence_expectations: independently qualify /evidence_expectations/* under adr/physical-system, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.evidence_expectations"
+    },
+    {
+      "id": "AI13-087",
+      "assertion": "declaring-lifecycle.adr-physical-system.evidence_expectations: independently qualify /evidence_expectations/* under adr/physical-system, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.evidence_expectations"
+    },
+    {
+      "id": "AI13-088",
+      "assertion": "declaring-lifecycle.adr-physical-system.evidence_expectations: independently qualify /evidence_expectations/* under adr/physical-system, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.evidence_expectations"
+    },
+    {
+      "id": "AI13-089",
+      "assertion": "declaring-lifecycle.adr-physical-system.evidence_expectations: independently qualify /evidence_expectations/* under adr/physical-system, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.evidence_expectations"
+    },
+    {
+      "id": "AI13-090",
+      "assertion": "declaring-lifecycle.adr-physical-system.gaps: independently qualify /gaps/* under adr/physical-system, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.gaps"
+    },
+    {
+      "id": "AI13-091",
+      "assertion": "declaring-lifecycle.adr-physical-system.gaps: independently qualify /gaps/* under adr/physical-system, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.gaps"
+    },
+    {
+      "id": "AI13-092",
+      "assertion": "declaring-lifecycle.adr-physical-system.gaps: independently qualify /gaps/* under adr/physical-system, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.gaps"
+    },
+    {
+      "id": "AI13-093",
+      "assertion": "declaring-lifecycle.adr-physical-system.gaps: independently qualify /gaps/* under adr/physical-system, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.gaps"
+    },
+    {
+      "id": "AI13-094",
+      "assertion": "declaring-lifecycle.adr-physical-system.system: independently qualify /system under adr/physical-system, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.system"
+    },
+    {
+      "id": "AI13-095",
+      "assertion": "declaring-lifecycle.adr-physical-system.system: independently qualify /system under adr/physical-system, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.system"
+    },
+    {
+      "id": "AI13-096",
+      "assertion": "declaring-lifecycle.adr-physical-system.system: independently qualify /system under adr/physical-system, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.system"
+    },
+    {
+      "id": "AI13-097",
+      "assertion": "declaring-lifecycle.adr-physical-system.system: independently qualify /system under adr/physical-system, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.system"
+    },
+    {
+      "id": "AI13-098",
+      "assertion": "declaring-lifecycle.adr-physical-system.system_boundaries: independently qualify /system_boundaries/* under adr/physical-system, preserve child UUID, and inherit literal proposed with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.system_boundaries"
+    },
+    {
+      "id": "AI13-099",
+      "assertion": "declaring-lifecycle.adr-physical-system.system_boundaries: independently qualify /system_boundaries/* under adr/physical-system, preserve child UUID, and inherit literal accepted with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.system_boundaries"
+    },
+    {
+      "id": "AI13-100",
+      "assertion": "declaring-lifecycle.adr-physical-system.system_boundaries: independently qualify /system_boundaries/* under adr/physical-system, preserve child UUID, and inherit literal deprecated with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.system_boundaries"
+    },
+    {
+      "id": "AI13-101",
+      "assertion": "declaring-lifecycle.adr-physical-system.system_boundaries: independently qualify /system_boundaries/* under adr/physical-system, preserve child UUID, and inherit literal superseded with exact source/rule qualification; array positions are locators only.",
+      "expected": "preserves",
+      "category": "schema-ownership",
+      "rule_id": "declaring-lifecycle.adr-physical-system.system_boundaries"
+    },
+    {
+      "id": "AI13-102",
+      "assertion": "An unknown authored status or active is rejected by Authoring 1.7; active never inversely authorizes accepted.",
+      "expected": "rejects",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-103",
+      "assertion": "Missing declaring lifecycle provenance yields Unavailable while native standalone roots and artifacts remain retained.",
+      "expected": "excludes",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-104",
+      "assertion": "A standalone decision has no invented ADR, owner or default lifecycle; incomplete interpretation remains Unavailable.",
+      "expected": "excludes",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-105",
+      "assertion": "Duplicate established declaring ownership or canonical identity is independently rejected; no traversal tie break.",
+      "expected": "rejects",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-106",
+      "assertion": "Ambiguous or competing declaring ownership cannot produce a qualified inherited lifecycle.",
+      "expected": "rejects",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-107",
+      "assertion": "A wrong declaring ADR or child association changes semantic provenance and prevents qualification/equality.",
+      "expected": "rejects",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-108",
+      "assertion": "Reference-only ADR or entity dependencies do not define ownership or introduce authored definitions.",
+      "expected": "excludes",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-109",
+      "assertion": "Normative propositions remain lifecycle-free and receive no independent applicability, approval, admission or deployment status.",
+      "expected": "excludes",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-110",
+      "assertion": "Custom entity qualification and existence_state do not authorize inherited lifecycle.",
+      "expected": "excludes",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-111",
+      "assertion": "Relationship instances and owner-local topology values are excluded from regular inherited lifecycle rules.",
+      "expected": "excludes",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-112",
+      "assertion": "A missing or incomplete lifecycle carrier cannot stand in for semantic preservation.",
+      "expected": "rejects",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-113",
+      "assertion": "A forged carrier assertion is insufficient; verify its owner and literal value independently against sealed sources.",
+      "expected": "rejects",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-114",
+      "assertion": "A wrong status schema selector or Authoring resource digest is unavailable authority, not a permitted mapping.",
+      "expected": "rejects",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-115",
+      "assertion": "Wrong AI family, version, SCF, ownership resource key, digest or rule ID cannot qualify the carrier.",
+      "expected": "rejects",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-116",
+      "assertion": "Missing, extra or changed contextual facts cause whole-ledger semantic mismatch.",
+      "expected": "rejects",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-117",
+      "assertion": "Changing declaring identity or stable source-status field identity changes the contextual semantic value.",
+      "expected": "rejects",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-118",
+      "assertion": "Changing the qualified governing ownership rule meaning changes contextual semantics; digests do not replace comparison.",
+      "expected": "rejects",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-119",
+      "assertion": "Changing accepted to active is semantic mismatch despite retaining an original replay copy.",
+      "expected": "rejects",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-120",
+      "assertion": "Runtime source pointer, filename, root position and traversal permutations preserve canonical owner/child identities and contextual keys.",
+      "expected": "matches",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-121",
+      "assertion": "The complete literal lifecycle is compared in its first-class destination once; it is not duplicated into the carrier.",
+      "expected": "matches",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-122",
+      "assertion": "A schema-valid carrier is not proof of qualified ownership or lifecycle correctness.",
+      "expected": "excludes",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-123",
+      "assertion": "Mixed independently discoverable violations retain Rejected > Unavailable > Unresolved precedence; unavailable execution is not unresolved reference.",
+      "expected": "matches",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-124",
+      "assertion": "No partially interpreted model is exposed as complete or as Constructed.",
+      "expected": "excludes",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-125",
+      "assertion": "The shared-system-descriptor identity rule preserves the established unit and creates no duplicate semantic identity.",
+      "expected": "preserves",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-126",
+      "assertion": "All schema references resolve only against the verified closure; missing and escaping references fail closed.",
+      "expected": "rejects",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-127",
+      "assertion": "An incomplete, conflicting or unbounded source enum-domain proof blocks publication.",
+      "expected": "rejects",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-128",
+      "assertion": "A normalized destination excluding any permitted source value blocks publication; spot checks are insufficient.",
+      "expected": "rejects",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-129",
+      "assertion": "AI 1.2 to NM 2.4 accepted-status contradiction is diagnostic historical evidence, never rewritten frozen conformance.",
+      "expected": "preserves",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-130",
+      "assertion": "Every one of the 17 ownership selectors is qualified from the exact schema graph; no additional composition binding is authorized.",
+      "expected": "conforms",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-131",
+      "assertion": "The separately qualified child lifecycle source is declaring ADR status, not ADC input_contract or runtime implementation state.",
+      "expected": "conforms",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-132",
+      "assertion": "Exact Python and Node AI 1.3 discovery selects the same SCF and all manifest resource bytes; missing versions never fall back.",
+      "expected": "matches",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-133",
+      "assertion": "Publication does not change SCS, current pointers, catalog policy, protocol 1.5 or host execution capabilities.",
+      "expected": "preserves",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-134",
+      "assertion": "Independent SCF and resource-digest verification rejects tampered, missing, duplicate, extra and misqualified closure members.",
+      "expected": "rejects",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-135",
+      "assertion": "Repeated AI-1.3-only generation produces identical bytes and SCF without regenerating historical assets.",
+      "expected": "matches",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-136",
+      "assertion": "Complete typed semantic values, ordering, multiplicity and custom qualifications retain the inherited five-class interpretation.",
+      "expected": "preserves",
+      "category": "successor-authority"
+    },
+    {
+      "id": "AI13-137",
+      "assertion": "The exact AI 1.3 instance SCF and ownership-resource digest are supplied only after publication, never embedded recursively in the enclosing closure.",
+      "expected": "conforms",
+      "category": "successor-authority"
+    }
+  ]
+}

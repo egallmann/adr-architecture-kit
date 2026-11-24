@@ -12,12 +12,15 @@ from typing import Any
 import rfc8785
 import yaml
 from jsonschema import Draft202012Validator, RefResolver
+import pytest
 
 from adr_kit.semantic_contract import (
     calculate_semantic_contract_fingerprint,
     validate_semantic_resource_closure,
     verify_semantic_contract,
 )
+
+pytestmark = pytest.mark.fast
 
 ROOT = Path(__file__).resolve().parents[1]
 ACC = ROOT / "contracts" / "authoring-construction" / "v1.0"

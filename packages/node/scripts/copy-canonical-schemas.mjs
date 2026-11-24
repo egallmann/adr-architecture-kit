@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { mkdir, readFile, readdir, writeFile, cp } from "node:fs/promises";
+import { mkdir, readFile, readdir, writeFile, cp, rm } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -29,6 +29,30 @@ const authoringDomainContractPath = resolve(
 const authoringDomainContractBytes = await readFile(authoringDomainContractPath);
 const authoringDomainContract = JSON.parse(authoringDomainContractBytes.toString("utf8"));
 const semanticContractRoot = resolve(repoRoot, "contracts/semantic-contract/v1.0");
+const lifecycle = JSON.parse(
+  await readFile(
+    resolve(repoRoot, "adrs/migrations/semantic-contract-lifecycle-classification.json"),
+    "utf8",
+  ),
+);
+const releasedContractIds = new Set(
+  lifecycle.released_contracts.map((entry) => `${entry.family}/${entry.version}`),
+);
+const releasedResourceNames = new Set();
+const semanticResourceDirectory = resolve(semanticContractRoot, "resources");
+const semanticResourceFiles = new Set(await readdir(semanticResourceDirectory));
+for (const entry of lifecycle.released_contracts) {
+  const definition = JSON.parse(
+    await readFile(resolve(repoRoot, entry.definition_path), "utf8"),
+  );
+  for (const member of definition.resourceManifest) {
+    const parts = member.canonicalResourceKey.split("/");
+    const fullName = `${parts.join("-")}.json`;
+    const legacyName = `${parts[0]}-${parts.at(-1)}.json`;
+    if (semanticResourceFiles.has(fullName)) releasedResourceNames.add(fullName);
+    else if (semanticResourceFiles.has(legacyName)) releasedResourceNames.add(legacyName);
+  }
+}
 
 const families = [
   ["authoring", "v1.2"],
@@ -52,6 +76,7 @@ const canonicalBytes = {};
 for (const [family, version] of families) {
   const source = version ? resolve(canonicalRoot, family, version) : resolve(canonicalRoot, family);
   const target = version ? resolve(generatedRoot, "schemas", family, version) : resolve(generatedRoot, "schemas", family);
+  await rm(target, { recursive: true, force: true });
   await mkdir(target, { recursive: true });
   for (const name of await readdir(source)) {
     if (!name.endsWith(".json")) continue;
@@ -87,18 +112,31 @@ await writeFile(resolve(generatedRoot, "semantic-core-contract.ts"), `export con
 await writeFile(resolve(generatedRoot, "semantic-core-contract-v1.1.ts"), `export const semanticCoreContractV11 = ${JSON.stringify(semanticCoreContractV11, null, 2)} as const;\n`);
 await writeFile(resolve(generatedRoot, "semantic-core-contract-v1.2.ts"), `export const semanticCoreContractV12 = ${JSON.stringify(semanticCoreContractV12, null, 2)} as const;\n`);
 await writeFile(resolve(generatedRoot, "semantic-core-contract-v1.3.ts"), `export const semanticCoreContractV13 = ${JSON.stringify(semanticCoreContractV13, null, 2)} as const;\n`);
+await rm(resolve(generatedRoot, "semantic-core-contract-v1.4.ts"), { force: true });
+await rm(resolve(generatedRoot, "semantic-core-contract-v1.5.ts"), { force: true });
 await writeFile(resolve(repoRoot, "src/adr_kit/compatibility/authoring-domain-v1.0.json"), authoringDomainContractBytes);
 
 const semanticContractAssets = {};
 for (const directory of ["definitions", "resources", "profiles", "sets", "qualifications", "catalog", "policy", "current"]) {
   const source = resolve(semanticContractRoot, directory);
   const target = resolve(generatedRoot, "semantic-contract", directory);
+  await rm(target, { recursive: true, force: true });
   await mkdir(target, { recursive: true });
   for (const name of await readdir(source)) {
     if (!name.endsWith(".json")) continue;
     const bytes = await readFile(resolve(source, name));
-    await writeFile(resolve(target, name), bytes);
-    semanticContractAssets[`${directory}/${name}`] = JSON.parse(bytes.toString("utf8"));
+    const value = JSON.parse(bytes.toString("utf8"));
+    const identity = `${value.semanticContractFamily ?? ""}/${value.semanticContractVersion ?? ""}`;
+    const definition = directory === "definitions";
+    const releasedDefinition = definition && releasedContractIds.has(identity);
+    const releasedResource = !definition && releasedResourceNames.has(name);
+    const releaseControl = ["profiles", "sets", "qualifications", "catalog", "policy", "current"].includes(directory);
+    if (definition ? releasedDefinition : releasedResource || releaseControl) {
+      await writeFile(resolve(target, name), bytes);
+      semanticContractAssets[`${directory}/${name}`] = value;
+    } else {
+      await rm(resolve(target, name), { force: true });
+    }
   }
 }
 for (const name of (await readdir(semanticContractRoot)).filter((name) => name.endsWith(".schema.json"))) {
@@ -106,4 +144,12 @@ for (const name of (await readdir(semanticContractRoot)).filter((name) => name.e
   await writeFile(resolve(generatedRoot, "semantic-contract", name), bytes);
   semanticContractAssets[`schemas/${name}`] = JSON.parse(bytes.toString("utf8"));
 }
-await writeFile(resolve(generatedRoot, "semantic-contract-assets.ts"), `export const semanticContractAssets = ${JSON.stringify(semanticContractAssets, null, 2)} as const;\n`);
+const semanticContractAssetsModule = `export const semanticContractAssets: Record<string, unknown> = ${JSON.stringify(
+  semanticContractAssets,
+  null,
+  2,
+)};\n`;
+await writeFile(
+  resolve(generatedRoot, "semantic-contract-assets.ts"),
+  semanticContractAssetsModule,
+);

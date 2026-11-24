@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.ste.systems/contracts/architecture-interpretation/v1.2/resources/conformance.schema.json",
+  "title": "Architecture Interpretation 1.2 frozen normative conformance schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "resource",
+    "semanticDependencies",
+    "source_contract",
+    "output_contract",
+    "frozen_conformance_schema",
+    "cases"
+  ],
+  "properties": {
+    "resource": {
+      "const": "architecture-interpretation/1.2/conformance"
+    },
+    "semanticDependencies": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "source_contract": {
+      "const": "authoring@1.7"
+    },
+    "output_contract": {
+      "const": "normalized-model@2.4"
+    },
+    "frozen_conformance_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "expected_values",
+        "authority_only",
+        "not_acc_execution"
+      ],
+      "properties": {
+        "required": {
+          "const": [
+            "id",
+            "assertion",
+            "expected"
+          ]
+        },
+        "expected_values": {
+          "const": [
+            "conforms",
+            "rejects",
+            "preserves",
+            "excludes",
+            "matches"
+          ]
+        },
+        "authority_only": {
+          "const": true
+        },
+        "not_acc_execution": {
+          "const": true
+        }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "assertion",
+          "expected"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^AI12-[0-9]{3}$"
+          },
+          "assertion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected": {
+            "enum": [
+              "conforms",
+              "rejects",
+              "preserves",
+              "excludes",
+              "matches"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

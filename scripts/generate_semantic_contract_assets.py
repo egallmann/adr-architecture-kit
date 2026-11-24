@@ -12,6 +12,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import sys
 from pathlib import Path, PurePosixPath
 from typing import Any, cast
 
@@ -39,10 +40,147 @@ SUCCESSOR_RESOURCE_SOURCES = {
         )
     },
     **{
+        f"architecture-interpretation-1.2-{name}": ROOT
+        / "contracts"
+        / "architecture-interpretation"
+        / "v1.2"
+        / "resources"
+        / f"{name}.json"
+        for name in (
+            "source-decoding-1.7",
+            "source-mapping-1.7-to-2.4",
+            "field-dispositions-1.7-to-2.4",
+            "field-dispositions.schema",
+            "detached-context",
+            "rules",
+            "legacy-compatibility",
+            "conformance.schema",
+            "conformance",
+        )
+    },
+    "architecture-interpretation-1.2-contract": ROOT
+    / "contracts"
+    / "architecture-interpretation"
+    / "v1.2"
+    / "contract.json",
+    "authoring-domain-1.1-contract": ROOT
+    / "contracts"
+    / "authoring-domain"
+    / "v1.1"
+    / "contract.json",
+    "authoring-domain-1.1-schema": ROOT / "contracts" / "authoring-domain" / "v1.1" / "schema.json",
+    "authoring-construction-1.0-contract": ROOT
+    / "contracts"
+    / "authoring-construction"
+    / "v1.0"
+    / "contract.json",
+    "authoring-construction-1.0-rules": ROOT
+    / "contracts"
+    / "authoring-construction"
+    / "v1.0"
+    / "resources"
+    / "rules.json",
+    "authoring-construction-1.0-conformance": ROOT
+    / "contracts"
+    / "authoring-construction"
+    / "v1.0"
+    / "resources"
+    / "conformance.json",
+    **{
+        f"authoring-construction-1.1-{name}": ROOT
+        / "contracts"
+        / "authoring-construction"
+        / "v1.1"
+        / "resources"
+        / f"{name}.json"
+        for name in ("rules", "ledger.schema", "conformance.schema", "conformance", "compatibility")
+    },
+    "authoring-construction-1.1-schema": ROOT
+    / "contracts"
+    / "authoring-construction"
+    / "v1.1"
+    / "schema.json",
+    "authoring-construction-1.1-contract": ROOT
+    / "contracts"
+    / "authoring-construction"
+    / "v1.1"
+    / "contract.json",
+    **{
+        f"authoring-construction-1.2-{name}": ROOT
+        / "contracts"
+        / "authoring-construction"
+        / "v1.2"
+        / "resources"
+        / f"{name}.json"
+        for name in (
+            "rules",
+            "compatibility",
+            "conformance",
+            "conformance.schema",
+            "composition-bindings",
+            "composition-bindings.schema",
+        )
+    },
+    "authoring-construction-1.2-schema": ROOT
+    / "contracts"
+    / "authoring-construction"
+    / "v1.2"
+    / "schema.json",
+    **{
+        f"authoring-1.7-schema-{name}": ROOT / "schema" / "authoring" / "v1.7" / f"{name}.json"
+        for name in (
+            "adr-common.schema",
+            "adr-logical.schema",
+            "adr-physical-base.schema",
+            "adr-physical-component.schema",
+            "adr-physical-system.schema",
+            "types.schema",
+        )
+    },
+    **{
+        f"authoring-{version}-schema-{name}": ROOT
+        / "schema"
+        / "authoring"
+        / f"v{version}"
+        / f"{name}.json"
+        for version in ("1.5", "1.6")
+        for name in (
+            "adr-common.schema",
+            "adr-logical.schema",
+            "adr-physical-base.schema",
+            "adr-physical-component.schema",
+            "adr-physical-system.schema",
+            "types.schema",
+        )
+    },
+    "custom-entity-1.0-contract": ROOT / "contracts" / "custom-entity" / "v1.0" / "contract.json",
+    "custom-entity-1.0-schema": ROOT / "contracts" / "custom-entity" / "v1.0" / "schema.json",
+    "custom-entity-1.0-conformance": ROOT
+    / "contracts"
+    / "custom-entity"
+    / "v1.0"
+    / "vectors"
+    / "contract-fingerprint.json",
+    **{
         f"normalized-model-2.4-schema-{name}": ROOT
         / "schema"
         / "normalized-model"
         / "v2.4"
+        / f"{name}.json"
+        for name in (
+            "normalized-architecture-model.schema",
+            "normalized-entity-registry.schema",
+            "normalized-entity.schema",
+            "relationship-record.schema",
+            "relationship-registry.schema",
+            "unresolved-registry.schema",
+        )
+    },
+    **{
+        f"normalized-model-2.3-schema-{name}": ROOT
+        / "schema"
+        / "normalized-model"
+        / "v2.3"
         / f"{name}.json"
         for name in (
             "normalized-architecture-model.schema",
@@ -533,12 +671,16 @@ def main() -> None:
             "members": successor_members,
             "outcome": "qualified",
             "installedExecutionSupport": operation == "materialize_architecture",
-            "newUsePolicy": "permitted" if operation == "materialize_architecture" else "prohibited",
+            "newUsePolicy": (
+                "permitted" if operation == "materialize_architecture" else "prohibited"
+            ),
             "historicalInterpretationSupport": False,
             "qualificationRevision": "qualification:v1:successor-1",
-            "reasonCode": "successor-materialization-1.1-executable"
-            if operation == "materialize_architecture"
-            else "successor-operation-not-implemented",
+            "reasonCode": (
+                "successor-materialization-1.1-executable"
+                if operation == "materialize_architecture"
+                else "successor-operation-not-implemented"
+            ),
         }
         for operation in successor_profile["operations"]
     ]
@@ -562,7 +704,9 @@ def main() -> None:
                 "semanticContractSetId": successor_set_id,
                 "operation": operation,
                 "direction": "forward" if operation == "materialize_architecture" else "none",
-                "newUsePolicy": "permitted" if operation == "materialize_architecture" else "prohibited",
+                "newUsePolicy": (
+                    "permitted" if operation == "materialize_architecture" else "prohibited"
+                ),
                 "installedExecutionSupport": operation == "materialize_architecture",
                 "historicalInterpretationSupport": False,
             }
@@ -587,19 +731,267 @@ def main() -> None:
     for candidate_root in (CANONICAL / "candidate", BUNDLED / "candidate"):
         for stale_asset in candidate_root.rglob("*.json"):
             stale_asset.unlink()
+    ai12_resource_specs = [
+        ("source-decoding-1.7", "source-decoding-1.7", "source-contract-mapping"),
+        ("source-mapping-1.7-to-2.4", "source-mapping-1.7-to-2.4", "source-contract-mapping"),
+        (
+            "field-dispositions-1.7-to-2.4",
+            "field-dispositions-1.7-to-2.4",
+            "source-contract-mapping",
+        ),
+        ("field-dispositions.schema", "field-dispositions.schema", "source-contract-schema"),
+        ("detached-context", "detached-context", "interpretation-rule"),
+        ("rules", "rules", "interpretation-rule"),
+        ("legacy-compatibility", "legacy-compatibility", "source-contract-mapping"),
+        ("conformance.schema", "conformance.schema", "source-contract-schema"),
+        ("conformance", "conformance", "interpretation-conformance"),
+    ]
+    ai12_external_resources = [
+        (
+            "architecture-interpretation/1.0/source-decoding-1.5",
+            "architecture-interpretation-source-decoding-1.5",
+            "source-contract-mapping",
+        ),
+        (
+            "architecture-interpretation/1.0/source-decoding-1.6",
+            "architecture-interpretation-source-decoding-1.6",
+            "source-contract-mapping",
+        ),
+        (
+            "architecture-interpretation/1.0/source-mapping-1.5-to-2.3",
+            "architecture-interpretation-source-mapping-1.5-to-2.3",
+            "source-contract-mapping",
+        ),
+        (
+            "architecture-interpretation/1.0/source-mapping-1.6-to-2.3",
+            "architecture-interpretation-source-mapping-1.6-to-2.3",
+            "source-contract-mapping",
+        ),
+        *[
+            (
+                f"authoring/{version}/schema/{name}",
+                f"authoring-{version}-schema-{name}",
+                "source-contract-schema",
+            )
+            for version in ("1.5", "1.6")
+            for name in (
+                "adr-common.schema",
+                "adr-logical.schema",
+                "adr-physical-base.schema",
+                "adr-physical-component.schema",
+                "adr-physical-system.schema",
+                "types.schema",
+            )
+        ],
+        *[
+            (
+                f"authoring/1.7/schema/{name}",
+                f"authoring-1.7-schema-{name}",
+                "source-contract-schema",
+            )
+            for name in (
+                "adr-common.schema",
+                "adr-logical.schema",
+                "adr-physical-base.schema",
+                "adr-physical-component.schema",
+                "adr-physical-system.schema",
+                "types.schema",
+            )
+        ],
+        ("custom-entity/1.0/contract", "custom-entity-1.0-contract", "normative-definition"),
+        ("custom-entity/1.0/schema", "custom-entity-1.0-schema", "source-contract-schema"),
+        ("custom-entity/1.0/conformance", "custom-entity-1.0-conformance", "normative-conformance"),
+        *[
+            (
+                f"normalized-model/2.4/schema/{name}",
+                f"normalized-model-2.4-schema-{name}",
+                "normalized-model-schema",
+            )
+            for name in (
+                "normalized-architecture-model.schema",
+                "normalized-entity-registry.schema",
+                "normalized-entity.schema",
+                "relationship-record.schema",
+                "relationship-registry.schema",
+                "unresolved-registry.schema",
+            )
+        ],
+        *[
+            (
+                f"normalized-model/2.3/schema/{name}",
+                f"normalized-model-2.3-schema-{name}",
+                "normalized-model-schema",
+            )
+            for name in (
+                "normalized-architecture-model.schema",
+                "normalized-entity-registry.schema",
+                "normalized-entity.schema",
+                "relationship-record.schema",
+                "relationship-registry.schema",
+                "unresolved-registry.schema",
+            )
+        ],
+    ]
+    ai12_manifest = [
+        resource(
+            f"architecture-interpretation/1.2/{resource_name}",
+            f"architecture-interpretation-1.2-{source_name}.json",
+            role,
+        )
+        for resource_name, source_name, role in ai12_resource_specs
+    ]
+    ai12_manifest.extend(
+        resource(resource_key, f"{source_name}.json", role)
+        for resource_key, source_name, role in ai12_external_resources
+    )
+    ai12_conformance_key = "architecture-interpretation/1.2/conformance"
+    ai12_definition = definition(
+        "architecture-interpretation",
+        ai12_manifest,
+        [ai12_conformance_key],
+        version="1.2",
+    )
+    write_json(
+        ROOT / "contracts" / "architecture-interpretation" / "v1.2" / "contract.json",
+        ai12_definition,
+    )
+
+    acc11_resource_specs = [
+        ("schema", "authoring-construction-1.1-schema", "source-contract-schema"),
+        ("rules", "authoring-construction-1.1-rules", "interpretation-rule"),
+        ("ledger.schema", "authoring-construction-1.1-ledger.schema", "source-contract-schema"),
+        (
+            "conformance.schema",
+            "authoring-construction-1.1-conformance.schema",
+            "source-contract-schema",
+        ),
+        ("conformance", "authoring-construction-1.1-conformance", "interpretation-conformance"),
+        ("compatibility", "authoring-construction-1.1-compatibility", "normative-definition"),
+    ]
+    acc11_external_specs = [
+        (
+            "architecture-interpretation/1.2/contract",
+            "architecture-interpretation-1.2-contract",
+            "normative-definition",
+        ),
+        ("authoring-domain/1.1/contract", "authoring-domain-1.1-contract", "normative-definition"),
+        ("authoring-domain/1.1/schema", "authoring-domain-1.1-schema", "source-contract-schema"),
+        (
+            "authoring-construction/1.0/contract",
+            "authoring-construction-1.0-contract",
+            "normative-definition",
+        ),
+        (
+            "authoring-construction/1.0/rules",
+            "authoring-construction-1.0-rules",
+            "interpretation-rule",
+        ),
+        (
+            "authoring-construction/1.0/conformance",
+            "authoring-construction-1.0-conformance",
+            "interpretation-conformance",
+        ),
+    ]
+    acc11_manifest = [
+        resource(
+            f"authoring-construction/1.1/{resource_name}",
+            f"{source_name}.json",
+            role,
+        )
+        for resource_name, source_name, role in acc11_resource_specs
+    ]
+    acc11_manifest.extend(
+        resource(resource_key, f"{source_name}.json", role)
+        for resource_key, source_name, role in acc11_external_specs
+    )
+    # Pin every AI 1.2 closure member directly as well as its exact immutable
+    # definition, so ACC 1.1's closure is independently content-addressed.
+    acc11_manifest.extend(ai12_manifest)
+    acc11_manifest = list(
+        {entry["canonicalResourceKey"]: entry for entry in acc11_manifest}.values()
+    )
+    acc11_conformance_key = "authoring-construction/1.1/conformance"
+    acc11_definition = definition(
+        "authoring-construction",
+        acc11_manifest,
+        [acc11_conformance_key],
+        version="1.1",
+    )
+    write_json(
+        ROOT / "contracts" / "authoring-construction" / "v1.1" / "contract.json",
+        acc11_definition,
+    )
+
+    # ACC 1.2 is an exact, independently fingerprinted publication. Reuse the
+    # complete frozen predecessor closure (including its ledger schema) without
+    # selecting this successor for current materialization or execution.
+    acc12_resource_specs = [
+        ("schema", "source-contract-schema"),
+        ("rules", "interpretation-rule"),
+        ("compatibility", "normative-definition"),
+        ("conformance", "interpretation-conformance"),
+        ("conformance.schema", "source-contract-schema"),
+        ("composition-bindings", "interpretation-rule"),
+        ("composition-bindings.schema", "source-contract-schema"),
+    ]
+    acc12_manifest = [
+        resource(
+            f"authoring-construction/1.2/{name}",
+            f"authoring-construction-1.2-{name}.json",
+            role,
+        )
+        for name, role in acc12_resource_specs
+    ]
+    acc12_manifest.extend(acc11_manifest)
+    acc12_manifest.append(
+        resource(
+            "authoring-construction/1.1/contract",
+            "authoring-construction-1.1-contract.json",
+            "normative-definition",
+        )
+    )
+    acc12_definition = definition(
+        "authoring-construction",
+        acc12_manifest,
+        ["authoring-construction/1.2/conformance"],
+        version="1.2",
+    )
+    write_json(
+        ROOT / "contracts" / "authoring-construction" / "v1.2" / "contract.json",
+        acc12_definition,
+    )
+    # Keep the legacy root-level Python mirror complete too; the WASM build's
+    # existing definition-copy step produces the same byte-identical asset.
+    write_json(BUNDLED / "authoring-construction-1.2.json", acc12_definition)
+
     successor_generated = {
         "profiles/architecture-materialization-1.1.json": successor_profile,
         "definitions/architecture-interpretation-1.1.json": successor_architecture,
+        "definitions/architecture-interpretation-1.2.json": ai12_definition,
+        "definitions/authoring-construction-1.1.json": acc11_definition,
+        "definitions/authoring-construction-1.2.json": acc12_definition,
         "definitions/normalized-model-2.4.json": successor_normalized,
-        "definitions/normative-semantics-1.0.json": definitions[
-            "normative-semantics.json"
-        ],
+        "definitions/normative-semantics-1.0.json": definitions["normative-semantics.json"],
         f"sets/{successor_set_id.replace(':', '-')}.json": successor_set,
         "qualifications/architecture-materialization-1.1.json": successor_qualifications,
     }
     for relative, value in successor_generated.items():
         write_json(CANONICAL / relative, value)
         write_json(BUNDLED / relative, value)
+
+    # Historical ACC 1.0 is available by exact family/version lookup, but is
+    # intentionally excluded from the selected successor set above.
+    acc10_definition = read_json(
+        ROOT / "contracts" / "authoring-construction" / "v1.0" / "contract.json"
+    )
+    write_json(
+        CANONICAL / "definitions" / "authoring-construction-1.0.json",
+        acc10_definition,
+    )
+    write_json(
+        BUNDLED / "definitions" / "authoring-construction-1.0.json",
+        acc10_definition,
+    )
 
     bundles: list[dict[str, Any]] = []
     for value in definitions.values():
@@ -2638,5 +3030,374 @@ def main() -> None:
     # by the dedicated semantic-core v1.1 vectors.
 
 
+def publish_normalized_model_25() -> None:
+    """Publish only NM 2.5, without historical regeneration or SCS production."""
+    schema_names = (
+        "normalized-architecture-model.schema.json",
+        "normalized-entity-registry.schema.json",
+        "normalized-entity.schema.json",
+        "relationship-record.schema.json",
+        "relationship-registry.schema.json",
+        "unresolved-registry.schema.json",
+    )
+    for name in schema_names:
+        data = (ROOT / "schema" / "normalized-model" / "v2.5" / name).read_bytes()
+        filename = f"normalized-model-2.5-schema-{name}"
+        (RESOURCES / filename).write_bytes(data)
+        (BUNDLED / "resources" / filename).write_bytes(data)
+
+    conformance_filename = "normalized-model-2.5-conformance.json"
+    (BUNDLED / "resources" / conformance_filename).write_bytes(
+        (RESOURCES / conformance_filename).read_bytes()
+    )
+    schema_keys = [
+        f"normalized-model/2.5/schema/{name.removesuffix('.json')}"
+        for name in schema_names
+    ]
+    manifest = [
+        resource(key, key.replace("/", "-") + ".json", "normalized-model-schema")
+        for key in schema_keys
+    ]
+    conformance_key = "normalized-model/2.5/conformance"
+    manifest.append(
+        resource(conformance_key, conformance_filename, "normalized-model-conformance")
+    )
+    successor = definition("normalized-model", manifest, [conformance_key], version="2.5")
+    for path in (
+        CANONICAL / "definitions" / "normalized-model-2.5.json",
+        BUNDLED / "definitions" / "normalized-model-2.5.json",
+        BUNDLED / "normalized-model-2.5.json",
+    ):
+        write_json(path, successor)
+
+
+def publish_architecture_interpretation_13() -> None:
+    """Publish only AI 1.3 after schema, ownership and enum-domain qualification."""
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from scripts.qualify_ai13_publication import RESOURCE_NAMES, qualify_publication
+
+    qualify_publication(ROOT)
+    prefix = "architecture-interpretation/1.3/"
+    source = ROOT / "contracts" / "architecture-interpretation" / "v1.3"
+    own = {
+        prefix + name: read_json(source / "resources" / f"{name}.json") for name in RESOURCE_NAMES
+    }
+    historical_roles: dict[str, str] = {}
+    for path in (
+        ROOT / "contracts" / "architecture-interpretation" / "v1.2" / "contract.json",
+        CANONICAL / "definitions" / "normalized-model-2.5.json",
+    ):
+        historical_roles.update(
+            {
+                entry["canonicalResourceKey"]: entry["role"]
+                for entry in read_json(path)["resourceManifest"]
+            }
+        )
+    contents: dict[str, Any] = {}
+    pending = set(own)
+    while pending:
+        key = min(pending)
+        pending.remove(key)
+        value = own[key] if key in own else resource_value(key)
+        contents[key] = value
+        pending.update(discovered_dependencies(key, value) - contents.keys())
+    manifest = []
+    for key in sorted(contents):
+        if key.startswith(prefix):
+            name = key.removeprefix(prefix)
+            role = (
+                "interpretation-conformance"
+                if name == "conformance"
+                else (
+                    "source-contract-schema"
+                    if name.endswith(".schema")
+                    else (
+                        "source-contract-mapping"
+                        if name.startswith(("source-mapping", "field-dispositions-"))
+                        else "interpretation-rule"
+                    )
+                )
+            )
+        else:
+            role = historical_roles[key]
+        manifest.append(
+            {
+                "canonicalResourceKey": key,
+                "contentDigest": digest(contents[key]),
+                "role": role,
+                "dependencies": [
+                    {
+                        "canonicalResourceKey": dependency,
+                        "contentDigest": digest(contents[dependency]),
+                    }
+                    for dependency in sorted(discovered_dependencies(key, contents[key]))
+                ],
+            }
+        )
+    successor = definition(
+        "architecture-interpretation", manifest, [prefix + "conformance"], version="1.3"
+    )
+    for name in RESOURCE_NAMES:
+        data = (source / "resources" / f"{name}.json").read_bytes()
+        filename = f"architecture-interpretation-1.3-{name}.json"
+        (RESOURCES / filename).write_bytes(data)
+        (BUNDLED / "resources" / filename).write_bytes(data)
+    for path in (
+        source / "contract.json",
+        CANONICAL / "definitions" / "architecture-interpretation-1.3.json",
+        BUNDLED / "definitions" / "architecture-interpretation-1.3.json",
+        BUNDLED / "architecture-interpretation-1.3.json",
+    ):
+        write_json(path, successor)
+
+
+def publish_authoring_construction_13() -> None:
+    """Append only ACC 1.3; selected sets and historical publications are untouched."""
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from scripts.qualify_acc13_publication import AI, NAMES, PREFIX, canonical_resource, qualify
+
+    qualify(ROOT)
+    source = ROOT / "contracts/authoring-construction/v1.3"
+    own = {
+        PREFIX
+        + name: read_json(
+            source / ("schema.json" if name == "schema" else "resources/" + name + ".json")
+        )
+        for name in NAMES
+    }
+    own[AI + "contract"] = canonical_resource(ROOT, AI + "contract")
+    inherited: dict[str, Any] = {}
+    for path in (
+        CANONICAL / "definitions/authoring-construction-1.2.json",
+        CANONICAL / "definitions/architecture-interpretation-1.3.json",
+    ):
+        for entry in read_json(path)["resourceManifest"]:
+            inherited[entry["canonicalResourceKey"]] = entry
+    contents = {key: canonical_resource(ROOT, key) for key in inherited}
+    contents.update(own)
+    pending = set(contents)
+    while pending:
+        key = min(pending)
+        pending.remove(key)
+        for dependency in discovered_dependencies(key, contents[key]) - contents.keys():
+            contents[dependency] = canonical_resource(ROOT, dependency)
+            pending.add(dependency)
+    manifest = []
+    for key in sorted(contents):
+        name = key.removeprefix(PREFIX)
+        role = (
+            (
+                "interpretation-conformance"
+                if name == "conformance"
+                else (
+                    "source-contract-schema"
+                    if name == "schema" or name.endswith(".schema")
+                    else (
+                        "normative-definition"
+                        if name == "compatibility" or key == AI + "contract"
+                        else "interpretation-rule"
+                    )
+                )
+            )
+            if key in own
+            else inherited[key]["role"]
+        )
+        manifest.append(
+            {
+                "canonicalResourceKey": key,
+                "contentDigest": digest(contents[key]),
+                "role": role,
+                "dependencies": [
+                    {"canonicalResourceKey": dep, "contentDigest": digest(contents[dep])}
+                    for dep in sorted(discovered_dependencies(key, contents[key]))
+                ],
+            }
+        )
+    successor = definition(
+        "authoring-construction", manifest, [PREFIX + "conformance"], version="1.3"
+    )
+    from adr_kit.semantic_contract import (
+        validate_semantic_resource_closure,
+        verify_semantic_contract,
+    )
+
+    bundle = [{"canonicalResourceKey": key, "content": value} for key, value in contents.items()]
+    if (
+        not verify_semantic_contract(successor).success
+        or not validate_semantic_resource_closure(successor, bundle).closure_valid
+    ):
+        raise ValueError("ACC 1.3 authority did not qualify; nothing published")
+    for key, value in own.items():
+        filename = key.replace("/", "-") + ".json"
+        if key.startswith(PREFIX):
+            name = key.removeprefix(PREFIX)
+            data = (
+                source / ("schema.json" if name == "schema" else "resources/" + name + ".json")
+            ).read_bytes()
+        else:
+            data = (CANONICAL / "definitions/architecture-interpretation-1.3.json").read_bytes()
+        (RESOURCES / filename).write_bytes(data)
+        (BUNDLED / "resources" / filename).write_bytes(data)
+    for path in (
+        source / "contract.json",
+        CANONICAL / "definitions/authoring-construction-1.3.json",
+        BUNDLED / "definitions/authoring-construction-1.3.json",
+        BUNDLED / "authoring-construction-1.3.json",
+    ):
+        write_json(path, successor)
+
+
+def publish_architecture_interpretation_14() -> None:
+    """Append AI 1.4 only, importing unchanged authorities by exact identity."""
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from scripts.qualify_ai14_publication import BASE, NAMES, PREFIX, qualify, read
+
+    qualify(ROOT)
+    own = {PREFIX + name: read(ROOT, PREFIX + name) for name in NAMES}
+    historical_roles = {BASE + "contract": "normative-definition"}
+    for family, version in (
+        ("architecture-interpretation", "1.3"),
+        ("authoring-construction", "1.3"),
+    ):
+        for entry in read_json(CANONICAL / f"definitions/{family}-{version}.json")[
+            "resourceManifest"
+        ]:
+            historical_roles[entry["canonicalResourceKey"]] = entry["role"]
+
+    contents: dict[str, Any] = {}
+    pending = set(own)
+    while pending:
+        key = min(pending)
+        pending.remove(key)
+        value = own[key] if key in own else read(ROOT, key)
+        contents[key] = value
+        pending.update(discovered_dependencies(key, value) - contents.keys())
+    manifest = []
+    for key in sorted(contents):
+        name = key.removeprefix(PREFIX)
+        role = (
+            (
+                "interpretation-conformance"
+                if name == "conformance"
+                else "source-contract-schema" if name.endswith(".schema") else "interpretation-rule"
+            )
+            if key in own
+            else historical_roles[key]
+        )
+        manifest.append(
+            {
+                "canonicalResourceKey": key,
+                "contentDigest": digest(contents[key]),
+                "role": role,
+                "dependencies": [
+                    {"canonicalResourceKey": dep, "contentDigest": digest(contents[dep])}
+                    for dep in sorted(discovered_dependencies(key, contents[key]))
+                ],
+            }
+        )
+    successor = definition(
+        "architecture-interpretation", manifest, [PREFIX + "conformance"], version="1.4"
+    )
+    source = ROOT / "contracts/architecture-interpretation/v1.4"
+    for name in NAMES:
+        data = (source / "resources" / (name + ".json")).read_bytes()
+        filename = "architecture-interpretation-1.4-" + name + ".json"
+        (RESOURCES / filename).write_bytes(data)
+        (BUNDLED / "resources" / filename).write_bytes(data)
+    for path in (
+        source / "contract.json",
+        CANONICAL / "definitions/architecture-interpretation-1.4.json",
+        BUNDLED / "definitions/architecture-interpretation-1.4.json",
+        BUNDLED / "architecture-interpretation-1.4.json",
+    ):
+        write_json(path, successor)
+
+
+def publish_authoring_construction_14() -> None:
+    """Append ACC 1.4 only; no historical generation or selection side effects."""
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from scripts.qualify_acc14_publication import (
+        AI, BASE, NAMES, PREFIX, qualify, qualify_binding_schema_dependency, read,
+    )
+
+    # Preflight canonical resources before replacing the previous unpublished
+    # definition; final definition/closure qualification follows assembly.
+    qualify(ROOT, published=False)
+    own = {PREFIX + name: read(ROOT, PREFIX + name) for name in NAMES}
+    roles = {AI + "contract": "normative-definition", BASE + "contract": "normative-definition"}
+    for family, version in (("authoring-construction", "1.3"), ("architecture-interpretation", "1.4")):
+        for entry in read_json(CANONICAL / f"definitions/{family}-{version}.json")["resourceManifest"]:
+            roles[entry["canonicalResourceKey"]] = entry["role"]
+    contents: dict[str, Any] = {}
+    pending = set(own)
+    while pending:
+        key = min(pending)
+        pending.remove(key)
+        value = own[key] if key in own else read(ROOT, key)
+        contents[key] = value
+        pending.update(discovered_dependencies(key, value) - contents.keys())
+    manifest = []
+    for key in sorted(contents):
+        name = key.removeprefix(PREFIX)
+        role = (
+            "interpretation-conformance" if name == "conformance" else
+            "source-contract-schema" if name == "schema" or name.endswith(".schema") else
+            "normative-definition" if name == "compatibility" else "interpretation-rule"
+        ) if key in own else roles[key]
+        manifest.append({
+            "canonicalResourceKey": key, "contentDigest": digest(contents[key]), "role": role,
+            "dependencies": [{"canonicalResourceKey": dep, "contentDigest": digest(contents[dep])}
+                             for dep in sorted(discovered_dependencies(key, contents[key]))],
+        })
+    successor = definition("authoring-construction", manifest, [PREFIX + "conformance"], version="1.4")
+    qualify_binding_schema_dependency(
+        own[PREFIX + "composition-bindings"], own[PREFIX + "composition-bindings.schema"],
+        own[PREFIX + "rules"], successor["resourceManifest"],
+    )
+    from adr_kit.semantic_contract import validate_semantic_resource_closure, verify_semantic_contract
+
+    bundle = [{"canonicalResourceKey": key, "content": value} for key, value in contents.items()]
+    if not verify_semantic_contract(successor).success or not validate_semantic_resource_closure(successor, bundle).closure_valid:
+        raise ValueError("ACC 1.4 exact authority closure failed; nothing published")
+    source = ROOT / "contracts/authoring-construction/v1.4"
+    for name in NAMES:
+        data = (source / ("schema.json" if name == "schema" else f"resources/{name}.json")).read_bytes()
+        filename = "authoring-construction-1.4-" + name + ".json"
+        (RESOURCES / filename).write_bytes(data)
+        (BUNDLED / "resources" / filename).write_bytes(data)
+    for path in (source / "contract.json", CANONICAL / "definitions/authoring-construction-1.4.json",
+                 BUNDLED / "definitions/authoring-construction-1.4.json", BUNDLED / "authoring-construction-1.4.json"):
+        write_json(path, successor)
+
+
 if __name__ == "__main__":
-    main()
+    if sys.argv[1:] == ["--publish-nm25-only"]:
+        publish_normalized_model_25()
+    elif sys.argv[1:] == ["--publish-ai13-only"]:
+        publish_architecture_interpretation_13()
+    elif sys.argv[1:] == ["--publish-ai14-only"]:
+        publish_architecture_interpretation_14()
+    elif sys.argv[1:] == ["--publish-ai15-only"]:
+        if str(ROOT) not in sys.path:
+            sys.path.insert(0, str(ROOT))
+        from scripts.generate_ai15_publication import publish
+
+        publish()
+    elif sys.argv[1:] == ["--publish-acc13-only"]:
+        publish_authoring_construction_13()
+    elif sys.argv[1:] == ["--publish-acc14-only"]:
+        publish_authoring_construction_14()
+    elif sys.argv[1:] == ["--publish-acc15-only"]:
+        if str(ROOT) not in sys.path:
+            sys.path.insert(0, str(ROOT))
+        from scripts.generate_acc15_publication import publish
+
+        publish()
+    elif sys.argv[1:]:
+        raise SystemExit("Unsupported generator mode")
+    else:
+        main()

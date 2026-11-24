@@ -39,16 +39,108 @@ impl IdentityMinter for UuidV7Minter {
             .map_err(|error| format!("system clock is before UNIX epoch: {error}"))?
             .as_millis() as u64;
         let counter = UUID_COUNTER.fetch_add(1, Ordering::Relaxed) & 0x0fff;
-        let time_high = millis & 0x0000_ffff_ffff_ffff;
-        Ok(format!(
-            "{:08x}-{:04x}-7{:03x}-8{:03x}-{:012x}",
-            time_high >> 16,
-            time_high & 0xffff,
-            counter,
-            counter,
-            (millis << 12 | counter as u64) & 0x0000_ffff_ffff_ffff,
-        ))
+        Ok(format_uuidv7(millis, counter))
     }
+}
+
+/// UUIDv7 minter for protocol boundaries where the host supplies an
+/// environmental clock reading and a fresh CSPRNG seed. Rust expands that
+/// seed into RFC 9562 random fields and controls identity allocation.
+pub(crate) struct EntropyUuidV7Minter {
+    timestamp_ms: Option<u64>,
+    entropy_seed: Option<[u8; 32]>,
+    counter: u64,
+}
+
+impl EntropyUuidV7Minter {
+    pub(crate) fn new(timestamp_ms: Option<u64>, entropy_seed: Option<[u8; 32]>) -> Self {
+        Self {
+            timestamp_ms,
+            entropy_seed,
+            counter: 0,
+        }
+    }
+}
+
+impl IdentityMinter for EntropyUuidV7Minter {
+    fn mint_uuidv7(&mut self) -> Result<String, String> {
+        const MAX_TIMESTAMP_MS: u64 = (1_u64 << 48) - 1;
+        let millis = self
+            .timestamp_ms
+            .ok_or_else(|| "host identity clock is unavailable for UUIDv7 minting".to_owned())?;
+        if millis > MAX_TIMESTAMP_MS {
+            return Err("host identity clock is outside the UUIDv7 timestamp range".to_owned());
+        }
+        let seed = self
+            .entropy_seed
+            .ok_or_else(|| "host secure entropy is unavailable for UUIDv7 minting".to_owned())?;
+        let counter = self.counter;
+        self.counter = self
+            .counter
+            .checked_add(1)
+            .ok_or_else(|| "UUIDv7 entropy stream is exhausted".to_owned())?;
+
+        let mut hasher = Sha256::new();
+        hasher.update(b"adr-kit:acc11:uuidv7:random-fields:v1\0");
+        hasher.update(seed);
+        hasher.update(counter.to_be_bytes());
+        let entropy = hasher.finalize();
+        let random_a = extract_entropy_bits(&entropy, 0, 12) as u16;
+        let random_b = extract_entropy_bits(&entropy, 12, 62);
+        Ok(format_uuidv7_random(millis, random_a, random_b))
+    }
+}
+
+pub(crate) fn parse_entropy_seed(value: &str) -> Option<[u8; 32]> {
+    if value.len() != 64 || value.bytes().any(|byte| !byte.is_ascii_hexdigit() || byte.is_ascii_uppercase()) {
+        return None;
+    }
+    let mut seed = [0_u8; 32];
+    for (index, pair) in value.as_bytes().chunks_exact(2).enumerate() {
+        let high = hex_nibble(pair[0])?;
+        let low = hex_nibble(pair[1])?;
+        seed[index] = (high << 4) | low;
+    }
+    Some(seed)
+}
+
+fn hex_nibble(value: u8) -> Option<u8> {
+    match value {
+        b'0'..=b'9' => Some(value - b'0'),
+        b'a'..=b'f' => Some(value - b'a' + 10),
+        _ => None,
+    }
+}
+
+fn extract_entropy_bits(bytes: &[u8], offset: usize, count: usize) -> u64 {
+    (offset..offset + count).fold(0_u64, |value, bit| {
+        (value << 1) | u64::from((bytes[bit / 8] >> (7 - bit % 8)) & 1)
+    })
+}
+
+fn format_uuidv7_random(millis: u64, random_a: u16, random_b: u64) -> String {
+    let time_high = millis & 0x0000_ffff_ffff_ffff;
+    let variant_and_random = 0x8000_u16 | ((random_b >> 48) as u16 & 0x3fff);
+    format!(
+        "{:08x}-{:04x}-7{:03x}-{:04x}-{:012x}",
+        time_high >> 16,
+        time_high & 0xffff,
+        random_a & 0x0fff,
+        variant_and_random,
+        random_b & 0x0000_ffff_ffff_ffff,
+    )
+}
+
+fn format_uuidv7(millis: u64, counter: u16) -> String {
+    let time_high = millis & 0x0000_ffff_ffff_ffff;
+    format!(
+        "{:08x}-{:04x}-7{:03x}-8{:03x}-{:012x}",
+        time_high >> 16,
+        time_high & 0xffff,
+        counter,
+        counter,
+        (millis << 12 | counter as u64) & 0x0000_ffff_ffff_ffff,
+    )
 }
 
 /// Construct an ACC request using the default detached identity authority.
@@ -214,6 +306,7 @@ pub(crate) fn construct_authoring_set_with_minter(
 
     let mut candidate_fragments = Vec::new();
     let mut candidate_artifacts = Vec::new();
+    let mut candidate_containments = Vec::new();
     let mut construction_map = Vec::new();
     let mut interpretation_results = Vec::new();
 
@@ -243,6 +336,7 @@ pub(crate) fn construct_authoring_set_with_minter(
             .cloned()
             .unwrap_or_default();
         let identity = identities.get(key).expect("validated identity exists");
+        let mut embedded_children = Vec::new();
         let source = build_fragment_source(
             value,
             &fields,
@@ -252,6 +346,7 @@ pub(crate) fn construct_authoring_set_with_minter(
             &identities,
             &fragments,
             &compositions,
+            &mut embedded_children,
         );
         let selector = selector_for(semantic_type, &source);
         let source_ref = format!("{source_prefix}/{key}");
@@ -300,6 +395,12 @@ pub(crate) fn construct_authoring_set_with_minter(
             interpretation,
         ));
         candidate_artifacts.push(artifact_to_json(&artifact));
+        candidate_containments.extend(embedded_children.into_iter().map(|child_request_key| {
+            candidate_source::CandidateSourceContainment {
+                parent_request_key: key.to_owned(),
+                child_request_key,
+            }
+        }));
         candidate_fragments.push(candidate_fragment(
             value,
             &fields,
@@ -421,31 +522,38 @@ pub(crate) fn construct_authoring_set_with_minter(
         .iter()
         .map(json_to_artifact)
         .collect::<Result<Vec<_>, _>>();
-    let basis_artifacts =
-        match artifacts_for_basis.and_then(candidate_source::seal_candidate_source_basis) {
-            Ok(value) => value,
-            Err(error) => {
-                let diagnostic = orchestration_diagnostic(
-                    "authoring_construction.candidate_source.unavailable",
-                    &error,
-                    None,
-                    None,
-                    "unavailable",
-                );
-                return result(
-                    &basis,
-                    "Unavailable",
-                    vec![diagnostic.clone()],
-                    provenance,
-                    construction_map,
-                    candidate_fragments,
-                    candidate_artifacts,
-                    None,
-                    round_trip(false, "not_evaluated", &[], &[], &[diagnostic]),
-                )
-                .value;
-            }
-        };
+    let basis_artifacts = match artifacts_for_basis
+        .and_then(|artifacts| {
+            candidate_source::select_minimal_candidate_source_roots(
+                artifacts,
+                &candidate_containments,
+            )
+        })
+        .and_then(candidate_source::seal_candidate_source_basis)
+    {
+        Ok(value) => value,
+        Err(error) => {
+            let diagnostic = orchestration_diagnostic(
+                "authoring_construction.candidate_source.unavailable",
+                &error,
+                None,
+                None,
+                "unavailable",
+            );
+            return result(
+                &basis,
+                "Unavailable",
+                vec![diagnostic.clone()],
+                provenance,
+                construction_map,
+                candidate_fragments,
+                candidate_artifacts,
+                None,
+                round_trip(false, "not_evaluated", &[], &[], &[diagnostic]),
+            )
+            .value;
+        }
+    };
 
     if let Some(mismatch) = round_trip_mismatch(&interpretation_results) {
         let diagnostic = orchestration_diagnostic(
@@ -511,12 +619,12 @@ pub(crate) fn construct_authoring_set_with_minter(
 }
 
 #[derive(Clone)]
-struct Identity {
-    id: String,
-    disposition: &'static str,
+pub(crate) struct Identity {
+    pub(crate) id: String,
+    pub(crate) disposition: &'static str,
 }
 
-fn establish_identity(
+pub(crate) fn establish_identity(
     key: &str,
     operation: &str,
     supplied: Option<&str>,
@@ -541,7 +649,7 @@ fn establish_identity(
     })
 }
 
-fn build_fragment_source(
+pub(crate) fn build_fragment_source(
     fragment: &BTreeMap<String, Json>,
     fields: &BTreeMap<String, Json>,
     identity: &Identity,
@@ -550,6 +658,7 @@ fn build_fragment_source(
     identities: &BTreeMap<String, Identity>,
     fragments: &[Json],
     compositions: &[Json],
+    embedded_children: &mut Vec<String>,
 ) -> Json {
     let mut output = fields.clone();
     output.insert("id".into(), string(identity.id.clone()));
@@ -579,32 +688,38 @@ fn build_fragment_source(
     if semantic_type.starts_with("adr/") {
         output.insert("schema_version".into(), string("1.7"));
         if semantic_type == "adr/logical" {
-            let children = compositions
-                .iter()
-                .filter_map(|value| value.as_object())
-                .filter(|value| value.get("parent").and_then(Json::as_str) == Some(key))
-                .filter_map(|value| value.get("child").and_then(Json::as_str))
-                .filter_map(|child| {
-                    let child_identity = identities.get(child)?;
-                    let child_value = fragments.iter().find_map(|fragment| {
-                        let value = fragment.as_object()?;
-                        (value.get("request_key").and_then(Json::as_str) == Some(child))
-                            .then_some(value)
-                    })?;
-                    let child_type = child_value
-                        .get("semantic_type")
-                        .and_then(Json::as_str)
-                        .unwrap_or("entity/decision");
-                    let mut child_source = child_value
-                        .get("fields")
-                        .and_then(Json::as_object)
-                        .cloned()
-                        .unwrap_or_default();
-                    child_source.insert("id".into(), string(child_identity.id.clone()));
-                    ceremony_alias(&mut child_source, child_type);
-                    Some(Json::Object(child_source))
-                })
-                .collect::<Vec<_>>();
+            let mut children = Vec::new();
+            for composition in compositions.iter().filter_map(Json::as_object) {
+                if composition.get("parent").and_then(Json::as_str) != Some(key) {
+                    continue;
+                }
+                let Some(child) = composition.get("child").and_then(Json::as_str) else {
+                    continue;
+                };
+                let Some(child_identity) = identities.get(child) else {
+                    continue;
+                };
+                let Some(child_value) = fragments.iter().find_map(|fragment| {
+                    let value = fragment.as_object()?;
+                    (value.get("request_key").and_then(Json::as_str) == Some(child))
+                        .then_some(value)
+                }) else {
+                    continue;
+                };
+                let child_type = child_value
+                    .get("semantic_type")
+                    .and_then(Json::as_str)
+                    .unwrap_or("entity/decision");
+                let mut child_source = child_value
+                    .get("fields")
+                    .and_then(Json::as_object)
+                    .cloned()
+                    .unwrap_or_default();
+                child_source.insert("id".into(), string(child_identity.id.clone()));
+                ceremony_alias(&mut child_source, child_type);
+                children.push(Json::Object(child_source));
+                embedded_children.push(child.to_owned());
+            }
             if !children.is_empty() {
                 output.insert("decisions".into(), Json::Array(children));
             }
@@ -747,7 +862,10 @@ fn enrich_topology(value: &mut Json) {
     }
 }
 
-fn selector_for(semantic_type: &str, source: &Json) -> candidate_source::CandidateSourceSelector {
+pub(crate) fn selector_for(
+    semantic_type: &str,
+    source: &Json,
+) -> candidate_source::CandidateSourceSelector {
     if semantic_type.starts_with("adr/") {
         return candidate_source::CandidateSourceSelector {
             canonical_resource_key: match semantic_type {
@@ -781,7 +899,7 @@ fn selector_for(semantic_type: &str, source: &Json) -> candidate_source::Candida
     }
 }
 
-fn candidate_fragment(
+pub(crate) fn candidate_fragment(
     fragment: &BTreeMap<String, Json>,
     fields: &BTreeMap<String, Json>,
     identity: &Identity,
@@ -951,7 +1069,7 @@ fn map_entry(
     ])
 }
 
-fn artifact_to_json(artifact: &candidate_source::CandidateSourceArtifact) -> Json {
+pub(crate) fn artifact_to_json(artifact: &candidate_source::CandidateSourceArtifact) -> Json {
     object([
         ("request_key".into(), string(artifact.request_key.clone())),
         ("source_ref".into(), string(artifact.source_ref.clone())),
@@ -1419,6 +1537,45 @@ fn base64_decode(input: &str) -> Result<Vec<u8>, String> {
 mod tests {
     use super::*;
 
+    #[test]
+    fn entropy_minter_uses_randomized_fields_across_requests_at_the_same_time() {
+        let mut first = EntropyUuidV7Minter::new(Some(1_767_000_000_123), Some([0x11; 32]));
+        let mut second = EntropyUuidV7Minter::new(Some(1_767_000_000_123), Some([0x22; 32]));
+        let first_id = first.mint_uuidv7().unwrap();
+        let second_id = second.mint_uuidv7().unwrap();
+        assert_ne!(first_id, second_id);
+        assert_eq!(&first_id[14..15], "7");
+        assert!(matches!(&first_id[19..20], "8" | "9" | "a" | "b"));
+    }
+
+    #[test]
+    fn entropy_minter_supports_large_same_request_bursts_without_counter_wrap() {
+        let mut minter = EntropyUuidV7Minter::new(Some(1_767_000_000_123), Some([0x5a; 32]));
+        let mut identities = std::collections::BTreeSet::new();
+        for _ in 0..5_000 {
+            identities.insert(minter.mint_uuidv7().unwrap());
+        }
+        assert_eq!(identities.len(), 5_000);
+
+        minter.counter = u64::MAX;
+        assert_eq!(minter.mint_uuidv7(), Err("UUIDv7 entropy stream is exhausted".into()));
+        assert_eq!(minter.counter, u64::MAX);
+    }
+
+    #[test]
+    fn entropy_minter_fails_closed_for_missing_or_invalid_environmental_inputs() {
+        assert!(EntropyUuidV7Minter::new(None, Some([1; 32]))
+            .mint_uuidv7().unwrap_err().contains("clock is unavailable"));
+        assert!(EntropyUuidV7Minter::new(Some(1), None)
+            .mint_uuidv7().unwrap_err().contains("entropy is unavailable"));
+        assert!(EntropyUuidV7Minter::new(Some(1_u64 << 48), Some([1; 32]))
+            .mint_uuidv7().unwrap_err().contains("timestamp range"));
+        assert!(parse_entropy_seed(&"0".repeat(63)).is_none());
+        assert!(parse_entropy_seed(&"g".repeat(64)).is_none());
+        assert!(parse_entropy_seed(&"A".repeat(64)).is_none());
+        assert!(parse_entropy_seed(&"a".repeat(64)).is_some());
+    }
+
     struct FixedMinter {
         next: u8,
     }
@@ -1569,5 +1726,105 @@ mod tests {
             .get("candidate_artifacts")
             .and_then(Json::as_array)
             .is_some_and(Vec::is_empty));
+    }
+
+    #[test]
+    fn c05_and_c07_keep_embedded_artifacts_but_seal_only_document_roots() {
+        let corpus = frozen_cases();
+        let cases = corpus.get("cases").and_then(Json::as_array).unwrap();
+        for (case_id, parent_key, child_key) in
+            [("C05", "parent", "child"), ("C07", "adr", "decision")]
+        {
+            let case = cases
+                .iter()
+                .find(|case| case.get("id").and_then(Json::as_str) == Some(case_id))
+                .unwrap();
+            let mut minter = FixedMinter { next: 0x90 };
+            let result =
+                construct_authoring_set_with_minter(case.get("input").unwrap(), &mut minter);
+            assert_eq!(
+                result.get("outcome").and_then(Json::as_str),
+                Some("Constructed")
+            );
+
+            let artifacts = result
+                .get("candidate_artifacts")
+                .and_then(Json::as_array)
+                .unwrap();
+            let artifact_refs = artifacts
+                .iter()
+                .map(|artifact| artifact.get("source_ref").and_then(Json::as_str).unwrap())
+                .collect::<Vec<_>>();
+            assert_eq!(artifacts.len(), 2, "{case_id} retains both artifacts");
+            assert!(artifact_refs.contains(&format!("candidate/{case_id}/{parent_key}").as_str()));
+            assert!(artifact_refs.contains(&format!("candidate/{case_id}/{child_key}").as_str()));
+
+            let child = artifacts
+                .iter()
+                .find(|artifact| {
+                    artifact.get("request_key").and_then(Json::as_str) == Some(child_key)
+                })
+                .unwrap();
+            let child_bytes =
+                base64_decode(child.get("bytes").and_then(Json::as_str).unwrap()).unwrap();
+            let child_source = candidate_source::decode_canonical_candidate(&child_bytes).unwrap();
+            assert_eq!(
+                child_source.get("id").and_then(Json::as_str),
+                Some("019109a0-b1c2-7def-8a00-112233445567"),
+                "{case_id} preserves the embedded child UUID"
+            );
+
+            let basis = result
+                .get("candidate_source_basis")
+                .and_then(Json::as_object)
+                .unwrap();
+            let basis_artifacts = basis.get("artifacts").and_then(Json::as_array).unwrap();
+            assert_eq!(basis_artifacts.len(), 1, "{case_id} has one minimal root");
+            assert_eq!(
+                basis_artifacts[0].get("request_key").and_then(Json::as_str),
+                Some(parent_key)
+            );
+            assert_eq!(
+                basis_artifacts[0].get("source_ref").and_then(Json::as_str),
+                Some(format!("candidate/{case_id}/{parent_key}").as_str())
+            );
+
+            let expected = case
+                .get("expected")
+                .and_then(|expected| expected.get("result"))
+                .and_then(|expected| expected.get("candidate_source_basis"))
+                .and_then(Json::as_object)
+                .unwrap();
+            assert_eq!(
+                basis.get("basis_digest").and_then(Json::as_str),
+                expected.get("basis_digest").and_then(Json::as_str),
+                "{case_id} digest commits to exactly the frozen root set"
+            );
+        }
+    }
+
+    #[test]
+    fn repeated_request_produces_byte_identical_candidate_basis() {
+        let corpus = frozen_cases();
+        let case = corpus
+            .get("cases")
+            .and_then(Json::as_array)
+            .unwrap()
+            .iter()
+            .find(|case| case.get("id").and_then(Json::as_str) == Some("C05"))
+            .unwrap();
+        let input = case.get("input").unwrap();
+        let mut first_minter = FixedMinter { next: 0x90 };
+        let mut second_minter = FixedMinter { next: 0x90 };
+        let first = construct_authoring_set_with_minter(input, &mut first_minter);
+        let second = construct_authoring_set_with_minter(input, &mut second_minter);
+        assert_eq!(
+            first.get("candidate_artifacts"),
+            second.get("candidate_artifacts")
+        );
+        assert_eq!(
+            first.get("candidate_source_basis"),
+            second.get("candidate_source_basis")
+        );
     }
 }

@@ -3,6 +3,7 @@
 from pathlib import Path
 
 from click.testing import CliRunner
+import pytest
 
 from adr_kit.cli.main import cli
 from adr_kit.integrity import GeneratedArtifactStatus, GeneratedArtifactValidator
@@ -186,6 +187,7 @@ def test_validate_generated_docs_recursive_is_scope_local(tmp_path):
     assert any("module-a" in result.artifact_path for result in results["module-a"])
 
 
+@pytest.mark.governance
 def test_repo_generated_artifacts_validate():
     scope = ProjectScopeResolver().resolve()
     validator = GeneratedArtifactValidator()

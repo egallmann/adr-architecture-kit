@@ -11,6 +11,7 @@ import yaml
 
 UUIDV7_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
 FIXTURE_PATH = Path(__file__).parent / "fixtures" / "universal-graph-identity-baseline.json"
+ADR_L0042_PATH = "adrs/logical/ADR-L-0042-release-version-and-semantic-capability-milestones.yaml"
 
 
 def _repo_root() -> Path:
@@ -66,9 +67,43 @@ def test_architecture_graph_preserves_baseline_semantics_and_uses_entity_identit
     nodes = graph["nodes"]
     edges = graph["edges"]
 
+    adr_l0042 = yaml.safe_load((_repo_root() / ADR_L0042_PATH).read_text(encoding="utf-8"))
+    expected_additions = {
+        adr_l0042["id"]: ("adr", adr_l0042["title"]),
+        **{
+            decision["id"]: ("decision", decision["summary"]) for decision in adr_l0042["decisions"]
+        },
+        **{
+            invariant["id"]: ("invariant", invariant["alias_id"])
+            for invariant in adr_l0042["invariants"]
+        },
+    }
+    added_nodes = [
+        node
+        for node in nodes
+        if (node.get("canonical_source") or {}).get("artifact_path") == ADR_L0042_PATH
+    ]
+    assert {
+        node["id"]: (node["entity_type"], node["name"]) for node in added_nodes
+    } == expected_additions
+
+    added_ids = set(expected_additions)
+    baseline_nodes = [node for node in nodes if node["id"] not in added_ids]
+    baseline_edges = [
+        edge
+        for edge in edges
+        if edge.get("source_entity_id") not in added_ids
+        and edge.get("target_entity_id") not in added_ids
+    ]
+    added_edges = [
+        edge
+        for edge in edges
+        if edge.get("source_entity_id") in added_ids or edge.get("target_entity_id") in added_ids
+    ]
+
     node_semantics = [
         {key: node.get(key) for key in ("id", "entity_type", "name", "canonical_source")}
-        for node in nodes
+        for node in baseline_nodes
     ]
     edge_semantics = [
         {
@@ -85,15 +120,28 @@ def test_architecture_graph_preserves_baseline_semantics_and_uses_entity_identit
                 "metadata",
             )
         }
-        for edge in edges
+        for edge in baseline_edges
     ]
 
-    assert len(nodes) == fixture["node_count"]
-    assert len(edges) == fixture["edge_count"]
-    assert Counter(node["entity_type"] for node in nodes) == fixture["node_types"]
-    assert Counter(edge["relationship_type"] for edge in edges) == fixture["edge_types"]
+    # The identity snapshot remains sealed to ADR-L-0022's historical checkpoint.
+    # Verify that checkpoint as a subset, then admit only this ADR's exact additive graph.
+    assert len(baseline_nodes) == fixture["node_count"]
+    assert len(baseline_edges) == fixture["edge_count"]
+    assert Counter(node["entity_type"] for node in baseline_nodes) == fixture["node_types"]
+    assert Counter(edge["relationship_type"] for edge in baseline_edges) == fixture["edge_types"]
     assert _semantic_sha256(node_semantics) == fixture["node_semantic_sha256"]
     assert _semantic_sha256(edge_semantics) == fixture["edge_semantic_sha256"]
+
+    assert len(nodes) == fixture["node_count"] + len(expected_additions)
+    assert len(edges) == fixture["edge_count"] + 24
+    assert Counter(edge["relationship_type"] for edge in added_edges) == {
+        "declared_in": 8,
+        "references": 4,
+        "refines": 12,
+    }
+    assert all(
+        edge.get("canonical_source_ref", "").startswith(adr_l0042["id"]) for edge in added_edges
+    )
 
     errors: list[str] = []
     for index, node in enumerate(nodes):

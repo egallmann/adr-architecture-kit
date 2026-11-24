@@ -1,0 +1,117 @@
+schema_version: '1.5'
+adr_type: physical-component
+id: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+alias_id: ADR-PC-0009
+alias_name: canonical-semantic-execution-core
+title: Canonical Semantic Execution Core
+status: proposed
+created_date: '2026-10-05'
+authors:
+- erik.gallmann
+domains:
+- semantic-core
+- semantic-execution
+- rust
+- wasm
+tags:
+- semantic-core
+- rust
+- wasm
+- python
+- node
+implements_system:
+- 019fee89-e618-7d04-9337-4aa2d3258507
+implements_logical:
+- 01a05a27-0000-7000-8000-000000000027
+- 01a09938-a15b-75ed-8326-212e21bd3cfe
+- 01a09cf0-179e-71cc-b150-d4a79551b939
+technologies:
+- Rust
+- WebAssembly
+- serde
+- serde_json
+- sha2
+- regex
+technology_stack:
+- category: language
+  name: Rust
+  version: 2021 edition
+  rationale: Implementation language for the single canonical semantic-core crate.
+- category: runtime
+  name: WebAssembly
+  version: wasm32-unknown-unknown
+  rationale: Portable shared execution artifact consumed by peer hosts.
+context: |
+  The Rust/WASM semantic core is ADR-Kit's canonical meaning-bearing execution
+  component. It implements the versioned semantic-core request/result boundary
+  used by Python and TypeScript/Node hosts. The core owns shared semantic rules
+  and deterministic results; it is an implementation boundary, not a Rust-native
+  public SDK.
+
+  The component includes canonical JSON transport needed to execute the core
+  protocol, versioned dispatch, schema execution used by core operations,
+  semantic-contract identity/closure/set operations, authoring validation and
+  construction, canonical architecture validation, Architecture Interpretation,
+  normalized materialization, and shared attribution/linkage operations.
+  Python and Node acquire filesystem and YAML facts, adapt explicit inputs to the
+  protocol, and present results. The core does not traverse or mutate consumer
+  filesystems, persist ADRs, perform governance or Runtime admission, or own CLI
+  presentation. It remains one Rust crate; internal modules are not separately
+  published components.
+component_specifications:
+- id: 01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+  alias_id: COMP-0023
+  alias_name: canonical-semantic-execution-core
+  name: Canonical Semantic Execution Core
+  type: library
+  responsibilities: |
+    - Execute canonical meaning-bearing semantic operations for supported core protocol versions.
+    - Own shared semantic validation, authoring construction, architecture interpretation, and materialization rules.
+    - Produce deterministic protocol results and diagnostics consumed by peer host bindings.
+    - Provide one Rust implementation built for native qualification and the shared WebAssembly artifact.
+    - Keep protocol dispatch separate from the semantic meaning implemented by domain operations.
+  generation_context:
+    purpose: Provide one canonical semantic execution authority to supported ADR-Kit hosts.
+    key_responsibilities:
+    - Validate and execute exact semantic-contract, authoring, interpretation, materialization, and attribution operations.
+    - Preserve deterministic results and diagnostics across Python and TypeScript/Node hosts.
+    - Keep the versioned JSON/WASM boundary stable independently of internal Rust module organization.
+    constraints:
+    - Host adapters own filesystem discovery, YAML acquisition/parsing, and presentation.
+    - The core must not traverse or write consumer repositories or perform admission.
+    - Python and Node must not recreate meaning-bearing core behavior.
+    - Rust-native modules and types are not public SDK contracts.
+    - The component remains one crate and does not change the WASM ABI or operation inventory through internal restructuring.
+    success_criteria:
+    - Supported hosts execute the same source-built semantic-core WASM artifact.
+    - Protocol conformance and host parity checks pass for supported operations.
+    - Internal structural changes preserve request/result behavior and deterministic diagnostics.
+  interfaces:
+  - id: 01a10e4c-9ea8-76a2-93f7-8fc0145b9808
+    alias_id: IFACE-0036
+    alias_name: semantic-core-versioned-request-result-protocol
+    type: library_api
+    specification: |
+      Internal shared execution boundary for supported hosts. Hosts submit UTF-8
+      JSON requests with an explicit `core_contract_version` and receive UTF-8
+      JSON results. The current protocol inventory is 1.0 through 1.3 and is
+      routed by version. The WASM `execute` ABI accepts a byte pointer and size
+      and returns the serialized result. This protocol does not expose Rust
+      module APIs or types as a public SDK.
+  implementation_identifiers:
+    crate_manifest: core/Cargo.toml
+    source_root: core/src/
+    wasm_artifacts:
+    - src/adr_kit/core/semantic-core.wasm
+    - packages/node/src/generated/semantic-core.wasm
+  dependencies:
+  - serde
+  - serde_json
+  - sha2
+  - zmij_ecma
+  - regex
+  testing_requirements:
+  - Complete Rust semantic-core unit and protocol conformance suites.
+  - Source-built WASM artifact parity across Python and Node package locations.
+  - Python and Node observe equivalent results from the same semantic execution path.
+  - Behavior-preserving structural work verifies protocol, ABI, diagnostics, and semantic outputs.

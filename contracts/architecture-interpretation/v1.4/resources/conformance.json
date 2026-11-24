@@ -1,0 +1,1434 @@
+{
+  "resource": "architecture-interpretation/1.4/conformance",
+  "semanticDependencies": [
+    "architecture-interpretation/1.4/conformance.schema",
+    "architecture-interpretation/1.4/required-output-derivations",
+    "architecture-interpretation/1.4/rules",
+    "authoring/1.7/schema/adr-common.schema",
+    "authoring/1.7/schema/adr-logical.schema",
+    "authoring/1.7/schema/adr-physical-component.schema",
+    "authoring/1.7/schema/adr-physical-system.schema",
+    "authoring/1.7/schema/types.schema"
+  ],
+  "authority_only": true,
+  "runtime_execution_coverage": false,
+  "cases": [
+    {
+      "id": "AI14-001",
+      "category": "label_policy",
+      "semantic_type": "adr/logical",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "authored",
+          "source_field": "title"
+        },
+        "summary": {
+          "mode": "representation",
+          "source_field": "context"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-002",
+      "category": "label_policy",
+      "semantic_type": "adr/physical-component",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "authored",
+          "source_field": "title"
+        },
+        "summary": {
+          "mode": "representation",
+          "source_field": "context"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-003",
+      "category": "label_policy",
+      "semantic_type": "adr/physical-system",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "authored",
+          "source_field": "title"
+        },
+        "summary": {
+          "mode": "representation",
+          "source_field": "context"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-004",
+      "category": "label_policy",
+      "semantic_type": "entity/boundary",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "authored",
+          "source_field": "name"
+        },
+        "summary": {
+          "mode": "representation",
+          "source_field": "description"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-005",
+      "category": "label_policy",
+      "semantic_type": "entity/capability",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "authored",
+          "source_field": "name"
+        },
+        "summary": {
+          "mode": "representation",
+          "source_field": "description"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-006",
+      "category": "label_policy",
+      "semantic_type": "entity/component",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "authored",
+          "source_field": "name"
+        },
+        "summary": {
+          "mode": "representation",
+          "source_field": "responsibilities"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-007",
+      "category": "label_policy",
+      "semantic_type": "entity/contract",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "representation",
+          "source_field": "alias_name"
+        },
+        "summary": {
+          "mode": "representation",
+          "source_field": "guarantees"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-008",
+      "category": "label_policy",
+      "semantic_type": "entity/data_flow",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "authored",
+          "source_field": "name"
+        },
+        "summary": {
+          "mode": "representation",
+          "source_field": "description"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-009",
+      "category": "label_policy",
+      "semantic_type": "entity/decision",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "representation",
+          "source_field": "alias_name"
+        },
+        "summary": {
+          "mode": "authored",
+          "source_field": "summary"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-010",
+      "category": "label_policy",
+      "semantic_type": "entity/evidence_expectation",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "representation",
+          "source_field": "alias_name"
+        },
+        "summary": {
+          "mode": "representation",
+          "source_field": "description"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-011",
+      "category": "label_policy",
+      "semantic_type": "entity/extension",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "representation",
+          "source_field": "alias_name"
+        },
+        "summary": {
+          "mode": "representation",
+          "source_field": "rationale"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-012",
+      "category": "label_policy",
+      "semantic_type": "entity/gap",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "representation",
+          "source_field": "alias_name"
+        },
+        "summary": {
+          "mode": "representation",
+          "source_field": "question"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-013",
+      "category": "label_policy",
+      "semantic_type": "entity/implementation_decision",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "representation",
+          "source_field": "alias_name"
+        },
+        "summary": {
+          "mode": "authored",
+          "source_field": "summary"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-014",
+      "category": "label_policy",
+      "semantic_type": "entity/interface",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "representation",
+          "source_field": "alias_name"
+        },
+        "summary": {
+          "mode": "representation",
+          "source_field": "specification"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-015",
+      "category": "label_policy",
+      "semantic_type": "entity/invariant",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "representation",
+          "source_field": "alias_name"
+        },
+        "summary": {
+          "mode": "representation",
+          "source_field": "statement"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-016",
+      "category": "label_policy",
+      "semantic_type": "entity/normative_proposition",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "representation",
+          "source_field": "alias_name"
+        },
+        "summary": {
+          "mode": "representation",
+          "source_field": "statement"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-017",
+      "category": "label_policy",
+      "semantic_type": "entity/system",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "representation",
+          "source_field": "alias_name"
+        },
+        "summary": {
+          "mode": "representation",
+          "source_field": "alias_name"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-018",
+      "category": "label_policy",
+      "semantic_type": "entity/system_boundary",
+      "assertion": "Exactly selected authored placements or representation-only literal copies; original semantics retained once.",
+      "expected": "conforms",
+      "fixture": {
+        "name": {
+          "mode": "authored",
+          "source_field": "name"
+        },
+        "summary": {
+          "mode": "representation",
+          "source_field": "description"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-019",
+      "category": "output_coverage",
+      "semantic_type": "adr/logical",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+          "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731",
+          "schema_pointer": ""
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-020",
+      "category": "negative_coverage",
+      "semantic_type": "adr/logical",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-021",
+      "category": "output_coverage",
+      "semantic_type": "adr/physical-component",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+          "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7",
+          "schema_pointer": ""
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-022",
+      "category": "negative_coverage",
+      "semantic_type": "adr/physical-component",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-023",
+      "category": "output_coverage",
+      "semantic_type": "adr/physical-system",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": ""
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-024",
+      "category": "negative_coverage",
+      "semantic_type": "adr/physical-system",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-025",
+      "category": "output_coverage",
+      "semantic_type": "entity/boundary",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/boundary"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-026",
+      "category": "negative_coverage",
+      "semantic_type": "entity/boundary",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-027",
+      "category": "output_coverage",
+      "semantic_type": "entity/capability",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/capability"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-028",
+      "category": "negative_coverage",
+      "semantic_type": "entity/capability",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-029",
+      "category": "output_coverage",
+      "semantic_type": "entity/component",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/component"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-030",
+      "category": "negative_coverage",
+      "semantic_type": "entity/component",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-031",
+      "category": "output_coverage",
+      "semantic_type": "entity/contract",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/contract"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-032",
+      "category": "negative_coverage",
+      "semantic_type": "entity/contract",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-033",
+      "category": "output_coverage",
+      "semantic_type": "entity/data_flow",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/data_flow"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-034",
+      "category": "negative_coverage",
+      "semantic_type": "entity/data_flow",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-035",
+      "category": "output_coverage",
+      "semantic_type": "entity/decision",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/decision"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-036",
+      "category": "negative_coverage",
+      "semantic_type": "entity/decision",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-037",
+      "category": "output_coverage",
+      "semantic_type": "entity/evidence_expectation",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/evidence_expectation"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-038",
+      "category": "negative_coverage",
+      "semantic_type": "entity/evidence_expectation",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-039",
+      "category": "output_coverage",
+      "semantic_type": "entity/extension",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/custom_entity"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-040",
+      "category": "negative_coverage",
+      "semantic_type": "entity/extension",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-041",
+      "category": "output_coverage",
+      "semantic_type": "entity/gap",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/gap"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-042",
+      "category": "negative_coverage",
+      "semantic_type": "entity/gap",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-043",
+      "category": "output_coverage",
+      "semantic_type": "entity/implementation_decision",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/implementation_decision"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-044",
+      "category": "negative_coverage",
+      "semantic_type": "entity/implementation_decision",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-045",
+      "category": "output_coverage",
+      "semantic_type": "entity/interface",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/interface"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-046",
+      "category": "negative_coverage",
+      "semantic_type": "entity/interface",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-047",
+      "category": "output_coverage",
+      "semantic_type": "entity/invariant",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/invariant"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-048",
+      "category": "negative_coverage",
+      "semantic_type": "entity/invariant",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-049",
+      "category": "output_coverage",
+      "semantic_type": "entity/normative_proposition",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "normative-proposition",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/normative_proposition"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-050",
+      "category": "negative_coverage",
+      "semantic_type": "entity/normative_proposition",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-051",
+      "category": "output_coverage",
+      "semantic_type": "entity/system",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/system"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-052",
+      "category": "negative_coverage",
+      "semantic_type": "entity/system",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-053",
+      "category": "output_coverage",
+      "semantic_type": "entity/system_boundary",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "regular",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/system_boundary"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-054",
+      "category": "negative_coverage",
+      "semantic_type": "entity/system_boundary",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-055",
+      "category": "output_coverage",
+      "semantic_type": "relationship/calls",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "compatibility-relationship",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/component_topology/properties/relationships/items"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-056",
+      "category": "negative_coverage",
+      "semantic_type": "relationship/calls",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-057",
+      "category": "output_coverage",
+      "semantic_type": "relationship/depends_on",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "compatibility-relationship",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/component_topology/properties/relationships/items"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-058",
+      "category": "negative_coverage",
+      "semantic_type": "relationship/depends_on",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-059",
+      "category": "output_coverage",
+      "semantic_type": "relationship/extension",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "canonical-relationship",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+          "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660",
+          "schema_pointer": "/definitions/custom_relationship"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-060",
+      "category": "negative_coverage",
+      "semantic_type": "relationship/extension",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-061",
+      "category": "output_coverage",
+      "semantic_type": "relationship/publishes_to",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "compatibility-relationship",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/component_topology/properties/relationships/items"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-062",
+      "category": "negative_coverage",
+      "semantic_type": "relationship/publishes_to",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-063",
+      "category": "output_coverage",
+      "semantic_type": "relationship/reads_from",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "compatibility-relationship",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/component_topology/properties/relationships/items"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-064",
+      "category": "negative_coverage",
+      "semantic_type": "relationship/reads_from",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-065",
+      "category": "output_coverage",
+      "semantic_type": "relationship/subscribes_to",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "compatibility-relationship",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/component_topology/properties/relationships/items"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-066",
+      "category": "negative_coverage",
+      "semantic_type": "relationship/subscribes_to",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-067",
+      "category": "output_coverage",
+      "semantic_type": "relationship/writes_to",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "compatibility-relationship",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/component_topology/properties/relationships/items"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-068",
+      "category": "negative_coverage",
+      "semantic_type": "relationship/writes_to",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-069",
+      "category": "output_coverage",
+      "semantic_type": "value/normative_force",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "proposition-owned-value",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/types.schema",
+          "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65",
+          "schema_pointer": "/definitions/normative_force"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-070",
+      "category": "negative_coverage",
+      "semantic_type": "value/normative_force",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-071",
+      "category": "output_coverage",
+      "semantic_type": "value/topology_component",
+      "assertion": "Every selected schema branch/required/conditional destination has exactly one qualified producer or explicit BLOCKED prerequisite.",
+      "expected": "conforms",
+      "fixture": {
+        "branch": "owner-local-value",
+        "source_schema": {
+          "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+          "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be",
+          "schema_pointer": "/properties/component_topology/properties/components/items"
+        }
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-072",
+      "category": "negative_coverage",
+      "semantic_type": "value/topology_component",
+      "assertion": "Missing, duplicate, competing, wrong-branch or forged destination evidence prevents complete materialization.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "remove_required_output",
+          "duplicate_producer",
+          "wrong_destination",
+          "forged_proof",
+          "unknown_reference"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-073",
+      "category": "labels",
+      "semantic_type": "catalog",
+      "assertion": "Source-valid empty and long strings are copied exactly; no formatting/truncation/fallback.",
+      "expected": "preserves",
+      "fixture": {
+        "values": [
+          "",
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        ],
+        "operation": "literal_string_copy"
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-074",
+      "category": "labels",
+      "semantic_type": "catalog",
+      "assertion": "Missing/nonstring/changed labels fail independent reconstruction, even with intact authored semantic destination.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "missing_input",
+          "wrong_type",
+          "changed_output",
+          "truncated_output"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-075",
+      "category": "system",
+      "semantic_type": "catalog",
+      "assertion": "System summary is alias_name label duplication only, never inferred narrative or borrowed ADR context.",
+      "expected": "conforms",
+      "fixture": {
+        "semantic_type": "entity/system",
+        "source_field": "alias_name"
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-076",
+      "category": "semantic_equality",
+      "semantic_type": "catalog",
+      "assertion": "Representation verification and complete semantic equality are independent; source replay is neither proof.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "missing_semantic_extension",
+          "changed_original_typed_value",
+          "wrong_array_order",
+          "replay_only_evidence"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-077",
+      "category": "lifecycle",
+      "semantic_type": "catalog",
+      "assertion": "Literal authored lifecycle and independent declaring context remain semantic; no defaults or accepted-to-active.",
+      "expected": "preserves",
+      "fixture": {
+        "values": [
+          "proposed",
+          "accepted",
+          "deprecated",
+          "superseded"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-078",
+      "category": "lifecycle",
+      "semantic_type": "catalog",
+      "assertion": "Unqualified native standalone lifecycle remains Unavailable without synthetic owner or ADR.",
+      "expected": "unavailable",
+      "fixture": {
+        "prerequisite": "declaring_context"
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-079",
+      "category": "lifecycle",
+      "semantic_type": "catalog",
+      "assertion": "Normative propositions remain lifecycle-free and custom existence_state never supplies lifecycle.",
+      "expected": "conforms",
+      "fixture": {
+        "excluded": [
+          "lifecycle_stage_on_proposition",
+          "custom_inherited_status"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-080",
+      "category": "custom",
+      "semantic_type": "catalog",
+      "assertion": "CEC closure does not select custom registry; custom lifecycle and complete custom/relationship qualification remain prerequisites.",
+      "expected": "unavailable",
+      "fixture": {
+        "prerequisites": [
+          "custom_qualification",
+          "custom_lifecycle"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-081",
+      "category": "identity",
+      "semantic_type": "catalog",
+      "assertion": "Shared system identity must not create duplicate units or competing producers; owner-local identities retain owner/key/multiplicity.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "duplicate_unit",
+          "competing_shared_label",
+          "array_index_as_identity",
+          "reference_as_owner"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-082",
+      "category": "authority",
+      "semantic_type": "catalog",
+      "assertion": "Wrong selectors/digests/resources, broken relative/local refs and omitted conditionals block publication.",
+      "expected": "rejects",
+      "fixture": {
+        "mutations": [
+          "wrong_selector",
+          "wrong_digest",
+          "missing_resource",
+          "broken_ref",
+          "omitted_conditional"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-083",
+      "category": "permutation",
+      "semantic_type": "catalog",
+      "assertion": "Resource/source/root/request permutations do not alter governed identity, selected rules or semantic comparisons.",
+      "expected": "preserves",
+      "fixture": {
+        "identity_excludes": [
+          "path",
+          "pointer",
+          "traversal",
+          "array_position"
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-084",
+      "category": "integrity",
+      "semantic_type": "catalog",
+      "assertion": "Historical AI/ACC/NM/ADC/CEC/Authoring fingerprints, closures and SCS remain exact.",
+      "expected": "preserves",
+      "fixture": {
+        "historical_scfs": [
+          {
+            "family": "architecture-interpretation",
+            "version": "1.3",
+            "scf": "scf:v1:sha256:d4a60e843c3069cfd7eb869a4d924d3a70bf900079d3a2ad86ae28884c6ac167"
+          },
+          {
+            "family": "authoring-construction",
+            "version": "1.3",
+            "scf": "scf:v1:sha256:5828fe0c3b1692240726152f57ca6de037a1e07f38bb8f9ecda223af105d1b49"
+          },
+          {
+            "family": "normalized-model",
+            "version": "2.5",
+            "scf": "scf:v1:sha256:bb48720502668e434d378445004aec7783346a0e74254c9e0d3cb01a8798d9d7"
+          }
+        ]
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    },
+    {
+      "id": "AI14-085",
+      "category": "boundary",
+      "semantic_type": "catalog",
+      "assertion": "Publication, BLOCKED accounting and conformance never imply runtime interpretation or Constructed.",
+      "expected": "excludes",
+      "fixture": {
+        "execution": false,
+        "ACC_1_4_published": false
+      },
+      "coverage": "authority_only_not_runtime_execution"
+    }
+  ]
+}

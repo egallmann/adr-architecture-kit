@@ -1,0 +1,38 @@
+{
+  "resource": "architecture-interpretation/1.2/detached-context",
+  "domain": "adr-kit.detached-candidate-normalization/v1",
+  "provider_kind": "adr-kit-detached-candidate",
+  "architecture_namespace": "urn:adr-kit:detached-candidate:v1",
+  "scope_root_form": "urn:adr-kit:detached-candidate:v1:source-basis:sha256:<lowercase-basis-digest>",
+  "root_artifact_locator_form": "urn:adr-kit:detached-candidate:v1:source-basis:sha256:<lowercase-basis-digest>/root:sha256:<SHA-256-of-UTF-8-source_ref>",
+  "derivation": {
+    "basis_digest": "exact sealed candidate_source_basis digest, lower-case hex without prefix in URI",
+    "source_ref_digest": "SHA-256 of exact UTF-8 source_ref bytes, lower-case hex",
+    "contract_identity": "exact AI 1.2 and NM 2.4 identities participate in context qualification but not locator derivation"
+  },
+  "identity_distinctions": {
+    "canonical_source_identity": "semantic identity from UUIDv7 or governed owner-local identity",
+    "source_instance_pointer": "source locator retained only for integrity, diagnostics, provenance, and replay",
+    "detached_artifact_locator": "opaque domain-separated normalized-model artifact locator, never a repository path",
+    "repository_path": "not present in detached context and cannot be inferred"
+  },
+  "forbidden_implications": [
+    "persistence",
+    "repository placement",
+    "alias reservation",
+    "filename allocation",
+    "admission",
+    "promotion",
+    "runtime admission"
+  ],
+  "generated_values": "Values required solely by Normalized Model 2.4 representation are deterministic ceremony only when uniquely derived from the fixed constants and sealed basis under this resource.",
+  "semanticDependencies": [
+    "architecture-interpretation/1.2/field-dispositions-1.7-to-2.4",
+    "normalized-model/2.4/schema/normalized-architecture-model.schema",
+    "normalized-model/2.4/schema/normalized-entity-registry.schema",
+    "normalized-model/2.4/schema/normalized-entity.schema",
+    "normalized-model/2.4/schema/relationship-record.schema",
+    "normalized-model/2.4/schema/relationship-registry.schema",
+    "normalized-model/2.4/schema/unresolved-registry.schema"
+  ]
+}

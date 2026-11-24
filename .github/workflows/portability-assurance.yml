@@ -1,0 +1,70 @@
+name: Scheduled Portability Assurance
+
+on:
+  schedule:
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  resolve-source:
+    name: Resolve portability source commit
+    runs-on: ubuntu-latest
+    outputs:
+      source_commit: ${{ steps.source.outputs.commit }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event_name == 'schedule' && 'refs/heads/develop' || github.sha }}
+      - name: Record and validate selected source commit
+        id: source
+        shell: bash
+        run: |
+          commit="$(git rev-parse HEAD)"
+          [[ "$commit" =~ ^[0-9a-f]{40}$ ]]
+          echo "commit=$commit" >> "$GITHUB_OUTPUT"
+          echo "Portability source commit: $commit"
+
+  semantic-core:
+    needs: resolve-source
+    uses: ./.github/workflows/semantic-core-qualification.yml
+    with:
+      source_ref: ${{ needs.resolve-source.outputs.source_commit }}
+
+  full-os-suite:
+    name: Full Python suite / ${{ matrix.os }} / Python 3.14
+    needs: semantic-core
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ needs.semantic-core.outputs.source_commit }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: semantic-core-${{ needs.semantic-core.outputs.source_commit }}
+          path: semantic-core-artifact
+      - name: Install the qualified artifact for this commit
+        run: >-
+          python scripts/semantic_core_artifact_bundle.py consume
+          --bundle-dir semantic-core-artifact
+          --source-commit "${{ needs.semantic-core.outputs.source_commit }}"
+      - run: python scripts/verify_semantic_core_artifact.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Record interpreter
+        run: python --version
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - name: Run complete cross-platform suite
+        run: python -m pytest --durations=30

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 06c8262116452d9549f3636d6b9ba2e97b2de21e14e52fa84bdc51f95cf5452e
-rendered_hash: bbfe24a83f0d568fa68dd4966a963119fe90a04ffbfcfa6a99b28dd74418c636
+source_hash: 290b573bfdb741eafe4c1ed6542f192584e14d93c5ee9581412da9930c541fd6
+rendered_hash: 104e3fecd6c7eebda66ace502d51004d9a016b695d79c9ac7eabb0c6fd0f5336
 -->
 
 # ADR-L-0008: Validation Modes for Draft and Complete ADRs
@@ -271,7 +271,7 @@ deterministic structural validation.
 | Neighbor | Relationship | Exact Path |
 | --- | --- | --- |
 | [ADR-PC-0002 — Schema and Contract Validation](../physical-component/ADR-PC-0002-schema-and-contract-validation.md) | implements this logical authority | `ADR-PC-0002 -[:implements_logical]-> ADR-L-0008` |
-| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | implements this logical authority | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0008` |
+| [ADR-PS-0002 — ADR Kit Compiler, Validation, and Canonical Semantic Execution System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | implements this logical authority | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0008` |
 
 
 

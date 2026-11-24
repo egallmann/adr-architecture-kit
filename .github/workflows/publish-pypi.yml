@@ -1,186 +1,94 @@
-# Promote the exact tested release bundle to PyPI through trusted publishing.
+# Promote only independently approved retained artifacts; never rebuild.
 name: Publish to PyPI
 
 on:
   push:
-    tags:
-      - "v*"
+    tags: ["v*"]
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/src
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_REPOSITORY: ${{ github.repository }}
 
 jobs:
   resolve-bundle:
-    name: Resolve and verify retained release bundle
+    name: Resolve and verify approved retained cohort
     runs-on: ubuntu-latest
     permissions:
       contents: read
       actions: read
+    outputs:
+      source: ${{ steps.resolve.outputs.source }}
+      run_id: ${{ steps.resolve.outputs.run_id }}
+      tag: ${{ steps.resolve.outputs.tag }}
+      attestation: ${{ steps.verify.outputs.attestation }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"
       - name: Record interpreter
         run: python --version
-      - name: Resolve release-eligible main qualification
+      - name: Install verification dependencies only (never build release payloads)
+        run: python -m pip install pydantic PyYAML jsonschema jinja2 click rfc8785 wasmtime
+      - name: Resolve successful main-push qualification
         id: resolve
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
         run: |
-          python - <<'PY'
-          import os
-          import subprocess
-          import sys
-
-          completed = subprocess.run(
-              [
-                  sys.executable,
-                  "scripts/resolve_qualified_release_bundle.py",
-                  "resolve",
-                  "--sha",
-                  os.environ["GITHUB_SHA"],
-                  "--workflow",
-                  "release-certification.yml",
-                  "--branch",
-                  "main",
-                  "--event",
-                  "push",
-                  "--artifact-name",
-                  "release-bundle",
-              ],
-              text=True,
-              capture_output=True,
-              check=False,
-          )
-          sys.stderr.write(completed.stderr)
-          sys.stdout.write(completed.stdout)
-          if completed.returncode != 0:
-              raise SystemExit(completed.returncode)
-          run_id = None
-          for line in completed.stdout.splitlines():
-              if line.startswith("run_id="):
-                  run_id = line.split("=", 1)[1].strip()
-          if not run_id:
-              raise SystemExit("resolver did not emit run_id")
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as handle:
-              handle.write(f"run_id={run_id}\n")
-          PY
-      - uses: actions/download-artifact@v4
-        with:
-          name: release-bundle
-          path: release-bundle
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ steps.resolve.outputs.run_id }}
-      - name: Verify retained release bundle
+          [[ "$RELEASE_TAG" == "v$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')" ]]
+          source="$(git rev-parse HEAD)"
+          echo "source=$source" >> "$GITHUB_OUTPUT"
+          echo "tag=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+          python scripts/resolve_qualified_release_bundle.py resolve --sha "$source" --workflow release-certification.yml --branch main --event push --artifact-name release-bundle >> "$GITHUB_OUTPUT"
+      - name: Download and independently verify approved cohort
+        id: verify
+        env:
+          SOURCE: ${{ steps.resolve.outputs.source }}
+          CERTIFICATION: ${{ steps.resolve.outputs.run_id }}
         run: |
-          python - <<'PY'
-          import os
-          import subprocess
-          import sys
-          import tomllib
-          from pathlib import Path
-
-          version = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
-          subprocess.check_call(
-              [
-                  sys.executable,
-                  "scripts/release_manifest.py",
-                  "verify",
-                  "--dist-dir",
-                  "release-bundle/python-dist",
-                  "--manifest",
-                  "release-bundle/release-manifest.json",
-                  "--expected-source-commit",
-                  os.environ["GITHUB_SHA"],
-                  "--expected-version",
-                  version,
-                  "--expected-tag",
-                  os.environ["GITHUB_REF_NAME"],
-              ]
-          )
-          PY
-      - uses: actions/upload-artifact@v4
-        with:
-          name: release-bundle
-          path: |
-            release-bundle/python-dist/
-            release-bundle/node-dist/
-            release-bundle/release-manifest.json
-          if-no-files-found: error
+          python scripts/release_authority_promotion.py download --bundle release-bundle --source "$SOURCE" --certification-run "$CERTIFICATION"
+          python scripts/release_authority_promotion.py verify --bundle release-bundle --source "$SOURCE" --certification-run "$CERTIFICATION" --output promotion-verification.json
+          python -c 'import json,os; d=json.load(open("promotion-verification.json")); open(os.environ["GITHUB_OUTPUT"],"a").write("attestation="+d["attestation_digest"]+"\n")'
 
   publish:
-    name: Publish retained bundle to PyPI
+    name: Publish approved retained payloads
     needs: [resolve-bundle]
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      actions: read
       id-token: write
     environment:
       name: pypi
       url: https://pypi.org/p/adr-architecture-kit
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ needs.resolve-bundle.outputs.source }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"
       - name: Record interpreter
         run: python --version
-      - uses: actions/download-artifact@v4
-        with:
-          name: release-bundle
-          path: release-bundle
-      - name: Re-verify retained release bundle
+      - name: Install verification dependencies only (never build release payloads)
+        run: python -m pip install pydantic PyYAML jsonschema jinja2 click rfc8785 wasmtime
+      - name: Independently re-download and reverify exact promotion evidence
+        env:
+          SOURCE: ${{ needs.resolve-bundle.outputs.source }}
+          CERTIFICATION: ${{ needs.resolve-bundle.outputs.run_id }}
+          RELEASE_TAG: ${{ needs.resolve-bundle.outputs.tag }}
+          ATTESTATION: ${{ needs.resolve-bundle.outputs.attestation }}
         run: |
-          python - <<'PY'
-          import os
-          import subprocess
-          import sys
-          import tomllib
-          from pathlib import Path
-
-          version = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
-          root = Path("release-bundle")
-          # upload-artifact may preserve or flatten the release-bundle/ prefix.
-          dist_candidates = [root / "python-dist", root / "release-bundle" / "python-dist"]
-          manifest_candidates = [
-              root / "release-manifest.json",
-              root / "release-bundle" / "release-manifest.json",
-          ]
-          dist_dir = next(path for path in dist_candidates if path.is_dir())
-          manifest = next(path for path in manifest_candidates if path.is_file())
-          subprocess.check_call(
-              [
-                  sys.executable,
-                  "scripts/release_manifest.py",
-                  "verify",
-                  "--dist-dir",
-                  str(dist_dir),
-                  "--manifest",
-                  str(manifest),
-                  "--expected-source-commit",
-                  os.environ["GITHUB_SHA"],
-                  "--expected-version",
-                  version,
-                  "--expected-tag",
-                  os.environ["GITHUB_REF_NAME"],
-              ]
-          )
-          # Normalize layout for the publisher.
-          target = Path("publish-dist")
-          if target.exists():
-              import shutil
-
-              shutil.rmtree(target)
-          target.mkdir()
-          import shutil
-
-          for path in dist_dir.iterdir():
-              if path.is_file():
-                  shutil.copy2(path, target / path.name)
-          PY
+          [[ "$RELEASE_TAG" == "v$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')" ]]
+          python scripts/release_authority_promotion.py download --bundle release-bundle --source "$SOURCE" --certification-run "$CERTIFICATION"
+          python scripts/release_authority_promotion.py verify --bundle release-bundle --source "$SOURCE" --certification-run "$CERTIFICATION" --expected-attestation-digest "$ATTESTATION"
       - name: Publish without rebuilding
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          packages-dir: publish-dist
+          packages-dir: release-bundle/python-dist

@@ -9,10 +9,11 @@ from types import ModuleType
 from typing import Any, get_args, get_origin, get_type_hints
 
 import pytest
-
 import adr_kit
 from adr_kit.repository import ArchitectureRegistryError
 from tests.test_architecture_index_generator import _create_fixture
+
+pytestmark = pytest.mark.fast
 
 EXPECTED_PUBLIC_SYMBOLS = [
     "ArchitectureRepository",

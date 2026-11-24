@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/semantic-contract/resources/authoring-construction/1.1/conformance.schema.json",
+  "title": "ACC 1.1 frozen authority conformance shape",
+  "type": "object",
+  "required": ["resource_kind", "resource_version", "conformance_level", "semanticDependencies", "cases"],
+  "properties": {
+    "resource_kind": {"const": "authoring-construction-conformance"},
+    "resource_version": {"const": "1.1"},
+    "conformance_level": {"const": "frozen_authority"},
+    "semanticDependencies": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["case_id", "claim", "fixture", "assertions", "runtime_coverage"],
+        "properties": {
+          "case_id": {"type": "string", "pattern": "^ACC11-[0-9]{2}$"},
+          "claim": {"type": "string", "minLength": 1},
+          "fixture": {"type": "object", "required": ["kind", "input"], "properties": {"kind": {"enum": ["inline_semantic_state", "inline_source_basis", "paired_ledger", "authority_reference"]}, "input": {"type": "object"}}, "additionalProperties": false},
+          "assertions": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["path", "operator", "expected"], "properties": {"path": {"type": "string", "minLength": 1}, "operator": {"enum": ["equals", "contains", "excludes", "set_equals", "multiset_equals", "schema_valid", "outcome_is", "authority_is"]}, "expected": {}} , "additionalProperties": false}},
+          "runtime_coverage": {"const": "authority_only_not_implemented"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

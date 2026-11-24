@@ -443,7 +443,11 @@ def list_semantic_contracts() -> tuple[SemanticContractVersion, ...]:
 
 
 def get_semantic_contract(family: str, version: str) -> SemanticContractVersion:
-    """Load one bundled immutable definition using an exact caller version."""
+    """Load one bundled immutable definition using an exact caller version.
+
+    Successor definitions are addressable by exact family/version without
+    adding them to the currently selected semantic-contract set.
+    """
 
     for contract in list_semantic_contracts():
         if (
@@ -451,6 +455,15 @@ def get_semantic_contract(family: str, version: str) -> SemanticContractVersion:
             and contract.semantic_contract_version == version
         ):
             return contract
+    successor = (
+        resources.files("adr_kit.semantic_contract.v1_0")
+        .joinpath("definitions")
+        .joinpath(f"{family}-{version}.json")
+    )
+    if successor.is_file():
+        value = json.loads(successor.read_text(encoding="utf-8"))
+        if isinstance(value, Mapping):
+            return SemanticContractVersion.from_wire(value)
     raise LookupError(f"Unsupported semantic contract: {family}:{version}")
 
 
@@ -458,17 +471,41 @@ def load_semantic_resource(key: str) -> Any:
     """Load one bundled resource by canonical key for closure verification."""
 
     parts = key.split("/")
+    ai13 = len(parts) >= 3 and parts[:2] == ["architecture-interpretation", "1.3"]
+    ai14 = len(parts) >= 3 and parts[:2] == ["architecture-interpretation", "1.4"]
+    ai15 = len(parts) >= 3 and parts[:2] == ["architecture-interpretation", "1.5"]
+    acc13 = len(parts) >= 3 and parts[:2] == ["authoring-construction", "1.3"]
+    acc14 = len(parts) >= 3 and parts[:2] == ["authoring-construction", "1.4"]
+    acc15 = len(parts) >= 3 and parts[:2] == ["authoring-construction", "1.5"]
+    if key in {
+        "architecture-interpretation/1.3/contract",
+        "architecture-interpretation/1.4/contract",
+        "architecture-interpretation/1.5/contract",
+        "normalized-model/2.5/contract",
+        "authoring-construction/1.3/contract",
+        "authoring-construction/1.4/contract",
+        "authoring-construction/1.5/contract",
+    }:
+        return get_semantic_contract(parts[0], parts[1]).to_wire()
     if len(parts) == 4 and parts[:3] == ["authoring", "1.7", "schema"]:
         filename = f"{parts[3]}.json"
         resource = resources.files("adr_kit.schema.authoring.v1_7").joinpath(filename)
         if resource.is_file():
             return json.loads(resource.read_text(encoding="utf-8"))
         raise LookupError(f"Bundled semantic resource is missing: {key}")
-    if len(parts) < 3 or parts[1] not in {"1.0", "1.1", "1.5", "1.6", "2.3", "2.4"}:
+    if len(parts) < 3 or (
+        not (ai13 or ai14 or ai15 or acc13 or acc14 or acc15)
+        and parts[1] not in {"1.0", "1.1", "1.2", "1.5", "1.6", "2.3", "2.4", "2.5"}
+    ):
         raise LookupError(f"Unsupported semantic resource: {key}")
+    if (ai13 or ai14 or ai15 or acc13 or acc14 or acc15) and key not in {
+        entry.canonical_resource_key
+        for entry in get_semantic_contract(parts[0], parts[1]).resource_manifest
+    }:
+        raise LookupError(f"Bundled semantic resource is missing: {key}")
     package = resources.files("adr_kit.semantic_contract.v1_0.resources")
     candidates = [f"{key.replace('/', '-')}.json"]
-    if len(parts) == 3:
+    if len(parts) == 3 and not (ai13 or ai14 or ai15 or acc13 or acc14 or acc15):
         candidates.append(f"{parts[0]}-{parts[2]}.json")
     for name in candidates:
         resource = package.joinpath(name)

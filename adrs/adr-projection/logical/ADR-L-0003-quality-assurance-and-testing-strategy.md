@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 764584c76336b2a558baffb3cafd827ce8aed5e25c87062c36935b3bd4112a30
-rendered_hash: cbe58f97f57e67c8b57c9b2aab794a772509d0904532e2e8dcf02b0fa8a4ed73
+source_hash: 71855a10d9d8a9895ed810f2064021f4499139203c3807907877740c685fbd50
+rendered_hash: 533ccfa2128f2565da03b8dcaee9221992858b9a1403d2856485fdaaca883c19
 -->
 
 # ADR-L-0003: Quality Assurance and Testing Strategy
@@ -278,10 +278,12 @@ CI/CD pipeline automatically runs meaningful correctness gates for every PR and 
 ### CAP-0023 — Test-Driven Development Support
 
 Test infrastructure supports TDD workflow - write failing test, implement
-feature, test passes. Fast test execution enables rapid iteration.
+feature, test passes. The isolated developer/TDD fast suite enables rapid iteration;
+comprehensive assurance remains mandatory in separate integration, governance,
+portability, and release lanes with independently visible duration budgets.
 
 **Acceptance criteria**
-- Tests run in under 30 seconds
+- The developer/TDD fast suite runs in under 30 seconds
 - Clear test output (pass/fail/error)
 - Easy to run subset of tests
 - Good test isolation (no shared state)
@@ -337,7 +339,7 @@ bundle without a second build.
 | INV-0020 | Every component with public API MUST have unit tests covering: - Happy path (valid inputs) - Error cases (invalid… | MUST / test | automated |
 | INV-0021 | Schema validators MUST have tests proving correctness against: - Valid ADRs (should pass) - Invalid ADRs (should… | MUST / test | automated |
 | INV-0022 | Multi-scope functionality MUST have tests covering: - Single scope (backward compatibility) - Multiple scopes… | MUST / test | automated |
-| INV-0023 | Test suite MUST complete in under 30 seconds for fast feedback | SHOULD / test | automated |
+| INV-0023 | The developer/TDD fast test suite MUST complete in under 30 seconds for fast feedback. Comprehensive integration,… | SHOULD / test | automated |
 | INV-0024 | Tests MUST be deterministic - same input always produces same output | MUST / test | automated |
 | INV-0025 | Breaking changes to public APIs MUST be detected by tests | MUST / test | automated |
 | INV-0026 | Test coverage SHOULD be measured and tracked, with minimum 80% coverage for critical components (parsers,… | SHOULD / test | automated |
@@ -411,7 +413,9 @@ testing prevents cross-project contamination and security issues.
 
 **Statement**
 
-Test suite MUST complete in under 30 seconds for fast feedback
+The developer/TDD fast test suite MUST complete in under 30 seconds
+for fast feedback. Comprehensive integration, governance, portability, and release
+qualification remain mandatory and have independent lifecycle budgets.
 
 **Scope:** global
 
@@ -420,8 +424,11 @@ Test suite MUST complete in under 30 seconds for fast feedback
 
 **Rationale**
 
-Slow tests discourage running them frequently. Fast feedback enables
-test-driven development and rapid iteration.
+The isolated developer/TDD fast suite must support rapid Red-Green-Refactor
+iteration. Comprehensive assurance remains mandatory in integration, governance,
+cross-host, and release lanes, each with a lifecycle-appropriate budget. Release
+certification may intentionally take longer. Assurance duration and test counts
+must remain visible so regressions can be investigated rather than hidden.
 
 ### INV-0024
 
@@ -670,23 +677,39 @@ adr validate-system-overview
 # PROJECT.yaml integrity
 adr validate-project-metadata
 
-# Targeted pytest usage for local development
-pytest tests/ -v
-pytest tests/ --cov=adr_kit --cov-report=html --cov-report=term --cov-fail-under=80
-pytest tests/ -k "scope" -v
+# Developer/TDD fast suite (isolated behavior and contract checks)
+python -m pytest -m fast --durations=10
+
+# Focus one test file or case
+python -m pytest tests/test_schema_validation.py -q
+python -m pytest -k 'scope' -q
+
+# Complete suite and canonical coverage
+python -m pytest --durations=30
+python -m pytest --durations=30 --cov=adr_kit --cov-report=term-missing --cov-fail-under=80
+
+# PR fast/TDD plus semantic/source assurance
+python -m pytest -m fast --durations=10
+python scripts/run_pr_feedback.py
+
+# Governance pytest assertions and repository-state assurance
+python -m pytest -m governance --durations=30
+adr governance-checks --skip-tests
 ```
 
 CI/CD integration (orthogonal evidence axes):
 - Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; reference interpreter is currently 3.14.7; new GA Python minors require explicit admission to the qualification matrix
-- Canonical correctness: Ubuntu + Python 3.14 runs the complete suite with coverage (`--cov=adr_kit --cov-fail-under=80`) exactly once
+- Canonical correctness: Ubuntu + Python 3.14 runs the non-governance behavioral, integration, and cross-host suite with canonical coverage (`--cov=adr_kit --cov-fail-under=80`). The governance job separately runs every governance-marked pytest assertion. Together, those lanes execute the complete Python assertion inventory for the same develop commit; the 80% threshold remains on the canonical coverage lane
 - Python-version compatibility: Ubuntu runs focused source/install/SDK compatibility on the currently qualified released minor line (Python 3.14; not a second full suite on each interpreter)
-- OS behavior / source-runtime portability: Windows and macOS at Python 3.14 each run the complete suite (no coverage gate); Ubuntu 3.14 suite is owned by the coverage job and is not duplicated
-- Retained-wheel Python compatibility: exact retained wheel via `scripts/test_installed_wheel.py` on Ubuntu Python 3.14
+- OS behavior / source-runtime portability: each develop integration runs the complete Python assertion inventory across the Linux behavioral/coverage and governance pytest lanes; governance CLI and quality gates separately validate repository state. The scheduled portability workflow resolves and qualifies one current `develop` commit on both Windows and macOS. Release Certification independently requalifies complete Windows/macOS source suites and retained artifacts
+- Retained-wheel Python compatibility: retained wheel via `scripts/test_installed_wheel.py` on Ubuntu Python 3.14
 - Retained-wheel OS portability: the exact same retained wheel via `scripts/test_installed_wheel.py` on Windows and macOS at Python 3.14; the wheel MUST NOT be rebuilt per OS
 - UUIDv7 mint mechanism remains implementation-owned and is not part of ADR-L-0003 identity semantics
 - These axes are orthogonal and MUST NOT imply that all supported Python versions execute on every OS
 - Linux-only execution is insufficient evidence for an OS-agnostic package claim
-- PR feedback = proposed-change evidence: it MUST install and exercise the project through the designated fast semantic/source collection and MUST NOT be treated as complete release qualification. Develop qualification = integration evidence: it MUST own the complete Python suite, canonical coverage, and source runtime portability. Only a successful completed `push` of Release Certification on `main` for the exact source commit and retained artifacts is release-eligible; tag publication is promotion/identity verification only
+- PR feedback = proposed-change evidence: it MUST install and exercise the project through an explicit developer/TDD fast suite and the broader designated
+   semantic/source collection, and MUST NOT be treated as complete release qualification. Develop qualification = integration evidence: it MUST own the complete Linux behavioral/integration/cross-host suite, canonical coverage, and peer-host checks, every governance-marked pytest assertion, and repository-state
+   governance commands. Scheduled portability and Release Certification own complete Windows/macOS source-suite evidence. Only a successful completed `push` of Release Certification on `main` for the exact source commit and retained artifacts is release-eligible; tag publication is promotion/identity verification only
 - `adr governance-checks --skip-tests` must pass in CI when the complete suite is already owned by the coverage job
 - `adr validate-generated-docs` must pass for manifest and rendered ADR output
 - `adr validate-system-overview` must pass for `SYSTEM-OVERVIEW.md`

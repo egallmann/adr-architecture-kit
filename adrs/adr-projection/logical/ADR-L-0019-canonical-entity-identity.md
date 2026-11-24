@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 9f3509e01c723229c03bb2c63b3d8bcca8dc712f006ccec2797067fe4e8dd479
-rendered_hash: f95dd5449c22e66d34a3f112964d694064f6c5c9337893c3548f4fea699ad67f
+source_hash: 2fc9ab624750b5b37af2c3cc6fd66da4794b047c4a140fe3f5bdc0125a70a46c
+rendered_hash: 7c918fe1889b2dd7c5f964c850b3677d7fd171e4efd2272151a0066a276f7813
 -->
 
 # ADR-L-0019: Canonical Entity Identity
@@ -516,7 +516,16 @@ Promoted from Design Journal outcome.
 - [ADR-L-0027](ADR-L-0027-public-binding-construction-and-release-parity.md)
 - [ADR-L-0028](ADR-L-0028-normative-semantic-authority-and-materialization-foundation.md)
 - [ADR-L-0029](ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md)
+- [ADR-L-0033](ADR-L-0033-governed-candidate-binding-for-authoring-construction.md)
+- [ADR-L-0034](ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.md)
+- [ADR-L-0039](ADR-L-0039-forward-identity-representation-recipes.md)
 
+
+## Architecture Relationships
+
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-L-0039 — Forward Identity Representation Recipes](ADR-L-0039-forward-identity-representation-recipes.md) | refines | `DEC-9017 -[:refines]-> DEC-0099` |
 
 
 

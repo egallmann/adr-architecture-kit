@@ -1,0 +1,1034 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/semantic-contract/resources/authoring-construction/1.2/schema.json",
+  "title": "ADR-Kit Authoring Construction Contract 1.2 shape",
+  "description": "Strict host-neutral wire shape for ACC requests, diagnostics, operation-specific results, and exact authority qualification.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/contract_document"
+    },
+    {
+      "$ref": "#/$defs/authoring_request"
+    },
+    {
+      "$ref": "#/$defs/validation_result"
+    },
+    {
+      "$ref": "#/$defs/construction_result"
+    }
+  ],
+  "$defs": {
+    "non_empty": {
+      "$ref": "../1.1/schema.json#/$defs/non_empty"
+    },
+    "uuid_v7": {
+      "$ref": "../1.1/schema.json#/$defs/uuid_v7"
+    },
+    "digest": {
+      "$ref": "../1.1/schema.json#/$defs/digest"
+    },
+    "scf": {
+      "$ref": "../1.1/schema.json#/$defs/scf"
+    },
+    "cecf": {
+      "$ref": "../1.1/schema.json#/$defs/cecf"
+    },
+    "semantic_type": {
+      "$ref": "../1.1/schema.json#/$defs/semantic_type"
+    },
+    "resource_member": {
+      "$ref": "../1.1/schema.json#/$defs/resource_member"
+    },
+    "semantic_contract_qualification": {
+      "$ref": "../1.1/schema.json#/$defs/semantic_contract_qualification"
+    },
+    "architecture_interpretation_qualification": {
+      "$ref": "../1.1/schema.json#/$defs/architecture_interpretation_qualification"
+    },
+    "exact_resource_set_qualification": {
+      "$ref": "../1.1/schema.json#/$defs/exact_resource_set_qualification"
+    },
+    "custom_qualification": {
+      "$ref": "../1.1/schema.json#/$defs/custom_qualification"
+    },
+    "custom_definition_qualification": {
+      "$ref": "../1.1/schema.json#/$defs/custom_definition_qualification"
+    },
+    "custom_registry_qualification": {
+      "$ref": "../1.1/schema.json#/$defs/custom_registry_qualification"
+    },
+    "fragment_qualification": {
+      "$ref": "../1.1/schema.json#/$defs/fragment_qualification"
+    },
+    "exact_source_descriptor": {
+      "$ref": "../1.1/schema.json#/$defs/exact_source_descriptor"
+    },
+    "fragment_reference": {
+      "$ref": "../1.1/schema.json#/$defs/fragment_reference"
+    },
+    "fragment_intent": {
+      "$ref": "../1.1/schema.json#/$defs/fragment_intent"
+    },
+    "composition_intent": {
+      "$ref": "../1.1/schema.json#/$defs/composition_intent"
+    },
+    "endpoint": {
+      "$ref": "../1.1/schema.json#/$defs/endpoint"
+    },
+    "relationship_intent": {
+      "$ref": "../1.1/schema.json#/$defs/relationship_intent"
+    },
+    "reference_entry": {
+      "$ref": "../1.1/schema.json#/$defs/reference_entry"
+    },
+    "reference_basis": {
+      "$ref": "../1.1/schema.json#/$defs/reference_basis"
+    },
+    "existing_source_entry": {
+      "$ref": "../1.1/schema.json#/$defs/existing_source_entry"
+    },
+    "existing_source_basis": {
+      "$ref": "../1.1/schema.json#/$defs/existing_source_basis"
+    },
+    "identity_establishment_policy": {
+      "$ref": "../1.1/schema.json#/$defs/identity_establishment_policy"
+    },
+    "exact_basis": {
+      "type": "object",
+      "required": [
+        "acc",
+        "adc",
+        "authoring",
+        "normalized_model",
+        "architecture_interpretation",
+        "custom_entity",
+        "reference_basis",
+        "existing_source_basis",
+        "identity_establishment",
+        "provenance"
+      ],
+      "properties": {
+        "acc": {
+          "$ref": "#/$defs/acc12_qualification"
+        },
+        "adc": {
+          "$ref": "#/$defs/exact_resource_set_qualification"
+        },
+        "authoring": {
+          "$ref": "#/$defs/exact_resource_set_qualification"
+        },
+        "normalized_model": {
+          "$ref": "#/$defs/exact_resource_set_qualification"
+        },
+        "architecture_interpretation": {
+          "$ref": "#/$defs/architecture_interpretation_qualification"
+        },
+        "custom_entity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/custom_registry_qualification"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reference_basis": {
+          "$ref": "#/$defs/reference_basis"
+        },
+        "existing_source_basis": {
+          "$ref": "#/$defs/existing_source_basis"
+        },
+        "identity_establishment": {
+          "$ref": "#/$defs/identity_establishment_policy"
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "authoring_request": {
+      "type": "object",
+      "required": [
+        "contract_family",
+        "contract_version",
+        "operation",
+        "request",
+        "basis"
+      ],
+      "properties": {
+        "contract_family": {
+          "const": "authoring_construction"
+        },
+        "contract_version": {
+          "const": "1.2"
+        },
+        "operation": {
+          "enum": [
+            "validate_authoring",
+            "construct_authoring_set"
+          ]
+        },
+        "request": {
+          "type": "object",
+          "required": [
+            "request_id",
+            "fragments",
+            "compositions",
+            "relationships"
+          ],
+          "properties": {
+            "request_id": {
+              "$ref": "#/$defs/non_empty"
+            },
+            "fragments": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/fragment_intent"
+              }
+            },
+            "compositions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/composition_intent"
+              }
+            },
+            "relationships": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/relationship_intent"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "basis": {
+          "$ref": "#/$defs/exact_basis"
+        }
+      },
+      "additionalProperties": false
+    },
+    "diagnostic": {
+      "$ref": "../1.1/schema.json#/$defs/diagnostic"
+    },
+    "basis_qualification": {
+      "$ref": "#/$defs/exact_basis"
+    },
+    "construction_map_entry": {
+      "$ref": "../1.1/schema.json#/$defs/construction_map_entry"
+    },
+    "resolved_reference": {
+      "$ref": "../1.1/schema.json#/$defs/resolved_reference"
+    },
+    "source_schema": {
+      "$ref": "../1.1/schema.json#/$defs/source_schema"
+    },
+    "candidate_artifact": {
+      "$ref": "../1.1/schema.json#/$defs/candidate_artifact"
+    },
+    "candidate_source_basis": {
+      "$ref": "../1.1/schema.json#/$defs/candidate_source_basis"
+    },
+    "normalized_result": {
+      "$ref": "../1.1/schema.json#/$defs/normalized_result"
+    },
+    "round_trip": {
+      "$ref": "../1.1/schema.json#/$defs/round_trip"
+    },
+    "result_base": {
+      "type": "object",
+      "required": [
+        "contract_family",
+        "contract_version",
+        "operation",
+        "basis_qualification",
+        "diagnostics",
+        "provenance"
+      ],
+      "properties": {
+        "contract_family": {
+          "const": "authoring_construction"
+        },
+        "contract_version": {
+          "const": "1.2"
+        },
+        "operation": {
+          "enum": [
+            "validate_authoring",
+            "construct_authoring_set"
+          ]
+        },
+        "basis_qualification": {
+          "$ref": "#/$defs/basis_qualification"
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/diagnostic"
+          }
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "validation_result": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/result_base"
+        },
+        {
+          "type": "object",
+          "required": [
+            "operation",
+            "validation_status"
+          ],
+          "properties": {
+            "operation": {
+              "const": "validate_authoring"
+            },
+            "validation_status": {
+              "enum": [
+                "valid",
+                "invalid",
+                "unavailable",
+                "unresolved"
+              ]
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "construction_result": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/result_base"
+        },
+        {
+          "type": "object",
+          "required": [
+            "operation",
+            "outcome",
+            "construction_map",
+            "candidate_fragments",
+            "candidate_artifacts",
+            "candidate_source_basis",
+            "normalized_result",
+            "round_trip",
+            "construction_qualification",
+            "composition_records"
+          ],
+          "properties": {
+            "operation": {
+              "const": "construct_authoring_set"
+            },
+            "outcome": {
+              "enum": [
+                "Constructed",
+                "Rejected",
+                "Unavailable",
+                "Unresolved"
+              ]
+            },
+            "construction_map": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/construction_map_entry"
+              }
+            },
+            "candidate_fragments": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "request_key",
+                  "semantic_kind",
+                  "semantic_type",
+                  "identity",
+                  "contract_qualification",
+                  "fields",
+                  "source_contract"
+                ],
+                "properties": {
+                  "request_key": {
+                    "$ref": "#/$defs/non_empty"
+                  },
+                  "semantic_kind": {
+                    "enum": [
+                      "adr",
+                      "entity",
+                      "relationship",
+                      "value"
+                    ]
+                  },
+                  "semantic_type": {
+                    "$ref": "#/$defs/semantic_type"
+                  },
+                  "identity": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/$defs/uuid_v7"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "contract_qualification": {
+                    "$ref": "#/$defs/fragment_qualification"
+                  },
+                  "fields": {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  "resolved_references": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/resolved_reference"
+                    }
+                  },
+                  "source_contract": {
+                    "$ref": "#/$defs/exact_resource_set_qualification"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "candidate_artifacts": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/candidate_artifact"
+              }
+            },
+            "candidate_source_basis": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/candidate_source_basis"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "normalized_result": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/normalized_result"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "round_trip": {
+              "$ref": "#/$defs/round_trip"
+            },
+            "construction_qualification": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/construction_qualification"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "composition_records": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/composition_record"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "outcome": {
+                "const": "Constructed"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "candidate_source_basis",
+              "normalized_result",
+              "construction_qualification"
+            ],
+            "properties": {
+              "candidate_source_basis": {
+                "$ref": "#/$defs/candidate_source_basis"
+              },
+              "normalized_result": {
+                "$ref": "#/$defs/normalized_result"
+              },
+              "round_trip": {
+                "properties": {
+                  "qualified": {
+                    "const": true
+                  },
+                  "comparison": {
+                    "const": "semantic_equivalent"
+                  }
+                }
+              },
+              "construction_qualification": {
+                "$ref": "#/$defs/construction_qualification",
+                "properties": {
+                  "interpretation": {
+                    "properties": {
+                      "status": {
+                        "const": "complete"
+                      }
+                    }
+                  },
+                  "normalized_model": {
+                    "properties": {
+                      "schema_validation": {
+                        "const": "valid"
+                      }
+                    }
+                  },
+                  "comparison": {
+                    "properties": {
+                      "status": {
+                        "const": "semantic_equivalent"
+                      },
+                      "complete": {
+                        "const": true
+                      },
+                      "all_expected_accounted": {
+                        "const": true
+                      },
+                      "all_observed_accounted": {
+                        "const": true
+                      },
+                      "mismatches": {
+                        "maxItems": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "contract_document": {
+      "type": "object",
+      "required": [
+        "semanticContractFamily",
+        "semanticContractVersion",
+        "fingerprintScheme",
+        "resourceManifest",
+        "frozenNormativeConformanceResources",
+        "semanticContractFingerprint"
+      ],
+      "properties": {
+        "semanticContractFamily": {
+          "const": "authoring-construction"
+        },
+        "semanticContractVersion": {
+          "const": "1.2"
+        },
+        "fingerprintScheme": {
+          "const": "scf:v1:sha256"
+        },
+        "resourceManifest": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/resource_manifest_entry"
+          }
+        },
+        "frozenNormativeConformanceResources": {
+          "const": [
+            "authoring-construction/1.2/conformance"
+          ]
+        },
+        "semanticContractFingerprint": {
+          "$ref": "#/$defs/scf"
+        }
+      },
+      "additionalProperties": false
+    },
+    "resource_manifest_entry": {
+      "$ref": "../1.1/schema.json#/$defs/resource_manifest_entry"
+    },
+    "resource_dependency": {
+      "$ref": "../1.1/schema.json#/$defs/resource_dependency"
+    },
+    "construction_qualification": {
+      "type": "object",
+      "required": [
+        "authority",
+        "candidate_source_basis",
+        "interpretation",
+        "normalized_model",
+        "expected_ledger",
+        "observed_ledger",
+        "comparison"
+      ],
+      "properties": {
+        "authority": {
+          "type": "object",
+          "required": [
+            "architecture_interpretation",
+            "authoring_domain",
+            "authoring",
+            "normalized_model",
+            "custom_entity",
+            "acc",
+            "composition_binding"
+          ],
+          "properties": {
+            "architecture_interpretation": {
+              "type": "object",
+              "required": [
+                "family",
+                "version",
+                "semantic_contract_fingerprint",
+                "authority_closure"
+              ],
+              "properties": {
+                "family": {
+                  "const": "architecture-interpretation"
+                },
+                "version": {
+                  "const": "1.2"
+                },
+                "semantic_contract_fingerprint": {
+                  "const": "scf:v1:sha256:2a9300b1d7bdc9a80421cb94294fbd2f345531b5147644d02ae4bcc5c436d75a"
+                },
+                "authority_closure": {
+                  "$ref": "#/$defs/exact_ai12_closure"
+                }
+              },
+              "additionalProperties": false
+            },
+            "authoring_domain": {
+              "type": "object",
+              "required": [
+                "contract_id",
+                "version",
+                "content_digest"
+              ],
+              "properties": {
+                "contract_id": {
+                  "const": "adr-kit.authoring-domain"
+                },
+                "version": {
+                  "const": "1.1"
+                },
+                "content_digest": {
+                  "$ref": "#/$defs/digest"
+                }
+              },
+              "additionalProperties": false
+            },
+            "authoring": {
+              "$ref": "#/$defs/exact_authoring17_closure"
+            },
+            "normalized_model": {
+              "$ref": "#/$defs/exact_nm24_closure"
+            },
+            "custom_entity": {
+              "$ref": "#/$defs/exact_cec10_closure"
+            },
+            "acc": {
+              "$ref": "#/$defs/acc12_qualification"
+            },
+            "composition_binding": {
+              "$ref": "#/$defs/composition_binding_qualification"
+            }
+          },
+          "additionalProperties": false
+        },
+        "candidate_source_basis": {
+          "type": "object",
+          "required": [
+            "basis_digest",
+            "selected_root_source_refs",
+            "minimality"
+          ],
+          "properties": {
+            "basis_digest": {
+              "$ref": "#/$defs/digest"
+            },
+            "selected_root_source_refs": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/$defs/non_empty"
+              }
+            },
+            "minimality": {
+              "const": "verified"
+            }
+          },
+          "additionalProperties": false
+        },
+        "interpretation": {
+          "type": "object",
+          "required": [
+            "status",
+            "input_basis_digest",
+            "architecture_interpretation_fingerprint"
+          ],
+          "properties": {
+            "status": {
+              "const": "complete"
+            },
+            "input_basis_digest": {
+              "$ref": "#/$defs/digest"
+            },
+            "architecture_interpretation_fingerprint": {
+              "const": "scf:v1:sha256:2a9300b1d7bdc9a80421cb94294fbd2f345531b5147644d02ae4bcc5c436d75a"
+            }
+          },
+          "additionalProperties": false
+        },
+        "normalized_model": {
+          "type": "object",
+          "required": [
+            "schema_validation",
+            "normalized_contract"
+          ],
+          "properties": {
+            "schema_validation": {
+              "const": "valid"
+            },
+            "normalized_contract": {
+              "$ref": "#/$defs/exact_nm24_closure"
+            }
+          },
+          "additionalProperties": false
+        },
+        "expected_ledger": {
+          "$ref": "../1.1/ledger.schema.json"
+        },
+        "observed_ledger": {
+          "$ref": "../1.1/ledger.schema.json"
+        },
+        "comparison": {
+          "type": "object",
+          "required": [
+            "algorithm",
+            "status",
+            "complete",
+            "all_expected_accounted",
+            "all_observed_accounted",
+            "mismatches"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "authoring-construction/1.1/complete-semantic-ledger-equality"
+            },
+            "status": {
+              "enum": [
+                "semantic_equivalent",
+                "semantic_mismatch",
+                "not_evaluated"
+              ]
+            },
+            "complete": {
+              "type": "boolean"
+            },
+            "all_expected_accounted": {
+              "type": "boolean"
+            },
+            "all_observed_accounted": {
+              "type": "boolean"
+            },
+            "mismatches": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/semantic_mismatch_diagnostic"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "semantic_mismatch_diagnostic": {
+      "$ref": "../1.1/schema.json#/$defs/semantic_mismatch_diagnostic"
+    },
+    "exact_ai12_closure": {
+      "$ref": "../1.1/schema.json#/$defs/exact_ai12_closure"
+    },
+    "exact_authoring17_closure": {
+      "$ref": "../1.1/schema.json#/$defs/exact_authoring17_closure"
+    },
+    "exact_nm24_closure": {
+      "$ref": "../1.1/schema.json#/$defs/exact_nm24_closure"
+    },
+    "exact_cec10_closure": {
+      "$ref": "../1.1/schema.json#/$defs/exact_cec10_closure"
+    },
+    "acc12_qualification": {
+      "type": "object",
+      "required": [
+        "family",
+        "version",
+        "semantic_contract_fingerprint"
+      ],
+      "properties": {
+        "family": {
+          "const": "authoring-construction"
+        },
+        "version": {
+          "const": "1.2"
+        },
+        "semantic_contract_fingerprint": {
+          "$ref": "#/$defs/scf"
+        }
+      },
+      "additionalProperties": false
+    },
+    "composition_binding_qualification": {
+      "type": "object",
+      "required": [
+        "canonical_resource_key",
+        "content_digest"
+      ],
+      "properties": {
+        "canonical_resource_key": {
+          "const": "authoring-construction/1.2/composition-bindings"
+        },
+        "content_digest": {
+          "$ref": "#/$defs/digest"
+        }
+      },
+      "additionalProperties": false
+    },
+    "composition_authority": {
+      "type": "object",
+      "required": [
+        "architecture_interpretation",
+        "authoring_domain",
+        "authoring",
+        "normalized_model",
+        "custom_entity",
+        "acc",
+        "composition_binding"
+      ],
+      "properties": {
+        "architecture_interpretation": {
+          "type": "object",
+          "required": [
+            "family",
+            "version",
+            "semantic_contract_fingerprint",
+            "authority_closure"
+          ],
+          "properties": {
+            "family": {
+              "const": "architecture-interpretation"
+            },
+            "version": {
+              "const": "1.2"
+            },
+            "semantic_contract_fingerprint": {
+              "const": "scf:v1:sha256:2a9300b1d7bdc9a80421cb94294fbd2f345531b5147644d02ae4bcc5c436d75a"
+            },
+            "authority_closure": {
+              "$ref": "#/$defs/exact_ai12_closure"
+            }
+          },
+          "additionalProperties": false
+        },
+        "authoring_domain": {
+          "type": "object",
+          "required": [
+            "contract_id",
+            "version",
+            "content_digest"
+          ],
+          "properties": {
+            "contract_id": {
+              "const": "adr-kit.authoring-domain"
+            },
+            "version": {
+              "const": "1.1"
+            },
+            "content_digest": {
+              "$ref": "#/$defs/digest"
+            }
+          },
+          "additionalProperties": false
+        },
+        "authoring": {
+          "$ref": "#/$defs/exact_authoring17_closure"
+        },
+        "normalized_model": {
+          "$ref": "#/$defs/exact_nm24_closure"
+        },
+        "custom_entity": {
+          "$ref": "#/$defs/exact_cec10_closure"
+        },
+        "acc": {
+          "$ref": "#/$defs/acc12_qualification"
+        },
+        "composition_binding": {
+          "$ref": "#/$defs/composition_binding_qualification"
+        }
+      },
+      "additionalProperties": false
+    },
+    "composition_record": {
+      "type": "object",
+      "required": [
+        "semantic",
+        "integrity",
+        "qualification"
+      ],
+      "properties": {
+        "semantic": {
+          "type": "object",
+          "required": [
+            "parent_canonical_uuid",
+            "child_canonical_uuid",
+            "parent_semantic_type",
+            "child_semantic_type",
+            "relation",
+            "semantic_field_key",
+            "binding_id",
+            "authoring_property",
+            "ordering",
+            "resolution_kind"
+          ],
+          "properties": {
+            "parent_canonical_uuid": {
+              "$ref": "#/$defs/uuid_v7"
+            },
+            "child_canonical_uuid": {
+              "$ref": "#/$defs/uuid_v7"
+            },
+            "parent_semantic_type": {
+              "const": "adr/logical"
+            },
+            "child_semantic_type": {
+              "const": "entity/decision"
+            },
+            "relation": {
+              "const": "contains"
+            },
+            "semantic_field_key": {
+              "const": "adr/logical#/decisions"
+            },
+            "binding_id": {
+              "const": "adr-logical.decisions.contains.entity-decision"
+            },
+            "authoring_property": {
+              "const": "decisions"
+            },
+            "ordering": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "resolution_kind": {
+              "const": "request"
+            }
+          },
+          "additionalProperties": false
+        },
+        "integrity": {
+          "type": "object",
+          "required": [
+            "parent_request_key",
+            "child_request_key",
+            "parent_source_ref",
+            "child_source_ref",
+            "parent_content_digest",
+            "child_content_digest",
+            "composition_binding_content_digest",
+            "prepared_property_absent",
+            "exact_subtree",
+            "child_candidate_artifact_retained",
+            "child_source_root_omitted",
+            "induced_sequence_index",
+            "identity_disposition",
+            "composition_binding_resource_key"
+          ],
+          "properties": {
+            "parent_request_key": {
+              "$ref": "#/$defs/non_empty"
+            },
+            "child_request_key": {
+              "$ref": "#/$defs/non_empty"
+            },
+            "parent_source_ref": {
+              "$ref": "#/$defs/non_empty"
+            },
+            "child_source_ref": {
+              "$ref": "#/$defs/non_empty"
+            },
+            "parent_content_digest": {
+              "$ref": "#/$defs/digest"
+            },
+            "child_content_digest": {
+              "$ref": "#/$defs/digest"
+            },
+            "composition_binding_content_digest": {
+              "$ref": "#/$defs/digest"
+            },
+            "prepared_property_absent": {
+              "const": true
+            },
+            "exact_subtree": {
+              "const": true
+            },
+            "child_candidate_artifact_retained": {
+              "const": true
+            },
+            "child_source_root_omitted": {
+              "const": true
+            },
+            "induced_sequence_index": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "identity_disposition": {
+              "type": "object",
+              "required": [
+                "parent",
+                "child"
+              ],
+              "properties": {
+                "parent": {
+                  "enum": [
+                    "preserved",
+                    "minted"
+                  ]
+                },
+                "child": {
+                  "enum": [
+                    "preserved",
+                    "minted"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            },
+            "composition_binding_resource_key": {
+              "const": "authoring-construction/1.2/composition-bindings"
+            }
+          },
+          "additionalProperties": false
+        },
+        "qualification": {
+          "$ref": "#/$defs/composition_authority"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

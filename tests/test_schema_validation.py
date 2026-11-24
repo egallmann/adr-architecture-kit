@@ -5,6 +5,8 @@ from pathlib import Path
 
 from adr_kit.parser import ADRParser, ADRParseError, ADRSchemaValidationError
 
+pytestmark = pytest.mark.fast
+
 
 def test_adr_parser_default_init():
     """ADRParser() with no args must resolve bundled schemas via importlib.resources."""

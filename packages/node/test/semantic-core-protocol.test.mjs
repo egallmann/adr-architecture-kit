@@ -12,7 +12,8 @@ import {
   supportsSemanticCoreOperation,
   validateSemanticCoreProtocol,
 } from "../dist/node/protocol.js";
-import { executeSemanticCoreRequest } from "../dist/node/core.js";
+import { executeSemanticCoreRequest, executeValidatedSemanticCoreRequest } from "../dist/node/core.js";
+import { loadSemanticResource } from "../dist/node/semantic-contract.js";
 
 const Ajv = AjvModule.default ?? AjvModule;
 const Ajv7 = Ajv7Module.default ?? Ajv7Module;
@@ -118,6 +119,25 @@ test("Node capability negotiation advertises only reachable v1.2 operations", ()
   assert.equal(supportsSemanticCoreOperation("1.1", "construct_authoring_set"), false);
   assert.equal(supportsSemanticCoreOperation("1.3", "materialize_architecture"), true);
   assert.equal(supportsSemanticCoreOperation("1.3", "construct_authoring_set"), false);
+  assert.equal(supportsSemanticCoreOperation("1.4", "qualify_authoring_construction_1_1"), false);
+  assert.equal(supportsSemanticCoreOperation("1.5", "prepare_authoring_construction_basis_1_1"), false);
+});
+
+test("Node rejects retired protocol versions through the unsupported-version diagnostic", async () => {
+  for (const [version, operation] of [
+    ["1.4", "qualify_authoring_construction_1_1"],
+    ["1.5", "prepare_authoring_construction_basis_1_1"],
+  ]) {
+    const result = await executeValidatedSemanticCoreRequest({
+      core_contract_version: version,
+      operation,
+    });
+    assert.equal(result.core_contract_version, "1.0");
+    assert.equal(result.outcome, "invalid_request");
+    assert.equal(result.diagnostics[0].code, "core.invalid_request");
+    assert.equal(result.diagnostics[0].message, "unsupported core_contract_version");
+    validateSemanticCoreProtocol(result);
+  }
 });
 
 function bindAccMarkers(value) {

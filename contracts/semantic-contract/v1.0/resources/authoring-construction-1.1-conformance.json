@@ -1,0 +1,959 @@
+{
+  "resource_kind": "authoring-construction-conformance",
+  "resource_version": "1.1",
+  "conformance_level": "frozen_authority",
+  "semanticDependencies": [
+    "authoring-construction/1.1/rules",
+    "authoring-construction/1.1/ledger.schema",
+    "architecture-interpretation/1.2/contract"
+  ],
+  "cases": [
+    {
+      "case_id": "ACC11-01",
+      "claim": "A simple logical ADR root produces one complete semantic unit ledger and only complete equality can qualify Constructed.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "roots": [
+            "logical_adr"
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "expected_ledger.semantic_units",
+          "operator": "contains",
+          "expected": "all supported authored fields under AI1.2 field keys"
+        },
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Constructed only when complete ledger equality is true"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-02",
+      "claim": "A composed ADR root aggregates root and embedded units exactly once.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "roots": [
+            "document_with_embedded_children"
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "ledger.semantic_units",
+          "operator": "set_equals",
+          "expected": "canonical semantic identities from root closure, each once"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-03",
+      "claim": "A standalone fragment remains a native semantic root.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "roots": [
+            "standalone_fragment"
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "normalized_result.model",
+          "operator": "excludes",
+          "expected": "synthetic ADR wrapper"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-04",
+      "claim": "Mixed document and standalone roots form a canonical union without duplicate semantic identity.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "roots": [
+            "document_root",
+            "standalone_root"
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "ledger.semantic_units",
+          "operator": "set_equals",
+          "expected": "union by governed semantic identity"
+        },
+        {
+          "path": "duplicate_identity",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-05",
+      "claim": "C05 and C07 PR153 minimal source roots are used while complete candidate artifacts and child identities remain retained.",
+      "fixture": {
+        "kind": "inline_source_basis",
+        "input": {
+          "vectors": [
+            {
+              "vector_id": "C05",
+              "candidate_artifact_source_refs": [
+                "candidate/C05/parent",
+                "candidate/C05/child"
+              ],
+              "expected_root_source_refs": [
+                "candidate/C05/parent"
+              ],
+              "embedded_child_uuid": "019109a0-b1c2-7def-8a00-112233445567"
+            },
+            {
+              "vector_id": "C07",
+              "candidate_artifact_source_refs": [
+                "candidate/C07/adr",
+                "candidate/C07/decision"
+              ],
+              "expected_root_source_refs": [
+                "candidate/C07/adr"
+              ],
+              "embedded_child_uuid": "019109a0-b1c2-7def-8a00-112233445567"
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "vectors.C05.expected_root_source_refs",
+          "operator": "equals",
+          "expected": [
+            "candidate/C05/parent"
+          ]
+        },
+        {
+          "path": "vectors.C07.expected_root_source_refs",
+          "operator": "equals",
+          "expected": [
+            "candidate/C07/adr"
+          ]
+        },
+        {
+          "path": "vectors.*.embedded_child_uuid",
+          "operator": "equals",
+          "expected": "019109a0-b1c2-7def-8a00-112233445567"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-06",
+      "claim": "C32 generalized: entity/gap#/context loss mismatches even when source replay metadata retains its authored value.",
+      "fixture": {
+        "kind": "paired_ledger",
+        "input": {
+          "expected_ledger": {
+            "ledger_version": "authoring-construction-semantic-ledger/1.1",
+            "semantic_units": [
+              {
+                "semantic_type": "entity/gap",
+                "identity": {
+                  "identity_kind": "canonical_uuidv7",
+                  "components": [
+                    "019109a0-b1c2-7def-8a00-112233445566"
+                  ]
+                },
+                "fields": [
+                  {
+                    "semantic_field_key": "entity/gap#/context",
+                    "value": "This context is semantic and must survive interpretation.",
+                    "ordering": "scalar_or_object"
+                  }
+                ]
+              }
+            ],
+            "relationships": [],
+            "unresolved": []
+          },
+          "observed_ledger": {
+            "ledger_version": "authoring-construction-semantic-ledger/1.1",
+            "semantic_units": [
+              {
+                "semantic_type": "entity/gap",
+                "identity": {
+                  "identity_kind": "canonical_uuidv7",
+                  "components": [
+                    "019109a0-b1c2-7def-8a00-112233445566"
+                  ]
+                },
+                "fields": []
+              }
+            ],
+            "relationships": [],
+            "unresolved": []
+          }
+        }
+      },
+      "assertions": [
+        {
+          "path": "comparison.status",
+          "operator": "equals",
+          "expected": "semantic_mismatch"
+        },
+        {
+          "path": "comparison.mismatch_kind",
+          "operator": "contains",
+          "expected": "missing_expected_semantic"
+        },
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-07",
+      "claim": "C33 generalized: absent exact AI 1.2 authority is unavailable and never equivalent.",
+      "fixture": {
+        "kind": "authority_reference",
+        "input": {
+          "required_authority": "architecture-interpretation/1.2/contract",
+          "supplied_authority": null
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "round_trip.comparison",
+          "operator": "equals",
+          "expected": "not_evaluated"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-08",
+      "claim": "AI1.2 first-class normalized destinations are observed at those destinations and not duplicated as semantic extensions.",
+      "fixture": {
+        "kind": "paired_ledger",
+        "input": {
+          "mapping": "AI1.2 canonical_field_placement"
+        }
+      },
+      "assertions": [
+        {
+          "path": "duplicate_first_class_extension_value",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-09",
+      "claim": "Semantic-extension values preserve complete typed JSON keyed by unit identity and AI field key.",
+      "fixture": {
+        "kind": "paired_ledger",
+        "input": {
+          "expected_ledger": {
+            "ledger_version": "authoring-construction-semantic-ledger/1.1",
+            "semantic_units": [
+              {
+                "semantic_type": "entity/gap",
+                "identity": {
+                  "identity_kind": "canonical_uuidv7",
+                  "components": [
+                    "019109a0-b1c2-7def-8a00-112233445566"
+                  ]
+                },
+                "fields": [
+                  {
+                    "semantic_field_key": "entity/gap#/context",
+                    "value": {
+                      "text": "retained",
+                      "flags": [
+                        true,
+                        false
+                      ]
+                    },
+                    "ordering": "scalar_or_object"
+                  }
+                ]
+              }
+            ],
+            "relationships": [],
+            "unresolved": []
+          },
+          "observed_ledger": {
+            "ledger_version": "authoring-construction-semantic-ledger/1.1",
+            "semantic_units": [
+              {
+                "semantic_type": "entity/gap",
+                "identity": {
+                  "identity_kind": "canonical_uuidv7",
+                  "components": [
+                    "019109a0-b1c2-7def-8a00-112233445566"
+                  ]
+                },
+                "fields": [
+                  {
+                    "semantic_field_key": "entity/gap#/context",
+                    "value": {
+                      "text": "retained",
+                      "flags": [
+                        true,
+                        false
+                      ]
+                    },
+                    "ordering": "scalar_or_object"
+                  }
+                ]
+              }
+            ],
+            "relationships": [],
+            "unresolved": []
+          }
+        }
+      },
+      "assertions": [
+        {
+          "path": "comparison.status",
+          "operator": "equals",
+          "expected": "semantic_equivalent"
+        },
+        {
+          "path": "semantic_extension.value",
+          "operator": "equals",
+          "expected": {
+            "text": "retained",
+            "flags": [
+              true,
+              false
+            ]
+          }
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-10",
+      "claim": "Custom entity meaning includes exact CEC qualification and complete properties.",
+      "fixture": {
+        "kind": "paired_ledger",
+        "input": {
+          "unit": "CEC-qualified custom entity"
+        }
+      },
+      "assertions": [
+        {
+          "path": "entity.qualification_and_properties",
+          "operator": "equals",
+          "expected": "exact qualified meaning and typed properties"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-11",
+      "claim": "Custom relationship equality includes qualification, properties, and resolved endpoints.",
+      "fixture": {
+        "kind": "paired_ledger",
+        "input": {
+          "unit": "CEC-qualified custom relationship"
+        }
+      },
+      "assertions": [
+        {
+          "path": "relationship",
+          "operator": "equals",
+          "expected": "qualification, properties, type, and endpoints all equal"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-12",
+      "claim": "Canonical UUID changes mismatch even when all authored non-identity fields match.",
+      "fixture": {
+        "kind": "paired_ledger",
+        "input": {
+          "expected_ledger": {
+            "ledger_version": "authoring-construction-semantic-ledger/1.1",
+            "semantic_units": [
+              {
+                "semantic_type": "entity/decision",
+                "identity": {
+                  "identity_kind": "canonical_uuidv7",
+                  "components": [
+                    "019109a0-b1c2-7def-8a00-112233445566"
+                  ]
+                },
+                "fields": []
+              }
+            ],
+            "relationships": [],
+            "unresolved": []
+          },
+          "observed_ledger": {
+            "ledger_version": "authoring-construction-semantic-ledger/1.1",
+            "semantic_units": [
+              {
+                "semantic_type": "entity/decision",
+                "identity": {
+                  "identity_kind": "canonical_uuidv7",
+                  "components": [
+                    "019109a0-b1c2-7def-8a00-112233445567"
+                  ]
+                },
+                "fields": []
+              }
+            ],
+            "relationships": [],
+            "unresolved": []
+          }
+        }
+      },
+      "assertions": [
+        {
+          "path": "comparison.status",
+          "operator": "equals",
+          "expected": "semantic_mismatch"
+        },
+        {
+          "path": "comparison.mismatch_kind",
+          "operator": "contains",
+          "expected": "identity_mismatch"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-13",
+      "claim": "Topology values are owned by component UUID and topology_key.",
+      "fixture": {
+        "kind": "paired_ledger",
+        "input": {
+          "unit": "topology value"
+        }
+      },
+      "assertions": [
+        {
+          "path": "topology.identity",
+          "operator": "equals",
+          "expected": "owner UUID plus topology_key"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-14",
+      "claim": "AI1.2 composition-derived composed_of records use SYS UUID to resolved COMP UUID and are not forward-authorable.",
+      "fixture": {
+        "kind": "paired_ledger",
+        "input": {
+          "expected_ledger": {
+            "ledger_version": "authoring-construction-semantic-ledger/1.1",
+            "semantic_units": [
+              {
+                "semantic_type": "system",
+                "identity": {
+                  "identity_kind": "canonical_uuidv7",
+                  "components": [
+                    "019109a0-b1c2-7def-8a00-112233445566"
+                  ]
+                },
+                "fields": []
+              }
+            ],
+            "relationships": [
+              {
+                "relationship_class": "composition_derived",
+                "identity": {
+                  "identity_kind": "ai12_semantic_tuple",
+                  "components": [
+                    "composed_of",
+                    "019109a0-b1c2-7def-8a00-112233445566",
+                    "019109a0-b1c2-7def-8a00-112233445567"
+                  ]
+                },
+                "relationship_type": "composed_of",
+                "from_identity": {
+                  "identity_kind": "canonical_uuidv7",
+                  "components": [
+                    "019109a0-b1c2-7def-8a00-112233445566"
+                  ]
+                },
+                "to_identity": {
+                  "identity_kind": "canonical_uuidv7",
+                  "components": [
+                    "019109a0-b1c2-7def-8a00-112233445567"
+                  ]
+                },
+                "semantic_properties": {},
+                "multiplicity": 1
+              }
+            ],
+            "unresolved": []
+          },
+          "observed_ledger": {
+            "ledger_version": "authoring-construction-semantic-ledger/1.1",
+            "semantic_units": [
+              {
+                "semantic_type": "system",
+                "identity": {
+                  "identity_kind": "canonical_uuidv7",
+                  "components": [
+                    "019109a0-b1c2-7def-8a00-112233445566"
+                  ]
+                },
+                "fields": []
+              }
+            ],
+            "relationships": [
+              {
+                "relationship_class": "composition_derived",
+                "identity": {
+                  "identity_kind": "ai12_semantic_tuple",
+                  "components": [
+                    "composed_of",
+                    "019109a0-b1c2-7def-8a00-112233445566",
+                    "019109a0-b1c2-7def-8a00-112233445567"
+                  ]
+                },
+                "relationship_type": "composed_of",
+                "from_identity": {
+                  "identity_kind": "canonical_uuidv7",
+                  "components": [
+                    "019109a0-b1c2-7def-8a00-112233445566"
+                  ]
+                },
+                "to_identity": {
+                  "identity_kind": "canonical_uuidv7",
+                  "components": [
+                    "019109a0-b1c2-7def-8a00-112233445567"
+                  ]
+                },
+                "semantic_properties": {},
+                "multiplicity": 1
+              }
+            ],
+            "unresolved": []
+          }
+        }
+      },
+      "assertions": [
+        {
+          "path": "comparison.status",
+          "operator": "equals",
+          "expected": "semantic_equivalent"
+        },
+        {
+          "path": "relationship.relationship_type",
+          "operator": "equals",
+          "expected": "composed_of"
+        },
+        {
+          "path": "relationship.from_identity.components",
+          "operator": "equals",
+          "expected": [
+            "019109a0-b1c2-7def-8a00-112233445566"
+          ]
+        },
+        {
+          "path": "relationship.to_identity.components",
+          "operator": "equals",
+          "expected": [
+            "019109a0-b1c2-7def-8a00-112233445567"
+          ]
+        },
+        {
+          "path": "source_decoding.forward_forbidden",
+          "operator": "contains",
+          "expected": "composed_of"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-15",
+      "claim": "Compatibility relationships compare AI1.2 semantic tuples and preserve multiplicity, independent of generated record IDs.",
+      "fixture": {
+        "kind": "paired_ledger",
+        "input": {
+          "difference": "duplicate occurrence removed"
+        }
+      },
+      "assertions": [
+        {
+          "path": "compatibility.multiset",
+          "operator": "multiset_equals",
+          "expected": "same tuple occurrences and multiplicity"
+        },
+        {
+          "path": "generated_id",
+          "operator": "excludes",
+          "expected": "semantic identity"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-16",
+      "claim": "AI1.2 ordered semantic values retain sequence and set-like collections canonicalize by semantic identity.",
+      "fixture": {
+        "kind": "paired_ledger",
+        "input": {
+          "ordered_expected": {
+            "ledger_version": "authoring-construction-semantic-ledger/1.1",
+            "semantic_units": [
+              {
+                "semantic_type": "entity/gap",
+                "identity": {
+                  "identity_kind": "canonical_uuidv7",
+                  "components": [
+                    "019109a0-b1c2-7def-8a00-112233445566"
+                  ]
+                },
+                "fields": [
+                  {
+                    "semantic_field_key": "entity/data_flow#/path",
+                    "value": [
+                      "TOPO-a",
+                      "TOPO-b"
+                    ],
+                    "ordering": "ordered_sequence"
+                  }
+                ]
+              }
+            ],
+            "relationships": [],
+            "unresolved": []
+          },
+          "ordered_observed": {
+            "ledger_version": "authoring-construction-semantic-ledger/1.1",
+            "semantic_units": [
+              {
+                "semantic_type": "entity/gap",
+                "identity": {
+                  "identity_kind": "canonical_uuidv7",
+                  "components": [
+                    "019109a0-b1c2-7def-8a00-112233445566"
+                  ]
+                },
+                "fields": [
+                  {
+                    "semantic_field_key": "entity/data_flow#/path",
+                    "value": [
+                      "TOPO-b",
+                      "TOPO-a"
+                    ],
+                    "ordering": "ordered_sequence"
+                  }
+                ]
+              }
+            ],
+            "relationships": [],
+            "unresolved": []
+          },
+          "root_order_variant": "same semantic units in opposite root presentation order"
+        }
+      },
+      "assertions": [
+        {
+          "path": "ordered_comparison.status",
+          "operator": "equals",
+          "expected": "semantic_mismatch"
+        },
+        {
+          "path": "root_order_comparison.status",
+          "operator": "equals",
+          "expected": "semantic_equivalent"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-17",
+      "claim": "Reordering minimal roots or candidate artifact presentation does not change semantic equality.",
+      "fixture": {
+        "kind": "paired_ledger",
+        "input": {
+          "difference": "root traversal order"
+        }
+      },
+      "assertions": [
+        {
+          "path": "comparison",
+          "operator": "equals",
+          "expected": "semantic_equivalent"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-18",
+      "claim": "Unresolved references remain explicit and produce Unresolved unless a separately established violation takes precedence.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "unresolved": [
+            {
+              "unresolved_kind": "entity_reference",
+              "semantic_identity": {
+                "identity_kind": "canonical_uuidv7",
+                "components": [
+                  "019109a0-b1c2-7def-8a00-112233445566"
+                ]
+              },
+              "expected_target": null,
+              "reason_code": "reference.target_unresolved"
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "unresolved",
+          "operator": "contains",
+          "expected": "explicit unresolved record"
+        },
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unresolved"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-19",
+      "claim": "Unknown or unclassified supported field semantics fail closed.",
+      "fixture": {
+        "kind": "paired_ledger",
+        "input": {
+          "difference": "field missing from selected AI1.2 inventory"
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected or Unavailable according to authority availability"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-20",
+      "claim": "Detached context values are derived only under exact AI1.2 authority and do not imply repository placement.",
+      "fixture": {
+        "kind": "authority_reference",
+        "input": {
+          "canonical_resource_key": "architecture-interpretation/1.2/detached-context",
+          "repository_placement": false,
+          "persistence": false,
+          "promotion": false
+        }
+      },
+      "assertions": [
+        {
+          "path": "detached_context.authority",
+          "operator": "authority_is",
+          "expected": "architecture-interpretation/1.2/detached-context"
+        },
+        {
+          "path": "detached_context.repository_placement",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-21",
+      "claim": "Source provenance, integrity evidence, and semantic meaning remain separate; source_semantics cannot replace a lost semantic field.",
+      "fixture": {
+        "kind": "paired_ledger",
+        "input": {
+          "expected_ledger": {
+            "ledger_version": "authoring-construction-semantic-ledger/1.1",
+            "semantic_units": [
+              {
+                "semantic_type": "entity/gap",
+                "identity": {
+                  "identity_kind": "canonical_uuidv7",
+                  "components": [
+                    "019109a0-b1c2-7def-8a00-112233445566"
+                  ]
+                },
+                "fields": [
+                  {
+                    "semantic_field_key": "entity/gap#/context",
+                    "value": "This context is semantic and must survive interpretation.",
+                    "ordering": "scalar_or_object"
+                  }
+                ]
+              }
+            ],
+            "relationships": [],
+            "unresolved": []
+          },
+          "observed_ledger": {
+            "ledger_version": "authoring-construction-semantic-ledger/1.1",
+            "semantic_units": [
+              {
+                "semantic_type": "entity/gap",
+                "identity": {
+                  "identity_kind": "canonical_uuidv7",
+                  "components": [
+                    "019109a0-b1c2-7def-8a00-112233445566"
+                  ]
+                },
+                "fields": []
+              }
+            ],
+            "relationships": [],
+            "unresolved": []
+          },
+          "source_semantics_replay_value": "This context is semantic and must survive interpretation."
+        }
+      },
+      "assertions": [
+        {
+          "path": "comparison.status",
+          "operator": "equals",
+          "expected": "semantic_mismatch"
+        },
+        {
+          "path": "source_semantics_replay_substitution",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-22",
+      "claim": "Diagnostics have stable semantic locators and deterministic ordering without request or traversal order.",
+      "fixture": {
+        "kind": "paired_ledger",
+        "input": {
+          "diagnostics": [
+            "missing",
+            "unexpected",
+            "conflicting"
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "diagnostics.order",
+          "operator": "equals",
+          "expected": "ACC1.1 stable diagnostic sort key"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-23",
+      "claim": "Constructed requires a complete schema-valid full Normalized Model 2.4 and complete equality evidence.",
+      "fixture": {
+        "kind": "paired_ledger",
+        "input": {
+          "model": "partial or invalid"
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Constructed only for complete schema-valid NM2.4"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-24",
+      "claim": "Semantic digests, fingerprints, counts, and provenance replay cannot substitute for full ledger comparison.",
+      "fixture": {
+        "kind": "paired_ledger",
+        "input": {
+          "difference": "same digest/count evidence but semantic loss"
+        }
+      },
+      "assertions": [
+        {
+          "path": "comparison",
+          "operator": "equals",
+          "expected": "semantic_mismatch"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-25",
+      "claim": "Independent violations remain reported when another required check is blocked or unavailable.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "known_violation": {
+            "status": "violation",
+            "code": "authoring_construction.identity.duplicate"
+          },
+          "blocked_check": {
+            "status": "unavailable",
+            "code": "authoring_construction.authority.missing"
+          }
+        }
+      },
+      "assertions": [
+        {
+          "path": "diagnostics",
+          "operator": "contains",
+          "expected": [
+            "authoring_construction.identity.duplicate",
+            "authoring_construction.authority.missing"
+          ]
+        },
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC11-26",
+      "claim": "ACC1.0 frozen C01-C42 remain historical and are not rewritten or relabeled as ACC1.1 runtime coverage.",
+      "fixture": {
+        "kind": "authority_reference",
+        "input": {
+          "historical": "authoring-construction/1.0/conformance"
+        }
+      },
+      "assertions": [
+        {
+          "path": "historical_conformance",
+          "operator": "authority_is",
+          "expected": "unchanged ACC1.0 identity and bytes"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    }
+  ]
+}

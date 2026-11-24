@@ -1,0 +1,600 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.ste.systems/contracts/architecture-interpretation/v1.2/resources/field-dispositions.schema.json",
+  "title": "Closed Architecture Interpretation 1.2 Authoring 1.7 field disposition inventory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "resource",
+    "source_contract",
+    "output_contract",
+    "schema_closure",
+    "field_key_format",
+    "selector_rules",
+    "disposition_classes",
+    "semantic_types",
+    "declared_absences",
+    "unknown_or_duplicate_fields",
+    "field_inventory_schema",
+    "semanticDependencies",
+    "coverage_rule",
+    "coverage_rule_id",
+    "destination_catalog",
+    "ordering_vocabulary",
+    "matching_identity_catalog",
+    "derivation_rules"
+  ],
+  "properties": {
+    "resource": {
+      "const": "architecture-interpretation/1.2/field-dispositions-1.7-to-2.4"
+    },
+    "source_contract": {
+      "const": "authoring@1.7"
+    },
+    "output_contract": {
+      "const": "normalized-model@2.4"
+    },
+    "schema_closure": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "field_key_format": {
+      "const": "<semantic-type>#<schema-relative-RFC6901-JSON-Pointer>"
+    },
+    "selector_rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "relative_to",
+        "array_item_selector",
+        "runtime_source_pointer",
+        "filename_traversal_embedded_position"
+      ],
+      "properties": {
+        "relative_to": {
+          "const": "semantic type schema instance shape"
+        },
+        "array_item_selector": {
+          "const": "* denotes schema items and never a runtime array index"
+        },
+        "runtime_source_pointer": {
+          "const": "provenance only"
+        },
+        "filename_traversal_embedded_position": {
+          "const": "not identity"
+        }
+      }
+    },
+    "disposition_classes": {
+      "const": [
+        "direct_semantic_value",
+        "canonical_field_placement",
+        "compatibility_projection",
+        "declared_absence",
+        "deterministic_ceremony"
+      ]
+    },
+    "coverage_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "semantic_types": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "semantic_type",
+          "source_schema",
+          "identity_policy",
+          "field_dispositions"
+        ],
+        "properties": {
+          "semantic_type": {
+            "type": "string",
+            "pattern": "^(adr|entity|relationship|value)/[a-z][a-z0-9_/-]*$"
+          },
+          "source_schema": {
+            "type": "string",
+            "minLength": 1
+          },
+          "identity_policy": {
+            "enum": [
+              "canonical_uuidv7",
+              "owner_local_topology_key",
+              "owner_scoped_semantic_value"
+            ]
+          },
+          "field_dispositions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "semantic_field_key",
+                "schema_selector",
+                "disposition",
+                "destination_ref",
+                "value_semantics",
+                "ordering",
+                "matching_identity_ref",
+                "multiplicity",
+                "source_instance_pointer",
+                "rationale"
+              ],
+              "properties": {
+                "semantic_field_key": {
+                  "type": "string",
+                  "pattern": "^[^#]+#(?:/.*)?$"
+                },
+                "schema_selector": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "disposition": {
+                  "enum": [
+                    "direct_semantic_value",
+                    "canonical_field_placement",
+                    "compatibility_projection",
+                    "declared_absence",
+                    "deterministic_ceremony"
+                  ]
+                },
+                "ordering": {
+                  "enum": [
+                    "not_applicable",
+                    "ordered_sequence",
+                    "unordered_multiset",
+                    "identity_keyed_set",
+                    "owner_declared_sequence"
+                  ]
+                },
+                "source_instance_pointer": {
+                  "const": "provenance_only"
+                },
+                "rationale": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "destination_ref": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "value_semantics": {
+                  "enum": [
+                    "exact_typed_value",
+                    "exact_identity_value",
+                    "complete_typed_json",
+                    "child_identity_membership",
+                    "compatibility_tuple_component",
+                    "authority_derived_discriminator"
+                  ]
+                },
+                "matching_identity_ref": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "multiplicity": {
+                  "enum": [
+                    "single_value",
+                    "preserve_occurrences",
+                    "reject_duplicate_identity"
+                  ]
+                },
+                "derivation_rule_ref": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "companion_destination_ref": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "declared_absences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "semantic_field_key",
+          "source_schema_presence",
+          "normalized_location",
+          "governing_rule",
+          "meaning"
+        ],
+        "properties": {
+          "semantic_field_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_schema_presence": {
+            "type": "string",
+            "minLength": 1
+          },
+          "normalized_location": {
+            "type": "string",
+            "minLength": 1
+          },
+          "governing_rule": {
+            "type": "string",
+            "minLength": 1
+          },
+          "meaning": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "unknown_or_duplicate_fields": {
+      "const": "fail_closed"
+    },
+    "field_inventory_schema": {
+      "const": "architecture-interpretation/1.2/field-dispositions.schema"
+    },
+    "semanticDependencies": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "coverage_rule_id": {
+      "const": "schema_field_closure_after_child_unit_boundaries"
+    },
+    "destination_catalog": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "kind",
+          "record"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "normalized_entity",
+              "normalized_custom_extension",
+              "canonical_relationship",
+              "compatibility_projection",
+              "semantic_extension",
+              "child_membership",
+              "normalized_normative_proposition",
+              "no_normalized_value"
+            ]
+          },
+          "record": {
+            "enum": [
+              "normalized_entity",
+              "normalized_entity.extension",
+              "canonical_relationship",
+              "compatibility_relationship_record",
+              "normalized_entity_or_owner",
+              "owner_semantic_unit",
+              "parent_semantic_unit",
+              "normative_proposition",
+              "none"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^/.*$"
+          },
+          "path_template": {
+            "type": "string",
+            "minLength": 1
+          },
+          "key": {
+            "const": "semantic_field_key"
+          },
+          "value": {
+            "enum": [
+              "complete_typed_json"
+            ]
+          },
+          "reference": {
+            "const": "uuid_v7"
+          },
+          "ordering": {
+            "const": "ordered_sequence"
+          },
+          "items": {
+            "const": "owner_local_topology_key"
+          },
+          "tuple": {
+            "const": "compatibility_relationship_semantics"
+          },
+          "member_identity": {
+            "const": "canonical_uuidv7"
+          },
+          "child_payload_owner": {
+            "const": "child_semantic_unit"
+          },
+          "owner_identity": {
+            "const": "owner_uuid_plus_topology_key"
+          }
+        },
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "normalized_entity"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "path"
+              ],
+              "properties": {
+                "record": {
+                  "const": "normalized_entity"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "normalized_custom_extension"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "path"
+              ],
+              "properties": {
+                "record": {
+                  "const": "normalized_entity.extension"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "canonical_relationship"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "path"
+              ],
+              "properties": {
+                "record": {
+                  "const": "canonical_relationship"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "compatibility_projection"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "path",
+                "tuple"
+              ],
+              "properties": {
+                "record": {
+                  "const": "compatibility_relationship_record"
+                },
+                "tuple": {
+                  "const": "compatibility_relationship_semantics"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "semantic_extension"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "path_template",
+                "key",
+                "value"
+              ],
+              "properties": {
+                "key": {
+                  "const": "semantic_field_key"
+                },
+                "value": {
+                  "const": "complete_typed_json"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "child_membership"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "path_template",
+                "member_identity",
+                "child_payload_owner"
+              ],
+              "properties": {
+                "record": {
+                  "const": "parent_semantic_unit"
+                },
+                "member_identity": {
+                  "const": "canonical_uuidv7"
+                },
+                "child_payload_owner": {
+                  "const": "child_semantic_unit"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "normalized_normative_proposition"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "path"
+              ],
+              "properties": {
+                "record": {
+                  "const": "normative_proposition"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "no_normalized_value"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "record": {
+                  "const": "none"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "ordering_vocabulary": {
+      "const": [
+        "identity_keyed_set",
+        "not_applicable",
+        "ordered_sequence",
+        "owner_declared_sequence",
+        "unordered_multiset"
+      ]
+    },
+    "matching_identity_catalog": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "scope",
+          "components"
+        ],
+        "properties": {
+          "scope": {
+            "enum": [
+              "semantic_unit",
+              "collection_member",
+              "child_semantic_unit",
+              "owner_local_value",
+              "compatibility_occurrence",
+              "canonical_relationship",
+              "owned_value",
+              "selected_contract",
+              "none"
+            ]
+          },
+          "components": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "semantic_unit_uuidv7",
+                "complete_typed_value",
+                "child_uuidv7",
+                "owner_uuidv7",
+                "topology_key",
+                "owner_uuidv7_if_material",
+                "relationship_type",
+                "resolved_from_uuidv7",
+                "resolved_to_uuidv7",
+                "authored_semantic_properties",
+                "occurrence_multiplicity",
+                "relationship_uuidv7",
+                "owning_normative_proposition_uuidv7",
+                "exact_authoring_contract_family",
+                "exact_authoring_contract_version",
+                "exact_adr_root_schema_type"
+              ]
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "derivation_rules": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "derives",
+          "semantic_choice"
+        ],
+        "properties": {
+          "derives": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "selected_authoring_contract_family",
+                "selected_authoring_contract_version",
+                "selected_exact_adr_root_schema"
+              ]
+            }
+          },
+          "semantic_choice": {
+            "const": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

@@ -7,6 +7,7 @@ import io
 import json
 import subprocess
 import sys
+import tomllib
 import tarfile
 from pathlib import Path
 
@@ -15,6 +16,47 @@ from typing import Any, cast
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_python_package_data_excludes_every_unreleased_contract_identity() -> None:
+    project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+    excluded = project["tool"]["setuptools"]["exclude-package-data"]
+    lifecycle = json.loads(
+        (ROOT / "adrs/migrations/semantic-contract-lifecycle-classification.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    released = {(entry["family"], entry["version"]) for entry in lifecycle["released_contracts"]}
+    definitions = ROOT / "contracts/semantic-contract/v1.0/definitions"
+    candidate_ids = {
+        (value["semanticContractFamily"], value["semanticContractVersion"])
+        for path in definitions.glob("*.json")
+        if (value := json.loads(path.read_text(encoding="utf-8")))
+        and (value["semanticContractFamily"], value["semanticContractVersion"]) not in released
+    }
+    semantic_exclusions = set(excluded["adr_kit.semantic_contract.v1_0"])
+    resource_exclusions = set(excluded["adr_kit.semantic_contract.v1_0.resources"])
+    manifest_lines = set((ROOT / "MANIFEST.in").read_text(encoding="utf-8").splitlines())
+    for family, version in candidate_ids:
+        stem = f"{family}-{version}"
+        assert f"{stem}.json" in semantic_exclusions
+        assert f"definitions/{stem}.json" in semantic_exclusions
+        assert f"{stem}-*.json" in resource_exclusions
+        assert f"exclude src/adr_kit/semantic_contract/v1_0/{stem}.json" in manifest_lines
+        assert (
+            f"exclude src/adr_kit/semantic_contract/v1_0/definitions/{stem}.json" in manifest_lines
+        )
+        assert (
+            f"recursive-exclude src/adr_kit/semantic_contract/v1_0/resources {stem}-*.json"
+            in manifest_lines
+        )
+    assert "custom-entity-1.0-*.json" in resource_exclusions
+    assert (
+        "recursive-exclude src/adr_kit/semantic_contract/v1_0/resources custom-entity-1.0-*.json"
+        in manifest_lines
+    )
+    assert "*.json" in excluded["adr_kit.schema.v2_5"]
+    assert "prune src/adr_kit/schema/v2_5" in manifest_lines
 
 
 def _release_utility(*arguments: str) -> subprocess.CompletedProcess[str]:
@@ -277,11 +319,10 @@ def test_publish_workflow_is_promotion_only_and_scopes_oidc() -> None:
         assert "3.14" in text
         assert "Record interpreter" in text
         assert "python --version" in text
-        assert "release_manifest.py" in text
-        assert "verify" in text
-        assert "expected-source-commit" in text
-        assert "expected-version" in text
-        assert "expected-tag" in text
+        assert "release_authority_promotion.py verify" in text
+        assert "release_authority_promotion.py download" in text
+        assert '--source "$SOURCE"' in text
+        assert '--certification-run "$CERTIFICATION"' in text
         assert "pip install .[dev]" not in text
         assert "python -m build" not in text
         assert '-m", "build"' not in text and '("-m", "build")' not in text
@@ -289,8 +330,8 @@ def test_publish_workflow_is_promotion_only_and_scopes_oidc() -> None:
         assert "governance-checks" not in text
         assert "pip_audit" not in text
     assert "resolve_qualified_release_bundle.py" in resolve_text
-    assert "download-artifact" in resolve_text
-    assert "download-artifact" in publish_text
+    assert "attestation_digest" in resolve_text
+    assert "--expected-attestation-digest" in publish_text
     assert "gh-action-pypi-publish" in publish_text
     assert "os-portability" not in yaml.dump(workflow)
     assert "os-wheel-smoke" not in yaml.dump(workflow)
@@ -308,7 +349,7 @@ def test_npm_publish_workflow_is_promotion_only_and_uses_trusted_publishing_runt
     assert isinstance(trigger, dict)
     assert trigger["push"]["tags"] == ["v*"]
     assert resolve["permissions"] == {"contents": "read", "actions": "read"}
-    assert publish["permissions"] == {"contents": "read", "id-token": "write"}
+    assert publish["permissions"] == {"contents": "read", "actions": "read", "id-token": "write"}
     assert publish["environment"]["name"] == "npm"
     assert publish["needs"] == ["resolve-bundle"]
 
@@ -317,7 +358,9 @@ def test_npm_publish_workflow_is_promotion_only_and_uses_trusted_publishing_runt
     assert "npm@11.15.0" in publish_text
     assert "npm publish" in publish_text
     assert "--provenance" in publish_text
-    assert "download-artifact" in publish_text
+    assert "release_authority_promotion.py download" in publish_text
+    assert "release_authority_promotion.py verify" in publish_text
+    assert "--expected-attestation-digest" in publish_text
     assert "check_npm_publication.py" in publish_text
     assert "publication_status" in publish_text
     assert "noop" in publish_text
@@ -365,33 +408,101 @@ def test_pr_feedback_is_fast_and_semantically_explicit() -> None:
     assert workflow["concurrency"]["cancel-in-progress"] is True
     jobs = workflow["jobs"]
     assert set(jobs) == {
-        "semantic-core-artifact",
-        "python-semantic",
         "rust-semantic-core",
+        "python-semantic",
         "typescript-consumer",
         "governance",
         "quality-ratchets",
     }
+    assert (
+        jobs["rust-semantic-core"]["uses"] == "./.github/workflows/semantic-core-qualification.yml"
+    )
+    assert jobs["rust-semantic-core"]["name"] == "Rust semantic core"
 
     python_text = _job_steps_text(jobs["python-semantic"])
     assert "run_pr_feedback.py" in python_text
     assert "run_source_compat.py" in python_text
+    assert "python -m pytest -m fast --durations=10" in python_text
     assert "--durations=30" not in python_text
-    assert "python -m pytest" not in python_text
 
     node_text = _job_steps_text(jobs["typescript-consumer"])
     for command in ("npm run build", "npm run typecheck", "npm test", "browser:check"):
         assert command in node_text
     assert "npm audit" not in node_text
     assert "npm run pack:check" not in node_text
-    assert "upload-artifact" in _job_steps_text(jobs["semantic-core-artifact"])
+    producer = _load_workflow("semantic-core-qualification.yml")
+    producer_text = _job_steps_text(producer["jobs"]["semantic-core"])
+    for command in (
+        "cargo test --manifest-path core/Cargo.toml",
+        "scripts/build_semantic_core.mjs",
+        "scripts/verify_semantic_core_artifact.py",
+        "upload-artifact",
+    ):
+        assert command in producer_text
 
     for name, job in jobs.items():
         text = _job_steps_text(job)
         assert "release_manifest.py" not in text
         assert "python -m build" not in text
-        if name != "semantic-core-artifact":
+        if name != "rust-semantic-core":
             assert "upload-artifact" not in text
+
+    producer = _load_workflow("semantic-core-qualification.yml")["jobs"]["semantic-core"]
+    assert "actions/upload-artifact@v4" in _job_steps_text(producer)
+    for workflow_name, consumer_jobs in (
+        ("pr-feedback.yml", ("python-semantic", "typescript-consumer", "governance")),
+        (
+            "integration-assurance.yml",
+            ("source-compatibility", "typescript-consumer", "governance", "full-python-coverage"),
+        ),
+    ):
+        workflow_jobs = _load_workflow(workflow_name)["jobs"]
+        for job_name in consumer_jobs:
+            expected_dependency = (
+                "rust-semantic-core" if workflow_name == "pr-feedback.yml" else "semantic-core"
+            )
+            dependencies = workflow_jobs[job_name].get("needs", [])
+            if isinstance(dependencies, str):
+                dependencies = [dependencies]
+            assert expected_dependency in dependencies
+            text = _job_steps_text(workflow_jobs[job_name])
+            assert "actions/download-artifact@v4" in text
+            assert "semantic_core_artifact_bundle.py consume" in text
+            assert "--source-commit" in text
+
+
+def test_semantic_core_bootstrap_precedes_strict_qualification_and_is_not_consumed() -> None:
+    producer = _load_workflow("semantic-core-qualification.yml")["jobs"]["semantic-core"]
+    steps = producer["steps"]
+    names = [step.get("name", "") for step in steps]
+    build = next(i for i, name in enumerate(names) if "Build WASM without changing" in name)
+    bootstrap = next(i for i, name in enumerate(names) if "UNQUALIFIED" in name)
+    upload = next(
+        i
+        for i, step in enumerate(steps)
+        if step.get("uses") == "actions/upload-artifact@v4"
+        and "bootstrap" in step.get("with", {}).get("name", "")
+    )
+    guard = next(i for i, name in enumerate(names) if "Guard semantic-core source" in name)
+    equality = next(i for i, name in enumerate(names) if "Verify source-built artifact" in name)
+    qualified_bundle = next(
+        i for i, name in enumerate(names) if "Create commit-bound artifact bundle" in name
+    )
+    assert build < bootstrap < upload < guard < equality < qualified_bundle
+    assert steps[build]["run"].endswith("--artifact-only")
+    assert "--built-artifact" in steps[guard]["run"]
+    assert "semantic-core-${{ steps.source.outputs.commit }}" not in steps[upload]["with"]["name"]
+
+    for workflow_name in (
+        "pr-feedback.yml",
+        "integration-assurance.yml",
+        "release-certification.yml",
+    ):
+        workflow_text = (ROOT / ".github" / "workflows" / workflow_name).read_text(encoding="utf-8")
+        assert "semantic-core-bootstrap-" not in workflow_text
+    assert "semantic_core_artifact_bundle.py consume" in (
+        ROOT / ".github" / "workflows" / "release-certification.yml"
+    ).read_text(encoding="utf-8")
 
 
 def test_integration_assurance_owns_full_suite_and_develop_runs_it() -> None:
@@ -414,10 +525,18 @@ def test_integration_assurance_owns_full_suite_and_develop_runs_it() -> None:
     assert "--cov=adr_kit" in coverage_text
     assert "--cov-fail-under=80" in coverage_text
     assert "--durations=30" in coverage_text
+    assert '-m "not governance"' in coverage_text
+    governance_text = _job_steps_text(jobs["governance"])
+    assert "python -m pytest -m governance --durations=30" in governance_text
+    assert "adr governance-checks --skip-tests" in governance_text
+    assert "adr repair-canonical-ids --check" in governance_text
+    assert "adr validate-generated-docs" in governance_text
+    assert "adr validate-system-overview" in governance_text
     os_port = jobs["os-portability"]
     assert set(os_port["strategy"]["matrix"]["os"]) == {"windows-latest", "macos-latest"}
     assert "--durations=30" in _job_steps_text(os_port)
     assert "release-artifacts" not in jobs
+    assert jobs["semantic-core"]["uses"] == "./.github/workflows/semantic-core-qualification.yml"
 
 
 def test_develop_assurance_enforces_post_release_branch_synchronization() -> None:
@@ -445,17 +564,8 @@ def test_release_certification_owns_retained_artifacts_and_release_only_checks()
     assert "workflow_dispatch" not in trigger
     jobs = workflow["jobs"]
     assert jobs["integration"]["uses"] == "./.github/workflows/integration-assurance.yml"
-    assert jobs["release-artifacts"]["needs"] == ["integration", "semantic-core-qualification"]
-    semantic_core = jobs["semantic-core-qualification"]
-    semantic_core_text = _job_steps_text(semantic_core)
-    assert "cargo test --manifest-path core/Cargo.toml" in semantic_core_text
-    assert "scripts/build_semantic_core.mjs" in semantic_core_text
-    assert "scripts/verify_semantic_core_artifact.py" in semantic_core_text
-    assert "tests/test_semantic_core_conformance.py" in semantic_core_text
-    assert "npm test" in semantic_core_text
-    assert semantic_core_text.index("scripts/build_semantic_core.mjs") < semantic_core_text.index(
-        "pip install .[dev]"
-    )
+    assert jobs["integration"]["with"]["full_os_portability"] is True
+    assert jobs["release-artifacts"]["needs"] == "integration"
     assert jobs["wheel-smoke"]["needs"] == "release-artifacts"
     assert jobs["os-wheel-smoke"]["needs"] == "release-artifacts"
     for name in ("release-artifacts", "reproducibility", "benchmark-smoke"):
@@ -473,6 +583,51 @@ def test_release_certification_owns_retained_artifacts_and_release_only_checks()
     os_wheel = jobs["os-wheel-smoke"]
     assert set(os_wheel["strategy"]["matrix"]["os"]) == {"windows-latest", "macos-latest"}
     assert "download-artifact" in _job_steps_text(os_wheel)
+
+    portability = _load_workflow("portability-assurance.yml")
+    portability_trigger = _workflow_trigger(portability)
+    assert "schedule" in portability_trigger
+    assert "workflow_dispatch" in portability_trigger
+    resolver = portability["jobs"]["resolve-source"]
+    resolver_ref = resolver["steps"][0]["with"]["ref"]
+    assert "github.event_name == 'schedule'" in resolver_ref
+    assert "refs/heads/develop" in resolver_ref
+    assert "github.sha" in resolver_ref
+    assert "git rev-parse HEAD" in _job_steps_text(resolver)
+    assert resolver["outputs"]["source_commit"] == "${{ steps.source.outputs.commit }}"
+
+    portability_core = portability["jobs"]["semantic-core"]
+    assert portability_core["needs"] == "resolve-source"
+    assert portability_core["uses"] == ("./.github/workflows/semantic-core-qualification.yml")
+    assert portability_core["with"]["source_ref"] == (
+        "${{ needs.resolve-source.outputs.source_commit }}"
+    )
+    producer = _load_workflow("semantic-core-qualification.yml")
+    producer_trigger = _workflow_trigger(producer)
+    producer_call = producer_trigger["workflow_call"]
+    assert producer_call["inputs"]["source_ref"]["type"] == "string"
+    assert producer_call["outputs"]["source_commit"]["value"] == (
+        "${{ jobs.semantic-core.outputs.source_commit }}"
+    )
+    producer_job = producer["jobs"]["semantic-core"]
+    assert producer_job["steps"][0]["with"]["ref"] == "${{ inputs.source_ref || github.sha }}"
+    producer_text = _job_steps_text(producer_job)
+    assert "git rev-parse HEAD" in producer_text
+    assert "${{ steps.source.outputs.commit }}" in producer_text
+
+    portability_suite = portability["jobs"]["full-os-suite"]
+    assert portability_suite["needs"] == "semantic-core"
+    assert portability_suite["steps"][0]["with"]["ref"] == (
+        "${{ needs.semantic-core.outputs.source_commit }}"
+    )
+    assert set(portability_suite["strategy"]["matrix"]["os"]) == {
+        "windows-latest",
+        "macos-latest",
+    }
+    portability_text = _job_steps_text(portability_suite)
+    assert "semantic-core-${{ needs.semantic-core.outputs.source_commit }}" in portability_text
+    assert '--source-commit "${{ needs.semantic-core.outputs.source_commit }}"' in portability_text
+    assert "python -m pytest --durations=30" in portability_text
 
 
 def test_publishing_workflows_resolve_main_release_certification() -> None:
@@ -504,3 +659,13 @@ def test_local_pre_push_checks_include_v15_attribution_invariants() -> None:
         "tests/test_attribution_cli.py",
     ):
         assert path in script
+
+
+def test_pr_feedback_runner_includes_exact_current_output_byte_golden() -> None:
+    from scripts.run_pr_feedback import SEMANTIC_TESTS
+
+    assert "tests/test_authoring_construction_v11_contract.py" in SEMANTIC_TESTS
+    assert (
+        "tests/golden/test_current_outputs.py::test_current_outputs_match_expected_bytes"
+        in SEMANTIC_TESTS
+    )

@@ -1,10 +1,11 @@
-"""Require tracked WASM artifacts whenever semantic-core source changes."""
+"""Require tracked WASM updates or prove unchanged bytes with a fresh build."""
 
 from __future__ import annotations
 
 import json
 import os
 import subprocess
+import argparse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -13,6 +14,33 @@ ARTIFACTS = {
     "packages/node/src/generated/semantic-core.wasm",
 }
 SOURCE_PREFIXES = ("core/src/", "core/Cargo.toml", "core/Cargo.lock")
+
+
+def verify_unchanged_artifacts(built: Path | None = None) -> None:
+    # Internal/test-only Rust can optimize out completely. Never accept that
+    # assertion from a change label or stale target file: build this checkout.
+    if built is None:
+        subprocess.run(
+            [
+                "cargo",
+                "build",
+                "--manifest-path",
+                str(ROOT / "core/Cargo.toml"),
+                "--target",
+                "wasm32-unknown-unknown",
+                "--release",
+            ],
+            cwd=ROOT,
+            check=True,
+        )
+        built = ROOT / "core/target/wasm32-unknown-unknown/release/adr_kit_semantic_core.wasm"
+    expected = built.read_bytes()
+    if not expected or any((ROOT / path).read_bytes() != expected for path in ARTIFACTS):
+        raise SystemExit(
+            "semantic-core source-built bytes differ from tracked host artifacts; "
+            "build and commit both current host copies"
+        )
+    print("fresh source build proves both tracked host artifacts unchanged")
 
 
 def changed_files() -> set[str]:
@@ -31,15 +59,17 @@ def changed_files() -> set[str]:
 
 
 def main() -> int:
-    changed = changed_files()
-    semantic_source_changed = any(
-        path.startswith(SOURCE_PREFIXES) for path in changed
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--built-artifact",
+        type=Path,
+        help="reuse a fresh artifact built earlier in this exact workflow run",
     )
+    arguments = parser.parse_args()
+    changed = changed_files()
+    semantic_source_changed = any(path.startswith(SOURCE_PREFIXES) for path in changed)
     if semantic_source_changed and not ARTIFACTS.issubset(changed):
-        raise SystemExit(
-            "semantic-core source changed without both tracked host WASM artifacts; "
-            "build and commit the current source-built artifact"
-        )
+        verify_unchanged_artifacts(arguments.built_artifact)
     print("semantic-core source/artifact change guard passed")
     return 0
 

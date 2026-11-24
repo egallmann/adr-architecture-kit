@@ -2,7 +2,11 @@
 
 from __future__ import annotations
 
+import pytest
+
 from adr_kit.core import execute_semantic_core_request
+
+pytestmark = pytest.mark.fast
 
 
 def _valid_v10_contract_request(version: str) -> dict[str, object]:

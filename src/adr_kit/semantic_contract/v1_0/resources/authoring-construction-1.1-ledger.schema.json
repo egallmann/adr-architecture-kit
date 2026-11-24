@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/semantic-contract/resources/authoring-construction/1.1/ledger.schema.json",
+  "title": "ACC 1.1 whole-result semantic ledger",
+  "type": "object",
+  "required": ["ledger_version", "semantic_units", "relationships", "unresolved"],
+  "properties": {
+    "ledger_version": {"const": "authoring-construction-semantic-ledger/1.1"},
+    "semantic_units": {"type": "array", "items": {"$ref": "#/$defs/semantic_unit"}},
+    "relationships": {"type": "array", "items": {"$ref": "#/$defs/relationship"}},
+    "unresolved": {"type": "array", "items": {"$ref": "#/$defs/unresolved"}}
+  },
+  "$defs": {
+    "identity": {
+      "type": "object",
+      "required": ["identity_kind", "components"],
+      "properties": {
+        "identity_kind": {"enum": ["canonical_uuidv7", "topology_owner_key", "ai12_semantic_tuple"]},
+        "components": {"type": "array", "minItems": 1, "items": {}}
+      },
+      "additionalProperties": false
+    },
+    "field": {
+      "type": "object",
+      "required": ["semantic_field_key", "value"],
+      "properties": {
+        "semantic_field_key": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*/[a-z][a-z0-9_-]*#(?:/(?:[^~/]|~[01])*)*$"},
+        "value": {},
+        "ordering": {"enum": ["unordered_set", "unordered_multiset", "ordered_sequence", "scalar_or_object"]}
+      },
+      "additionalProperties": false
+    },
+    "semantic_unit": {
+      "type": "object",
+      "required": ["semantic_type", "identity", "fields"],
+      "properties": {
+        "semantic_type": {"type": "string", "minLength": 1},
+        "identity": {"$ref": "#/$defs/identity"},
+        "fields": {"type": "array", "items": {"$ref": "#/$defs/field"}}
+      },
+      "additionalProperties": false
+    },
+    "relationship": {
+      "type": "object",
+      "required": ["relationship_class", "identity", "relationship_type", "from_identity", "to_identity", "semantic_properties", "multiplicity"],
+      "properties": {
+        "relationship_class": {"enum": ["canonical", "custom_qualified", "topology", "composition_derived", "compatibility_projection"]},
+        "identity": {"$ref": "#/$defs/identity"},
+        "relationship_type": {"type": "string", "minLength": 1},
+        "from_identity": {"$ref": "#/$defs/identity"},
+        "to_identity": {"$ref": "#/$defs/identity"},
+        "qualification": {"type": ["object", "null"]},
+        "semantic_properties": {"type": "object"},
+        "multiplicity": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "unresolved": {
+      "type": "object",
+      "required": ["unresolved_kind", "semantic_identity", "expected_target", "reason_code"],
+      "properties": {
+        "unresolved_kind": {"type": "string", "minLength": 1},
+        "semantic_identity": {"$ref": "#/$defs/identity"},
+        "expected_target": {"type": ["string", "null"]},
+        "reason_code": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]+$"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -84,35 +84,63 @@ Generic TDD tutorials are intentionally not maintained in this repository.
 | Governance | `adr governance-checks` |
 | Schema parity | see below |
 
-CI stratifies these checks by lifecycle. Pull requests run the explicit semantic
-and SDK contract collection, Rust and Node/TypeScript checks, governance, and
-quality ratchets in **`.github/workflows/pr-feedback.yml`**. Pushes to
-`develop` run **`.github/workflows/develop-assurance.yml`**, which calls the
-full integration assurance workflow for the complete Python suite and coverage,
-Windows/macOS portability, dependency audit, Rust, Python/Node parity, and
-governance. Pushes to `main` run **`.github/workflows/release-certification.yml`**;
-that path adds an explicit source-built semantic-core/WASM qualification gate,
-the retained Python/npm bundle, packaged WASM identity, retained wheel smoke
-tests, fixed-epoch reproducibility, and benchmark determinism. A release
-candidate cannot be retained unless the Rust core tests, source-built WASM
-artifact, Python binding, and Node binding all pass that gate.
-Tag publishers only promote the retained bundle from that successful `main`
-certification run.
+CI stratifies these checks by lifecycle. Pull requests run the explicit
+developer/TDD fast suite, the broader semantic and SDK contract collection,
+Rust source qualification, Node/TypeScript checks, governance, and quality
+ratchets in **`.github/workflows/pr-feedback.yml`**. A
+single producer job tests the Rust core, builds the source WASM, verifies its
+identity, and publishes a commit-bound artifact for dependent jobs. Pushes to
+`develop` run **`.github/workflows/develop-assurance.yml`**: the non-governance
+behavioral/integration/cross-host Python suite with canonical coverage, plus the
+governance-marked pytest assertions in the governance job. Together these lanes
+exercise the complete Python assertion inventory; repository-state governance
+commands, Python/Node parity, dependency, and quality assurance also remain
+required. Full Windows/macOS source suites run weekly against the resolved
+`develop` commit or on demand through
+**`.github/workflows/portability-assurance.yml`**, and again during release
+certification. Pushes to `main` run
+**`.github/workflows/release-certification.yml`**, which also qualifies the exact
+retained Python/npm bundle, packaged WASM identity, retained-wheel smoke tests,
+fixed-epoch reproducibility, and benchmark determinism. Release qualification
+therefore retains cross-platform evidence without spending the full OS-suite cost
+on every ordinary develop push.
+Tag publishers admit the retained bundle only after the exact-source main-push
+certification and the durable authority-promotion evidence required by ADR-L-0040.
 
 ---
 
 ## Running Tests
 
 ```bash
-# Full test suite
-pytest
+# Developer/TDD fast suite (isolated behavior and contract tests)
+python -m pytest -m fast --durations=10
 
-# With coverage report
-python -m pytest --cov=adr_kit --cov-report=term-missing --cov-fail-under=80
+# Focus one file or case
+python -m pytest tests/test_schema_validation.py -q
+python -m pytest -k "scope" -q
 
-# Specific test file
-pytest tests/test_schema_validation.py -v
+# Full source suite
+python -m pytest --durations=30
+
+# Full suite with canonical coverage gate
+python -m pytest --durations=30 --cov=adr_kit --cov-report=term-missing --cov-fail-under=80
+
+# PR fast/TDD plus semantic/source collections
+python -m pytest -m fast --durations=10
+python scripts/run_pr_feedback.py
+
+# Governance pytest assertions and repository-state checks
+python -m pytest -m governance --durations=30
+adr governance-checks --skip-tests
 ```
+
+Pytest registers `fast`, `integration`, `governance`, `crosshost`, and
+`benchmark` assurance layers. Tests without an explicit layer remain in the
+complete suite as `integration`; accidental multiple-layer classification fails
+collection. Use `-m fast` only for the TDD loop, not as a replacement for the
+complete suite or lifecycle gates. PR Feedback reports the fast suite's count,
+slowest tests, and duration separately. CI reports test counts and slowest tests;
+workflow job durations provide the lane-level timing record.
 
 ---
 
@@ -221,8 +249,9 @@ This repository uses a controlled feature → develop → release → main flow:
    The PR template will prompt you for the required checklist.
 6. Release branches are cut from admitted `develop`, prepare package version /
    changelog only, and open a release PR against `main`.
-7. `main` is publication/release admission. Create the release tag only after
-   the release PR is admitted to `main`.
+7. `main` is publication/release admission. Create the annotated release tag only
+   after exact-source Release Certification, authorized cohort promotion, and the
+   durable evidence PR are complete; follow the ordered procedure below.
 8. After both registries report the released version, synchronize the exact
    released `main` state back into `develop` through a reviewed post-release
    synchronization PR. The synchronization is not complete until the
@@ -273,41 +302,79 @@ The **link** is that PyPI trusts *that GitHub repo + that workflow file* to uplo
    authority.
 4. Convert [`CHANGELOG.md`](CHANGELOG.md) `[Unreleased]` into a dated section for that
    version and restore an empty `[Unreleased]` heading.
-5. Open a release pull request against `main`. After admission, **wait for the successful
-   Release Certification `push` run on that `main` commit** (release-eligible qualification).
-6. Only then create the exact tag `v<project-version>` (for example, `v0.4.0`) on that
-   admitted `main` commit while the qualifying `release-bundle` artifact is still retained.
-7. The tag workflow is promotion-only: it resolves the successful **main `push`** Release
-   Certification run for the tagged SHA, downloads that exact retained bundle, verifies
-   source commit / package version / tag / hashes, and publishes without rebuilding or
-   re-running pytest, coverage, governance, OS matrices, or the retained-wheel matrix.
-   PR and develop qualification runs are **not** release-eligible, even for the same SHA.
+5. Open a release pull request against `main`. After admission, wait for successful
+   Release Certification on the exact resulting `main` push SHA. Retain its exact
+   `release-bundle`; PR/develop qualification is not release admission.
+6. Before tagging, dispatch `.github/workflows/authority-promotion.yml` on `main`
+   with that certification run ID. The workflow must be present on the default
+   branch; the release PR brings it onto `main` for the first use. Confirm the
+   `semantic-authority-promotion` environment has required reviewers including an
+   authorized `PROJECT.yaml` approver, permits the authorized owner to approve the
+   run they dispatched, and disallows administrator bypass. Review the computed
+   source/cohort statement and retained inventory before approving. The workflow
+   verifies the actual approval and emits an external attestation artifact.
+7. After the promotion workflow succeeds, record its exact attestation bytes in
+   the evidence-only PR at `.github/authority-promotions/<main-source-sha>.json`.
+   Review and merge that PR to `main`; it must not alter the certified source or
+   retained bundle. This durable evidence is required before publication.
+8. Only after the evidence PR is merged, create and push the annotated
+   `v<project-version>` tag pointing to the exact certified `main` source SHA
+   (which is an ancestor of the evidence commit). The tag publishers resolve the
+   successful certification run and independently verify the retained bundle,
+   durable promotion evidence, source, version, tag, and hashes before publishing.
+   They do not rebuild packages. PyPI and npm publication remain separate jobs with
+   their existing environment/OIDC controls.
+9. Verify that both publisher workflows succeeded and that the registries expose
+   the intended version. A workflow dispatch or tag event alone is not proof of
+   publication. If a publish attempt fails, use its supported retry path against
+   the same tag and retained certified bundle; never rebuild or retarget the tag.
 
-8. Synchronize the released state back into `develop` after publication succeeds:
+10. Synchronize the released state back into `develop` after publication succeeds:
 
-   ```bash
-   git fetch origin main develop
-   git switch -c post-release/<version> origin/develop
-   git merge --no-ff origin/main -m "chore: synchronize main after <version>"
-   git push -u origin post-release/<version>
-   gh pr create --base develop --head post-release/<version> \
-     --title "chore: synchronize develop after <version>"
-   ```
+    ```bash
+    git fetch origin main develop
+    git switch -c post-release/<version> origin/develop
+    git merge --no-ff origin/main -m "chore: synchronize main after <version>"
+    git push -u origin post-release/<version>
+    gh pr create --base develop --head post-release/<version> \
+      --title "chore: synchronize develop after <version>"
+    ```
 
-   Wait for the PR checks, merge the synchronization PR with a merge commit, and
-   then wait for the successful **develop `push`** Develop Assurance run on the
-   resulting merge SHA. Verify the final state with:
+    Wait for the PR checks, merge the synchronization PR with a merge commit, and
+    then wait for the successful **develop `push`** Develop Assurance run on the
+    resulting merge SHA. Verify the final state with:
 
-   ```bash
-   python scripts/verify_release_branch_sync.py \
-     --main-ref origin/main \
-     --release-ref v<version> \
-     --develop-ref origin/develop \
-     --expected-version <version>
-   ```
+    ```bash
+    python scripts/verify_release_branch_sync.py \
+      --main-ref origin/main \
+      --release-ref v<version> \
+      --develop-ref origin/develop \
+      --expected-version <version>
+    ```
 
-   This step is required even when the release PR itself merged cleanly: release
-   metadata and release-only governance fixes must not remain stranded on `main`.
+    This step is required even when the release PR itself merged cleanly: release
+    metadata and release-only governance fixes must not remain stranded on `main`.
+
+### v0.13.0 consolidation scope
+
+The v0.13.0 release follows accepted ADR-L-0042 and the owner-selected
+lifecycle-governed consolidation path. It promises only capabilities demonstrated
+by its released authority, public interfaces, and exact release evidence. It does
+not claim completion of **Forward Semantic Execution Completion**: all 27 semantic
+types, all 455 destination obligations, the 215 currently BLOCKED destinations,
+and the objective's independent execution-qualification criteria remain in force.
+The distribution cohort must be selected from released lifecycle authority only;
+development candidates (AI 1.2–1.5, ACC 1.1–1.5, and NM 2.5) remain in canonical
+`contracts/` sources and are excluded from wheel, sdist, npm, and the
+certified/promoted cohort. Recompute and review the
+actual release inventory for the release source; rehearsal counts or digests are not
+substitutes for certification evidence.
+
+Before starting the release, the owner must verify live GitHub environment and
+publisher configuration. Repository documentation cannot prove reviewer settings,
+bypass protection, or PyPI/npm Trusted Publisher state. The exact promotion
+environment requirements and fail-closed recovery steps are documented in
+[authority-promotion enforcement](docs/contributors/authority-promotion-enforcement.md).
 
 Qualification evidence axes on a release-eligible `main` push:
 

@@ -1,0 +1,682 @@
+{
+  "registry_id": "adrkit.implementation-layout-registry",
+  "registry_version": "1.0",
+  "authority": "consumer_namespace",
+  "definitions": [
+    {
+      "semantic_kind": "relationship",
+      "semantic_type": "adrkit:contains_domain",
+      "consumer_namespace": "adrkit",
+      "contract_version": "1.0",
+      "contract_fingerprint": "cecf:v1:sha256:7460e7c1707c7e6abe05c7f685b709f9e4b6766b2da4405ebabf4a6f92f8fb53",
+      "display_name": "Contains Domain",
+      "description": "Explicitly associates one implementation domain with its governed implementation layout.",
+      "relationship_mode": "custom_explicit",
+      "identity_policy": {
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "supplied_identity": "preserve",
+        "establishment": "create_when_absent",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "hash",
+          "source_location",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "alias_policy": {
+        "fields": [
+          "alias_id",
+          "alias_name"
+        ],
+        "orientation": "alias_id_stable_name_descriptive",
+        "allocation_authority": "consumer",
+        "reservation": "outside_construction",
+        "canonical_foreign_key": false
+      },
+      "field_contract": {
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name",
+          "relationship_type",
+          "from_entity_id",
+          "to_entity_id",
+          "properties",
+          "rationale"
+        ],
+        "optional_fields": [],
+        "forbidden_fields": [
+          "topology_key",
+          "from_key",
+          "to_key"
+        ],
+        "unknown_field_policy": "reject",
+        "fields": {
+          "id": {
+            "type": "string"
+          },
+          "alias_id": {
+            "type": "string"
+          },
+          "alias_name": {
+            "type": "string"
+          },
+          "relationship_type": {
+            "type": "string"
+          },
+          "from_entity_id": {
+            "type": "string"
+          },
+          "to_entity_id": {
+            "type": "string"
+          },
+          "properties": {
+            "type": "bounded_property_map",
+            "max_properties": 0,
+            "key_pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "value_types": [
+              "string",
+              "integer",
+              "number",
+              "boolean"
+            ],
+            "array_max_items": 1,
+            "unknown_property_policy": "reject",
+            "nested_objects": false
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      },
+      "reference_policy": {
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "qualified_custom_type"
+        ],
+        "reference_fields": [
+          "from_entity_id",
+          "to_entity_id"
+        ],
+        "endpoint_representation": "canonical_uuidv7",
+        "resolution": "exact_identity_basis",
+        "unresolved": "reject",
+        "aliases_as_endpoints": false
+      },
+      "source_types": [
+        {
+          "endpoint_kind": "qualified_custom_type",
+          "semantic_type": "adrkit:implementation_layout"
+        }
+      ],
+      "target_types": [
+        {
+          "endpoint_kind": "qualified_custom_type",
+          "semantic_type": "adrkit:implementation_domain"
+        }
+      ],
+      "property_policy": {
+        "value_semantics": "bounded_scalar_or_scalar_array",
+        "unknown_property_policy": "reject",
+        "nested_objects": false,
+        "relationship_effect": "never_implies_graph_relationship",
+        "max_properties": 0,
+        "array_max_items": 1
+      },
+      "rationale": "required",
+      "cardinality": {
+        "mode": "custom_contract_declared",
+        "minimum": 0,
+        "maximum": null
+      },
+      "ordering": {
+        "mode": "contract_declared",
+        "materiality": "not_material",
+        "rule": "Relationship collection order does not affect dependency or containment meaning; endpoint identities determine each relationship."
+      },
+      "operation_posture": {
+        "create": {
+          "status": "descriptive_not_executable",
+          "permission": "qualified_contract_required",
+          "execution": false,
+          "persistence": "outside_contract_definition",
+          "alias_reservation": "outside_construction"
+        },
+        "update": {
+          "status": "descriptive_not_executable",
+          "permission": "qualified_contract_required",
+          "execution": false,
+          "persistence": "outside_contract_definition",
+          "alias_reservation": "outside_construction"
+        },
+        "reference": {
+          "status": "descriptive_not_executable",
+          "permission": "read_only_reference",
+          "execution": false,
+          "persistence": "outside_contract_definition",
+          "alias_reservation": "outside_construction"
+        },
+        "retire": {
+          "status": "descriptive_not_executable",
+          "permission": "qualified_contract_required",
+          "execution": false,
+          "persistence": "outside_contract_definition",
+          "alias_reservation": "outside_construction"
+        }
+      }
+    },
+    {
+      "semantic_kind": "relationship",
+      "semantic_type": "adrkit:depends_on_domain",
+      "consumer_namespace": "adrkit",
+      "contract_version": "1.0",
+      "contract_fingerprint": "cecf:v1:sha256:13dea4ef45e8699b4c5345b1f5ec87f41f984e737b7429afafde477ee651d7aa",
+      "display_name": "Depends on Domain",
+      "description": "Declares a direct implementation-domain dependency. Only explicitly authored relationships count; no dependency is inferred from source paths or imports.",
+      "relationship_mode": "custom_explicit",
+      "identity_policy": {
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "supplied_identity": "preserve",
+        "establishment": "create_when_absent",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "hash",
+          "source_location",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "alias_policy": {
+        "fields": [
+          "alias_id",
+          "alias_name"
+        ],
+        "orientation": "alias_id_stable_name_descriptive",
+        "allocation_authority": "consumer",
+        "reservation": "outside_construction",
+        "canonical_foreign_key": false
+      },
+      "field_contract": {
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name",
+          "relationship_type",
+          "from_entity_id",
+          "to_entity_id",
+          "properties",
+          "rationale"
+        ],
+        "optional_fields": [],
+        "forbidden_fields": [
+          "topology_key",
+          "from_key",
+          "to_key"
+        ],
+        "unknown_field_policy": "reject",
+        "fields": {
+          "id": {
+            "type": "string"
+          },
+          "alias_id": {
+            "type": "string"
+          },
+          "alias_name": {
+            "type": "string"
+          },
+          "relationship_type": {
+            "type": "string"
+          },
+          "from_entity_id": {
+            "type": "string"
+          },
+          "to_entity_id": {
+            "type": "string"
+          },
+          "properties": {
+            "type": "bounded_property_map",
+            "max_properties": 0,
+            "key_pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "value_types": [
+              "string",
+              "integer",
+              "number",
+              "boolean"
+            ],
+            "array_max_items": 1,
+            "unknown_property_policy": "reject",
+            "nested_objects": false
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      },
+      "reference_policy": {
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "qualified_custom_type"
+        ],
+        "reference_fields": [
+          "from_entity_id",
+          "to_entity_id"
+        ],
+        "endpoint_representation": "canonical_uuidv7",
+        "resolution": "exact_identity_basis",
+        "unresolved": "reject",
+        "aliases_as_endpoints": false
+      },
+      "source_types": [
+        {
+          "endpoint_kind": "qualified_custom_type",
+          "semantic_type": "adrkit:implementation_domain"
+        }
+      ],
+      "target_types": [
+        {
+          "endpoint_kind": "qualified_custom_type",
+          "semantic_type": "adrkit:implementation_domain"
+        }
+      ],
+      "property_policy": {
+        "value_semantics": "bounded_scalar_or_scalar_array",
+        "unknown_property_policy": "reject",
+        "nested_objects": false,
+        "relationship_effect": "never_implies_graph_relationship",
+        "max_properties": 0,
+        "array_max_items": 1
+      },
+      "rationale": "required",
+      "cardinality": {
+        "mode": "custom_contract_declared",
+        "minimum": 0,
+        "maximum": null
+      },
+      "ordering": {
+        "mode": "contract_declared",
+        "materiality": "not_material",
+        "rule": "Relationship collection order does not affect dependency or containment meaning; endpoint identities determine each relationship."
+      },
+      "operation_posture": {
+        "create": {
+          "status": "descriptive_not_executable",
+          "permission": "qualified_contract_required",
+          "execution": false,
+          "persistence": "outside_contract_definition",
+          "alias_reservation": "outside_construction"
+        },
+        "update": {
+          "status": "descriptive_not_executable",
+          "permission": "qualified_contract_required",
+          "execution": false,
+          "persistence": "outside_contract_definition",
+          "alias_reservation": "outside_construction"
+        },
+        "reference": {
+          "status": "descriptive_not_executable",
+          "permission": "read_only_reference",
+          "execution": false,
+          "persistence": "outside_contract_definition",
+          "alias_reservation": "outside_construction"
+        },
+        "retire": {
+          "status": "descriptive_not_executable",
+          "permission": "qualified_contract_required",
+          "execution": false,
+          "persistence": "outside_contract_definition",
+          "alias_reservation": "outside_construction"
+        }
+      }
+    },
+    {
+      "semantic_kind": "entity",
+      "semantic_type": "adrkit:implementation_domain",
+      "consumer_namespace": "adrkit",
+      "contract_version": "1.0",
+      "contract_fingerprint": "cecf:v1:sha256:1524f320486e3656cee4b8d1d65a7be1701dcd2e6c5ebfca86a417c534a06ecd",
+      "display_name": "Implementation Domain",
+      "description": "A cohesive, intentionally assigned implementation responsibility within a governed layout. It is not created merely because a directory or file exists; relative_path is mutable descriptive embodiment data.",
+      "identity_policy": {
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "supplied_identity": "preserve",
+        "establishment": "create_when_absent",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "hash",
+          "source_location",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "alias_policy": {
+        "fields": [
+          "alias_id",
+          "alias_name"
+        ],
+        "orientation": "alias_id_stable_name_descriptive",
+        "allocation_authority": "consumer",
+        "reservation": "outside_construction",
+        "canonical_foreign_key": false
+      },
+      "field_contract": {
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name",
+          "existence_state",
+          "relative_path",
+          "responsibility"
+        ],
+        "optional_fields": [],
+        "forbidden_fields": [
+          "topology_key",
+          "from_key",
+          "to_key"
+        ],
+        "unknown_field_policy": "reject",
+        "fields": {
+          "id": {
+            "type": "string"
+          },
+          "alias_id": {
+            "type": "string"
+          },
+          "alias_name": {
+            "type": "string"
+          },
+          "existence_state": {
+            "type": "string",
+            "enum": [
+              "active",
+              "retired"
+            ]
+          },
+          "relative_path": {
+            "type": "string"
+          },
+          "responsibility": {
+            "type": "string"
+          }
+        }
+      },
+      "composition_policy": {
+        "allowed_parents": [
+          "adr/physical-component"
+        ],
+        "minimum": 0,
+        "maximum": null,
+        "identity_effect": "does_not_manufacture_identity",
+        "admission_effect": "does_not_imply_governance_admission"
+      },
+      "existence_policy": {
+        "field": "existence_state",
+        "values": [
+          "active",
+          "retired"
+        ],
+        "semantic_dimension": "adr_kit_generic_existence",
+        "retire_effect": "preserve_identity_and_historical_interpretation"
+      },
+      "consumer_state_policy": {
+        "separate_from_existence": true,
+        "field_authority": "consumer_contract",
+        "replacement_of_existence_state": false
+      },
+      "relationship_participation": {
+        "outbound": [
+          {
+            "relationship_type": "adrkit:depends_on_domain",
+            "target_types": [
+              {
+                "endpoint_kind": "qualified_custom_type",
+                "semantic_type": "adrkit:implementation_domain"
+              }
+            ],
+            "minimum": 0,
+            "maximum": null,
+            "ordering": "not_material"
+          }
+        ],
+        "inbound": [
+          {
+            "relationship_type": "adrkit:contains_domain",
+            "target_types": [
+              {
+                "endpoint_kind": "qualified_custom_type",
+                "semantic_type": "adrkit:implementation_layout"
+              }
+            ],
+            "minimum": 1,
+            "maximum": 1,
+            "ordering": "not_material"
+          }
+        ],
+        "inverse_inference": "forbidden_without_declared_inverse"
+      },
+      "reference_policy": {
+        "identity_representation": "canonical_uuidv7",
+        "resolution": "exact_identity_basis",
+        "unresolved": "reject",
+        "aliases_as_identity": false
+      },
+      "operation_posture": {
+        "create": {
+          "status": "descriptive_not_executable",
+          "permission": "qualified_contract_required",
+          "execution": false,
+          "persistence": "outside_contract_definition",
+          "alias_reservation": "outside_construction"
+        },
+        "update": {
+          "status": "descriptive_not_executable",
+          "permission": "qualified_contract_required",
+          "execution": false,
+          "persistence": "outside_contract_definition",
+          "alias_reservation": "outside_construction"
+        },
+        "reference": {
+          "status": "descriptive_not_executable",
+          "permission": "read_only_reference",
+          "execution": false,
+          "persistence": "outside_contract_definition",
+          "alias_reservation": "outside_construction"
+        },
+        "retire": {
+          "status": "descriptive_not_executable",
+          "permission": "qualified_contract_required",
+          "execution": false,
+          "persistence": "outside_contract_definition",
+          "alias_reservation": "outside_construction"
+        }
+      }
+    },
+    {
+      "semantic_kind": "entity",
+      "semantic_type": "adrkit:implementation_layout",
+      "consumer_namespace": "adrkit",
+      "contract_version": "1.0",
+      "contract_fingerprint": "cecf:v1:sha256:247230fb818a91332e45e8fa1530fd04a884a2c230e6ed90fdbae1ab348ae4e7",
+      "display_name": "Implementation Layout",
+      "description": "One intentionally governed implementation layout for a physical component. It describes a bounded root and may record its primary implementation language or execution target; it is not a source inventory and its path is not identity.",
+      "identity_policy": {
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "supplied_identity": "preserve",
+        "establishment": "create_when_absent",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "hash",
+          "source_location",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "alias_policy": {
+        "fields": [
+          "alias_id",
+          "alias_name"
+        ],
+        "orientation": "alias_id_stable_name_descriptive",
+        "allocation_authority": "consumer",
+        "reservation": "outside_construction",
+        "canonical_foreign_key": false
+      },
+      "field_contract": {
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name",
+          "existence_state",
+          "root_path"
+        ],
+        "optional_fields": [
+          "language",
+          "execution_target"
+        ],
+        "forbidden_fields": [
+          "topology_key",
+          "from_key",
+          "to_key"
+        ],
+        "unknown_field_policy": "reject",
+        "fields": {
+          "id": {
+            "type": "string"
+          },
+          "alias_id": {
+            "type": "string"
+          },
+          "alias_name": {
+            "type": "string"
+          },
+          "existence_state": {
+            "type": "string",
+            "enum": [
+              "active",
+              "retired"
+            ]
+          },
+          "root_path": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "execution_target": {
+            "type": "string"
+          }
+        }
+      },
+      "composition_policy": {
+        "allowed_parents": [
+          "adr/physical-component"
+        ],
+        "minimum": 0,
+        "maximum": null,
+        "identity_effect": "does_not_manufacture_identity",
+        "admission_effect": "does_not_imply_governance_admission"
+      },
+      "existence_policy": {
+        "field": "existence_state",
+        "values": [
+          "active",
+          "retired"
+        ],
+        "semantic_dimension": "adr_kit_generic_existence",
+        "retire_effect": "preserve_identity_and_historical_interpretation"
+      },
+      "consumer_state_policy": {
+        "separate_from_existence": true,
+        "field_authority": "consumer_contract",
+        "replacement_of_existence_state": false
+      },
+      "relationship_participation": {
+        "outbound": [
+          {
+            "relationship_type": "adrkit:contains_domain",
+            "target_types": [
+              {
+                "endpoint_kind": "qualified_custom_type",
+                "semantic_type": "adrkit:implementation_domain"
+              }
+            ],
+            "minimum": 1,
+            "maximum": null,
+            "ordering": "not_material"
+          }
+        ],
+        "inbound": [],
+        "inverse_inference": "forbidden_without_declared_inverse"
+      },
+      "reference_policy": {
+        "identity_representation": "canonical_uuidv7",
+        "resolution": "exact_identity_basis",
+        "unresolved": "reject",
+        "aliases_as_identity": false
+      },
+      "operation_posture": {
+        "create": {
+          "status": "descriptive_not_executable",
+          "permission": "qualified_contract_required",
+          "execution": false,
+          "persistence": "outside_contract_definition",
+          "alias_reservation": "outside_construction"
+        },
+        "update": {
+          "status": "descriptive_not_executable",
+          "permission": "qualified_contract_required",
+          "execution": false,
+          "persistence": "outside_contract_definition",
+          "alias_reservation": "outside_construction"
+        },
+        "reference": {
+          "status": "descriptive_not_executable",
+          "permission": "read_only_reference",
+          "execution": false,
+          "persistence": "outside_contract_definition",
+          "alias_reservation": "outside_construction"
+        },
+        "retire": {
+          "status": "descriptive_not_executable",
+          "permission": "qualified_contract_required",
+          "execution": false,
+          "persistence": "outside_contract_definition",
+          "alias_reservation": "outside_construction"
+        }
+      }
+    }
+  ],
+  "registry_policy": {
+    "ordering": "canonical_semantic_json",
+    "latest": "forbidden",
+    "ambiguous_duplicate": "reject",
+    "retained_versions": "explicit_historical_versions",
+    "selection": "separate_exact_operation_source_basis"
+  }
+}

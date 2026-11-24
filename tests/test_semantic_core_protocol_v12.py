@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
-
+import pytest
 from adr_kit.core import (
     execute_validated_semantic_core_request,
     semantic_core_capabilities,
@@ -21,6 +21,8 @@ from adr_kit.core import (
 # self-binding implementation in this protocol test.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from test_authoring_construction_v10_contract import _verified_bound_conformance
+
+pytestmark = pytest.mark.fast
 
 ROOT = Path(__file__).resolve().parents[1]
 PROTOCOL = ROOT / "contracts" / "semantic-core" / "v1.2"
@@ -174,6 +176,27 @@ def test_v12_capability_negotiation_advertises_only_reachable_operations() -> No
     assert not supports_semantic_core_operation("1.1", "construct_authoring_set")
     assert supports_semantic_core_operation("1.3", "materialize_architecture")
     assert not supports_semantic_core_operation("1.3", "construct_authoring_set")
+    assert not supports_semantic_core_operation("1.4", "qualify_authoring_construction_1_1")
+    assert not supports_semantic_core_operation("1.5", "prepare_authoring_construction_basis_1_1")
+
+
+@pytest.mark.parametrize(
+    ("version", "operation"),
+    [
+        ("1.4", "qualify_authoring_construction_1_1"),
+        ("1.5", "prepare_authoring_construction_basis_1_1"),
+    ],
+)
+def test_retired_protocol_versions_return_the_unsupported_version_diagnostic(
+    version: str, operation: str
+) -> None:
+    result = execute_validated_semantic_core_request(
+        {"core_contract_version": version, "operation": operation}
+    )
+    assert result["core_contract_version"] == "1.0"
+    assert result["outcome"] == "invalid_request"
+    assert result["diagnostics"][0]["code"] == "core.invalid_request"
+    assert result["diagnostics"][0]["message"] == "unsupported core_contract_version"
 
 
 def test_v12_representative_acc_cases_execute_through_packaged_wasm() -> None:

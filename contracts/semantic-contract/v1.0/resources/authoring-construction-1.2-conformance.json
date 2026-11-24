@@ -1,0 +1,3236 @@
+{
+  "resource_kind": "authoring-construction-conformance",
+  "resource_version": "1.2",
+  "conformance_level": "frozen_authority",
+  "semanticDependencies": [
+    "authoring-construction/1.2/schema",
+    "authoring-construction/1.2/rules",
+    "authoring-construction/1.2/composition-bindings",
+    "authoring-construction/1.2/composition-bindings.schema",
+    "authoring-construction/1.2/conformance.schema"
+  ],
+  "cases": [
+    {
+      "case_id": "ACC12-01",
+      "claim": "One prepared logical ADR contains one complete decision; child artifact retained and child root omitted only after exact-subtree proof.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "binding_id",
+          "operator": "equals",
+          "expected": "adr-logical.decisions.contains.entity-decision"
+        },
+        {
+          "path": "semantic.membership",
+          "operator": "equals",
+          "expected": [
+            "01900000-0000-7000-8000-000000000002"
+          ]
+        },
+        {
+          "path": "embedded_child",
+          "operator": "equals",
+          "expected": {
+            "id": "01900000-0000-7000-8000-000000000002",
+            "alias_id": "DEC-0001",
+            "alias_name": "choice",
+            "summary": "Keep the complete fields",
+            "rationale": "Explicit authored rationale",
+            "alternatives_considered": [
+              {
+                "name": "Other",
+                "rejected_because": "Explicit reason"
+              }
+            ],
+            "consequences": {
+              "positive": [
+                "Benefit"
+              ],
+              "negative": [
+                "Cost"
+              ]
+            },
+            "related_invariants": []
+          }
+        },
+        {
+          "path": "candidate_artifact_identities",
+          "operator": "set_equals",
+          "expected": [
+            "01900000-0000-7000-8000-000000000001",
+            "01900000-0000-7000-8000-000000000002"
+          ]
+        },
+        {
+          "path": "source_root_identities",
+          "operator": "equals",
+          "expected": [
+            "01900000-0000-7000-8000-000000000001"
+          ]
+        },
+        {
+          "path": "composition_records.count",
+          "operator": "equals",
+          "expected": 1
+        },
+        {
+          "path": "composition_records.qualification",
+          "operator": "authority_is",
+          "expected": "verified_enclosing_ACC_1.2_closure_and_table_digest"
+        },
+        {
+          "path": "composition_status",
+          "operator": "equals",
+          "expected": "bound_only_after_all_semantic_and_integrity_proofs"
+        },
+        {
+          "path": "construction_outcome",
+          "operator": "equals",
+          "expected": "not_qualified_by_composition_or_publication_alone"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-02",
+      "claim": "Non-dense authored ordering selects the UUID membership sequence; fragment or composition array positions never order membership.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            },
+            {
+              "request_key": "second",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000003",
+                "alias_id": "DEC-0002",
+                "alias_name": "second",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "second",
+              "relation": "contains",
+              "ordering": 40
+            },
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "semantic.membership",
+          "operator": "equals",
+          "expected": [
+            "01900000-0000-7000-8000-000000000002",
+            "01900000-0000-7000-8000-000000000003"
+          ]
+        },
+        {
+          "path": "embedded_child_ids",
+          "operator": "equals",
+          "expected": [
+            "01900000-0000-7000-8000-000000000002",
+            "01900000-0000-7000-8000-000000000003"
+          ]
+        },
+        {
+          "path": "child_has_ordering_field",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-03",
+      "claim": "Permuting composition and fragment arrays preserves bytes after fixed identity establishment.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "left": {
+            "fragments": [
+              {
+                "request_key": "parent",
+                "semantic_type": "adr/logical",
+                "operation": "create",
+                "input_mode": "prepared",
+                "composition_keys": [],
+                "fields": {
+                  "schema_version": "1.7",
+                  "adr_type": "logical",
+                  "id": "01900000-0000-7000-8000-000000000001",
+                  "alias_id": "ADR-L-0001",
+                  "alias_name": "example",
+                  "title": "Example",
+                  "status": "proposed",
+                  "created_date": "2026-10-20",
+                  "authors": [
+                    "example"
+                  ],
+                  "context": "Explicit intent"
+                }
+              },
+              {
+                "request_key": "child",
+                "semantic_type": "entity/decision",
+                "operation": "create",
+                "input_mode": "prepared",
+                "composition_keys": [],
+                "fields": {
+                  "id": "01900000-0000-7000-8000-000000000002",
+                  "alias_id": "DEC-0001",
+                  "alias_name": "choice",
+                  "summary": "Keep the complete fields",
+                  "rationale": "Explicit authored rationale",
+                  "alternatives_considered": [
+                    {
+                      "name": "Other",
+                      "rejected_because": "Explicit reason"
+                    }
+                  ],
+                  "consequences": {
+                    "positive": [
+                      "Benefit"
+                    ],
+                    "negative": [
+                      "Cost"
+                    ]
+                  },
+                  "related_invariants": []
+                }
+              },
+              {
+                "request_key": "second",
+                "semantic_type": "entity/decision",
+                "operation": "create",
+                "input_mode": "prepared",
+                "composition_keys": [],
+                "fields": {
+                  "id": "01900000-0000-7000-8000-000000000003",
+                  "alias_id": "DEC-0002",
+                  "alias_name": "second",
+                  "summary": "Keep the complete fields",
+                  "rationale": "Explicit authored rationale",
+                  "alternatives_considered": [
+                    {
+                      "name": "Other",
+                      "rejected_because": "Explicit reason"
+                    }
+                  ],
+                  "consequences": {
+                    "positive": [
+                      "Benefit"
+                    ],
+                    "negative": [
+                      "Cost"
+                    ]
+                  },
+                  "related_invariants": []
+                }
+              }
+            ],
+            "compositions": [
+              {
+                "parent": "parent",
+                "child": "second",
+                "relation": "contains",
+                "ordering": 40
+              },
+              {
+                "parent": "parent",
+                "child": "child",
+                "relation": "contains",
+                "ordering": 10
+              }
+            ]
+          },
+          "right": {
+            "fragments": [
+              {
+                "request_key": "second",
+                "semantic_type": "entity/decision",
+                "operation": "create",
+                "input_mode": "prepared",
+                "composition_keys": [],
+                "fields": {
+                  "id": "01900000-0000-7000-8000-000000000003",
+                  "alias_id": "DEC-0002",
+                  "alias_name": "second",
+                  "summary": "Keep the complete fields",
+                  "rationale": "Explicit authored rationale",
+                  "alternatives_considered": [
+                    {
+                      "name": "Other",
+                      "rejected_because": "Explicit reason"
+                    }
+                  ],
+                  "consequences": {
+                    "positive": [
+                      "Benefit"
+                    ],
+                    "negative": [
+                      "Cost"
+                    ]
+                  },
+                  "related_invariants": []
+                }
+              },
+              {
+                "request_key": "child",
+                "semantic_type": "entity/decision",
+                "operation": "create",
+                "input_mode": "prepared",
+                "composition_keys": [],
+                "fields": {
+                  "id": "01900000-0000-7000-8000-000000000002",
+                  "alias_id": "DEC-0001",
+                  "alias_name": "choice",
+                  "summary": "Keep the complete fields",
+                  "rationale": "Explicit authored rationale",
+                  "alternatives_considered": [
+                    {
+                      "name": "Other",
+                      "rejected_because": "Explicit reason"
+                    }
+                  ],
+                  "consequences": {
+                    "positive": [
+                      "Benefit"
+                    ],
+                    "negative": [
+                      "Cost"
+                    ]
+                  },
+                  "related_invariants": []
+                }
+              },
+              {
+                "request_key": "parent",
+                "semantic_type": "adr/logical",
+                "operation": "create",
+                "input_mode": "prepared",
+                "composition_keys": [],
+                "fields": {
+                  "schema_version": "1.7",
+                  "adr_type": "logical",
+                  "id": "01900000-0000-7000-8000-000000000001",
+                  "alias_id": "ADR-L-0001",
+                  "alias_name": "example",
+                  "title": "Example",
+                  "status": "proposed",
+                  "created_date": "2026-10-20",
+                  "authors": [
+                    "example"
+                  ],
+                  "context": "Explicit intent"
+                }
+              }
+            ],
+            "compositions": [
+              {
+                "parent": "parent",
+                "child": "child",
+                "relation": "contains",
+                "ordering": 10
+              },
+              {
+                "parent": "parent",
+                "child": "second",
+                "relation": "contains",
+                "ordering": 40
+              }
+            ]
+          }
+        }
+      },
+      "assertions": [
+        {
+          "path": "parent_bytes_equal",
+          "operator": "equals",
+          "expected": true
+        },
+        {
+          "path": "composition_record_order",
+          "operator": "equals",
+          "expected": [
+            [
+              "01900000-0000-7000-8000-000000000001",
+              10,
+              "01900000-0000-7000-8000-000000000002"
+            ],
+            [
+              "01900000-0000-7000-8000-000000000001",
+              40,
+              "01900000-0000-7000-8000-000000000003"
+            ]
+          ]
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-04",
+      "claim": "Supplied UUIDv7 is preserved and optional omitted fields stay omitted; no fabricated aliases, rationale or second identity.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "embedded_child.id",
+          "operator": "equals",
+          "expected": "01900000-0000-7000-8000-000000000002"
+        },
+        {
+          "path": "embedded_child",
+          "operator": "equals",
+          "expected": {
+            "id": "01900000-0000-7000-8000-000000000002",
+            "alias_id": "DEC-0001",
+            "alias_name": "choice",
+            "summary": "Keep the complete fields",
+            "rationale": "Explicit authored rationale",
+            "alternatives_considered": [
+              {
+                "name": "Other",
+                "rejected_because": "Explicit reason"
+              }
+            ],
+            "consequences": {
+              "positive": [
+                "Benefit"
+              ],
+              "negative": [
+                "Cost"
+              ]
+            },
+            "related_invariants": []
+          }
+        },
+        {
+          "path": "identity_disposition.child",
+          "operator": "equals",
+          "expected": "preserved"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-05",
+      "claim": "Create minting precedes deterministic composition; fixed controlled environmental entropy may reproduce a fixture, independent mint operations need not.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ],
+          "test_entropy_hex": "00000000000000000000000000000000"
+        }
+      },
+      "assertions": [
+        {
+          "path": "embedded_child.id",
+          "operator": "equals",
+          "expected": "established_child_candidate_uuidv7"
+        },
+        {
+          "path": "identity_disposition.child",
+          "operator": "equals",
+          "expected": "minted"
+        },
+        {
+          "path": "composition_mint_count",
+          "operator": "equals",
+          "expected": 0
+        },
+        {
+          "path": "fixed_established_identities_repeat_bytes",
+          "operator": "equals",
+          "expected": true
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-06",
+      "claim": "Duplicate canonical child identity is rejected.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            },
+            {
+              "request_key": "duplicate",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.duplicate_identity"
+        },
+        {
+          "path": "partial_composition",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-07",
+      "claim": "Duplicate membership is rejected.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            },
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.duplicate_membership"
+        },
+        {
+          "path": "partial_composition",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-08",
+      "claim": "Equal sibling ordering values are rejected without a request-position tie break.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            },
+            {
+              "request_key": "second",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000003",
+                "alias_id": "DEC-0002",
+                "alias_name": "second",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "second",
+              "relation": "contains",
+              "ordering": 10
+            },
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.ordering_conflict"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-09",
+      "claim": "Missing request-key endpoint remains explicitly unresolved.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "missing",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unresolved"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.endpoint_unresolved"
+        },
+        {
+          "path": "partial_composition",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-10",
+      "claim": "Ambiguous request key is rejected.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000003",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.endpoint_ambiguous"
+        },
+        {
+          "path": "partial_composition",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-11",
+      "claim": "A reference fragment cannot become a definition.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "reference",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.reference_not_definition"
+        },
+        {
+          "path": "partial_composition",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-12",
+      "claim": "Unknown relation including composed_of is rejected.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "composed_of",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.relation_unknown"
+        },
+        {
+          "path": "partial_composition",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-13",
+      "claim": "Known relation without a selected type row is unavailable.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/invariant",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.binding_unavailable"
+        },
+        {
+          "path": "partial_composition",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-14",
+      "claim": "Compact input remains schema-admitted but unavailable.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "compact",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.fragment.compact_unavailable"
+        },
+        {
+          "path": "partial_composition",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-15",
+      "claim": "Update is unavailable; no merge is inferred.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "update",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.update_unavailable"
+        },
+        {
+          "path": "partial_composition",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-16",
+      "claim": "Prepared parent property conflicts even when empty, null, or equal to the intended subtree.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent",
+                "decisions": []
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.ownership_conflict"
+        },
+        {
+          "path": "partial_composition",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-17",
+      "claim": "Prepared parent property conflicts even when empty, null, or equal to the intended subtree.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent",
+                "decisions": null
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.ownership_conflict"
+        },
+        {
+          "path": "partial_composition",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-18",
+      "claim": "Prepared parent property conflicts even when empty, null, or equal to the intended subtree.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent",
+                "decisions": [
+                  {
+                    "id": "01900000-0000-7000-8000-000000000002",
+                    "alias_id": "DEC-0001",
+                    "alias_name": "choice",
+                    "summary": "Keep the complete fields",
+                    "rationale": "Explicit authored rationale",
+                    "alternatives_considered": [
+                      {
+                        "name": "Other",
+                        "rejected_because": "Explicit reason"
+                      }
+                    ],
+                    "consequences": {
+                      "positive": [
+                        "Benefit"
+                      ],
+                      "negative": [
+                        "Cost"
+                      ]
+                    },
+                    "related_invariants": []
+                  }
+                ]
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.ownership_conflict"
+        },
+        {
+          "path": "partial_composition",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-19",
+      "claim": "Self-containment is rejected.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "parent",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.cycle"
+        },
+        {
+          "path": "partial_composition",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-20",
+      "claim": "Containment cycles are rejected.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            },
+            {
+              "parent": "child",
+              "child": "parent",
+              "relation": "contains",
+              "ordering": 20
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.cycle"
+        },
+        {
+          "path": "partial_composition",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-21",
+      "claim": "Non-empty composition_keys has no bound selector.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [
+                "unbound"
+              ],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.key_unbound"
+        },
+        {
+          "path": "partial_composition",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-22",
+      "claim": "Retire operation is rejected.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "retire",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.operation_unsupported"
+        },
+        {
+          "path": "partial_composition",
+          "operator": "equals",
+          "expected": false
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-23",
+      "claim": "A mutated embedded child never qualifies as preserved.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "candidate": {
+            "fragments": [
+              {
+                "request_key": "parent",
+                "semantic_type": "adr/logical",
+                "operation": "create",
+                "input_mode": "prepared",
+                "composition_keys": [],
+                "fields": {
+                  "schema_version": "1.7",
+                  "adr_type": "logical",
+                  "id": "01900000-0000-7000-8000-000000000001",
+                  "alias_id": "ADR-L-0001",
+                  "alias_name": "example",
+                  "title": "Example",
+                  "status": "proposed",
+                  "created_date": "2026-10-20",
+                  "authors": [
+                    "example"
+                  ],
+                  "context": "Explicit intent"
+                }
+              },
+              {
+                "request_key": "child",
+                "semantic_type": "entity/decision",
+                "operation": "create",
+                "input_mode": "prepared",
+                "composition_keys": [],
+                "fields": {
+                  "id": "01900000-0000-7000-8000-000000000002",
+                  "alias_id": "DEC-0001",
+                  "alias_name": "choice",
+                  "summary": "Keep the complete fields",
+                  "rationale": "Explicit authored rationale",
+                  "alternatives_considered": [
+                    {
+                      "name": "Other",
+                      "rejected_because": "Explicit reason"
+                    }
+                  ],
+                  "consequences": {
+                    "positive": [
+                      "Benefit"
+                    ],
+                    "negative": [
+                      "Cost"
+                    ]
+                  },
+                  "related_invariants": []
+                }
+              }
+            ],
+            "compositions": [
+              {
+                "parent": "parent",
+                "child": "child",
+                "relation": "contains",
+                "ordering": 10
+              }
+            ]
+          },
+          "observed_embedded_child": {
+            "id": "01900000-0000-7000-8000-000000000002",
+            "alias_id": "DEC-0001",
+            "alias_name": "choice",
+            "summary": "Keep the complete fields",
+            "rationale": "rewritten",
+            "alternatives_considered": [
+              {
+                "name": "Other",
+                "rejected_because": "Explicit reason"
+              }
+            ],
+            "consequences": {
+              "positive": [
+                "Benefit"
+              ],
+              "negative": [
+                "Cost"
+              ]
+            },
+            "related_invariants": []
+          }
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.child_mutation"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-24",
+      "claim": "A mutated embedded child never qualifies as preserved.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "candidate": {
+            "fragments": [
+              {
+                "request_key": "parent",
+                "semantic_type": "adr/logical",
+                "operation": "create",
+                "input_mode": "prepared",
+                "composition_keys": [],
+                "fields": {
+                  "schema_version": "1.7",
+                  "adr_type": "logical",
+                  "id": "01900000-0000-7000-8000-000000000001",
+                  "alias_id": "ADR-L-0001",
+                  "alias_name": "example",
+                  "title": "Example",
+                  "status": "proposed",
+                  "created_date": "2026-10-20",
+                  "authors": [
+                    "example"
+                  ],
+                  "context": "Explicit intent"
+                }
+              },
+              {
+                "request_key": "child",
+                "semantic_type": "entity/decision",
+                "operation": "create",
+                "input_mode": "prepared",
+                "composition_keys": [],
+                "fields": {
+                  "id": "01900000-0000-7000-8000-000000000002",
+                  "alias_id": "DEC-0001",
+                  "alias_name": "choice",
+                  "summary": "Keep the complete fields",
+                  "rationale": "Explicit authored rationale",
+                  "alternatives_considered": [
+                    {
+                      "name": "Other",
+                      "rejected_because": "Explicit reason"
+                    }
+                  ],
+                  "consequences": {
+                    "positive": [
+                      "Benefit"
+                    ],
+                    "negative": [
+                      "Cost"
+                    ]
+                  },
+                  "related_invariants": []
+                }
+              }
+            ],
+            "compositions": [
+              {
+                "parent": "parent",
+                "child": "child",
+                "relation": "contains",
+                "ordering": 10
+              }
+            ]
+          },
+          "observed_embedded_child": {
+            "id": "01900000-0000-7000-8000-000000000003",
+            "alias_id": "DEC-0001",
+            "alias_name": "choice",
+            "summary": "Keep the complete fields",
+            "rationale": "Explicit authored rationale",
+            "alternatives_considered": [
+              {
+                "name": "Other",
+                "rejected_because": "Explicit reason"
+              }
+            ],
+            "consequences": {
+              "positive": [
+                "Benefit"
+              ],
+              "negative": [
+                "Cost"
+              ]
+            },
+            "related_invariants": []
+          }
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.identity_mutation"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-25",
+      "claim": "Retaining an exactly embedded child as another root is rejected; exact subtree evidence is mandatory.",
+      "fixture": {
+        "kind": "inline_source_basis",
+        "input": {
+          "candidate": {
+            "fragments": [
+              {
+                "request_key": "parent",
+                "semantic_type": "adr/logical",
+                "operation": "create",
+                "input_mode": "prepared",
+                "composition_keys": [],
+                "fields": {
+                  "schema_version": "1.7",
+                  "adr_type": "logical",
+                  "id": "01900000-0000-7000-8000-000000000001",
+                  "alias_id": "ADR-L-0001",
+                  "alias_name": "example",
+                  "title": "Example",
+                  "status": "proposed",
+                  "created_date": "2026-10-20",
+                  "authors": [
+                    "example"
+                  ],
+                  "context": "Explicit intent"
+                }
+              },
+              {
+                "request_key": "child",
+                "semantic_type": "entity/decision",
+                "operation": "create",
+                "input_mode": "prepared",
+                "composition_keys": [],
+                "fields": {
+                  "id": "01900000-0000-7000-8000-000000000002",
+                  "alias_id": "DEC-0001",
+                  "alias_name": "choice",
+                  "summary": "Keep the complete fields",
+                  "rationale": "Explicit authored rationale",
+                  "alternatives_considered": [
+                    {
+                      "name": "Other",
+                      "rejected_because": "Explicit reason"
+                    }
+                  ],
+                  "consequences": {
+                    "positive": [
+                      "Benefit"
+                    ],
+                    "negative": [
+                      "Cost"
+                    ]
+                  },
+                  "related_invariants": []
+                }
+              }
+            ],
+            "compositions": [
+              {
+                "parent": "parent",
+                "child": "child",
+                "relation": "contains",
+                "ordering": 10
+              }
+            ]
+          },
+          "observed_source_root_identities": [
+            "01900000-0000-7000-8000-000000000001",
+            "01900000-0000-7000-8000-000000000002"
+          ],
+          "exact_subtree": true
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.containment_accounting"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-26",
+      "claim": "Omitting a child root without subtree proof is rejected.",
+      "fixture": {
+        "kind": "inline_source_basis",
+        "input": {
+          "candidate": {
+            "fragments": [
+              {
+                "request_key": "parent",
+                "semantic_type": "adr/logical",
+                "operation": "create",
+                "input_mode": "prepared",
+                "composition_keys": [],
+                "fields": {
+                  "schema_version": "1.7",
+                  "adr_type": "logical",
+                  "id": "01900000-0000-7000-8000-000000000001",
+                  "alias_id": "ADR-L-0001",
+                  "alias_name": "example",
+                  "title": "Example",
+                  "status": "proposed",
+                  "created_date": "2026-10-20",
+                  "authors": [
+                    "example"
+                  ],
+                  "context": "Explicit intent"
+                }
+              },
+              {
+                "request_key": "child",
+                "semantic_type": "entity/decision",
+                "operation": "create",
+                "input_mode": "prepared",
+                "composition_keys": [],
+                "fields": {
+                  "id": "01900000-0000-7000-8000-000000000002",
+                  "alias_id": "DEC-0001",
+                  "alias_name": "choice",
+                  "summary": "Keep the complete fields",
+                  "rationale": "Explicit authored rationale",
+                  "alternatives_considered": [
+                    {
+                      "name": "Other",
+                      "rejected_because": "Explicit reason"
+                    }
+                  ],
+                  "consequences": {
+                    "positive": [
+                      "Benefit"
+                    ],
+                    "negative": [
+                      "Cost"
+                    ]
+                  },
+                  "related_invariants": []
+                }
+              }
+            ],
+            "compositions": [
+              {
+                "parent": "parent",
+                "child": "child",
+                "relation": "contains",
+                "ordering": 10
+              }
+            ]
+          },
+          "observed_source_root_identities": [
+            "01900000-0000-7000-8000-000000000001"
+          ],
+          "exact_subtree": false
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.containment_accounting"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-27",
+      "claim": "Exact authority fails closed: missing_binding_resource",
+      "fixture": {
+        "kind": "authority_reference",
+        "input": {
+          "authority": "verified_enclosing_definition",
+          "fault": "missing_binding_resource"
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "semantic_contract.exact_authority_mismatch"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-28",
+      "claim": "Exact authority fails closed: modified_binding_resource",
+      "fixture": {
+        "kind": "authority_reference",
+        "input": {
+          "authority": "verified_enclosing_definition",
+          "fault": "modified_binding_resource"
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "semantic_contract.exact_authority_mismatch"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-29",
+      "claim": "Exact authority fails closed: incorrect_binding_digest",
+      "fixture": {
+        "kind": "authority_reference",
+        "input": {
+          "authority": "verified_enclosing_definition",
+          "fault": "incorrect_binding_digest"
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "semantic_contract.exact_authority_mismatch"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-30",
+      "claim": "Exact authority fails closed: wrong_ACC_version",
+      "fixture": {
+        "kind": "authority_reference",
+        "input": {
+          "authority": "verified_enclosing_definition",
+          "fault": "wrong_ACC_version"
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "semantic_contract.exact_authority_mismatch"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-31",
+      "claim": "Exact authority fails closed: wrong_ACC_SCF",
+      "fixture": {
+        "kind": "authority_reference",
+        "input": {
+          "authority": "verified_enclosing_definition",
+          "fault": "wrong_ACC_SCF"
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "semantic_contract.exact_authority_mismatch"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-32",
+      "claim": "Exact authority fails closed: incomplete_closure",
+      "fixture": {
+        "kind": "authority_reference",
+        "input": {
+          "authority": "verified_enclosing_definition",
+          "fault": "incomplete_closure"
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "semantic_contract.exact_authority_mismatch"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-33",
+      "claim": "Inconsistent composition authority fails closed: incorrect_ADC_composition_policy",
+      "fixture": {
+        "kind": "authority_reference",
+        "input": {
+          "authority": "verified_enclosing_definition",
+          "fault": "incorrect_ADC_composition_policy"
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.authority_inconsistent"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-34",
+      "claim": "Inconsistent composition authority fails closed: incorrect_ADC_identity_policy",
+      "fixture": {
+        "kind": "authority_reference",
+        "input": {
+          "authority": "verified_enclosing_definition",
+          "fault": "incorrect_ADC_identity_policy"
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.authority_inconsistent"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-35",
+      "claim": "Inconsistent composition authority fails closed: incorrect_AI_disposition",
+      "fixture": {
+        "kind": "authority_reference",
+        "input": {
+          "authority": "verified_enclosing_definition",
+          "fault": "incorrect_AI_disposition"
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.authority_inconsistent"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-36",
+      "claim": "Inconsistent composition authority fails closed: multiple_matching_rows",
+      "fixture": {
+        "kind": "authority_reference",
+        "input": {
+          "authority": "verified_enclosing_definition",
+          "fault": "multiple_matching_rows"
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.authority_inconsistent"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-37",
+      "claim": "Inconsistent composition authority fails closed: unqualified_binding_claim",
+      "fixture": {
+        "kind": "authority_reference",
+        "input": {
+          "authority": "verified_enclosing_definition",
+          "fault": "unqualified_binding_claim"
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.authority_inconsistent"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-38",
+      "claim": "Independent violations take precedence while unavailable and unresolved diagnostics remain.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "independently_established": [
+            "relation_unknown",
+            "binding_unavailable",
+            "endpoint_unresolved"
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "set_equals",
+          "expected": [
+            "authoring_construction.composition.relation_unknown",
+            "authoring_construction.composition.binding_unavailable",
+            "authoring_construction.composition.endpoint_unresolved"
+          ]
+        },
+        {
+          "path": "diagnostic_order",
+          "operator": "equals",
+          "expected": "ACC_1.1_sort_key"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-39",
+      "claim": "Unavailable outranks unresolved when no violation exists.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "independently_established": [
+            "binding_unavailable",
+            "endpoint_unresolved"
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Unavailable"
+        },
+        {
+          "path": "diagnostics_retained",
+          "operator": "equals",
+          "expected": true
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-40",
+      "claim": "A qualified reference basis identity cannot be used as a composition endpoint.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "01900000-0000-7000-8000-000000000002",
+              "relation": "contains",
+              "ordering": 10
+            }
+          ],
+          "reference_basis": {
+            "sealed": true,
+            "entries": [
+              {
+                "reference_id": "existing-child",
+                "canonical_uuid": "01900000-0000-7000-8000-000000000002"
+              }
+            ]
+          }
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.reference_not_definition"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    },
+    {
+      "case_id": "ACC12-41",
+      "claim": "The same child UUID cannot belong to two parents.",
+      "fixture": {
+        "kind": "inline_semantic_state",
+        "input": {
+          "fragments": [
+            {
+              "request_key": "parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000001",
+                "alias_id": "ADR-L-0001",
+                "alias_name": "example",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            },
+            {
+              "request_key": "child",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "id": "01900000-0000-7000-8000-000000000002",
+                "alias_id": "DEC-0001",
+                "alias_name": "choice",
+                "summary": "Keep the complete fields",
+                "rationale": "Explicit authored rationale",
+                "alternatives_considered": [
+                  {
+                    "name": "Other",
+                    "rejected_because": "Explicit reason"
+                  }
+                ],
+                "consequences": {
+                  "positive": [
+                    "Benefit"
+                  ],
+                  "negative": [
+                    "Cost"
+                  ]
+                },
+                "related_invariants": []
+              }
+            },
+            {
+              "request_key": "other-parent",
+              "semantic_type": "adr/logical",
+              "operation": "create",
+              "input_mode": "prepared",
+              "composition_keys": [],
+              "fields": {
+                "schema_version": "1.7",
+                "adr_type": "logical",
+                "id": "01900000-0000-7000-8000-000000000003",
+                "alias_id": "ADR-L-0002",
+                "alias_name": "other",
+                "title": "Example",
+                "status": "proposed",
+                "created_date": "2026-10-20",
+                "authors": [
+                  "example"
+                ],
+                "context": "Explicit intent"
+              }
+            }
+          ],
+          "compositions": [
+            {
+              "parent": "parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 10
+            },
+            {
+              "parent": "other-parent",
+              "child": "child",
+              "relation": "contains",
+              "ordering": 0
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "path": "outcome",
+          "operator": "outcome_is",
+          "expected": "Rejected"
+        },
+        {
+          "path": "diagnostics.codes",
+          "operator": "contains",
+          "expected": "authoring_construction.composition.duplicate_identity"
+        }
+      ],
+      "runtime_coverage": "authority_only_not_implemented"
+    }
+  ]
+}

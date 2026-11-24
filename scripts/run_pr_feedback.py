@@ -19,6 +19,20 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 # added here deliberately; silently relying on a naming convention would make
 # the PR gate look fast while allowing a semantic surface to go untested.
 SEMANTIC_TESTS: tuple[str, ...] = (
+    "tests/test_system_scope_authority_design.py",
+    "tests/test_candidate_schema_selectors.py",
+    "tests/test_candidate_lineage_selection.py",
+    "tests/test_current_candidate_assets.py",
+    "tests/test_authoring_construction_v15_publication.py",
+    "tests/test_release_authority_enforcement.py",
+    "tests/test_semantic_contract_lifecycle_design.py",
+    "tests/test_architecture_interpretation_v15_publication.py",
+    "tests/test_identity_representation_authority_design.py",
+    "tests/test_authoring_construction_v14_publication.py",
+    "tests/test_architecture_interpretation_v14_publication.py",
+    "tests/test_required_output_authority_design.py",
+    "tests/test_authoring_construction_v13_publication.py",
+    "tests/test_architecture_interpretation_v13_publication.py",
     "tests/test_import_namespace.py",
     "tests/test_version_authority.py",
     "tests/test_schema_contract_taxonomy.py",
@@ -27,6 +41,10 @@ SEMANTIC_TESTS: tuple[str, ...] = (
     "tests/test_schema_v13.py",
     "tests/test_kernel_contract_schemas.py",
     "tests/test_kernel_contract_validation.py",
+    "tests/test_architecture_interpretation_v12.py",
+    "tests/test_authoring_construction_v11_contract.py",
+    "tests/test_authoring_construction_v12_contract.py",
+    "tests/test_authoring_construction_v10_contract.py",
     "tests/test_semantic_core_protocol.py",
     "tests/test_semantic_core_protocol_v12.py",
     "tests/test_semantic_core_execution_routing.py",
@@ -44,6 +62,12 @@ SEMANTIC_TESTS: tuple[str, ...] = (
     "tests/test_authoring_v15_runtime.py",
     "tests/test_normalized_entity_serialization_conformance.py",
     "tests/test_normalized_model_v2.py",
+    "tests/test_normalized_v25_publication.py",
+    "tests/test_normalized_v23_contract.py",
+    "tests/test_normalized_v24_contract.py",
+    "tests/test_semantic_contracts.py",
+    "tests/test_semantic_contract_resources.py",
+    "tests/test_package_schema_parity.py",
     "tests/test_normalized_v22_runtime.py",
     "tests/test_architecture_repository.py",
     "tests/test_entity_validator.py",
@@ -56,6 +80,8 @@ SEMANTIC_TESTS: tuple[str, ...] = (
     "tests/test_compatibility_resource_parity.py",
     "tests/test_scope_resolver.py",
     "tests/test_canonical_id_normalizer.py",
+    "tests/golden/test_current_outputs.py::test_current_outputs_match_expected_bytes",
+    "tests/test_release_controls.py",
 )
 
 

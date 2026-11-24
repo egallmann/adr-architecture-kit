@@ -8,6 +8,11 @@ pub(crate) mod architecture_interpretation;
 mod attribution;
 mod authoring_construction;
 mod authoring_construction_orchestration;
+mod authoring_construction_v11;
+mod authoring_construction_basis_v11;
+// Internal qualification seam for a later authorized compiler; no protocol route.
+#[allow(dead_code)]
+mod authoring_construction_v12;
 pub(crate) mod candidate_source;
 mod linkage;
 mod materialization;
@@ -2171,3 +2176,27 @@ mod semantic_core_v11_tests {
         );
     }
 }
+
+// Internal successor modules; no protocol dispatch or capability registration.
+mod authoring_construction_authority;
+#[allow(dead_code)]
+mod authoring_construction_v13;
+
+#[allow(dead_code)]
+mod architecture_interpretation_v13;
+
+// Static required-output authority only; no dispatch or capability registration.
+#[allow(dead_code)]
+mod architecture_interpretation_v14;
+
+// Current-candidate authority only; no protocol route or execution.
+#[allow(dead_code)]
+mod candidate_authority;
+
+// Private bounded representation facts, never protocol execution.
+#[allow(dead_code)]
+mod identity_representation;
+
+// Private bounded field execution; no protocol or capability registration.
+#[allow(dead_code)]
+mod semantic_fields;

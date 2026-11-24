@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/authoring/v1.7/types.schema.json",
+  "title": "ADR Kit Shared Type Definitions (authoring v1.7)",
+  "definitions": {
+    "uuid_v7": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "normative_force": {
+      "type": "string",
+      "enum": ["MUST", "MUST NOT", "SHOULD", "SHOULD NOT", "MAY"]
+    },
+    "alias_name": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+    },
+    "adr_alias": {"type": "string", "pattern": "^ADR-(L|V|PS|PC)-[0-9]{4}$"},
+    "entity_alias": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]*-[0-9]{4}$"},
+    "topology_key": {
+      "type": "string",
+      "pattern": "^TOPO-[A-Z0-9][A-Z0-9-]*$",
+      "description": "Owner-local topology address; never a canonical identity."
+    },
+    "semantic_type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*:[a-z][a-z0-9_]{1,63}$"
+    },
+    "consumer_namespace": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+    },
+    "cecf": {
+      "type": "string",
+      "pattern": "^cecf:v1:sha256:[0-9a-f]{64}$"
+    },
+    "custom_qualification": {
+      "type": "object",
+      "required": ["semantic_kind", "semantic_type", "consumer_namespace", "contract_version", "contract_fingerprint"],
+      "properties": {
+        "semantic_kind": {"enum": ["entity", "relationship"]},
+        "semantic_type": {"$ref": "#/definitions/semantic_type"},
+        "consumer_namespace": {"$ref": "#/definitions/consumer_namespace"},
+        "contract_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+$"},
+        "contract_fingerprint": {"$ref": "#/definitions/cecf"}
+      },
+      "additionalProperties": false
+    },
+    "property_value": {
+      "oneOf": [
+        {"type": ["string", "integer", "number", "boolean"]},
+        {"type": "array", "maxItems": 64, "items": {"type": ["string", "integer", "number", "boolean"]}}
+      ]
+    },
+    "properties": {
+      "type": "object",
+      "propertyNames": {"pattern": "^[a-z][a-z0-9_]{0,63}$"},
+      "additionalProperties": {"$ref": "#/definitions/property_value"}
+    },
+    "uuid_reference": {"$ref": "#/definitions/uuid_v7"},
+    "impact_level": {"type": "string", "enum": ["high", "medium", "low"]},
+    "status": {"type": "string", "enum": ["proposed", "accepted", "deprecated", "superseded"]},
+    "iso_date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "technology_choice": {
+      "type": "object",
+      "required": ["category", "name", "version", "rationale"],
+      "properties": {
+        "category": {"enum": ["language", "framework", "library", "database", "messaging", "infrastructure", "tooling"]},
+        "name": {"type": "string"},
+        "version": {"type": "string"},
+        "rationale": {"type": "string"},
+        "inferred": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "alternative": {
+      "type": "object",
+      "required": ["name", "rejected_because"],
+      "properties": {"name": {"type": "string"}, "rejected_because": {"type": "string"}},
+      "additionalProperties": false
+    },
+    "consequences": {
+      "type": "object",
+      "properties": {
+        "positive": {"type": "array", "items": {"type": "string"}},
+        "negative": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "identity_properties": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name"],
+      "properties": {
+        "id": {"$ref": "#/definitions/uuid_v7"},
+        "alias_id": {"$ref": "#/definitions/entity_alias"},
+        "alias_name": {"$ref": "#/definitions/alias_name"}
+      }
+    }
+  }
+}

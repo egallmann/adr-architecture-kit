@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-core/v1.5/contract.json",
+  "title": "ADR-Kit semantic core protocol contract v1.5",
+  "description": "ACC 1.1 detached candidate-basis preparation. A sealed basis is intermediate evidence and is not an ACC Constructed outcome.",
+  "oneOf": [{ "$ref": "#/$defs/request_envelope" }, { "$ref": "#/$defs/result_envelope" }, { "$ref": "#/$defs/invalid_envelope" }],
+  "$defs": {
+    "acc_diagnostic": {
+      "type": "object", "additionalProperties": false,
+      "required": ["code", "severity", "status", "request_key", "location", "semantic_type", "rule", "expected", "observed", "remediation"],
+      "properties": {
+        "code": { "type": "string", "pattern": "^authoring_construction\\.[a-z0-9_.-]+$" },
+        "severity": { "enum": ["info", "warning", "error"] },
+        "status": { "enum": ["violation", "blocked", "unresolved", "unavailable"] },
+        "request_key": { "type": ["string", "null"] }, "location": { "type": "string", "minLength": 1 },
+        "semantic_type": { "type": ["object", "null"] }, "rule": { "type": "string", "minLength": 1 },
+        "expected": {}, "observed": {}, "remediation": { "type": "string", "minLength": 1 }
+      }
+    },
+    "core_diagnostic": {
+      "type": "object", "required": ["code", "message"],
+      "properties": { "code": { "type": "string", "minLength": 1 }, "message": { "type": "string" }, "path": { "type": "string" }, "severity": { "enum": ["error", "warning", "info"] } }
+    },
+    "resource": {
+      "type": "object", "required": ["canonicalResourceKey", "content"],
+      "properties": { "canonicalResourceKey": { "type": "string", "minLength": 1 }, "content": {} }, "additionalProperties": false
+    },
+    "request": {
+      "type": "object", "additionalProperties": false,
+      "required": ["operation", "definition", "resources", "construction_request"],
+      "properties": { "operation": { "const": "prepare_authoring_construction_basis_1_1" }, "definition": { "type": "object" }, "resources": { "type": "array", "items": { "$ref": "#/$defs/resource" } }, "construction_request": { "type": "object" }, "identity_clock_ms": { "type": "integer", "minimum": 0, "maximum": 281474976710655, "description": "Optional host clock input used only when Rust is authorized to mint a UUIDv7 identity." }, "identity_entropy_seed": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Host-provided 256-bit cryptographically secure entropy for Rust UUIDv7 random fields. Hosts overwrite this field for each execution." } }
+    },
+    "capabilities": {
+      "type": "object", "additionalProperties": false,
+      "required": ["exact_authority_qualification", "request_schema_validation", "authoring_validation", "identity_establishment", "request_local_reference_resolution", "reference_basis_resolution", "composition_resolution", "candidate_source_basis_sealing", "complete_nm24_interpretation", "expected_ledger_derivation", "observed_ledger_derivation", "whole_ledger_comparison", "complete_acc11_qualification", "construct_authoring_set"],
+      "properties": {
+        "exact_authority_qualification": { "type": "boolean" }, "request_schema_validation": { "type": "boolean" },
+        "authoring_validation": { "type": "boolean" }, "identity_establishment": { "type": "boolean" },
+        "request_local_reference_resolution": { "type": "boolean" }, "reference_basis_resolution": { "type": "boolean" },
+        "composition_resolution": { "const": false }, "candidate_source_basis_sealing": { "type": "boolean" },
+        "complete_nm24_interpretation": { "const": false }, "expected_ledger_derivation": { "const": false },
+        "observed_ledger_derivation": { "const": false }, "whole_ledger_comparison": { "const": false },
+        "complete_acc11_qualification": { "const": false }, "construct_authoring_set": { "const": false }
+      }
+    },
+    "qualification": {
+      "type": "object", "required": ["family", "version", "resources"],
+      "properties": {
+        "family": { "type": "string", "minLength": 1 }, "version": { "type": "string", "minLength": 1 },
+        "resources": { "type": "array", "items": { "type": "object", "required": ["canonical_resource_key", "content_digest"], "properties": { "canonical_resource_key": { "type": "string", "minLength": 1 }, "content_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" } }, "additionalProperties": false } }
+      }, "additionalProperties": false
+    },
+    "resolved_reference": {
+      "type": "object", "additionalProperties": false,
+      "required": ["reference_key", "reference_kind", "target", "canonical_uuid", "semantic_type", "qualification", "disposition"],
+      "properties": {
+        "reference_key": { "type": "string", "minLength": 1 }, "reference_kind": { "enum": ["request", "existing"] },
+        "target": { "type": "string", "minLength": 1 }, "canonical_uuid": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+        "semantic_type": { "type": "string", "minLength": 1 }, "qualification": { "type": "object" }, "disposition": { "enum": ["resolved", "reused"] }
+      }
+    },
+    "candidate_fragment": {
+      "type": "object", "required": ["request_key", "semantic_kind", "semantic_type", "identity", "contract_qualification", "fields", "source_contract"],
+      "properties": {
+        "request_key": { "type": "string", "minLength": 1 }, "semantic_kind": { "enum": ["adr", "entity", "relationship", "value"] }, "semantic_type": { "type": "string", "minLength": 1 },
+        "identity": { "type": ["null", "string"], "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" }, "contract_qualification": { "type": "object" }, "fields": { "type": "object" },
+        "resolved_references": { "type": "array", "items": { "$ref": "#/$defs/resolved_reference" } }, "source_contract": { "$ref": "#/$defs/qualification" }
+      }, "additionalProperties": false
+    },
+    "candidate_artifact": {
+      "type": "object", "required": ["request_key", "source_ref", "artifact_kind", "source_schema", "serialization_profile", "content_digest", "bytes", "source_contract"],
+      "properties": {
+        "request_key": { "type": "string", "minLength": 1 }, "source_ref": { "type": "string", "minLength": 1 }, "artifact_kind": { "enum": ["authoring_fragment", "authoring_document"] },
+        "source_schema": { "type": "object", "required": ["canonical_resource_key", "json_pointer"], "properties": { "canonical_resource_key": { "type": "string" }, "json_pointer": { "type": "string" } }, "additionalProperties": false },
+        "serialization_profile": { "const": "adr-kit.authoring-yaml/v1" }, "content_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }, "bytes": { "type": "string", "contentEncoding": "base64" }, "source_contract": { "$ref": "#/$defs/qualification" }
+      }, "additionalProperties": false
+    },
+    "candidate_source_basis": {
+      "type": "object", "required": ["sealed", "basis_digest", "artifacts", "source_contract"],
+      "properties": { "sealed": { "const": true }, "basis_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }, "artifacts": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/candidate_artifact" } }, "source_contract": { "$ref": "#/$defs/qualification" } }, "additionalProperties": false
+    },
+    "construction_map_entry": {
+      "type": "object", "required": ["request_key", "operation", "semantic_type", "canonical_uuid", "identity_disposition", "contract_qualification", "resulting_state", "diagnostic_codes"],
+      "properties": {
+        "request_key": { "type": "string", "minLength": 1 }, "operation": { "enum": ["create", "update", "reference", "retire"] }, "semantic_type": { "type": "string", "minLength": 1 },
+        "canonical_uuid": { "type": ["null", "string"], "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" }, "identity_disposition": { "enum": ["preserved", "minted", "reused", "not_applicable"] }, "candidate_source_ref": { "type": ["string", "null"] },
+        "contract_qualification": { "type": "object" }, "resulting_state": { "enum": ["active", "retired", "referenced"] }, "diagnostic_codes": { "type": "array", "items": { "type": "string" } }
+      }, "additionalProperties": false
+    },
+    "basis_result": {
+      "type": "object", "additionalProperties": false,
+      "required": ["operation", "contract_family", "contract_version", "authority", "capabilities", "success", "basis_status", "diagnostics", "authority_diagnostics", "construction_map", "candidate_fragments", "candidate_artifacts", "candidate_source_basis", "detached_context", "dependency_resolution_complete"],
+      "properties": {
+        "operation": { "const": "prepare_authoring_construction_basis_1_1" }, "contract_family": { "const": "authoring_construction" }, "contract_version": { "const": "1.1" },
+        "authority": { "type": "object", "required": ["available", "fingerprint", "architecture_interpretation_fingerprint"], "properties": { "available": { "type": "boolean" }, "fingerprint": { "type": ["string", "null"] }, "architecture_interpretation_fingerprint": { "type": ["string", "null"] } }, "additionalProperties": false },
+        "capabilities": { "$ref": "#/$defs/capabilities" }, "success": { "type": "boolean" }, "basis_status": { "enum": ["Sealed", "Rejected", "Unavailable", "Unresolved"] },
+        "diagnostics": { "type": "array", "items": { "$ref": "#/$defs/acc_diagnostic" } }, "authority_diagnostics": { "type": "array", "items": { "$ref": "#/$defs/core_diagnostic" } },
+        "construction_map": { "type": "array", "items": { "$ref": "#/$defs/construction_map_entry" } }, "candidate_fragments": { "type": "array", "items": { "$ref": "#/$defs/candidate_fragment" } }, "candidate_artifacts": { "type": "array", "items": { "$ref": "#/$defs/candidate_artifact" } },
+        "candidate_source_basis": { "anyOf": [{ "$ref": "#/$defs/candidate_source_basis" }, { "type": "null" }] },
+        "detached_context": { "anyOf": [{ "type": "object", "additionalProperties": false, "required": ["scope_root", "root_artifact_locators", "selected_root_source_refs"], "properties": { "scope_root": { "type": "string", "pattern": "^urn:adr-kit:detached-candidate:v1:source-basis:sha256:[0-9a-f]{64}$" }, "root_artifact_locators": { "type": "array", "items": { "type": "string" } }, "selected_root_source_refs": { "type": "array", "items": { "type": "string" } } } }, { "type": "null" }] },
+        "dependency_resolution_complete": { "type": "boolean" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "basis_status": { "const": "Sealed" } } },
+          "then": { "properties": { "success": { "const": true }, "candidate_source_basis": { "$ref": "#/$defs/candidate_source_basis" }, "detached_context": { "type": "object" }, "dependency_resolution_complete": { "const": true } } }
+        },
+        {
+          "if": { "properties": { "basis_status": { "enum": ["Rejected", "Unavailable", "Unresolved"] } } },
+          "then": { "properties": { "success": { "const": false }, "candidate_source_basis": { "type": "null" }, "detached_context": { "type": "null" } } }
+        }
+      ]
+    },
+    "request_envelope": {
+      "type": "object", "additionalProperties": false, "required": ["core_contract_version", "operation", "request"],
+      "properties": { "core_contract_version": { "const": "1.5" }, "operation": { "const": "prepare_authoring_construction_basis_1_1" }, "request": { "$ref": "#/$defs/request" } }
+    },
+    "result_envelope": {
+      "type": "object", "additionalProperties": false, "required": ["core_contract_version", "operation", "result"],
+      "properties": { "core_contract_version": { "const": "1.5" }, "operation": { "const": "prepare_authoring_construction_basis_1_1" }, "result": { "$ref": "#/$defs/basis_result" } }
+    },
+    "invalid_envelope": {
+      "type": "object", "additionalProperties": false, "required": ["core_contract_version", "operation", "result"],
+      "not": { "properties": { "operation": { "const": "prepare_authoring_construction_basis_1_1" } } },
+      "properties": { "core_contract_version": { "const": "1.5" }, "operation": { "type": "string", "minLength": 1 }, "result": { "type": "object", "required": ["operation", "success", "basis_status", "diagnostics", "authority_diagnostics"], "properties": { "operation": { "type": "string" }, "success": { "const": false }, "basis_status": { "const": "Rejected" }, "diagnostics": { "type": "array" }, "authority_diagnostics": { "type": "array" } } } }
+    }
+  }
+}

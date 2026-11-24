@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 743c16a151baef799085dcf73e6b51826c168e79895e4d4359a579faf5ce25ba
-rendered_hash: 9163c09d0a5bfc42e6a560fd490f9d58eb31c0bf02be1c3805ba0aa4c760da34
+source_hash: ad254e05c621352872bdc74eb9f868bf3ab538f59a0f33272711508543522676
+rendered_hash: ea89b4e7da47132687b757f4e818c9f34feefe9c7395a04991c9d79785ef40d3
 -->
 
 # ADR-L-0027: Public Binding Construction and Release Parity
@@ -30,6 +30,7 @@ rendered_hash: 9163c09d0a5bfc42e6a560fd490f9d58eb31c0bf02be1c3805ba0aa4c760da34
 | Status | accepted |
 | Decisions | 7 |
 | Invariants | 8 |
+| Physical realizations | [ADR-PC-0009](../physical-component/ADR-PC-0009-canonical-semantic-execution-core.md) |
 
 
 ## Context
@@ -275,6 +276,11 @@ flowchart LR
 ```
 
 
+## Physical Realization
+
+**Components**
+- [ADR-PC-0009](../physical-component/ADR-PC-0009-canonical-semantic-execution-core.md)
+
 
 
 
@@ -297,6 +303,12 @@ flowchart LR
 - [ADR-L-0029](ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md)
 - [ADR-L-0031](ADR-L-0031-non-recursive-semantic-contract-conformance-binding.md)
 
+
+## Architecture Relationships
+
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PC-0009 — Canonical Semantic Execution Core](../physical-component/ADR-PC-0009-canonical-semantic-execution-core.md) | implements this logical authority | `ADR-PC-0009 -[:implements_logical]-> ADR-L-0027` |
 
 
 

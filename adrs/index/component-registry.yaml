@@ -54,7 +54,8 @@ entities:
     - 019fee89-e617-78b8-852f-9b2c984f9300
     consumes_interface: []
     composed_of: []
-    depends_on: []
+    depends_on:
+    - 01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
     calls: []
     publishes_to: []
     subscribes_to: []
@@ -127,6 +128,7 @@ entities:
     composed_of: []
     depends_on:
     - 019fee89-e617-7060-8f3f-4ecd46a719da
+    - 01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
     calls: []
     publishes_to: []
     subscribes_to: []
@@ -573,6 +575,79 @@ entities:
   provenance:
     source_type: physical_component_adr
     source_ref: 019ffdba-3c42-70da-b33d-efc003269c42#019ffdba-3c42-75d5-b93b-f32f35152e32
+    extraction_phase: extract_component
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+  alias_id: COMP-0023
+  alias_name: canonical-semantic-execution-core
+  alias_ref: COMP-0023:canonical-semantic-execution-core
+  entity_type: component
+  name: Canonical Semantic Execution Core
+  summary: '- Execute canonical meaning-bearing semantic operations for supported
+    core protocol versions. - Own shared semantic validation, authoring construction,
+    architecture interpretation, and materialization rules. - Produce de'
+  uri: adr://adr-architecture-kit/entities/01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+  created_at: '2026-10-05T23:01:04.808Z'
+  entity_fingerprint: sha256:dfd66771123fa7fb57696995e4e6afe2748b11e06ca38ac32e6c647b5f283ee9
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf#01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+    artifact_path: adrs/physical-component/ADR-PC-0009-canonical-semantic-execution-core.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+    adr_alias_id: ADR-PC-0009
+    legacy_component_id: 01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+    technologies:
+    - Rust
+    - WebAssembly
+    - serde
+    - serde_json
+    - sha2
+    - regex
+    module_path: null
+    implements_capabilities: []
+    implements_system:
+    - 019fee89-e618-7d04-9337-4aa2d3258507
+    alias_id: COMP-0023
+    alias_name: canonical-semantic-execution-core
+  relationships:
+    declared_in:
+    - 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in:
+    - 019fee89-e618-713e-a017-5b417ef9ac9f
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface:
+    - 01a10e4c-9ea8-76a2-93f7-8fc0145b9808
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf#01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index

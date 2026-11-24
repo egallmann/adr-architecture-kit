@@ -1,0 +1,718 @@
+{
+  "schema_version": "1.0",
+  "kind": "semantic-contract-lifecycle-classification",
+  "audit_source_commit": "3c20a78bbb7baa2e84402473960ae009d29a995d",
+  "release_evidence": [
+    {
+      "id": "pypi-0.12.2",
+      "registry": "https://pypi.org/pypi/adr-architecture-kit/0.12.2/json",
+      "artifact": "adr_architecture_kit-0.12.2-py3-none-any.whl",
+      "sha256": "3fbf2ddefa77fc7abd20e09e41ad9f6d3390453c90d067f2f88426c815e3494f",
+      "tag": "v0.12.2",
+      "source_commit": "055b8634c5ffd0068bd8376ac0baae7cc76f0c6d"
+    },
+    {
+      "id": "npm-0.12.2",
+      "registry": "https://registry.npmjs.org/@system-of-thought%2fadr-kit/0.12.2",
+      "artifact": "adr-kit-0.12.2.tgz",
+      "sha256": "8fc6b305348e7cea953fa334cd17ed311962af194209e29b846c7d17c9e00588",
+      "tag": "v0.12.2",
+      "source_commit": "055b8634c5ffd0068bd8376ac0baae7cc76f0c6d"
+    }
+  ],
+  "released_contracts": [
+    {
+      "family": "architecture-interpretation",
+      "version": "1.0",
+      "classification": "RELEASED",
+      "evidence": [
+        "pypi-0.12.2",
+        "npm-0.12.2"
+      ],
+      "scf": "scf:v1:sha256:3fcd0e98cec53e515a79b68ed493f91039c0a12bf76387ad259f32ac6394ee55",
+      "definition_path": "contracts/semantic-contract/v1.0/definitions/architecture-interpretation.json",
+      "definition_digest": "sha256:763c23e826e17898e40d0964a7848aa7bab930bf1140cc0e1c62300b952d5c6f",
+      "compatibility": "Retain exact qualified authority and advertised discovery/execution; embedded ACC is a release obligation.",
+      "resource_count": 24,
+      "resource_manifest_digest": "sha256:8eb7b19c9b1f89c0ed1628ba1082a2ff7890ee7cc6c1b62086bf236ea4a2d793",
+      "dependency_graph_selector": "contracts/semantic-contract/v1.0/definitions/architecture-interpretation.json#/resourceManifest"
+    },
+    {
+      "family": "architecture-interpretation",
+      "version": "1.1",
+      "classification": "RELEASED",
+      "evidence": [
+        "pypi-0.12.2",
+        "npm-0.12.2"
+      ],
+      "scf": "scf:v1:sha256:3650db1f6763a1e7ab81a3f3663d002b3e97ffc0ae007bd7d3543508c069100e",
+      "definition_path": "contracts/semantic-contract/v1.0/definitions/architecture-interpretation-1.1.json",
+      "definition_digest": "sha256:f4682920485823f85bd77c78fcea0e34fb1d167ea854198b6228a9a2733c06e3",
+      "compatibility": "Retain exact qualified authority and advertised discovery/execution; embedded ACC is a release obligation.",
+      "resource_count": 5,
+      "resource_manifest_digest": "sha256:92ec6413c027dfc775dbc51d7827a337bcd1d837a3083f05cba182e2fafb8221",
+      "dependency_graph_selector": "contracts/semantic-contract/v1.0/definitions/architecture-interpretation-1.1.json#/resourceManifest"
+    },
+    {
+      "family": "authoring-construction",
+      "version": "1.0",
+      "classification": "RELEASED",
+      "evidence": [
+        "pypi-0.12.2",
+        "npm-0.12.2"
+      ],
+      "scf": "scf:v1:sha256:b94f67ebff64b6560206715cef87a49b4444b71aa661cce92a6c3d04d8bf2703",
+      "definition_path": "contracts/semantic-contract/v1.0/definitions/authoring-construction-1.0.json",
+      "definition_digest": "sha256:81df32e4044fc92937b1bb812ee1d9259f290b938be29e868d0597eee30ec1f1",
+      "compatibility": "Retain exact qualified authority and advertised discovery/execution; embedded ACC is a release obligation.",
+      "resource_count": 2,
+      "resource_manifest_digest": "sha256:341cd16343c028c474cf2fc426bd7354c742088d32bb81d7b1d384c3a2f01e60",
+      "dependency_graph_selector": "contracts/semantic-contract/v1.0/definitions/authoring-construction-1.0.json#/resourceManifest"
+    },
+    {
+      "family": "normalized-model",
+      "version": "2.3",
+      "classification": "RELEASED",
+      "evidence": [
+        "pypi-0.12.2",
+        "npm-0.12.2"
+      ],
+      "scf": "scf:v1:sha256:7a67fd98c9ca66a827f65ca0a16a3fb7b402ee23ded33342a4350869ea90ca00",
+      "definition_path": "contracts/semantic-contract/v1.0/definitions/normalized-model.json",
+      "definition_digest": "sha256:fea7398f854155933a414d327c4e08d97cbd469e8503f13558c12e426971bd50",
+      "compatibility": "Retain exact qualified authority and advertised discovery/execution; embedded ACC is a release obligation.",
+      "resource_count": 7,
+      "resource_manifest_digest": "sha256:c7f49f081bd7eb810b7aa5977fa033ce1364ee60ce351a96d5ae5c3cb557699c",
+      "dependency_graph_selector": "contracts/semantic-contract/v1.0/definitions/normalized-model.json#/resourceManifest"
+    },
+    {
+      "family": "normalized-model",
+      "version": "2.4",
+      "classification": "RELEASED",
+      "evidence": [
+        "pypi-0.12.2",
+        "npm-0.12.2"
+      ],
+      "scf": "scf:v1:sha256:83f1c50cd5c63f027b1b4d937604a255d78c868629085dfd3240f2517d64d394",
+      "definition_path": "contracts/semantic-contract/v1.0/definitions/normalized-model-2.4.json",
+      "definition_digest": "sha256:22d4f8523c691599303af64dbe259f59e97ae68d17ae09da5ac6ef677b91fde0",
+      "compatibility": "Retain exact qualified authority and advertised discovery/execution; embedded ACC is a release obligation.",
+      "resource_count": 7,
+      "resource_manifest_digest": "sha256:3f47e2018fc0f65085a9dfa214a29febee2e2d255ab6584450f2a0622e56f225",
+      "dependency_graph_selector": "contracts/semantic-contract/v1.0/definitions/normalized-model-2.4.json#/resourceManifest"
+    },
+    {
+      "family": "normative-semantics",
+      "version": "1.0",
+      "classification": "RELEASED",
+      "evidence": [
+        "pypi-0.12.2",
+        "npm-0.12.2"
+      ],
+      "scf": "scf:v1:sha256:3ad9db564b2fdb85df4b2d86e464beb533156635d8cb9790a4865d518d600f51",
+      "definition_path": "contracts/semantic-contract/v1.0/definitions/normative-semantics-1.0.json",
+      "definition_digest": "sha256:3682a5031b3232e1a7ff86af8101632336f2be67bb0795f1ca78076b61543430",
+      "compatibility": "Retain exact qualified authority and advertised discovery/execution; embedded ACC is a release obligation.",
+      "resource_count": 2,
+      "resource_manifest_digest": "sha256:ca858293e7bd604c271d0905d5f068e138ebdbfd1a75d0e0b6a8c498b845c5aa",
+      "dependency_graph_selector": "contracts/semantic-contract/v1.0/definitions/normative-semantics-1.0.json#/resourceManifest"
+    }
+  ],
+  "released_schema_files": [
+    {
+      "path": "schema/authoring/v1.5/adr-common.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_5/adr-common.schema.json",
+      "content_digest": "sha256:4800f0c5145cf22c62fd8bcd7037cda8d14ad857c13ee879c7b03bdde70218fb"
+    },
+    {
+      "path": "schema/authoring/v1.5/adr-logical.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_5/adr-logical.schema.json",
+      "content_digest": "sha256:7f1d8a833502db21ef2348cd0a843686c67b54f96d1532cf7c07a2d7fa73340f"
+    },
+    {
+      "path": "schema/authoring/v1.5/adr-physical-base.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_5/adr-physical-base.schema.json",
+      "content_digest": "sha256:50733ed51dd5c5ecd9fbe150b87ee88fb84c273ff16ee56878be66b7262a6f8c"
+    },
+    {
+      "path": "schema/authoring/v1.5/adr-physical-component.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_5/adr-physical-component.schema.json",
+      "content_digest": "sha256:fcadb0f6a2bfaf6801c540045cd69cb435be38d68552575ebe2b251f3667951c"
+    },
+    {
+      "path": "schema/authoring/v1.5/adr-physical-system.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_5/adr-physical-system.schema.json",
+      "content_digest": "sha256:347cb9dfad02a054f9a54d7da8cea1ffc40d5931cd2b4a555614a05a057f91b1"
+    },
+    {
+      "path": "schema/authoring/v1.5/types.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_5/types.schema.json",
+      "content_digest": "sha256:8a5fb427aad840157599727adab3a948eb88ec9c2a796f8dee41a5951e39c3b3"
+    },
+    {
+      "path": "schema/authoring/v1.6/adr-common.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_6/adr-common.schema.json",
+      "content_digest": "sha256:6f4d8d0ea8091aa3168e242fe15b973ce301e8c203348eec8cf43ee12932a298"
+    },
+    {
+      "path": "schema/authoring/v1.6/adr-logical.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_6/adr-logical.schema.json",
+      "content_digest": "sha256:3e96f1c3153f541573fe4cf5dd9942db877ed97b9c34a3da6e589b6d60417fbf"
+    },
+    {
+      "path": "schema/authoring/v1.6/adr-physical-base.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_6/adr-physical-base.schema.json",
+      "content_digest": "sha256:5e146831519ff469fdbee5b2da65bdc0067ea6b6d413b7b98e3fb948dc380fe8"
+    },
+    {
+      "path": "schema/authoring/v1.6/adr-physical-component.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_6/adr-physical-component.schema.json",
+      "content_digest": "sha256:5fe8d5da0d381774d6d74b14691bb9fa47567d56ee733465eaa06c0d10f7bdb9"
+    },
+    {
+      "path": "schema/authoring/v1.6/adr-physical-system.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_6/adr-physical-system.schema.json",
+      "content_digest": "sha256:86891426608b68f947fa36016a9cd08da697b0db3a770ee06ecd4be50e63a7a3"
+    },
+    {
+      "path": "schema/authoring/v1.6/types.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_6/types.schema.json",
+      "content_digest": "sha256:f27df797e88b76956fa4866535133a496e9d65aaedae600e19588deb3a96b16a"
+    },
+    {
+      "path": "schema/authoring/v1.7/adr-common.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_7/adr-common.schema.json",
+      "content_digest": "sha256:f3c31fa273b6c17eb805a5ddabc2a6d51656e724d4d4ab1193f85a0c12735777"
+    },
+    {
+      "path": "schema/authoring/v1.7/adr-logical.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_7/adr-logical.schema.json",
+      "content_digest": "sha256:5ebcb3ed2b1959cbb9e448fd772b989c9108b6a31c68b327835a1cee95ca7566"
+    },
+    {
+      "path": "schema/authoring/v1.7/adr-physical-base.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_7/adr-physical-base.schema.json",
+      "content_digest": "sha256:8e34b19d733bb019400a328c753fbb1da27f124ad3d56a1cbcec052883fa3ce5"
+    },
+    {
+      "path": "schema/authoring/v1.7/adr-physical-component.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_7/adr-physical-component.schema.json",
+      "content_digest": "sha256:021c2e5b443f43c2973c0988a623978d64b8843a9570238db296441fc7260628"
+    },
+    {
+      "path": "schema/authoring/v1.7/adr-physical-system.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_7/adr-physical-system.schema.json",
+      "content_digest": "sha256:bf9e6f86e84af1b15e20bd3daee53930d01caccbb49c21eae08a68de754e42d6"
+    },
+    {
+      "path": "schema/authoring/v1.7/types.schema.json",
+      "package_member": "adr_kit/schema/authoring/v1_7/types.schema.json",
+      "content_digest": "sha256:3791dbabc32070e4b3cec3ce49934583888e84308076b2fad9603518c276650a"
+    },
+    {
+      "path": "schema/v1.0/adr-common.schema.json",
+      "package_member": "adr_kit/schema/v1_0/adr-common.schema.json",
+      "content_digest": "sha256:cf9e6460ce53ef2ae8a566dbc383f881bcc0d8f4ac1c5ee8a0d10f0009c5c35d"
+    },
+    {
+      "path": "schema/v1.0/adr-logical.schema.json",
+      "package_member": "adr_kit/schema/v1_0/adr-logical.schema.json",
+      "content_digest": "sha256:c49d5cebbbd83ed3faa2524ab3af8291606eeaaa9450610efa12e9e392b92c71"
+    },
+    {
+      "path": "schema/v1.0/adr-physical-base.schema.json",
+      "package_member": "adr_kit/schema/v1_0/adr-physical-base.schema.json",
+      "content_digest": "sha256:89105a66cec6eddba617192258e44917d0c02956ad8778ac7c6f603e7717d6f5"
+    },
+    {
+      "path": "schema/v1.0/adr-physical-component.schema.json",
+      "package_member": "adr_kit/schema/v1_0/adr-physical-component.schema.json",
+      "content_digest": "sha256:f2c922a781aaed64459e661c3bd91f2952288f78ec3b0e089a13f5522390d2c1"
+    },
+    {
+      "path": "schema/v1.0/adr-physical-system.schema.json",
+      "package_member": "adr_kit/schema/v1_0/adr-physical-system.schema.json",
+      "content_digest": "sha256:93c2ddb3fcae2a7f3a9f3b7d876ea4cb1b1fb09e659e0de7ad12ca526be7044e"
+    },
+    {
+      "path": "schema/v1.0/adr-physical.schema.json",
+      "package_member": "adr_kit/schema/v1_0/adr-physical.schema.json",
+      "content_digest": "sha256:44c461b49a48483fb1555c53e62544e838ae0eba17608ec3dbf4ccb6ece10470"
+    },
+    {
+      "path": "schema/v1.0/invariant.schema.json",
+      "package_member": "adr_kit/schema/v1_0/invariant.schema.json",
+      "content_digest": "sha256:5e61818ece9eee3169ab51c24b8ad599a01fd220d336fd4cab4ca64b40a630a1"
+    },
+    {
+      "path": "schema/v1.0/manifest.schema.json",
+      "package_member": "adr_kit/schema/v1_0/manifest.schema.json",
+      "content_digest": "sha256:9335ebfe54640368e251a368a302174a2ab27101b058fbd6de57c60e083d9c6d"
+    },
+    {
+      "path": "schema/v1.0/project-metadata.schema.json",
+      "package_member": "adr_kit/schema/v1_0/project-metadata.schema.json",
+      "content_digest": "sha256:20ce2b23486864940fa53bb473ca28f674c33668f1cc7689e8b8998081ea2bbb"
+    },
+    {
+      "path": "schema/v1.0/types.schema.json",
+      "package_member": "adr_kit/schema/v1_0/types.schema.json",
+      "content_digest": "sha256:b9351f4b010551c53b6ec2cf9d3fb508df082ec8966b81ec0e2b8dc93c3bd1c8"
+    },
+    {
+      "path": "schema/normalized-model/v1.1/normalized-entity-registry.schema.json",
+      "package_member": "adr_kit/schema/v1_1/normalized-entity-registry.schema.json",
+      "content_digest": "sha256:f1b107105d81fef441083cb70a19d56d828af195be8df8e1c10655a162749300"
+    },
+    {
+      "path": "schema/normalized-model/v1.1/relationship-registry.schema.json",
+      "package_member": "adr_kit/schema/v1_1/relationship-registry.schema.json",
+      "content_digest": "sha256:a730b8991cf09967ebbe56b96d315b0f662d51f2e560ab7f61d8b3801ff6b5cf"
+    },
+    {
+      "path": "schema/normalized-model/v1.1/unresolved-registry.schema.json",
+      "package_member": "adr_kit/schema/v1_1/unresolved-registry.schema.json",
+      "content_digest": "sha256:23c124becd7ef37a7b4edf49679965d689e8431786f07d69525e95d07df2beae"
+    },
+    {
+      "path": "schema/authoring/v1.2/adr-common.schema.json",
+      "package_member": "adr_kit/schema/v1_2/adr-common.schema.json",
+      "content_digest": "sha256:a91a351c4e7c8ddf85c3395d366f1de9782fb1fdd89466dade5522567cd3d50c"
+    },
+    {
+      "path": "schema/authoring/v1.2/adr-logical.schema.json",
+      "package_member": "adr_kit/schema/v1_2/adr-logical.schema.json",
+      "content_digest": "sha256:f8b62b44e19e03be6b8c17c6b9cbc8ae26cc0e59d5c50f1149abb8fcccd13ba1"
+    },
+    {
+      "path": "schema/authoring/v1.2/adr-physical-base.schema.json",
+      "package_member": "adr_kit/schema/v1_2/adr-physical-base.schema.json",
+      "content_digest": "sha256:7be1399209bc7fac890786ff8807ed071d0e0aa90767c0129776a025b67a5d36"
+    },
+    {
+      "path": "schema/authoring/v1.2/adr-physical-component.schema.json",
+      "package_member": "adr_kit/schema/v1_2/adr-physical-component.schema.json",
+      "content_digest": "sha256:93979efe12c8ba4e1d79b197ee1dbf1985bfc3523835c30592027bf2307c985d"
+    },
+    {
+      "path": "schema/authoring/v1.2/adr-physical-system.schema.json",
+      "package_member": "adr_kit/schema/v1_2/adr-physical-system.schema.json",
+      "content_digest": "sha256:4ea0ca069bb0e8780c32947d3b8bbc32d91b3aff7b1b1b612298131bf61afc06"
+    },
+    {
+      "path": "schema/authoring/v1.2/adr-physical.schema.json",
+      "package_member": "adr_kit/schema/v1_2/adr-physical.schema.json",
+      "content_digest": "sha256:6452e57d0d24381bf051e674e12fe96ca1c973aad72f531236cb67339f970533"
+    },
+    {
+      "path": "schema/authoring/v1.2/invariant.schema.json",
+      "package_member": "adr_kit/schema/v1_2/invariant.schema.json",
+      "content_digest": "sha256:210cc15723c9e5437673991e3e4a0154fb3ca529adf032088924bdd7890b7deb"
+    },
+    {
+      "path": "schema/authoring/v1.2/types.schema.json",
+      "package_member": "adr_kit/schema/v1_2/types.schema.json",
+      "content_digest": "sha256:6c433753a43c8dd279f5aec12e81b8876c9360a04db8d817bca10246f2a00f8a"
+    },
+    {
+      "path": "schema/authoring/v1.3/adr-common.schema.json",
+      "package_member": "adr_kit/schema/v1_3/adr-common.schema.json",
+      "content_digest": "sha256:a585ba26a5d1cb326d09f7e8da59d3a05a4bccac1aabe02b9a8d6b82bf5926e9"
+    },
+    {
+      "path": "schema/authoring/v1.3/adr-logical.schema.json",
+      "package_member": "adr_kit/schema/v1_3/adr-logical.schema.json",
+      "content_digest": "sha256:fccec445b37f43458ccfc7d524d26fb3f609e8765089383c2beea9df802e22f0"
+    },
+    {
+      "path": "schema/authoring/v1.3/adr-physical-base.schema.json",
+      "package_member": "adr_kit/schema/v1_3/adr-physical-base.schema.json",
+      "content_digest": "sha256:0360b15e07bb91639e3b382578e3116cacbc97f30ad7e0f7ff7b91803257083f"
+    },
+    {
+      "path": "schema/authoring/v1.3/adr-physical-component.schema.json",
+      "package_member": "adr_kit/schema/v1_3/adr-physical-component.schema.json",
+      "content_digest": "sha256:e96fef221b66484b17993361618b6b219d6ed6a567f335948f068ae1f3ad31da"
+    },
+    {
+      "path": "schema/authoring/v1.3/adr-physical-system.schema.json",
+      "package_member": "adr_kit/schema/v1_3/adr-physical-system.schema.json",
+      "content_digest": "sha256:86f0ceaa9c84ab64be908ce7f87b302db04ee12f842e69bc0126dde0f1ee5b09"
+    },
+    {
+      "path": "schema/authoring/v1.3/adr-physical.schema.json",
+      "package_member": "adr_kit/schema/v1_3/adr-physical.schema.json",
+      "content_digest": "sha256:094d65d02cdd08cda70cb9e000326a9204bce73c7cbaae135225ec6568a669f4"
+    },
+    {
+      "path": "schema/authoring/v1.3/types.schema.json",
+      "package_member": "adr_kit/schema/v1_3/types.schema.json",
+      "content_digest": "sha256:612d73a201177db340bbb8beab7abd83b1b940f9d262abe85bb4ea5457369816"
+    },
+    {
+      "path": "schema/authoring/v1.4/adr-common.schema.json",
+      "package_member": "adr_kit/schema/v1_4/adr-common.schema.json",
+      "content_digest": "sha256:8d80bf29c59b4e04e6dbe42b0ff2339ee16ce43c5228af71a409ece597a00c98"
+    },
+    {
+      "path": "schema/authoring/v1.4/adr-logical.schema.json",
+      "package_member": "adr_kit/schema/v1_4/adr-logical.schema.json",
+      "content_digest": "sha256:c413604d70e8750f5f1d6f6b78dcc5e207a2756a603940dfc4a7eb719b757c50"
+    },
+    {
+      "path": "schema/authoring/v1.4/adr-physical-base.schema.json",
+      "package_member": "adr_kit/schema/v1_4/adr-physical-base.schema.json",
+      "content_digest": "sha256:1ec099dd24aa752b9d8c6c008505505ab3e4627a998d35851e9b74f7f6a4c3f1"
+    },
+    {
+      "path": "schema/authoring/v1.4/adr-physical-component.schema.json",
+      "package_member": "adr_kit/schema/v1_4/adr-physical-component.schema.json",
+      "content_digest": "sha256:803e856979690a4f7a1eb1983aa5ac2486137eb5f7286ac1d58294bef7115fe8"
+    },
+    {
+      "path": "schema/authoring/v1.4/adr-physical-system.schema.json",
+      "package_member": "adr_kit/schema/v1_4/adr-physical-system.schema.json",
+      "content_digest": "sha256:529e0ef9519b6a93850d7a8960e554ad99491105ae537e7b6e2313339ccc86e2"
+    },
+    {
+      "path": "schema/authoring/v1.4/adr-physical.schema.json",
+      "package_member": "adr_kit/schema/v1_4/adr-physical.schema.json",
+      "content_digest": "sha256:4301e8e10c2ead982015de4dcb79f429466d4e4045f84cf94a4ec5d52ba44b14"
+    },
+    {
+      "path": "schema/authoring/v1.4/types.schema.json",
+      "package_member": "adr_kit/schema/v1_4/types.schema.json",
+      "content_digest": "sha256:7dd94ff95772355bfcc7a2ba281d6a6ba9894bb6e12544214e28d173420b2fbc"
+    },
+    {
+      "path": "schema/normalized-model/v2.0/normalized-architecture-model.schema.json",
+      "package_member": "adr_kit/schema/v2_0/normalized-architecture-model.schema.json",
+      "content_digest": "sha256:792e2e82545d0b115466923b00795e8dda08126d7b7aea7c4af571286aa67ab5"
+    },
+    {
+      "path": "schema/normalized-model/v2.0/normalized-entity-registry.schema.json",
+      "package_member": "adr_kit/schema/v2_0/normalized-entity-registry.schema.json",
+      "content_digest": "sha256:38f9002a76517eb16d4e35fd6b14bdf6492e910a7567520da6da52d4b2df2dd6"
+    },
+    {
+      "path": "schema/normalized-model/v2.0/normalized-entity.schema.json",
+      "package_member": "adr_kit/schema/v2_0/normalized-entity.schema.json",
+      "content_digest": "sha256:2fb728c722e8edd18595c04278150d444cab65cc68e9a5187c83026ab4786ac2"
+    },
+    {
+      "path": "schema/normalized-model/v2.0/relationship-record.schema.json",
+      "package_member": "adr_kit/schema/v2_0/relationship-record.schema.json",
+      "content_digest": "sha256:5fa2fce23ad17792318d40e287299af35b31ae4d501d0a50df257d682ffd8a0f"
+    },
+    {
+      "path": "schema/normalized-model/v2.0/relationship-registry.schema.json",
+      "package_member": "adr_kit/schema/v2_0/relationship-registry.schema.json",
+      "content_digest": "sha256:c563f373dd410e9441736bd12f7837d3a2f8548a9d32073591ca98bc32b0805f"
+    },
+    {
+      "path": "schema/normalized-model/v2.1/normalized-architecture-model.schema.json",
+      "package_member": "adr_kit/schema/v2_1/normalized-architecture-model.schema.json",
+      "content_digest": "sha256:1b35846435e7adc056812e1562368884da0606b1d1f4c5e0cd265c7009a532a0"
+    },
+    {
+      "path": "schema/normalized-model/v2.1/normalized-entity-registry.schema.json",
+      "package_member": "adr_kit/schema/v2_1/normalized-entity-registry.schema.json",
+      "content_digest": "sha256:bff8c7c3e7bd21fbde30f20af6f604f4b6fb8fba1071fd0734ad6456d56f2eaf"
+    },
+    {
+      "path": "schema/normalized-model/v2.1/normalized-entity.schema.json",
+      "package_member": "adr_kit/schema/v2_1/normalized-entity.schema.json",
+      "content_digest": "sha256:0ec2e9692aeca7e21e536147ee541e72891a59cdf563fed16b5215833c1ed661"
+    },
+    {
+      "path": "schema/normalized-model/v2.1/relationship-record.schema.json",
+      "package_member": "adr_kit/schema/v2_1/relationship-record.schema.json",
+      "content_digest": "sha256:706fa80f1c96173dbc3552a28dd0f71af5fa1791e93d53c11e615cd75ea7a3f1"
+    },
+    {
+      "path": "schema/normalized-model/v2.1/relationship-registry.schema.json",
+      "package_member": "adr_kit/schema/v2_1/relationship-registry.schema.json",
+      "content_digest": "sha256:5372cfb8b5625e468a9a9a9cd9994ad2591829c8ceb44594fceb3cdbf67a1583"
+    },
+    {
+      "path": "schema/normalized-model/v2.1/unresolved-registry.schema.json",
+      "package_member": "adr_kit/schema/v2_1/unresolved-registry.schema.json",
+      "content_digest": "sha256:77991b0cdfac9ab12979a66e3945a3faab6923031a06efa68b36a334e4f068b2"
+    },
+    {
+      "path": "schema/normalized-model/v2.2/normalized-architecture-model.schema.json",
+      "package_member": "adr_kit/schema/v2_2/normalized-architecture-model.schema.json",
+      "content_digest": "sha256:fb5f321872256ae6d87b6bb3eea42d9a0d8ca48528f6c0823eb99cae0904f073"
+    },
+    {
+      "path": "schema/normalized-model/v2.2/normalized-entity-registry.schema.json",
+      "package_member": "adr_kit/schema/v2_2/normalized-entity-registry.schema.json",
+      "content_digest": "sha256:7e0c1548abafc4c8828797f57033e2ebcf01090693dc4c1d09283c8381b4f442"
+    },
+    {
+      "path": "schema/normalized-model/v2.2/normalized-entity.schema.json",
+      "package_member": "adr_kit/schema/v2_2/normalized-entity.schema.json",
+      "content_digest": "sha256:7c8fa00d0d16015559ca38388d34c40720b9c435a6313d9d32e99edad2eca2b2"
+    },
+    {
+      "path": "schema/normalized-model/v2.2/relationship-record.schema.json",
+      "package_member": "adr_kit/schema/v2_2/relationship-record.schema.json",
+      "content_digest": "sha256:19e754bf9045c77bcb2c1a002d3828b92881f8d3e3059dc389a81db6ecc339c0"
+    },
+    {
+      "path": "schema/normalized-model/v2.2/relationship-registry.schema.json",
+      "package_member": "adr_kit/schema/v2_2/relationship-registry.schema.json",
+      "content_digest": "sha256:aaaa058314f3bc67d35f0e6305be1b955e32c4b31b0e8a121a03774e698f1e4d"
+    },
+    {
+      "path": "schema/normalized-model/v2.2/unresolved-registry.schema.json",
+      "package_member": "adr_kit/schema/v2_2/unresolved-registry.schema.json",
+      "content_digest": "sha256:035abd6de206ab588b20b431e18a289cbea4e31ea1161f7d6e43de377ee41315"
+    }
+  ],
+  "embedded_resource_authorities": [
+    {
+      "path": "contracts/authoring-domain/v1.1/contract.json",
+      "content_digest": "sha256:082d6c63211f2611e85d38fe7b674180c8c8276859d56b010830c6c381d01c6f",
+      "evidence": "embedded in identical released Python/Node semantic-core.wasm",
+      "scf": null
+    },
+    {
+      "path": "contracts/custom-entity/v1.0/contract.json",
+      "content_digest": "sha256:9669f12be495c944d0f53fabd1004fbf49387dafe63618dcc64fc5bf0c6a4060",
+      "evidence": "embedded in identical released Python/Node semantic-core.wasm",
+      "scf": null
+    },
+    {
+      "path": "contracts/custom-entity/v1.0/schema.json",
+      "content_digest": "sha256:6ee9cb18c64975b1c72507b34cb76dde9f7e58e9310ceb285ab697d2683d7caf",
+      "evidence": "embedded in identical released Python/Node semantic-core.wasm",
+      "scf": null
+    }
+  ],
+  "development_lineage": [
+    {
+      "family": "architecture-interpretation",
+      "version": "1.2",
+      "classification": "HISTORICAL DEVELOPMENT",
+      "proposed_disposition": "historical development after authenticated one-time correction; absorb meaning, retain Git snapshots",
+      "scf": "scf:v1:sha256:2a9300b1d7bdc9a80421cb94294fbd2f345531b5147644d02ae4bcc5c436d75a",
+      "definition_path": "contracts/semantic-contract/v1.0/definitions/architecture-interpretation-1.2.json",
+      "definition_digest": "sha256:b3f00596c164109098b9020964c1a9bfafc52b345e6024941cb0bf50d3d3d6c5",
+      "obligation_class": [
+        "B",
+        "D"
+      ],
+      "activation": "no correction before authenticated ADR-L-0040 acceptance",
+      "approval_evidence": null,
+      "evidence_limit": "An accepted immutability/selection clause is not evidence of external distribution. Unverified independent promotion must be investigated before removal.",
+      "resource_count": 46,
+      "resource_manifest_digest": "sha256:81915c12e2fc311415ab0ddb76de2c65d58a8c14e8f470a61affa0fbdb15daef",
+      "dependency_graph_selector": "contracts/semantic-contract/v1.0/definitions/architecture-interpretation-1.2.json#/resourceManifest"
+    },
+    {
+      "family": "architecture-interpretation",
+      "version": "1.3",
+      "classification": "HISTORICAL DEVELOPMENT",
+      "proposed_disposition": "historical development after authenticated one-time correction; absorb meaning, retain Git snapshots",
+      "scf": "scf:v1:sha256:d4a60e843c3069cfd7eb869a4d924d3a70bf900079d3a2ad86ae28884c6ac167",
+      "definition_path": "contracts/semantic-contract/v1.0/definitions/architecture-interpretation-1.3.json",
+      "definition_digest": "sha256:57dbf49ad26dc3a94aaca5aa502af8099fa89e8373ac9f4f2118af253526d4b1",
+      "obligation_class": [
+        "B",
+        "D"
+      ],
+      "activation": "no correction before authenticated ADR-L-0040 acceptance",
+      "approval_evidence": null,
+      "evidence_limit": "An accepted immutability/selection clause is not evidence of external distribution. Unverified independent promotion must be investigated before removal.",
+      "resource_count": 52,
+      "resource_manifest_digest": "sha256:bb7401e3ed5c5fa7536c2b4eb05085da024728b6acab049e2f985d8e8e04f299",
+      "dependency_graph_selector": "contracts/semantic-contract/v1.0/definitions/architecture-interpretation-1.3.json#/resourceManifest"
+    },
+    {
+      "family": "architecture-interpretation",
+      "version": "1.4",
+      "classification": "EXPLICITLY PROMOTED",
+      "proposed_disposition": "historical development after authenticated one-time correction; absorb meaning, retain Git snapshots",
+      "scf": "scf:v1:sha256:5c338d24961946d7f7d4350d5bfbbfb9e3882c56c8be09ba4d242169163acdd7",
+      "definition_path": "contracts/semantic-contract/v1.0/definitions/architecture-interpretation-1.4.json",
+      "definition_digest": "sha256:fb359160f19b07613816b94947fcd392ad92b23172564818def89900b0949812",
+      "obligation_class": [
+        "B",
+        "D"
+      ],
+      "activation": "no correction before authenticated ADR-L-0040 acceptance",
+      "approval_evidence": "https://github.com/egallmann/adr-architecture-kit/pull/181#issuecomment-6390411512",
+      "evidence_limit": "An accepted immutability/selection clause is not evidence of external distribution. Unverified independent promotion must be investigated before removal.",
+      "resource_count": 60,
+      "resource_manifest_digest": "sha256:f49ed4619d3317e64bf839b5b63733f94f21f9d80cba2623245e293099c7dd69",
+      "dependency_graph_selector": "contracts/semantic-contract/v1.0/definitions/architecture-interpretation-1.4.json#/resourceManifest"
+    },
+    {
+      "family": "architecture-interpretation",
+      "version": "1.5",
+      "classification": "EXPLICITLY PROMOTED",
+      "proposed_disposition": "current candidate",
+      "scf": "scf:v1:sha256:e3d52d9e863cfb6008f55bbff5c7ea4e676ac6a021d9eb52126284636d0329af",
+      "definition_path": "contracts/semantic-contract/v1.0/definitions/architecture-interpretation-1.5.json",
+      "definition_digest": "sha256:a681624a640a62613b672abfdab5b9da76ebe88dbfda06980de7e492f273b5ae",
+      "obligation_class": [
+        "B",
+        "C"
+      ],
+      "activation": "no correction before authenticated ADR-L-0040 acceptance",
+      "approval_evidence": "https://github.com/egallmann/adr-architecture-kit/pull/185#pullrequestreview-5646387222",
+      "evidence_limit": "An accepted immutability/selection clause is not evidence of external distribution. Unverified independent promotion must be investigated before removal.",
+      "resource_count": 69,
+      "resource_manifest_digest": "sha256:13b75a6eb9f9eb15fe186d3db80820e9a41136c7b59c91f15909a0cdfd4388ce",
+      "dependency_graph_selector": "contracts/semantic-contract/v1.0/definitions/architecture-interpretation-1.5.json#/resourceManifest"
+    },
+    {
+      "family": "authoring-construction",
+      "version": "1.1",
+      "classification": "HISTORICAL DEVELOPMENT",
+      "proposed_disposition": "historical development after authenticated one-time correction; absorb meaning, retain Git snapshots",
+      "scf": "scf:v1:sha256:dcb38e2247396759ed3cbf0ee308ba4c02c087bf47599e72a342cc5efe6a79c5",
+      "definition_path": "contracts/semantic-contract/v1.0/definitions/authoring-construction-1.1.json",
+      "definition_digest": "sha256:02f938ea53e76b83a83d9319029e09a4055d9c75da4b6955f0a80dd72fce836a",
+      "obligation_class": [
+        "B",
+        "D"
+      ],
+      "activation": "no correction before authenticated ADR-L-0040 acceptance",
+      "approval_evidence": null,
+      "evidence_limit": "An accepted immutability/selection clause is not evidence of external distribution. Unverified independent promotion must be investigated before removal.",
+      "resource_count": 58,
+      "resource_manifest_digest": "sha256:a7f6ed71b71c7def1017894328289c0c025736b4286f95eec53aad36a0031891",
+      "dependency_graph_selector": "contracts/semantic-contract/v1.0/definitions/authoring-construction-1.1.json#/resourceManifest"
+    },
+    {
+      "family": "authoring-construction",
+      "version": "1.2",
+      "classification": "HISTORICAL DEVELOPMENT",
+      "proposed_disposition": "historical development after authenticated one-time correction; absorb meaning, retain Git snapshots",
+      "scf": "scf:v1:sha256:8da499420e996c446cbc416dc7db9b4bbb2692ea5039f14461f668aaa48b9e0c",
+      "definition_path": "contracts/semantic-contract/v1.0/definitions/authoring-construction-1.2.json",
+      "definition_digest": "sha256:5cfd8b8f9a50351316f9f92e498b96e9d09569c0da6d0b9dc9fa308fd2a6dc80",
+      "obligation_class": [
+        "B",
+        "D"
+      ],
+      "activation": "no correction before authenticated ADR-L-0040 acceptance",
+      "approval_evidence": null,
+      "evidence_limit": "An accepted immutability/selection clause is not evidence of external distribution. Unverified independent promotion must be investigated before removal.",
+      "resource_count": 66,
+      "resource_manifest_digest": "sha256:215cea4c75ff5c5dcc38a92d75c0f664c2066e9ec428b929881250db68b1be8e",
+      "dependency_graph_selector": "contracts/semantic-contract/v1.0/definitions/authoring-construction-1.2.json#/resourceManifest"
+    },
+    {
+      "family": "authoring-construction",
+      "version": "1.3",
+      "classification": "HISTORICAL DEVELOPMENT",
+      "proposed_disposition": "historical development after authenticated one-time correction; absorb meaning, retain Git snapshots",
+      "scf": "scf:v1:sha256:5828fe0c3b1692240726152f57ca6de037a1e07f38bb8f9ecda223af105d1b49",
+      "definition_path": "contracts/semantic-contract/v1.0/definitions/authoring-construction-1.3.json",
+      "definition_digest": "sha256:fdb5d13e1e6d83da2aaadcd40211bcd33be9e550d178a85ad071b58ed99b6124",
+      "obligation_class": [
+        "B",
+        "D"
+      ],
+      "activation": "no correction before authenticated ADR-L-0040 acceptance",
+      "approval_evidence": null,
+      "evidence_limit": "An accepted immutability/selection clause is not evidence of external distribution. Unverified independent promotion must be investigated before removal.",
+      "resource_count": 94,
+      "resource_manifest_digest": "sha256:589c49df39244ccca6d1427e6724dbdd2678c67e3efaa96ef71fc97c831375f2",
+      "dependency_graph_selector": "contracts/semantic-contract/v1.0/definitions/authoring-construction-1.3.json#/resourceManifest"
+    },
+    {
+      "family": "authoring-construction",
+      "version": "1.4",
+      "classification": "EXPLICITLY PROMOTED",
+      "proposed_disposition": "historical development after authenticated one-time correction; absorb meaning, retain Git snapshots",
+      "scf": "scf:v1:sha256:19e267c5c77477a594414168bde9f733b1b9e547c06fc6836ad09392a248ea6d",
+      "definition_path": "contracts/semantic-contract/v1.0/definitions/authoring-construction-1.4.json",
+      "definition_digest": "sha256:67710abefcf41b0783471794656ad94b2cc6912cf12974033fcd012676eeebcb",
+      "obligation_class": [
+        "B",
+        "D"
+      ],
+      "activation": "no correction before authenticated ADR-L-0040 acceptance",
+      "approval_evidence": "https://github.com/egallmann/adr-architecture-kit/pull/182#pullrequestreview-5641274934",
+      "evidence_limit": "An accepted immutability/selection clause is not evidence of external distribution. Unverified independent promotion must be investigated before removal.",
+      "resource_count": 108,
+      "resource_manifest_digest": "sha256:0139ac3f96ee4ca375c4d6dc57e2a48c42022aaefc6310acfe4345a102a729d8",
+      "dependency_graph_selector": "contracts/semantic-contract/v1.0/definitions/authoring-construction-1.4.json#/resourceManifest"
+    },
+    {
+      "family": "normalized-model",
+      "version": "2.5",
+      "classification": "UNRELEASED CANDIDATE",
+      "proposed_disposition": "current candidate",
+      "scf": "scf:v1:sha256:bb48720502668e434d378445004aec7783346a0e74254c9e0d3cb01a8798d9d7",
+      "definition_path": "contracts/semantic-contract/v1.0/definitions/normalized-model-2.5.json",
+      "definition_digest": "sha256:e465444fec27cb5a43efbdb96f502025d31755be5ed5ed8c16329d699d859a85",
+      "obligation_class": [
+        "B",
+        "C"
+      ],
+      "activation": "no correction before authenticated ADR-L-0040 acceptance",
+      "approval_evidence": null,
+      "evidence_limit": "An accepted immutability/selection clause is not evidence of external distribution. Unverified independent promotion must be investigated before removal.",
+      "resource_count": 7,
+      "resource_manifest_digest": "sha256:0eeb15da6f879523607e335f84a621e4de8b7e5af193fb3297ca2b3efc1b06da",
+      "dependency_graph_selector": "contracts/semantic-contract/v1.0/definitions/normalized-model-2.5.json#/resourceManifest"
+    }
+  ],
+  "pending_pr": {
+    "number": 186,
+    "state": "OPEN",
+    "head": "6ddc8c2b6d66531ff3ecefb0bba7b15616ac4f0c",
+    "family": "authoring-construction",
+    "version": "1.5",
+    "classification": "UNRELEASED CANDIDATE",
+    "scf": "scf:v1:sha256:4bfbffb564c8c7c8bda8b07b663a238f7396f53164e9561cd94f23473e974d19",
+    "resource_count": 125,
+    "action": "Do not modify, merge or close in PR A. Retain source and CI as later migration evidence."
+  },
+  "historical_approvals": [
+    "https://github.com/egallmann/adr-architecture-kit/pull/181#issuecomment-6390411512",
+    "https://github.com/egallmann/adr-architecture-kit/pull/182#pullrequestreview-5641274934",
+    "https://github.com/egallmann/adr-architecture-kit/pull/185#pullrequestreview-5646387222"
+  ],
+  "unknowns": [
+    {
+      "subject": "Local .tmp-release-bundle 0.9.0",
+      "classification": "UNKNOWN / REQUIRES EVIDENCE",
+      "reason": "Source/artifact digest differs from registry release; not publication evidence."
+    },
+    {
+      "subject": "Unregistered external consumers and persisted candidate artifacts",
+      "classification": "UNKNOWN / REQUIRES EVIDENCE",
+      "reason": "No tracked candidate pins found in neighboring ste-spec, ste-runtime, ste-architecture-substrate and ste-handbook HEAD audit; absence is not universal proof."
+    }
+  ],
+  "public_commitments": [
+    "Released protocol 1.0-1.3 and SDK/Consumer Binding 1.0",
+    "Retained ADR v1.0, repository consumer seam and published compatibility inventories",
+    "Authoring 1.5/1.6/1.7 and earlier shipped encodings; NM 1.1/2.0/2.1/2.2/2.3/2.4",
+    "Resource-qualified ADC 1.0 discovery, ADC 1.1 and CEC 1.0 embedded execution authority"
+  ],
+  "obligation_classes": {
+    "A": "actual released compatibility",
+    "B": "accepted substantive architectural semantics",
+    "C": "required current candidate dependency",
+    "D": "development-history only after explicit policy correction",
+    "E": "unknown external or evidence obligation"
+  },
+  "development_reference_owners": [
+    "contracts/semantic-contract/v1.0/definitions and resources: exact manifest graph captured per definition",
+    "src/adr_kit/semantic_contract/v1_0 and packages/node: generated definition/resource mirrors and exact discovery",
+    "core/src/architecture_interpretation_v13.rs and architecture_interpretation_v14.rs: private exact authority pins",
+    "core/src/authoring_construction_v11.rs through v13 and basis/orchestration: private producer chain and public prototype routing",
+    "scripts/qualify_ai13_publication.py through qualify_ai15_publication.py and qualify_acc13_publication.py through qualify_acc14_publication.py: version-specific publication gates",
+    "tests/test_*publication.py and *_contract.py: historical SCF/closure/fixture requirements, not proof of actual releases",
+    "contracts/semantic-contract/v1.0/sets, catalog, policies, current: separately governed selections; no implicit change",
+    "adrs/logical/ADR-L-0028/0031/0034/0035/0037/0038/0039: accepted semantics and mapped lifecycle assumptions",
+    "release workflows, release_manifest.py, resolve_qualified_release_bundle.py: build-once promotion controls retained"
+  ]
+}

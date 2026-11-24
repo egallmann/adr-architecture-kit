@@ -1,0 +1,157 @@
+{
+  "resource_kind": "authoring-construction-composition-bindings",
+  "resource_version": "1.2",
+  "semanticDependencies": [
+    "architecture-interpretation/1.2/field-dispositions-1.7-to-2.4",
+    "authoring-domain/1.1/contract",
+    "authoring/1.7/schema/adr-logical.schema",
+    "authoring/1.7/schema/adr-common.schema",
+    "authoring-construction/1.2/composition-bindings.schema"
+  ],
+  "relation_vocabulary": [
+    "contains"
+  ],
+  "selection": {
+    "key": [
+      "parent_semantic_type",
+      "child_semantic_type",
+      "relation"
+    ],
+    "match": "exact",
+    "unknown_relation": "Rejected",
+    "known_relation_without_row": "Unavailable",
+    "multiple_rows": "publication_invalid"
+  },
+  "rows": [
+    {
+      "binding_id": "adr-logical.decisions.contains.entity-decision",
+      "parent_semantic_type": "adr/logical",
+      "child_semantic_type": "entity/decision",
+      "relation": "contains",
+      "parent_property": "decisions",
+      "parent_pointer": "/decisions",
+      "parent_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+        "schema_pointer": "",
+        "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+      },
+      "child_schema": {
+        "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+        "schema_pointer": "/definitions/decision",
+        "content_digest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660"
+      },
+      "semantic_field_key": "adr/logical#/decisions",
+      "ai_authority": {
+        "canonical_resource_key": "architecture-interpretation/1.2/field-dispositions-1.7-to-2.4",
+        "content_digest": "sha256:c5ee87f789976be4e4b0ece949867ddacd833bc4ae1efbc1de6b2547a703d440"
+      },
+      "required_ai_disposition": {
+        "disposition": "direct_semantic_value",
+        "destination_ref": "child_membership",
+        "ordering": "ordered_sequence",
+        "matching_identity_ref": "child_uuid",
+        "multiplicity": "reject_duplicate_identity",
+        "value_semantics": "child_identity_membership"
+      },
+      "adc_authority": {
+        "canonical_resource_key": "authoring-domain/1.1/contract",
+        "content_digest": "sha256:4788acb08de41ce69e51c9b0fc336147d68b6f7ea36feb41d46233c0c7e281aa"
+      },
+      "required_adc_policy": {
+        "parent": {
+          "composition_policy": {
+            "status": "defined",
+            "mode": "root_fragment",
+            "allowed_parents": [],
+            "cardinality": "root",
+            "child_identity": "preserve",
+            "admission": "deferred",
+            "persistence": "deferred"
+          },
+          "identity_policy": {
+            "status": "defined",
+            "mode": "canonical_uuidv7",
+            "identity_bearing": true,
+            "establishment": "create",
+            "supplied_identity": "preserve",
+            "update_identity": "preserve",
+            "reference_identity": "reuse",
+            "composition_identity": "does_not_manufacture",
+            "forbidden_derivations": [
+              "alias",
+              "prose",
+              "path",
+              "source_location",
+              "hash",
+              "ordering",
+              "composition_position"
+            ]
+          }
+        },
+        "child": {
+          "composition_policy": {
+            "status": "defined",
+            "mode": "fragment_composition",
+            "allowed_parents": [
+              {
+                "kind": "adr",
+                "name": "logical",
+                "min_occurs": 0,
+                "max_occurs": null
+              }
+            ],
+            "cardinality": "parent_context_declared",
+            "child_identity": "preserve",
+            "admission": "deferred",
+            "persistence": "deferred"
+          },
+          "identity_policy": {
+            "status": "defined",
+            "mode": "canonical_uuidv7",
+            "identity_bearing": true,
+            "establishment": "create",
+            "supplied_identity": "preserve",
+            "update_identity": "preserve",
+            "reference_identity": "reuse",
+            "composition_identity": "does_not_manufacture",
+            "forbidden_derivations": [
+              "alias",
+              "prose",
+              "path",
+              "source_location",
+              "hash",
+              "ordering",
+              "composition_position"
+            ]
+          }
+        }
+      },
+      "adc_policies_consulted": [
+        "composition_policy",
+        "identity_policy"
+      ],
+      "child_field_authority": "child_schema",
+      "endpoint_resolution": "same_request_create_fragment_request_key",
+      "operations": {
+        "parent": "create",
+        "child": "create"
+      },
+      "input_modes": [
+        "prepared"
+      ],
+      "byte_owner": "compiler",
+      "prepared_parent_property": "absent",
+      "child_object": "prepared_fields_plus_established_id",
+      "ordering": {
+        "input": "composition_intent.ordering",
+        "meaning": "authored_parent_membership_sequence",
+        "sort": "ascending_integer",
+        "unique_within": "parent_property",
+        "dense_required": false,
+        "semantic_value": "ordered_child_canonical_uuids",
+        "written_to_child": false,
+        "request_array_order_semantic": false
+      }
+    }
+  ]
+}

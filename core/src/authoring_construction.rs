@@ -1120,7 +1120,7 @@ fn resource_digest(raw: &str) -> String {
     )
 }
 
-fn source_descriptor_integrity(source: &BTreeMap<String, Json>) -> bool {
+pub(crate) fn source_descriptor_integrity(source: &BTreeMap<String, Json>) -> bool {
     let Some(encoded) = source.get("source_bytes").and_then(Json::as_str) else {
         return false;
     };

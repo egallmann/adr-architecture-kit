@@ -617,10 +617,10 @@ def test_release_certification_owns_retained_artifacts_and_release_only_checks()
 
     portability_suite = portability["jobs"]["full-os-suite"]
     assert portability_suite["needs"] == "semantic-core"
-    checkout = next(step for step in portability_suite["steps"] if step.get("uses") == "actions/checkout@v4")
-    assert checkout["with"]["ref"] == (
-        "${{ needs.semantic-core.outputs.source_commit }}"
+    checkout = next(
+        step for step in portability_suite["steps"] if step.get("uses") == "actions/checkout@v4"
     )
+    assert checkout["with"]["ref"] == ("${{ needs.semantic-core.outputs.source_commit }}")
     assert set(portability_suite["strategy"]["matrix"]["os"]) == {
         "windows-latest",
         "macos-latest",

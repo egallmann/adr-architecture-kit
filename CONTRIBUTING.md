@@ -442,16 +442,30 @@ tag-only publisher:
    with the next not-yet-published package version after the bootstrap package
    and Trusted Publisher are confirmed.
 
-The GitHub repository must also contain an `npm` environment before the first
-tagged npm publication. The exact human control-plane action is **Settings →
-Environments → New environment**, name it exactly `npm`, enable **Required
-reviewers** for a package-release maintainer or team who is not the tag actor,
-and enable **Prevent self-review**. The current repository has only one
-collaborator, so this environment is intentionally not created automatically;
-an independent reviewer must be added first. Do not replace this gate with an
-unprotected environment. The workflow uses GitHub OIDC (`id-token: write`),
-publishes the retained tarball without rebuilding, and requires no long-lived
-npm token for normal future releases.
+The GitHub repository must contain an `npm` environment before tagged npm
+publication. In repository Settings, Environments, configure `npm` with the
+repository owner as required reviewer, permit self-review, and disable
+administrator bypass. ADR Kit is a single-maintainer project: a second human
+reviewer or collaborator is not required. The owner retains final release approval
+authority. AI-assisted review and automated qualification provide evidence but
+are not GitHub reviewer identities or cryptographic human approval.
+
+These environment protections are repository release policy, not an npm Trusted
+Publishing requirement. Successful exact-source certification and durable
+owner-approved authority promotion evidence remain mandatory before publication.
+Explicit owner authorization is required before promotion or publication. Apply
+the same owner-review/self-review/bypass policy to `pypi`; retain the existing
+`semantic-authority-promotion` protections.
+
+Independently inspect registry account settings: owner `egallmann`, repository
+`adr-architecture-kit`, workflow `publish-npm.yml`, environment `npm`, package
+`@system-of-thought/adr-kit`; and workflow `publish-pypi.yml`, environment `pypi`,
+project `adr-architecture-kit` for PyPI. PyPI requires account 2FA. Neither platform
+requires a second human reviewer. See [npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/)
+and [PyPI publisher configuration](https://docs.pypi.org/trusted-publishers/adding-a-publisher/).
+The workflows use OIDC (`id-token: write`) in the publication jobs and publish
+verified retained artifacts without rebuilding or long-lived registry tokens.
+Workflow declarations alone do not prove registry configuration.
 
 ---
 

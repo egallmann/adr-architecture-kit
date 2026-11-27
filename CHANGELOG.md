@@ -7,25 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.0] — 2026-11-23
+
 ### Changed
 
+- v0.13.0 is a lifecycle-governed consolidation release under ADR-L-0042. It
+  does not claim completion of Forward Semantic Execution Completion; the
+  separate all-27 semantic-type milestone and its destination obligations remain.
+- Python and npm distributions include only semantic authorities classified as
+  released. AI 1.2–1.5, ACC 1.1–1.5, and NM 2.5 remain canonical repository
+  development candidates and are excluded from distributions and the promoted
+  authority cohort.
 - Retired the unpublished semantic-core protocol 1.4 and 1.5 public routes.
-  Protocols 1.0–1.3 remain supported; canonical candidate contracts and
-  successor implementation helpers remain available in the repository.
+  Released protocols 1.0–1.3 remain supported.
 
 ### Fixed
 
-- Authoring Construction now seals only minimal non-overlapping candidate
-  source roots while retaining embedded child artifacts in the complete
-  detached candidate result.
-- Python and Node semantic-core hosts now compile the immutable WASM module once
-  per process while retaining a fresh isolated store/instance for every request.
-
-### Changed
-
-- Test assurance now has explicit fast, integration, governance, cross-host, and
-  benchmark lanes. Develop runs Linux behavioral coverage and dedicated
-  governance; complete Windows/macOS source suites run on schedule and at release.
+- Python and Node hosts now compile the immutable WASM module once per process
+  while using a fresh isolated store and instance for each request.
+- Updated the transitive Node dependency `fast-uri` from 3.1.8 to 3.1.9.
 
 ## [0.12.2] — 2026-10-04
 

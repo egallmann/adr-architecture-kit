@@ -299,7 +299,9 @@ def _commands(job: dict[str, Any]) -> str:
 
 
 def _command_step(job: dict[str, Any], command: str) -> dict[str, Any]:
-    matches = [step for step in job["steps"] if command in " ".join(step.get("run", "").split())]
+    matches: list[dict[str, Any]] = [
+        step for step in job["steps"] if command in " ".join(step.get("run", "").split())
+    ]
     assert len(matches) == 1, f"expected one step running {command}"
     _required(matches[0])
     return matches[0]

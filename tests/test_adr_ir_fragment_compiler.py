@@ -473,8 +473,11 @@ def test_cli_compile_ir_fragments_writes_canonical_array(tmp_path: Path) -> None
     assert len(records) == 3
 
 
-def test_cli_build_ir_fragments_writes_repo_publication_artifact(monkeypatch) -> None:
-    monkeypatch.chdir(REPO_ROOT)
+def test_cli_build_ir_fragments_writes_repo_publication_artifact(monkeypatch, tmp_path) -> None:
+    source = Path("adrs/logical/ADR-L-9000-kernel-boot-publication-surface.yaml")
+    (tmp_path / source).parent.mkdir(parents=True)
+    (tmp_path / source).write_bytes((REPO_ROOT / source).read_bytes())
+    monkeypatch.chdir(tmp_path)
     monkeypatch.setattr(
         cli_main,
         "__file__",
@@ -484,9 +487,10 @@ def test_cli_build_ir_fragments_writes_repo_publication_artifact(monkeypatch) ->
     result = runner.invoke(cli, ["build-ir-fragments"])
 
     assert result.exit_code == 0, result.output
-    output_path = REPO_ROOT / "dist" / "architecture-ir" / "adr-ir-fragments.json"
-    assert output_path.exists()
-    records = json.loads(output_path.read_text(encoding="utf-8"))
+    artifact = Path("dist/architecture-ir/adr-ir-fragments.json")
+    output = (tmp_path / artifact).read_bytes()
+    assert output == (REPO_ROOT / artifact).read_bytes()
+    records = json.loads(output)
     assert isinstance(records, list)
     assert {record.get("kind", record.get("type")) for record in records} == {
         "capability",

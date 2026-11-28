@@ -1054,7 +1054,9 @@ def test_exact_discovery_and_byte_identical_package_mirrors() -> None:
         get_semantic_contract("authoring-construction", "99.99")
 
 
-def test_successor_only_generation_deterministic_and_historical_bytes_unchanged() -> None:
+def test_successor_only_generation_deterministic_and_historical_bytes_unchanged(
+    publication_workspace: Path,
+) -> None:
     paths = [
         CANONICAL / "contract.json",
         ASSETS / "definitions/architecture-interpretation-1.3.json",
@@ -1070,9 +1072,13 @@ def test_successor_only_generation_deterministic_and_historical_bytes_unchanged(
     for _ in range(2):
         subprocess.run(
             [sys.executable, "scripts/generate_semantic_contract_assets.py", "--publish-ai13-only"],
-            cwd=ROOT,
+            cwd=publication_workspace,
             check=True,
         )
-        assert {path: path.read_bytes() for path in paths} == before
+        assert {
+            path: (publication_workspace / path.relative_to(ROOT)).read_bytes() for path in paths
+        } == before
     for relative, expected in HISTORICAL_SHA256.items():
-        assert hashlib.sha256((ROOT / relative).read_bytes()).hexdigest() == expected, relative
+        assert (
+            hashlib.sha256((publication_workspace / relative).read_bytes()).hexdigest() == expected
+        ), relative

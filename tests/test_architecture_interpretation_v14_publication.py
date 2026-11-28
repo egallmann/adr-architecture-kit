@@ -525,7 +525,7 @@ def tracked_bytes(root: Path) -> dict[str, bytes]:
     return {name: (root / name).read_bytes() for name in paths if name and (root / name).is_file()}
 
 
-def test_deterministic_generation_preserves_existing_files() -> None:
+def test_deterministic_generation_preserves_existing_files(publication_workspace: Path) -> None:
     assert_immutable_publication(ROOT)
     # Snapshot the current tree, including future authorized successor/runtime
     # files. No historical Git baseline or perpetual changed-file allowlist.
@@ -533,12 +533,12 @@ def test_deterministic_generation_preserves_existing_files() -> None:
     for _ in range(2):
         subprocess.run(
             [sys.executable, "scripts/generate_semantic_contract_assets.py", "--publish-ai14-only"],
-            cwd=ROOT,
+            cwd=publication_workspace,
             check=True,
         )
-        assert tracked_bytes(ROOT) == before
-        assert_immutable_publication(ROOT)
-    publication.qualified_history(ROOT)
+        assert tracked_bytes(publication_workspace) == before
+        assert_immutable_publication(publication_workspace)
+    publication.qualified_history(publication_workspace)
 
 
 def test_future_acc14_file_does_not_invalidate_permanent_integrity(tmp_path: Path) -> None:

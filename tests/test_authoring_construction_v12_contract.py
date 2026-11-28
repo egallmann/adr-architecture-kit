@@ -478,20 +478,24 @@ def test_frozen_history_protocol_and_retained_selection_are_unchanged() -> None:
     assert rules["composition"]["protocol_1_5_composition_resolution"] is False
 
 
-def test_repository_generator_and_package_mirrors_are_byte_deterministic() -> None:
+def test_repository_generator_and_package_mirrors_are_byte_deterministic(
+    publication_workspace: Path,
+) -> None:
     roots = [CANONICAL, BUNDLED, ACC]
     before = {path: path.read_bytes() for root in roots for path in root.rglob("*.json")}
     for _ in range(2):
         subprocess.run(
             [
                 sys.executable,
-                str(ROOT / "scripts/generate_semantic_contract_assets.py"),
+                "scripts/generate_semantic_contract_assets.py",
             ],
-            cwd=ROOT,
+            cwd=publication_workspace,
             check=True,
         )
         assert before == {
-            path: path.read_bytes() for root in roots for path in root.rglob("*.json")
+            ROOT / path.relative_to(publication_workspace): path.read_bytes()
+            for root in roots
+            for path in (publication_workspace / root.relative_to(ROOT)).rglob("*.json")
         }
     for path in (CANONICAL / "resources").glob("authoring-construction-1.2-*.json"):
         assert path.read_bytes() == (BUNDLED / "resources" / path.name).read_bytes()

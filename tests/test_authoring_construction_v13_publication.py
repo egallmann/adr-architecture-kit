@@ -1155,7 +1155,9 @@ def test_exact_discovery_missing_versions_aliases_and_publication_only() -> None
     assert "1.3" not in str(semantic_core_capabilities().get("authoring_construction", {}))
 
 
-def test_package_byte_parity_regeneration_and_historical_git_blobs() -> None:
+def test_package_byte_parity_regeneration_and_historical_git_blobs(
+    publication_workspace: Path,
+) -> None:
     targets = [
         BASE / "contract.json",
         ASSETS / "definitions/authoring-construction-1.3.json",
@@ -1185,19 +1187,23 @@ def test_package_byte_parity_regeneration_and_historical_git_blobs() -> None:
                 "scripts/generate_semantic_contract_assets.py",
                 "--publish-acc13-only",
             ],
-            cwd=ROOT,
+            cwd=publication_workspace,
             check=True,
         )
-        assert before == {p: p.read_bytes() for p in targets}
+        assert before == {
+            p: (publication_workspace / p.relative_to(ROOT)).read_bytes() for p in targets
+        }
     for mode in ["--publish-ai13-only", "--publish-nm25-only"]:
         subprocess.run(
             [sys.executable, "scripts/generate_semantic_contract_assets.py", mode],
-            cwd=ROOT,
+            cwd=publication_workspace,
             check=True,
         )
-        assert before == {p: p.read_bytes() for p in targets}
+        assert before == {
+            p: (publication_workspace / p.relative_to(ROOT)).read_bytes() for p in targets
+        }
     for relative, blob in HISTORICAL_GIT_BLOBS.items():
-        b = (ROOT / relative).read_bytes()
+        b = (publication_workspace / relative).read_bytes()
         assert (
             hashlib.sha1(b"blob " + str(len(b)).encode("ascii") + b"\0" + b).hexdigest() == blob
         ), relative

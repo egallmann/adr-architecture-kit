@@ -35,7 +35,7 @@ jobs:
         with:
           name: semantic-core-${{ github.sha }}
           path: semantic-core-artifact
-      - name: Install the exact qualified artifact for this commit
+      - name: Install verified source-built WASM for this certified commit
         run: >-
           python scripts/semantic_core_artifact_bundle.py consume
           --bundle-dir semantic-core-artifact

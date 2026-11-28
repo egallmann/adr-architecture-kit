@@ -1,21 +1,20 @@
-name: Semantic Core Qualification
+name: Verified Source-Built WASM
 
 on:
   workflow_call:
     inputs:
       source_ref:
-        description: Exact source ref or commit to qualify; defaults to the caller event commit.
-        required: false
+        description: Exact source commit SHA.
+        required: true
         type: string
-        default: ""
     outputs:
       source_commit:
-        description: Full commit SHA of the checkout used to build the qualified artifact.
-        value: ${{ jobs.semantic-core.outputs.source_commit }}
+        description: Full commit SHA of the source checked by this workflow.
+        value: ${{ jobs.semantic-core-wasm.outputs.source_commit }}
 
 jobs:
-  semantic-core:
-    name: Source qualification and WASM build
+  semantic-core-wasm:
+    name: Build and verify source-built WASM
     runs-on: ubuntu-latest
     outputs:
       source_commit: ${{ steps.source.outputs.commit }}
@@ -23,15 +22,18 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: ${{ inputs.source_ref || github.sha }}
-      - name: Record and validate qualified source commit
+          ref: ${{ inputs.source_ref }}
+      - name: Verify exact source commit
         id: source
         shell: bash
+        env:
+          EXPECTED_SOURCE: ${{ inputs.source_ref }}
         run: |
+          [[ "$EXPECTED_SOURCE" =~ ^[0-9a-f]{40}$ ]]
           commit="$(git rev-parse HEAD)"
-          [[ "$commit" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$commit" == "$EXPECTED_SOURCE" ]]
           echo "commit=$commit" >> "$GITHUB_OUTPUT"
-          echo "Qualified semantic-core source commit: $commit"
+          echo "Semantic-core source commit: $commit"
       - name: Read repository Rust toolchain authority
         id: rust-toolchain
         shell: bash
@@ -48,8 +50,6 @@ jobs:
           node-version: "20"
       - name: Smoke-test the tracked artifact before source build
         run: node scripts/check_tracked_semantic_core.mjs
-      - name: Test semantic-core source
-        run: cargo test --manifest-path core/Cargo.toml
       - name: Build WASM without changing tracked host copies
         run: node scripts/build_semantic_core.mjs --artifact-only
       - name: Create UNQUALIFIED Windows-developer bootstrap bundle
@@ -70,7 +70,7 @@ jobs:
           --built-artifact core/target/wasm32-unknown-unknown/release/adr_kit_semantic_core.wasm
       - name: Verify source-built artifact against all host copies
         run: python scripts/verify_semantic_core_artifact.py
-      - name: Create commit-bound artifact bundle
+      - name: Bundle verified source-built WASM
         run: >-
           python scripts/semantic_core_artifact_bundle.py create
           --artifact core/target/wasm32-unknown-unknown/release/adr_kit_semantic_core.wasm

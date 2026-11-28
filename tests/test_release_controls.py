@@ -455,7 +455,8 @@ def test_codeql_analyzes_python_and_typescript_on_main_and_develop() -> None:
     assert init["with"]["queries"] == "security-extended"
 
 
-CORE_WORKFLOW = "./.github/workflows/semantic-core-qualification.yml"
+NATIVE_WORKFLOW = "./.github/workflows/semantic-core-native.yml"
+WASM_WORKFLOW = "./.github/workflows/semantic-core-wasm.yml"
 INTEGRATION_WORKFLOW = "./.github/workflows/integration-assurance.yml"
 PORTABILITY_OS = {"windows-latest", "macos-latest"}
 EVENT_SHA = "${{ github.sha }}"
@@ -468,17 +469,67 @@ GOVERNANCE_COMMANDS = (
 
 
 def _artifact_consumer(job: dict[str, Any], source: str) -> None:
+    (checkout,) = _actions(job, "actions/checkout")
+    _required(checkout)
+    assert checkout.get("with", {}).get("ref", EVENT_SHA) == source
     (download,) = _actions(job, "actions/download-artifact")
     _required(download)
     assert download["with"]["name"] == f"semantic-core-{source}"
-    assert not {"run-id", "repository", "github-token", "pattern"} & download["with"].keys()
+    assert (
+        not {"run-id", "repository", "github-token", "pattern", "artifact-ids"}
+        & download["with"].keys()
+    )
     consume = _command_step(job, "semantic_core_artifact_bundle.py consume")
     args = shlex.split(consume["run"])
     assert args[args.index("--source-commit") + 1] == source
     assert args[args.index("--bundle-dir") + 1] == download["with"]["path"]
     verify = _command_step(job, "scripts/verify_semantic_core_artifact.py")
     steps = job["steps"]
-    assert steps.index(download) < steps.index(consume) < steps.index(verify)
+    assert (
+        steps.index(checkout) < steps.index(download) < steps.index(consume) < steps.index(verify)
+    )
+
+
+def _core_calls(
+    jobs: dict[str, Any], source: str, *, prerequisites: frozenset[str] = frozenset()
+) -> None:
+    for name, workflow in (("native-rust", NATIVE_WORKFLOW), ("semantic-core-wasm", WASM_WORKFLOW)):
+        job = jobs[name]
+        _required(job)
+        assert job["uses"] == workflow
+        assert _needs(job) == prerequisites
+        assert job["with"]["source_ref"] == source
+
+
+def _and_terms(expression: str) -> set[str]:
+    assert expression.startswith("${{") and expression.endswith("}}")
+    return {term.strip() for term in expression[3:-2].split("&&")}
+
+
+def _assurance_gate(
+    job: dict[str, Any], required: set[str], source: str, *, optional_os: bool = False
+) -> None:
+    assert job["if"] == "${{ always() }}"
+    assert job.get("continue-on-error", False) is False
+    optional = {"os-portability"} if optional_os else set()
+    assert _needs(job) == required | optional
+    check = _command_step(job, 'test "$REQUIRED_SUCCEEDED" = true')
+    assert check["shell"] == "bash"
+    env = check["env"]
+    assert _and_terms(env["REQUIRED_SUCCEEDED"]) == {
+        f"needs.{name}.result == 'success'" for name in required
+    }
+    assert _and_terms(env["SOURCE_MATCH"]) == {
+        f"needs.{name}.outputs.source_commit == {source}"
+        for name in ("native-rust", "semantic-core-wasm")
+    }
+    _command_step(job, 'test "$SOURCE_MATCH" = true')
+    if optional_os:
+        assert env["PORTABILITY_SUCCEEDED"] == (
+            "${{ needs.os-portability.result == "
+            "(inputs.full_os_portability && 'success' || 'skipped') }}"
+        )
+        _command_step(job, 'test "$PORTABILITY_SUCCEEDED" = true')
 
 
 def test_pr_and_integration_require_native_rust_and_source_built_wasm() -> None:
@@ -489,13 +540,13 @@ def test_pr_and_integration_require_native_rust_and_source_built_wasm() -> None:
             ("source-compatibility", "typescript-consumer", "governance", "full-python-coverage"),
         ),
     ):
-        workflow = _load_workflow(filename)
-        jobs = workflow["jobs"]
-        (core,) = [job for job in jobs.values() if job.get("uses") == CORE_WORKFLOW]
-        _required(core)
+        jobs = _load_workflow(filename)["jobs"]
+        _core_calls(jobs, EVENT_SHA)
         for name in consumers:
-            _required(jobs[name])
-            _artifact_consumer(jobs[name], EVENT_SHA)
+            job = jobs[name]
+            _required(job)
+            assert _needs(job) == {"semantic-core-wasm"}
+            _artifact_consumer(job, EVENT_SHA)
         _required(jobs["quality-ratchets"])
         _command_step(jobs["quality-ratchets"], "scripts/check_quality_ratchets.py")
         for command in ("npm run build", "npm run typecheck", "npm test", "npm run browser:check"):
@@ -506,40 +557,82 @@ def test_pr_and_integration_require_native_rust_and_source_built_wasm() -> None:
             if "steps" in job
             for step in _actions(job, "actions/upload-artifact")
         )
+        required = {*consumers, "native-rust", "semantic-core-wasm", "quality-ratchets"}
+        optional_os = filename == "integration-assurance.yml"
+        if optional_os:
+            required.add("dependency-audit")
+            assert _needs(jobs["os-portability"]) == {"semantic-core-wasm"}
+        _assurance_gate(jobs["assurance"], required, "github.sha", optional_os=optional_os)
 
-    reusable = _load_workflow("semantic-core-qualification.yml")
-    jobs = reusable["jobs"]
-    (native,) = [job for job in jobs.values() if "cargo test" in _commands(job)]
-    _required(native)
-    _command_step(native, "cargo test")
 
-    # Only the artifact's own prerequisites must precede its upload.
-    (producer,) = [job for job in jobs.values() if "build_semantic_core.mjs" in _commands(job)]
-    _required(producer)
+def test_core_reusables_validate_exact_source_and_preserve_native_and_wasm_guards() -> None:
+    for filename, name, output in (
+        ("semantic-core-native.yml", "native-rust", "steps.tests.outputs.source_commit"),
+        ("semantic-core-wasm.yml", "semantic-core-wasm", "steps.source.outputs.commit"),
+    ):
+        workflow = _load_workflow(filename)
+        call = _workflow_trigger(workflow)["workflow_call"]
+        assert call["inputs"]["source_ref"]["required"] is True
+        assert call["outputs"]["source_commit"]["value"] == (
+            f"${{{{ jobs.{name}.outputs.source_commit }}}}"
+        )
+        assert set(workflow["jobs"]) == {name}
+        job = workflow["jobs"][name]
+        _required(job)
+        assert not _needs(job)
+        assert job["outputs"]["source_commit"] == f"${{{{ {output} }}}}"
+        (checkout,) = _actions(job, "actions/checkout")
+        _required(checkout)
+        assert checkout["with"]["ref"] == "${{ inputs.source_ref }}"
+        source = _command_step(job, "git rev-parse HEAD")
+        assert source["env"]["EXPECTED_SOURCE"] == "${{ inputs.source_ref }}"
+        assert '[[ "$commit" == "$EXPECTED_SOURCE" ]]' in source["run"]
+        assert "commit=$commit" in source["run"]
+        toolchain = _command_step(job, "rust-toolchain.toml")
+        (install,) = _actions(job, "dtolnay/rust-toolchain")
+        _required(install)
+        assert re.fullmatch(r"dtolnay/rust-toolchain@[0-9a-f]{40}", install["uses"])
+        assert install["with"]["toolchain"] == "${{ steps.rust-toolchain.outputs.channel }}"
+        if name == "native-rust":
+            test = _command_step(job, "cargo test")
+            cargo = next(line for line in test["run"].splitlines() if "cargo test" in line)
+            assert shlex.split(cargo) == ["cargo", "test", "--manifest-path", "core/Cargo.toml"]
+            assert test["shell"] == "bash"
+            assert test["env"]["TESTED_SOURCE"] == "${{ steps.source.outputs.commit }}"
+            assert '"source_commit=$TESTED_SOURCE" >> "$GITHUB_OUTPUT"' in test["run"]
+            assert job["steps"].index(source) < job["steps"].index(toolchain)
+            assert job["steps"].index(install) < job["steps"].index(test)
+
+    producer = _load_workflow("semantic-core-wasm.yml")["jobs"]["semantic-core-wasm"]
+    assert "cargo test" not in _commands(producer)
     build = _command_step(producer, "scripts/build_semantic_core.mjs")
     verify = _command_step(producer, "scripts/verify_semantic_core_artifact.py")
     guard = _command_step(producer, "scripts/check_semantic_core_artifact_change.py")
     bundle = _command_step(producer, "semantic_core_artifact_bundle.py create ")
-    source = "${{ steps.source.outputs.commit }}"
+    bootstrap = _command_step(producer, "semantic_core_artifact_bundle.py create-bootstrap")
+    source_ref = "${{ steps.source.outputs.commit }}"
     (upload,) = [
         step
         for step in _actions(producer, "actions/upload-artifact")
-        if step["with"]["name"] == f"semantic-core-{source}"
+        if step["with"]["name"] == f"semantic-core-{source_ref}"
     ]
-    _required(upload)
+    (bootstrap_upload,) = [
+        step
+        for step in _actions(producer, "actions/upload-artifact")
+        if step["with"]["name"] == f"semantic-core-bootstrap-{source_ref}"
+    ]
+    for step in (upload, bootstrap_upload):
+        _required(step)
+        assert step["with"]["if-no-files-found"] == "error"
     steps = producer["steps"]
-    assert steps.index(build) < min(steps.index(verify), steps.index(guard))
+    assert steps.index(build) < steps.index(bootstrap) < steps.index(bootstrap_upload)
+    assert steps.index(bootstrap_upload) < min(steps.index(verify), steps.index(guard))
     assert max(steps.index(verify), steps.index(guard)) < steps.index(bundle) < steps.index(upload)
     args = shlex.split(bundle["run"])
-    assert args[args.index("--source-commit") + 1] == source
+    assert args[args.index("--source-commit") + 1] == source_ref
     assert args[args.index("--output-dir") + 1] == upload["with"]["path"].rstrip("/")
-    assert upload["with"]["if-no-files-found"] == "error"
     assert "--artifact-only" in build["run"]
     assert "--built-artifact" in guard["run"]
-    _command_step(producer, "git rev-parse HEAD")
-    (checkout,) = _actions(producer, "actions/checkout")
-    _required(checkout)
-    assert checkout["with"]["ref"] == "${{ inputs.source_ref || github.sha }}"
 
 
 def test_pr_feedback_exercises_fast_semantic_and_source_contracts() -> None:
@@ -652,27 +745,21 @@ def test_scheduled_portability_qualifies_and_consumes_the_resolved_commit() -> N
         == "${{ github.event_name == 'schedule' && 'refs/heads/develop' || github.sha }}"
     )
     _command_step(resolver, "git rev-parse HEAD")
-    core = jobs["semantic-core"]
-    _required(core)
-    assert "resolve-source" in _needs(core)
-    assert core["uses"] == CORE_WORKFLOW
-    assert core["with"]["source_ref"] == "${{ needs.resolve-source.outputs.source_commit }}"
-    producer_call = _workflow_trigger(_load_workflow("semantic-core-qualification.yml"))[
-        "workflow_call"
-    ]
-    assert (
-        producer_call["outputs"]["source_commit"]["value"]
-        == "${{ jobs.semantic-core.outputs.source_commit }}"
-    )
+    assert resolver["outputs"]["source_commit"] == "${{ steps.source.outputs.commit }}"
+
+    source = "needs.resolve-source.outputs.source_commit"
+    _core_calls(jobs, f"${{{{ {source} }}}}", prerequisites=frozenset({"resolve-source"}))
     suite = jobs["full-os-suite"]
     _required(suite)
-    source = "${{ needs.semantic-core.outputs.source_commit }}"
-    (checkout,) = _actions(suite, "actions/checkout")
-    assert checkout["with"]["ref"] == source
-    assert "semantic-core" in _needs(suite)
-    _artifact_consumer(suite, source)
+    assert _needs(suite) == {"semantic-core-wasm"}
+    _artifact_consumer(suite, "${{ needs.semantic-core-wasm.outputs.source_commit }}")
     assert set(suite["strategy"]["matrix"]["os"]) == PORTABILITY_OS
     _command_step(suite, "pytest")
+    _assurance_gate(
+        jobs["assurance"],
+        {"resolve-source", "native-rust", "semantic-core-wasm", "full-os-suite"},
+        source,
+    )
 
 
 def test_local_pre_push_checks_include_readme_pypi_portability() -> None:

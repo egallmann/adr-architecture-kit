@@ -133,7 +133,7 @@ def consume_bundle(
     data = (bundle_dir / WASM_NAME).read_bytes()
     digest = hashlib.sha256(data).hexdigest()
     if not data or len(data) != manifest["size_bytes"] or digest != manifest["sha256"]:
-        raise ValueError("semantic-core artifact bytes do not match the qualified manifest")
+        raise ValueError("semantic-core artifact bytes do not match the manifest")
 
     repo_root = repo_root.resolve()
     for relative_path in ARTIFACT_DESTINATIONS:
@@ -176,8 +176,14 @@ def main() -> int:
             result = consume_bundle(args.bundle_dir, args.source_commit, args.repo_root)
     except (OSError, json.JSONDecodeError, ValueError) as exc:
         parser.error(str(exc))
+    label = {
+        "create": "source-built WASM bundle",
+        "consume": "verified source-built WASM bundle",
+        "create-bootstrap": "UNQUALIFIED bootstrap bundle",
+        "install-bootstrap": "UNQUALIFIED bootstrap bundle",
+    }[args.command]
     print(
-        f"semantic-core artifact {args.command} {result.get('qualification', 'QUALIFIED')} for {result['source_commit']} "
+        f"semantic-core {args.command}: {label} for {result['source_commit']} "
         f"sha256={result['sha256']} size={result['size_bytes']}"
     )
     return 0

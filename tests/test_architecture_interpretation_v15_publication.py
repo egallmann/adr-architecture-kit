@@ -37,14 +37,20 @@ def resource(name: str) -> Any:
     )
 
 
-@pytest.fixture
-def snapshot(monkeypatch: pytest.MonkeyPatch) -> dict[str, Any]:
-    original = publication.read
+@pytest.fixture(scope="module")
+def snapshot_baseline() -> dict[str, Any]:
     values = {P + n: resource(n) for n in publication.NAMES}
-    values[P + "contract"] = original(ROOT, P + "contract")
+    values[P + "contract"] = publication.read(ROOT, P + "contract")
+    return values
+
+
+@pytest.fixture
+def snapshot(monkeypatch: pytest.MonkeyPatch, snapshot_baseline: dict[str, Any]) -> dict[str, Any]:
+    original = publication.read
+    values = copy.deepcopy(snapshot_baseline)
 
     def read(root: Path, key: str) -> Any:
-        return values[key] if key in values else original(root, key)
+        return values[key] if root == ROOT and key in values else original(root, key)
 
     monkeypatch.setattr(publication, "read", read)
     return values
@@ -379,15 +385,19 @@ def test_current_candidate_mirrors_match_canonical_inputs() -> None:
         ).read_bytes() == expected
 
 
-def test_deterministic_version_isolated_generation() -> None:
+def test_deterministic_version_isolated_generation(publication_workspace: Path) -> None:
     before = {
         p: p.read_bytes()
         for directory in ("contracts", "src/adr_kit/semantic_contract")
         for p in (ROOT / directory).rglob("*.json")
     }
+    (
+        publication_workspace
+        / "src/adr_kit/semantic_contract/v1_0/architecture-interpretation-1.5.json"
+    ).unlink()
     result = subprocess.run(
         [sys.executable, "scripts/generate_semantic_contract_assets.py", "--publish-ai15-only"],
-        cwd=ROOT,
+        cwd=publication_workspace,
         capture_output=True,
         text=True,
     )

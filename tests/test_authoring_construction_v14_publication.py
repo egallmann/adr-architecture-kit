@@ -534,18 +534,18 @@ def test_independent_publication_mutations(snapshot: dict[str, Any], fault: str)
         publication.qualify()
 
 
-def test_historical_integrity_and_deterministic_generation() -> None:
+def test_historical_integrity_and_deterministic_generation(publication_workspace: Path) -> None:
     immutable_bytes(ROOT)
 
-    def files() -> dict[str, bytes]:
-        paths = subprocess.check_output(["git", "ls-files", "-z"], cwd=ROOT).decode().split("\0")
+    def files(root: Path) -> dict[str, bytes]:
+        paths = subprocess.check_output(["git", "ls-files", "-z"], cwd=root).decode().split("\0")
         paths += [
-            str(p.relative_to(ROOT)).replace("\\", "/")
-            for p in (ROOT / "contracts/authoring-construction/v1.4").rglob("*.json")
+            str(p.relative_to(root)).replace("\\", "/")
+            for p in (root / "contracts/authoring-construction/v1.4").rglob("*.json")
         ]
-        return {p: (ROOT / p).read_bytes() for p in paths if p and (ROOT / p).is_file()}
+        return {p: (root / p).read_bytes() for p in paths if p and (root / p).is_file()}
 
-    before = files()
+    before = files(ROOT)
     for _ in range(2):
         subprocess.run(
             [
@@ -553,11 +553,11 @@ def test_historical_integrity_and_deterministic_generation() -> None:
                 "scripts/generate_semantic_contract_assets.py",
                 "--publish-acc14-only",
             ],
-            cwd=ROOT,
+            cwd=publication_workspace,
             check=True,
         )
-        assert files() == before
-        immutable_bytes(ROOT)
+        assert files(publication_workspace) == before
+        immutable_bytes(publication_workspace)
 
 
 def test_future_publications_and_explicit_selection_do_not_invalidate_integrity(

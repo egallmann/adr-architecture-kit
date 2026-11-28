@@ -421,7 +421,7 @@ def test_nm25_canonical_and_source_mirrors_remain_byte_exact() -> None:
     assert authority == (BUNDLED / "normalized-model-2.5.json").read_bytes()
 
 
-def test_nm25_successor_only_generation_is_byte_deterministic() -> None:
+def test_nm25_successor_only_generation_is_byte_deterministic(publication_workspace: Path) -> None:
     targets = [
         CONTRACT_ROOT / "definitions" / "normalized-model-2.5.json",
         BUNDLED / "definitions" / "normalized-model-2.5.json",
@@ -436,14 +436,21 @@ def test_nm25_successor_only_generation_is_byte_deterministic() -> None:
         subprocess.run(
             [
                 sys.executable,
-                str(ROOT / "scripts" / "generate_semantic_contract_assets.py"),
+                "scripts/generate_semantic_contract_assets.py",
                 "--publish-nm25-only",
             ],
             check=True,
-            cwd=ROOT,
+            cwd=publication_workspace,
         )
-        assert {path: path.read_bytes() for path in targets} == original
-        assert read_json(targets[0])["semanticContractFingerprint"] == EXPECTED_SCF
+        assert {
+            path: (publication_workspace / path.relative_to(ROOT)).read_bytes() for path in targets
+        } == original
+        assert (
+            read_json(publication_workspace / targets[0].relative_to(ROOT))[
+                "semanticContractFingerprint"
+            ]
+            == EXPECTED_SCF
+        )
 
 
 def test_nm25_historical_authorities_and_capabilities_are_unmodified() -> None:

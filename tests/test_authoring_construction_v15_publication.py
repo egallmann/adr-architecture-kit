@@ -8,6 +8,7 @@ import os
 import subprocess
 import sys
 from collections import Counter
+from collections.abc import Callable
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -53,15 +54,20 @@ def bundle() -> list[dict[str, Any]]:
     ]
 
 
-@lru_cache
-def validator(fragment: str) -> Draft202012Validator:
+@pytest.fixture(scope="module")
+def validator() -> Callable[[str], Draft202012Validator]:
     raw = {n: resource(n) for n in publication.NAMES}
     views, registry = publication.sealed_schemas(
         ROOT, raw, {e["canonicalResourceKey"] for e in bundle()}
     )
-    return Draft202012Validator(
-        {"$ref": views[P + "schema"]["$id"] + "#/$defs/" + fragment}, registry=registry
-    )
+
+    @lru_cache
+    def for_fragment(fragment: str) -> Draft202012Validator:
+        return Draft202012Validator(
+            {"$ref": views[P + "schema"]["$id"] + "#/$defs/" + fragment}, registry=registry
+        )
+
+    return for_fragment
 
 
 def request() -> dict[str, Any]:
@@ -203,7 +209,9 @@ def test_exact_authority_and_independently_derived_inventory() -> None:
 
 @pytest.mark.parametrize("semantic_type", ELIGIBLE)
 @pytest.mark.parametrize("destination", ["/alias_ref", "/uri", "/created_at"])
-def test_all_54_actual_recipe_definition_alternatives(semantic_type: str, destination: str) -> None:
+def test_all_54_actual_recipe_definition_alternatives(
+    semantic_type: str, destination: str, validator: Callable[[str], Draft202012Validator]
+) -> None:
     value = evidence(semantic_type, destination)
     validator("required_output_qualification").validate(value)
     assert value["status"] == "blocked"  # Schema fixtures are not instance evidence.
@@ -276,7 +284,9 @@ def test_actual_inherited_producers_labels_and_binding_rules_remain_qualified() 
         "NM_missing",
     ],
 )
-def test_exact_request_schema_qualifications(fault: str) -> None:
+def test_exact_request_schema_qualifications(
+    fault: str, validator: Callable[[str], Draft202012Validator]
+) -> None:
     value = request()
     check = validator("authoring_request")
     check.validate(value)
@@ -304,7 +314,9 @@ def test_exact_request_schema_qualifications(fault: str) -> None:
     assert not check.is_valid(value)
 
 
-def test_resource_permutation_is_not_instance_semantics_or_partial_NM_success() -> None:
+def test_resource_permutation_is_not_instance_semantics_or_partial_NM_success(
+    validator: Callable[[str], Draft202012Validator],
+) -> None:
     value = request()
     value["basis"]["architecture_interpretation"]["authority_closure"]["resources"].reverse()
     value["basis"]["normalized_model"]["resources"].reverse()
@@ -349,7 +361,9 @@ def test_only_selected_schema_fragments_are_interpreted_not_all_historical_membe
 
 @pytest.mark.parametrize("check", publication.CHECKS)
 @pytest.mark.parametrize("state", ["verified", "invalid", "unavailable", "not_evaluated"])
-def test_independently_evaluated_four_state_checks(check: str, state: str) -> None:
+def test_independently_evaluated_four_state_checks(
+    check: str, state: str, validator: Callable[[str], Draft202012Validator]
+) -> None:
     value = evidence()
     value["units"][0]["destinations"][0]["verification"][check] = state
     validator("required_output_qualification").validate(value)
@@ -380,7 +394,9 @@ def test_independently_evaluated_four_state_checks(check: str, state: str) -> No
         "fake_local_owner",
     ],
 )
-def test_output_schema_rejects_inconsistent_or_incomplete_evidence(fault: str) -> None:
+def test_output_schema_rejects_inconsistent_or_incomplete_evidence(
+    fault: str, validator: Callable[[str], Draft202012Validator]
+) -> None:
     value = evidence()
     unit = value["units"][0]
     dest = unit["destinations"][0]
@@ -415,7 +431,9 @@ def test_output_schema_rejects_inconsistent_or_incomplete_evidence(fault: str) -
     assert not validator("required_output_qualification").is_valid(value)
 
 
-def test_schema_consistent_flags_do_not_create_instance_or_construction_proof() -> None:
+def test_schema_consistent_flags_do_not_create_instance_or_construction_proof(
+    validator: Callable[[str], Draft202012Validator],
+) -> None:
     fragment = evidence()
     fragment.update(
         status="complete",
@@ -456,9 +474,8 @@ def test_schema_consistent_flags_do_not_create_instance_or_construction_proof() 
     )
 
 
-@pytest.fixture
-def snapshot(monkeypatch: pytest.MonkeyPatch) -> dict[str, Any]:
-    original = publication.read
+@pytest.fixture(scope="module")
+def snapshot_baseline() -> dict[str, Any]:
     values = {P + n: resource(n) for n in publication.NAMES}
     for key in (
         P + "contract",
@@ -466,9 +483,18 @@ def snapshot(monkeypatch: pytest.MonkeyPatch) -> dict[str, Any]:
         publication.CATALOG,
         publication.RECIPES,
     ):
-        values[key] = copy.deepcopy(original(ROOT, key))
+        values[key] = publication.read(ROOT, key)
+    return values
+
+
+@pytest.fixture
+def snapshot(monkeypatch: pytest.MonkeyPatch, snapshot_baseline: dict[str, Any]) -> dict[str, Any]:
+    original = publication.read
+    values = copy.deepcopy(snapshot_baseline)
     monkeypatch.setattr(
-        publication, "read", lambda root, key: values[key] if key in values else original(root, key)
+        publication,
+        "read",
+        lambda root, key: values[key] if root == ROOT and key in values else original(root, key),
     )
     return values
 
@@ -665,8 +691,29 @@ def test_independent_publication_mutations(snapshot: dict[str, Any], fault: str)
         )
     else:
         snapshot[P + "contract"]["resourceManifest"][0]["role"] = "normative-definition"
-    with pytest.raises(publication.PublicationError):
-        publication.qualify(ROOT)
+    # These faults reached these exact diagnostics in the full qualifier. Keep
+    # its forged applicability, replay, conformance success and resealing probes.
+    rule_errors = {
+        "flags_are_proof": "forged_instance_completion_from_publication",
+        "URI_normalization": "wrong_actual_producer_vocabulary",
+        "invalid_timestamp_policy": "wrong_recipe_failure_classification",
+        "lost_original_semantics": "inherited_semantics_changed",
+    }
+    conformance_errors = {
+        "missing_conformance_case": "incomplete_independent_conformance_coverage",
+        "duplicate_conformance_case": "invalid_or_runtime_conformance_identity",
+        "altered_historical_assertion": "historical_case_relabelled_or_assertion_changed",
+        "historical_case_missing": "missing_historical_case_reference",
+    }
+    if fault in rule_errors:
+        with pytest.raises(publication.PublicationError, match=f"^{rule_errors[fault]}$"):
+            publication.qualify_rules(ROOT, {"rules": rules})
+    elif fault in conformance_errors:
+        with pytest.raises(publication.PublicationError, match=f"^{conformance_errors[fault]}$"):
+            publication.qualify_conformance(ROOT, snapshot[P + "conformance"])
+    else:
+        with pytest.raises(publication.PublicationError):
+            publication.qualify(ROOT)
 
 
 @pytest.mark.parametrize("fault", ["producer_kind", "predecessor_schema"])
@@ -794,15 +841,18 @@ def test_current_candidate_mirrors_match_canonical_inputs() -> None:
         assert (ROOT / path).read_bytes() == (canonical / "contract.json").read_bytes()
 
 
-def test_deterministic_successor_only_generation() -> None:
+def test_deterministic_successor_only_generation(publication_workspace: Path) -> None:
     before = {
         p: p.read_bytes()
         for directory in ("contracts", "src/adr_kit/semantic_contract")
         for p in (ROOT / directory).rglob("*.json")
     }
+    (
+        publication_workspace / "src/adr_kit/semantic_contract/v1_0/authoring-construction-1.5.json"
+    ).unlink()
     run = subprocess.run(
         [sys.executable, "scripts/generate_semantic_contract_assets.py", "--publish-acc15-only"],
-        cwd=ROOT,
+        cwd=publication_workspace,
         capture_output=True,
         text=True,
     )

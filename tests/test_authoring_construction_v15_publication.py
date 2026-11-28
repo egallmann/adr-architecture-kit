@@ -708,11 +708,16 @@ def test_independent_publication_mutations(snapshot: dict[str, Any], fault: str)
     if fault in rule_errors:
         with pytest.raises(publication.PublicationError, match=f"^{rule_errors[fault]}$"):
             publication.qualify_rules(ROOT, {"rules": rules})
-    elif fault in conformance_errors:
+    elif fault in {"altered_historical_assertion", "historical_case_missing"}:
         with pytest.raises(publication.PublicationError, match=f"^{conformance_errors[fault]}$"):
             publication.qualify_conformance(ROOT, snapshot[P + "conformance"])
     else:
-        with pytest.raises(publication.PublicationError):
+        # Whole-inventory scans use the full qualifier's per-call digest reuse.
+        diagnostic = conformance_errors.get(fault)
+        with pytest.raises(
+            publication.PublicationError,
+            match=f"^{diagnostic}$" if diagnostic is not None else None,
+        ):
             publication.qualify(ROOT)
 
 

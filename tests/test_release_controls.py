@@ -459,6 +459,12 @@ CORE_WORKFLOW = "./.github/workflows/semantic-core-qualification.yml"
 INTEGRATION_WORKFLOW = "./.github/workflows/integration-assurance.yml"
 PORTABILITY_OS = {"windows-latest", "macos-latest"}
 EVENT_SHA = "${{ github.sha }}"
+GOVERNANCE_COMMANDS = (
+    "adr repair-canonical-ids --check",
+    "adr governance-checks",
+    "adr validate-generated-docs",
+    "adr validate-system-overview",
+)
 
 
 def _artifact_consumer(job: dict[str, Any], source: str) -> None:
@@ -546,12 +552,7 @@ def test_pr_feedback_exercises_fast_semantic_and_source_contracts() -> None:
     assert "-m" in args and args[args.index("-m") + 1] == "fast"
     for command in ("scripts/run_pr_feedback.py", "scripts/run_source_compat.py"):
         _command_step(python, command)
-    for command in (
-        "adr repair-canonical-ids --check",
-        "adr governance-checks",
-        "adr validate-generated-docs",
-        "adr validate-system-overview",
-    ):
+    for command in GOVERNANCE_COMMANDS:
         _command_step(workflow["jobs"]["governance"], command)
 
 
@@ -574,6 +575,8 @@ def test_develop_assurance_requires_integration_and_branch_synchronization() -> 
     assert "-m" not in args or args[args.index("-m") + 1] == "not governance"
     _command_step(integration["source-compatibility"], "scripts/run_source_compat.py")
     _command_step(integration["governance"], "pytest -m governance")
+    for command in GOVERNANCE_COMMANDS:
+        _command_step(integration["governance"], command)
     _required(integration["dependency-audit"])
     _command_step(integration["dependency-audit"], "pip_audit")
     portability = integration["os-portability"]

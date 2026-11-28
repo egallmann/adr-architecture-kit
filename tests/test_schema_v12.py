@@ -92,12 +92,10 @@ def test_v1_0_fixture_still_parses_and_v1_1_artifact_stays_loadable() -> None:
     parser = ADRParser()
 
     logical = parser.parse_logical_adr(FIXTURES / "valid" / "logical-minimal.yaml")
-    registry = parser.parse_normalized_entity_registry(
-        ROOT / "tests" / "golden" / "expected" / "entity_registry.yaml"
-    )
+    registry = parser.parse_normalized_entity_registry(ROOT / "adrs/index/entity-registry.yaml")
 
     assert logical.schema_version == "1.0"
-    # Current golden corpus is model 2.2 after the v1.5 authoring / topology cutover.
+    # The current tracked projection uses model 2.2 after the authoring/topology cutover.
     assert registry.schema_version == "2.2"
     # Legacy 1.1 registry parsing remains available for migration consumers.
     legacy = parser.parse_normalized_entity_registry_from_data(

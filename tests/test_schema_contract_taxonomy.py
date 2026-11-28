@@ -95,9 +95,6 @@ def test_active_references_do_not_use_retired_canonical_paths() -> None:
         INVENTORY_PATH,
         Path(__file__),
         REPO_ROOT / "docs" / "design-journal",
-        # Golden projections preserve historical ADR text as derived snapshots;
-        # they are not active path consumers.
-        REPO_ROOT / "tests" / "golden" / "expected",
     }
     offenders: list[str] = []
     for root in roots:

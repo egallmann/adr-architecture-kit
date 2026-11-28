@@ -67,7 +67,6 @@
     "src/adr_kit/validators/entity_validator.py",
     "src/adr_kit/validators/runtime_hygiene.py",
     "tests/golden/helpers.py",
-    "tests/golden/refresh_goldens.py",
     "tests/integration/test_entity_lifecycle.py",
     "tests/test_adr_ir_fragment_compiler.py",
     "tests/test_adr_pc_human_projection.py",
@@ -108,6 +107,6 @@
     "tests/test_source_generators.py",
     "tests/test_workspace_attribution_federation.py"
   ],
-  "finding_count": 107,
+  "finding_count": 106,
   "tool": "black"
 }

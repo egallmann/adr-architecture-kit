@@ -786,11 +786,11 @@ def test_local_pre_push_checks_include_v15_attribution_invariants() -> None:
         assert path in script
 
 
-def test_pr_feedback_runner_includes_exact_current_output_byte_golden() -> None:
+def test_pr_feedback_runner_includes_current_output_freshness_and_determinism() -> None:
     from scripts.run_pr_feedback import SEMANTIC_TESTS
 
     assert "tests/test_authoring_construction_v11_contract.py" in SEMANTIC_TESTS
     assert (
-        "tests/golden/test_current_outputs.py::test_current_outputs_match_expected_bytes"
+        "tests/golden/test_current_outputs.py::test_current_outputs_are_fresh_and_deterministic"
         in SEMANTIC_TESTS
     )

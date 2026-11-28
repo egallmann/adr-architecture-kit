@@ -386,11 +386,14 @@ def test_current_candidate_mirrors_match_canonical_inputs() -> None:
 
 
 def test_deterministic_version_isolated_generation(publication_workspace: Path) -> None:
-    before = {
-        p: p.read_bytes()
-        for directory in ("contracts", "src/adr_kit/semantic_contract")
-        for p in (ROOT / directory).rglob("*.json")
-    }
+    def json_outputs(root: Path) -> dict[Path, bytes]:
+        return {
+            path.relative_to(root): path.read_bytes()
+            for directory in ("contracts", "src/adr_kit/semantic_contract")
+            for path in (root / directory).rglob("*.json")
+        }
+
+    before = json_outputs(ROOT)
     (
         publication_workspace
         / "src/adr_kit/semantic_contract/v1_0/architecture-interpretation-1.5.json"
@@ -402,7 +405,7 @@ def test_deterministic_version_isolated_generation(publication_workspace: Path) 
         text=True,
     )
     assert result.returncode == 0, result.stdout + result.stderr
-    assert {p: (ROOT / p).read_bytes() for p in before} == before
+    assert json_outputs(publication_workspace) == before
 
 
 def test_exact_discovery_rejects_missing_versions_keys_and_resources() -> None:

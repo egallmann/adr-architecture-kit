@@ -842,11 +842,14 @@ def test_current_candidate_mirrors_match_canonical_inputs() -> None:
 
 
 def test_deterministic_successor_only_generation(publication_workspace: Path) -> None:
-    before = {
-        p: p.read_bytes()
-        for directory in ("contracts", "src/adr_kit/semantic_contract")
-        for p in (ROOT / directory).rglob("*.json")
-    }
+    def json_outputs(root: Path) -> dict[Path, bytes]:
+        return {
+            path.relative_to(root): path.read_bytes()
+            for directory in ("contracts", "src/adr_kit/semantic_contract")
+            for path in (root / directory).rglob("*.json")
+        }
+
+    before = json_outputs(ROOT)
     (
         publication_workspace / "src/adr_kit/semantic_contract/v1_0/authoring-construction-1.5.json"
     ).unlink()
@@ -857,7 +860,7 @@ def test_deterministic_successor_only_generation(publication_workspace: Path) ->
         text=True,
     )
     assert run.returncode == 0, run.stdout + run.stderr
-    assert {p: (ROOT / p).read_bytes() for p in before} == before
+    assert json_outputs(publication_workspace) == before
 
 
 def test_exact_discovery_and_closure_corruption_rejection() -> None:

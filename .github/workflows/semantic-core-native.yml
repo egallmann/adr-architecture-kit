@@ -1,0 +1,54 @@
+name: Native Rust Qualification
+
+on:
+  workflow_call:
+    inputs:
+      source_ref:
+        description: Exact source commit SHA.
+        required: true
+        type: string
+    outputs:
+      source_commit:
+        description: Full commit SHA of the source checked by this workflow.
+        value: ${{ jobs.native-rust.outputs.source_commit }}
+
+jobs:
+  native-rust:
+    name: Native semantic tests
+    runs-on: ubuntu-latest
+    outputs:
+      source_commit: ${{ steps.tests.outputs.source_commit }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.source_ref }}
+      - name: Verify exact source commit
+        id: source
+        shell: bash
+        env:
+          EXPECTED_SOURCE: ${{ inputs.source_ref }}
+        run: |
+          [[ "$EXPECTED_SOURCE" =~ ^[0-9a-f]{40}$ ]]
+          commit="$(git rev-parse HEAD)"
+          [[ "$commit" == "$EXPECTED_SOURCE" ]]
+          echo "commit=$commit" >> "$GITHUB_OUTPUT"
+          echo "Semantic-core source commit: $commit"
+      - name: Read repository Rust toolchain authority
+        id: rust-toolchain
+        shell: bash
+        run: |
+          channel="$(sed -n 's/^channel = "\([^"]*\)"$/\1/p' rust-toolchain.toml)"
+          [[ -n "$channel" ]]
+          echo "channel=$channel" >> "$GITHUB_OUTPUT"
+      - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # toolchain: stable; 2026-10-16
+        with:
+          toolchain: ${{ steps.rust-toolchain.outputs.channel }}
+      - name: Test semantic-core source
+        id: tests
+        shell: bash
+        env:
+          TESTED_SOURCE: ${{ steps.source.outputs.commit }}
+        run: |
+          cargo test --manifest-path core/Cargo.toml
+          echo "source_commit=$TESTED_SOURCE" >> "$GITHUB_OUTPUT"

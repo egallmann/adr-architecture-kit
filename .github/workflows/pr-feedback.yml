@@ -12,9 +12,15 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  rust-semantic-core:
-    name: Rust semantic core
-    uses: ./.github/workflows/semantic-core-qualification.yml
+  native-rust:
+    uses: ./.github/workflows/semantic-core-native.yml
+    with:
+      source_ref: ${{ github.sha }}
+
+  semantic-core-wasm:
+    uses: ./.github/workflows/semantic-core-wasm.yml
+    with:
+      source_ref: ${{ github.sha }}
 
   python-semantic:
     name: Python semantic/source contracts
@@ -22,7 +28,7 @@ jobs:
       contents: read
       pull-requests: read
       actions: read
-    needs: rust-semantic-core
+    needs: semantic-core-wasm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,7 +38,7 @@ jobs:
         with:
           name: semantic-core-${{ github.sha }}
           path: semantic-core-artifact
-      - name: Install the qualified artifact for this commit
+      - name: Install verified source-built WASM for this commit
         run: >-
           python scripts/semantic_core_artifact_bundle.py consume
           --bundle-dir semantic-core-artifact
@@ -59,7 +65,7 @@ jobs:
 
   typescript-consumer:
     name: TypeScript consumer binding
-    needs: rust-semantic-core
+    needs: semantic-core-wasm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -69,7 +75,7 @@ jobs:
         with:
           name: semantic-core-${{ github.sha }}
           path: semantic-core-artifact
-      - name: Install the qualified artifact for this commit
+      - name: Install verified source-built WASM for this commit
         run: >-
           python scripts/semantic_core_artifact_bundle.py consume
           --bundle-dir semantic-core-artifact
@@ -103,7 +109,7 @@ jobs:
 
   governance:
     name: Governance and generated artifacts
-    needs: rust-semantic-core
+    needs: semantic-core-wasm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -114,7 +120,7 @@ jobs:
         with:
           name: semantic-core-${{ github.sha }}
           path: semantic-core-artifact
-      - name: Install the qualified artifact for this commit
+      - name: Install verified source-built WASM for this commit
         run: >-
           python scripts/semantic_core_artifact_bundle.py consume
           --bundle-dir semantic-core-artifact
@@ -154,3 +160,27 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: python scripts/check_quality_ratchets.py
+
+  assurance:
+    name: Required assurance results
+    if: ${{ always() }}
+    needs: [native-rust, semantic-core-wasm, python-semantic, typescript-consumer, governance, quality-ratchets]
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Require successful qualification of the exact source
+        shell: bash
+        env:
+          REQUIRED_SUCCEEDED: >-
+            ${{ needs.native-rust.result == 'success'
+                && needs.semantic-core-wasm.result == 'success'
+                && needs.python-semantic.result == 'success'
+                && needs.typescript-consumer.result == 'success'
+                && needs.governance.result == 'success'
+                && needs.quality-ratchets.result == 'success' }}
+          SOURCE_MATCH: >-
+            ${{ needs.native-rust.outputs.source_commit == github.sha
+                && needs.semantic-core-wasm.outputs.source_commit == github.sha }}
+        run: |
+          test "$REQUIRED_SUCCEEDED" = true
+          test "$SOURCE_MATCH" = true

@@ -40,7 +40,7 @@ def test_bundle_fans_out_exact_commit_bound_bytes(tmp_path: Path) -> None:
 
 def test_bundle_rejects_an_artifact_from_another_commit_before_writing(tmp_path: Path) -> None:
     artifact = tmp_path / "built.wasm"
-    artifact.write_bytes(b"qualified artifact")
+    artifact.write_bytes(b"source-built artifact")
     bundle = tmp_path / "bundle"
     create_bundle(artifact, bundle, COMMIT)
     checkout = tmp_path / "checkout"
@@ -51,16 +51,25 @@ def test_bundle_rejects_an_artifact_from_another_commit_before_writing(tmp_path:
     assert not checkout.exists()
 
 
-def test_bundle_rejects_tampered_bytes_before_writing(tmp_path: Path) -> None:
+@pytest.mark.parametrize("failure", ["missing", "digest", "size"])
+def test_bundle_rejects_missing_or_tampered_bytes_before_writing(
+    tmp_path: Path, failure: str
+) -> None:
     artifact = tmp_path / "built.wasm"
-    artifact.write_bytes(b"qualified artifact")
+    artifact.write_bytes(b"wasm bytes")
     bundle = tmp_path / "bundle"
     create_bundle(artifact, bundle, COMMIT)
-    (bundle / WASM_NAME).write_bytes(b"tampered artifact")
     checkout = tmp_path / "checkout"
 
-    with pytest.raises(ValueError, match="do not match"):
-        consume_bundle(bundle, COMMIT, checkout)
+    bundled_wasm = bundle / WASM_NAME
+    if failure == "missing":
+        bundled_wasm.unlink()
+        with pytest.raises(FileNotFoundError):
+            consume_bundle(bundle, COMMIT, checkout)
+    else:
+        bundled_wasm.write_bytes(b"fake bytes" if failure == "digest" else b"truncated")
+        with pytest.raises(ValueError, match="do not match"):
+            consume_bundle(bundle, COMMIT, checkout)
 
     assert not checkout.exists()
 

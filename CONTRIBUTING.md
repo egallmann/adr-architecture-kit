@@ -87,9 +87,11 @@ Generic TDD tutorials are intentionally not maintained in this repository.
 CI stratifies these checks by lifecycle. Pull requests run the explicit
 developer/TDD fast suite, the broader semantic and SDK contract collection,
 Rust source qualification, Node/TypeScript checks, governance, and quality
-ratchets in **`.github/workflows/pr-feedback.yml`**. A
-single producer job tests the Rust core, builds the source WASM, verifies its
-identity, and publishes a commit-bound artifact for dependent jobs. Pushes to
+ratchets in **`.github/workflows/pr-feedback.yml`**. Native Rust tests and
+WASM production check out the same exact commit and run independently. Host
+jobs can start once the source-built WASM matches both tracked copies. Overall
+assurance requires successful native tests, WASM production, and the required
+consumer checks. The Windows developer bootstrap remains unqualified. Pushes to
 `develop` run **`.github/workflows/develop-assurance.yml`**: the non-governance
 behavioral/integration/cross-host Python suite with canonical coverage, plus the
 governance-marked pytest assertions in the governance job. Together these lanes

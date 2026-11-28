@@ -1,5 +1,5 @@
 {
-  "finding_count": 56,
+  "finding_count": 55,
   "findings": [
     {
       "code": "F401",
@@ -144,12 +144,6 @@
       "count": 1,
       "message": "Ambiguous variable name: `l`",
       "path": "src/adr_kit/validators/entity_validator.py"
-    },
-    {
-      "code": "E402",
-      "count": 1,
-      "message": "Module level import not at top of file",
-      "path": "tests/golden/refresh_goldens.py"
     },
     {
       "code": "F401",

@@ -80,7 +80,7 @@ SEMANTIC_TESTS: tuple[str, ...] = (
     "tests/test_compatibility_resource_parity.py",
     "tests/test_scope_resolver.py",
     "tests/test_canonical_id_normalizer.py",
-    "tests/golden/test_current_outputs.py::test_current_outputs_match_expected_bytes",
+    "tests/golden/test_current_outputs.py::test_current_outputs_are_fresh_and_deterministic",
     "tests/test_release_controls.py",
 )
 

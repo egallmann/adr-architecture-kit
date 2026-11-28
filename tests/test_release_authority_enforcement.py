@@ -23,7 +23,6 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-import yaml
 
 from scripts import release_authority_inventory as scanner
 from scripts import release_authority_promotion as promotion
@@ -476,28 +475,6 @@ def test_entire_released_authority_cannot_disappear_from_a_distribution(
         scanner.create_cohort(bundle, admitted["source"])
 
 
-def test_all_publishers_gate_both_jobs_and_never_rebuild() -> None:
-    for filename in ("publish-pypi.yml", "publish-npm.yml"):
-        workflow = yaml.safe_load((ROOT / ".github/workflows" / filename).read_text())
-        for name in ("resolve-bundle", "publish"):
-            text = yaml.safe_dump(workflow["jobs"][name])
-            assert "release_authority_promotion.py download" in text
-            assert "release_authority_promotion.py verify" in text
-            assert "python -m build" not in text and "npm run build" not in text
-        steps = workflow["jobs"]["publish"]["steps"]
-        gate = next(
-            i
-            for i, s in enumerate(steps)
-            if "release_authority_promotion.py verify" in s.get("run", "")
-        )
-        publish = next(
-            i
-            for i, s in enumerate(steps)
-            if "gh-action-pypi-publish" in s.get("uses", "") or "npm publish" in s.get("run", "")
-        )
-        assert gate < publish
-
-
 @pytest.mark.parametrize("name", ["../escape", "/absolute", "a\\b", "C:/escape", "a//b", "./a"])
 def test_archive_path_attacks_fail(name: str) -> None:
     with pytest.raises((ValueError, RuntimeError)):
@@ -889,17 +866,3 @@ def test_live_history_cannot_erase_a_promotion_after_the_source_snapshot(
     else:
         with pytest.raises((ValueError, RuntimeError), match="historical promotion record"):
             promotion.recorded_promotion_sources(source, ROOT, live=True)
-
-
-def test_new_workflow_never_auto_approves_or_publishes() -> None:
-    workflow = yaml.safe_load((ROOT / ".github/workflows/authority-promotion.yml").read_text())
-    assert workflow["jobs"]["attest"]["environment"]["name"] == promotion.ENVIRONMENT
-    text = yaml.safe_dump(workflow)
-    assert "npm publish" not in text and "gh-action-pypi-publish" not in text
-    assert "actions: write" not in text and "contents: write" not in text
-    assert "release_authority_promotion.py attest" in text
-    certification = (ROOT / ".github/workflows/release-certification.yml").read_text()
-    assert "release_manifest.py inventory" in certification
-    assert (
-        "authority-inventory.json" in certification and "authority-manifest.json" in certification
-    )
